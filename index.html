@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ibn Sina Hospital — Affordable & Quality Healthcare in Budgam, Jammu & Kashmir. Multi-specialty hospital with 24/7 emergency, pharmacy, and diagnostic services.">
+    <meta property="og:title" content="Ibn Sina Hospital — Affordable & Quality Healthcare">
+    <meta property="og:description" content="Best multi-specialty hospital in Budgam, J&K — consultant-led care, 24/7 pharmacy & lab, emergency services.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ibnsinahospital.in/">
+    <title>Ibn Sina Hospital — Affordable & Quality Healthcare | Budgam, J&K</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+
+    <!-- Hospital Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Hospital",
+      "name": "Ibn Sina Hospital",
+      "url": "https://ibnsinahospital.in/",
+      "logo": "https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Near Railway Station, Ompora Railway Station Road, Ompora",
+        "addressLocality": "Budgam",
+        "addressRegion": "Jammu and Kashmir",
+        "postalCode": "191111",
+        "addressCountry": "IN"
+      },
+      "telephone": "+919622552553",
+      "email": "weibnsina@gmail.com",
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "00:00", "closes": "23:59" }
+      ],
+      "medicalSpecialty": ["Laboratory","Pharmacy","Physiotherapy","Sigmoidoscopy","Dialysis","Ambulance"]
+    }
+    </script>
+
+    <!-- FAQ Schema (homepage subset) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Where is Ibn Sina Hospital located?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the pharmacy open 24/7?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, Ibn Sina Pharmacy is open 24 hours, 365 days a year." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the hospital provide dialysis?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, dialysis services are available." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I book an appointment?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Call 9622552553 / 9419023501 or visit the appointment page." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is ambulance service available?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, ambulance service is available." }
+        }
+      ]
+    }
+    </script>
+
+    <script src="js/main.js" defer></script>
+    <script src="js/chatbot.js" defer></script>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <header class="site-header" id="site-header">
+        <div class="header-inner container">
+            <a href="index.html" class="logo" aria-label="Ibn Sina Hospital Home">
+                <img src="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp" alt="Ibn Sina Hospital Logo" class="logo-img" style="height: 40px; width: auto;">
+                <span class="logo-text">Ibn Sina <strong>Hospital</strong></span>
+            </a>
+            <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link active">Home</a></li>
+                    <li><a href="about.html" class="nav-link">About</a></li>
+                    <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="doctors.html" class="nav-link">Doctors</a></li>
+                    <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="blog.html" class="nav-link">Blog</a></li>
+                    <li><a href="careers.html" class="nav-link">Careers</a></li>
+                    <li><a href="faq.html" class="nav-link">FAQ</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="tel:9622552553" class="emergency-badge" aria-label="Emergency call: 9622552553">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+                    <span>Emergency: 9622552553</span>
+                </a>
+                <a href="appointment.html" class="btn btn-primary btn-book">Book Appointment</a>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- HERO -->
+        <section class="hero" id="hero" style="background: linear-gradient(rgba(45,74,43,0.75), rgba(45,74,43,0.75)), url('https://i.ibb.co/9kYKZsWB/181bf27c6da3.webp') center/cover no-repeat;">
+            <div class="hero-canopy" aria-hidden="true">
+                <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                    <defs>
+                        <radialGradient id="light1" cx="50%" cy="0%" r="60%"><stop offset="0%" stop-color="#a4ac86" stop-opacity="0.25"/><stop offset="100%" stop-color="#a4ac86" stop-opacity="0"/></radialGradient>
+                        <radialGradient id="light2" cx="30%" cy="10%" r="40%"><stop offset="0%" stop-color="#faf9f6" stop-opacity="0.3"/><stop offset="100%" stop-color="#faf9f6" stop-opacity="0"/></radialGradient>
+                        <radialGradient id="light3" cx="70%" cy="5%" r="35%"><stop offset="0%" stop-color="#7d8471" stop-opacity="0.2"/><stop offset="100%" stop-color="#7d8471" stop-opacity="0"/></radialGradient>
+                    </defs>
+                    <rect width="600" height="400" fill="#2d4a2b"/>
+                    <ellipse cx="300" cy="60" rx="250" ry="120" fill="url(#light1)"/>
+                    <ellipse cx="180" cy="30" rx="160" ry="90" fill="url(#light2)"/>
+                    <ellipse cx="420" cy="20" rx="140" ry="80" fill="url(#light3)"/>
+                    <circle cx="200" cy="100" r="18" fill="#a4ac86" opacity="0.35"/>
+                    <circle cx="350" cy="70" r="14" fill="#faf9f6" opacity="0.25"/>
+                    <circle cx="280" cy="45" r="22" fill="#7d8471" opacity="0.3"/>
+                    <circle cx="420" cy="90" r="12" fill="#a4ac86" opacity="0.4"/>
+                    <circle cx="150" cy="60" r="10" fill="#faf9f6" opacity="0.2"/>
+                </svg>
+            </div>
+            <div class="hero-content container">
+                <h1 class="hero-title">Affordable &amp; Quality Healthcare</h1>
+                <p class="hero-subtitle">High Quality Facilities at Affordable Costs</p>
+                <p class="hero-desc">Comprehensive, consultant-led care in the heart of Budgam — preventive, diagnostic, curative, and rehabilitative services under one canopy.</p>
+                <div class="hero-ctas">
+                    <a href="appointment.html" class="btn btn-primary btn-lg">Book an Appointment</a>
+                    <a href="tel:9622552553" class="btn btn-emergency btn-lg">Call Emergency: 9622552553</a>
+                </div>
+            </div>
+            <div class="hero-wave" aria-hidden="true">
+                <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 40 C240 0 480 80 720 40 C960 0 1200 80 1440 40 L1440 80 L0 80 Z" fill="#faf9f6"/></svg>
+            </div>
+        </section>
+
+        <!-- QUICK INFO -->
+        <section class="quick-info" aria-label="Quick information">
+            <div class="container quick-info-grid">
+                <div class="quick-info-card">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d4a2b" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <span><strong>OPD Hours:</strong> 24/7</span>
+                </div>
+                <div class="quick-info-card highlight-24">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#2d4a2b" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke="#faf9f6" stroke-width="2" fill="none"/></svg>
+                    <span><strong>Pharmacy &amp; Lab:</strong> Open 24/7, 365 days — We Never Close</span>
+                </div>
+                <div class="quick-info-card">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d4a2b" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span>Near Railway Station, Ompora, Budgam, J&K 191111</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT SNAPSHOT -->
+        <section class="section about-snapshot">
+            <div class="container">
+                <div class="about-snapshot-grid">
+                    <div class="about-snapshot-text">
+                        <h2 class="section-title">A Shelter of Healing in Budgam</h2>
+                        <p>Since 2018, <strong>Ibn Sina Hospital</strong> has been the most trusted multi-specialty hospital in Budgam, delivering comprehensive care that spans preventive wellness, advanced diagnostics, curative treatments, and compassionate rehabilitation. Our consultant-led model ensures every patient receives expert-guided care — from same-day digital imaging to complex surgical procedures — all under one roof.</p>
+                        <p>We believe quality healthcare should be accessible, not intimidating. That's why we pair state-of-the-art facilities with a warm, patient-first approach rooted in the community we serve.</p>
+                        <a href="about.html" class="btn btn-outline">Learn More About Us</a>
+                    </div>
+                    <div class="about-snapshot-stats">
+                        <div class="stat-card"><span class="stat-number">2018</span><span class="stat-label">Founded</span></div>
+                        <div class="stat-card"><span class="stat-number">20+</span><span class="stat-label">Specialities</span></div>
+                        <div class="stat-card"><span class="stat-number">24/7</span><span class="stat-label">Emergency Care</span></div>
+                        <div class="stat-card"><span class="stat-number">365</span><span class="stat-label">Days Pharmacy</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider" aria-hidden="true">
+            <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 30 C360 0 720 60 1080 30 C1260 15 1380 40 1440 30 L1440 60 L0 60 Z" fill="#faf9f6"/><path d="M0 45 C360 20 720 65 1080 40 C1260 28 1380 48 1440 40 L1440 60 L0 60 Z" fill="#a4ac86" opacity="0.15"/></svg>
+        </div>
+
+        <!-- LATEST UPDATES CAROUSEL -->
+        <section class="section updates-section" style="background:#faf9f6;">
+            <div class="container">
+                <h2 class="section-title text-center">Latest Updates</h2>
+                <div id="updates-carousel"></div>
+            </div>
+        </section>
+
+        <!-- WHY CHOOSE -->
+        <section class="section why-choose" style="background:#faf9f6;">
+            <div class="container">
+                <h2 class="section-title text-center">Why Choose Ibn Sina Hospital</h2>
+                <div class="why-grid">
+                    <div class="why-card"><h3>Consultant-Led Care</h3><p>Every patient is guided by senior consultants who are field experts — not just on paper, but at your bedside.</p></div>
+                    <div class="why-card"><h3>Dedicated, Experienced Team</h3><p>From nurses to specialists, our team brings years of training and genuine compassion to every interaction.</p></div>
+                    <div class="why-card"><h3>Same-Day Diagnostic Imaging</h3><p>Digital X-rays, ultrasonography, and advanced screening with rapid turnaround — answers when you need them most.</p></div>
+                    <div class="why-card"><h3>State-of-the-Art Facilities</h3><p>Modern operation theatres, dialysis unit, endoscopy suite, and a fully digital diagnostic lab — global standards, local care.</p></div>
+                    <div class="why-card"><h3>Global-Standard Experience</h3><p>Modern technology, compassionate care, and a healing environment designed to feel like a shelter, not a clinic.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ SECTION (Homepage subset) -->
+        <section class="section faq-section" style="background:#ffffff;">
+            <div class="container">
+                <h2 class="section-title text-center">Frequently Asked Questions</h2>
+                <div class="faq-list">
+                    <details open><summary>Where is Ibn Sina Hospital located?</summary><p>Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111.</p></details>
+                    <details><summary>Is the pharmacy open 24/7?</summary><p>Yes, Ibn Sina Pharmacy is open 24 hours, 365 days a year.</p></details>
+                    <details><summary>Does the hospital provide dialysis?</summary><p>Yes, dialysis services are available.</p></details>
+                    <details><summary>How do I book an appointment?</summary><p>Call Reception: 9622552553 / 9419023501 or visit our <a href="appointment.html">Appointment page</a>.</p></details>
+                    <details><summary>Is ambulance service available?</summary><p>Yes, we run an ambulance service.</p></details>
+                </div>
+                <div class="text-center" style="margin-top:2rem;"><a href="faq.html" class="btn btn-outline">Read All FAQs</a></div>
+            </div>
+        </section>
+
+        <!-- DYNAMIC SERVICES -->
+        <section class="section services-preview">
+            <div class="container">
+                <h2 class="section-title text-center">Our Core Services</h2>
+                <div class="services-grid" id="services-grid"></div>
+                <div class="text-center" style="margin-top:2rem;">
+                    <a href="services.html" class="btn btn-outline">View All Services &amp; Departments</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- DYNAMIC DEPARTMENTS (cards, limited to 6 on home) -->
+        <section class="section specialities-preview" style="background:#faf9f6;">
+            <div class="container">
+                <h2 class="section-title text-center">Our Specialities</h2>
+                <div class="departments-grid" id="departments-grid"></div>
+                <p class="text-center" style="margin-top:1rem;">
+                    <small>View all <a href="doctors.html">our doctors</a> across these specialties.</small>
+                </p>
+            </div>
+        </section>
+
+        <!-- FEATURED DOCTORS -->
+        <section class="section featured-doctors">
+            <div class="container">
+                <h2 class="section-title text-center">Meet Our Expert Doctors</h2>
+                <div class="doctor-cards-grid" id="featured-doctor-cards"></div>
+                <div class="text-center" style="margin-top:2rem;"><a href="doctors.html" class="btn btn-primary">View All Doctors</a></div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section class="section testimonials" style="background:#faf9f6;">
+            <div class="container">
+                <h2 class="section-title text-center">What Patients Say</h2>
+                <div class="testimonials-grid">
+                    <blockquote class="testimonial-card">
+                        <p>"The doctors at Ibn Sina Hospital treated my mother with such care and respect. The 24/7 pharmacy was a lifesaver during her recovery."</p>
+                        <cite>— A grateful family member, Budgam</cite>
+                    </blockquote>
+                    <blockquote class="testimonial-card">
+                        <p>"Same-day digital X-ray and the consultant explained everything clearly. Affordable, professional, and genuinely caring staff."</p>
+                        <cite>— Patient, Ompora</cite>
+                    </blockquote>
+                    <blockquote class="testimonial-card">
+                        <p>"We brought our child in late at night — the emergency team was ready, the pediatrician arrived within minutes. Exceptional care."</p>
+                        <cite>— Parent, Srinagar</cite>
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOG PREVIEW -->
+        <section class="section blog-preview">
+            <div class="container">
+                <h2 class="section-title text-center">Health News &amp; Insights</h2>
+                <div class="blog-preview-grid" id="blog-preview-grid"></div>
+                <div class="text-center" style="margin-top:2rem;"><a href="blog.html" class="btn btn-outline">Read All Articles</a></div>
+            </div>
+        </section>
+
+        <!-- CTA BANNER -->
+        <section class="cta-banner">
+            <div class="container cta-banner-content">
+                <div class="cta-banner-text">
+                    <h2>Ready to Visit?</h2>
+                    <p>Book your appointment today or call us directly. Our team is here to help you navigate your healthcare journey with confidence.</p>
+                    <div class="cta-banner-buttons">
+                        <a href="appointment.html" class="btn btn-primary btn-lg">Book an Appointment</a>
+                        <a href="contact.html" class="btn btn-outline-light btn-lg">Find Us on Map</a>
+                    </div>
+                </div>
+                <div class="cta-banner-emergency">
+                    <div class="emergency-callout">
+                        <strong>Emergency?</strong>
+                        <a href="tel:9622552553" class="emergency-phone-large">9622552553 / 9419023501</a>
+                        <span>Available 24/7, 365 days</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-wave" aria-hidden="true">
+            <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
+        </div>
+        <div class="footer-main container">
+            <div class="footer-col">
+                <h3 class="footer-logo">Ibn Sina <strong>Hospital</strong></h3>
+                <address>Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111</address>
+                <p><a href="tel:9622552553">📞 9622552553 / 9419023501</a></p>
+                <p><a href="tel:9622392553">📞 9622392553 / 9149606115 / 7006272634</a></p>
+                <p><a href="mailto:weibnsina@gmail.com">✉ weibnsina@gmail.com</a></p>
+            </div>
+            <div class="footer-col">
+                <h4>OPD Timings</h4>
+                <table class="timings-table">
+                    <tr><td>Mon–Fri</td><td>9AM–6PM</td></tr>
+                    <tr><td>Sat</td><td>10AM–1PM</td></tr>
+                    <tr><td>Sun</td><td>Closed (Emergency 24/7)</td></tr>
+                </table>
+                <p class="footer-note"><strong>Pharmacy &amp; Emergency:</strong> 24/7, 365 days</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="doctors.html">Doctors</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Stay Connected</h4>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook" class="social-icon">FB</a>
+                    <a href="#" aria-label="Twitter / X" class="social-icon">X</a>
+                    <a href="#" aria-label="YouTube" class="social-icon">YT</a>
+                    <a href="#" aria-label="LinkedIn" class="social-icon">LI</a>
+                </div>
+                <form class="newsletter-form" id="newsletter-form">
+                    <label for="newsletter-email">Subscribe for health tips:</label>
+                    <div class="newsletter-input-group">
+                        <input type="email" id="newsletter-email" placeholder="Your email" required>
+                        <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom container">
+            <p>&copy; 2024 Ibn Sina Hospital. All rights reserved. | Operating since 2018</p>
+            <p class="google-review-note">See our latest reviews on <a href="https://maps.google.com/?q=IBN+SINA+HOSPITAL+Ompora+Budgam" target="_blank" rel="noopener">Google Maps</a></p>
+        </div>
+    </footer>
+</body>
+</html>
