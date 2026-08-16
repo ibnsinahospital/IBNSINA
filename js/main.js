@@ -16,6 +16,8 @@ const STATIC_SERVICES = [
   { title: 'Digital X-Rays', description: 'High-resolution digital radiography with same-day results for fast, accurate diagnosis.', icon: 'digital-xray' },
   { title: 'Vaccinations', description: 'Complete immunization services for children and adults — routine, travel, and seasonal vaccines.', icon: 'vaccinations' },
   { title: 'TMT (Treadmill Test)', description: 'Cardiac stress testing for heart health assessment — conducted under expert supervision.', icon: 'tmt' },
+  { title: 'Holter Monitoring', description: 'Continuous 24‑hour ECG recording to detect irregular heart rhythms that may not appear during a routine ECG.', icon: 'holter' },
+  { title: 'ABPM (Ambulatory Blood Pressure Monitoring)', description: '24‑hour blood pressure monitoring to assess hypertension patterns and adjust treatment accurately.', icon: 'abpm' },
   { title: 'Ultrasonography', description: 'Detailed ultrasound imaging for abdominal, obstetric, vascular, and soft-tissue evaluation.', icon: 'ultrasonography' },
   { title: 'Colonoscopy', description: 'Thorough colonoscopic screening and diagnostic procedures for gastrointestinal health.', icon: 'colonoscopy' },
   { title: '24/7 Pharmacy', description: 'In-house pharmacy — we never close. Emergency medications and prescriptions anytime.', icon: 'pharmacy' },
@@ -30,6 +32,8 @@ const SERVICE_ICONS = {
   'digital-xray': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
   vaccinations: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0016.5 3c-1.76 0-4 .5-5.5 2-1.5-1.5-3.74-2-5.5-2A5.5 5.5 0 002 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`,
   tmt: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
+  holter: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h6l2-5 3 10 2-5h3"/><rect x="2" y="2" width="20" height="20" rx="4"/></svg>`,
+  abpm: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4 4h16M4 20h16"/><circle cx="12" cy="12" r="8"/></svg>`,
   ultrasonography: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
   colonoscopy: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>`,
   pharmacy: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8v4H8z"/><rect x="3" y="6" width="18" height="16" rx="2"/><line x1="12" y1="10" x2="12" y2="18"/><line x1="8" y1="14" x2="16" y2="14"/></svg>`,
@@ -74,7 +78,7 @@ function injectDoctorCardStyle() {
     .doctor-card, .doctor-card * { color:#1a1a1a!important; opacity:1!important; visibility:visible!important; display:block!important; line-height:1.4!important; font-size:1rem!important; text-indent:0!important; transform:none!important; background:transparent!important; }
     .doctor-card h3 { color:#2d4a2b!important; font-size:1.3rem!important; margin-bottom:0.3rem!important; }
     .doctor-card .doctor-specialty { color:#5a6b4a!important; font-weight:600!important; font-size:1rem!important; }
-    .doctor-card .doctor-qual { color:#555!important; font-size:0.85rem!important; }
+    .doctor-card .doctor-qual { color:#555!important; font-size:0.85rem!important; line-height:1.5; word-wrap:break-word; white-space:normal; }
     .doctor-card .doctor-card-img-placeholder svg { display:block!important; width:80px!important; height:80px!important; margin:0 auto 1rem!important; }
     .doctor-card .btn { color:#fff!important; background:#2d4a2b!important; border-color:#2d4a2b!important; display:inline-block!important; }
     .doctor-card { background:#fff!important; border:1px solid #e0e0d0!important; min-height:200px!important; }
@@ -106,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     else header.classList.remove('scrolled');
   });
 
-  // ===== SCROLL REVEAL =====
+  // ===== SCROLL REVEAL (CSS class) =====
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
@@ -129,14 +133,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ===== DOCTOR LISTING (doctors.html) – fixed dropdown from Departments sheet =====
+  // ===== DOCTOR LISTING (doctors.html) – fixed dropdown & full quals =====
   const doctorGrid = document.getElementById('doctor-grid');
   if (doctorGrid) {
     const filterDept = document.getElementById('filter-department');
     const searchInput = document.getElementById('search-doctor');
     let doctorsCache = [];
 
-    // Populate department filter from DEPARTMENTS sheet
     async function populateDepartmentsFilter() {
       if (!filterDept) return;
       try {
@@ -152,7 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Load doctors
     async function loadDoctors() {
       doctorGrid.innerHTML = '<div class="skeleton-card">Loading doctors...</div>';
       doctorsCache = await fetchSheet(SHEET_URLS.doctors);
@@ -161,19 +163,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       renderDoctors();
-      // Apply ?dept= if present
       const params = new URLSearchParams(window.location.search);
       const deptParam = params.get('dept');
-      if (deptParam && filterDept) {
-        filterDept.value = deptParam;
-      }
+      if (deptParam && filterDept) filterDept.value = deptParam;
     }
 
     function renderDoctors() {
       let filtered = doctorsCache;
-      const selectedDept = filterDept ? filterDept.value : '';
+      const selectedDept = filterDept ? filterDept.value.trim().toLowerCase() : '';
       if (selectedDept) {
-        filtered = filtered.filter(d => d.department === selectedDept);
+        filtered = filtered.filter(d => d.department && d.department.trim().toLowerCase() === selectedDept);
       }
       if (searchInput && searchInput.value.trim()) {
         const q = searchInput.value.toLowerCase();
@@ -189,15 +188,13 @@ document.addEventListener('DOMContentLoaded', () => {
           ${d.photo_url ? `<img src="${d.photo_url}" alt="${d.name}" style="width:80px;height:80px;object-fit:cover;border-radius:50%;margin:0 auto 1rem;display:block;">` : `<div class="doctor-card-img-placeholder" style="display:block;margin:0 auto 1rem;"><svg width="80" height="80" viewBox="0 0 60 60"><circle cx="30" cy="22" r="16" fill="#a4ac86" opacity="0.5"/><ellipse cx="30" cy="55" rx="22" ry="14" fill="#a4ac86" opacity="0.4"/></svg></div>`}
           <h3 style="color:#2d4a2b;font-size:1.3rem;margin-bottom:.3rem;">${d.name||'Unnamed'}</h3>
           <p class="doctor-specialty" style="color:#5a6b4a;font-weight:600;margin-bottom:.2rem;">${d.specialty||''}</p>
-          <p class="doctor-qual" style="color:#555;font-size:.85rem;">${d.qualifications?d.qualifications.split(',')[0]:''}</p>
+          <p class="doctor-qual" style="color:#555;font-size:.85rem;line-height:1.5;word-wrap:break-word;">${d.qualifications || ''}</p>
           <a href="appointment.html?doctor=${encodeURIComponent(d.name)}" class="btn btn-outline btn-sm" onclick="event.stopPropagation();" style="margin-top:.8rem;color:#fff;background:#2d4a2b;">Book Appointment</a>
         </div>
       `).join('');
     }
 
-    // Initialize
     populateDepartmentsFilter().then(loadDoctors);
-
     if (filterDept) filterDept.addEventListener('change', renderDoctors);
     if (searchInput) searchInput.addEventListener('input', renderDoctors);
   }
@@ -216,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ${d.photo_url ? `<img src="${d.photo_url}" alt="${d.name}" style="width:80px;height:80px;object-fit:cover;border-radius:50%;margin:0 auto 1rem;display:block;">` : `<div class="doctor-card-img-placeholder" style="display:block;margin:0 auto 1rem;"><svg width="80" height="80" viewBox="0 0 60 60"><circle cx="30" cy="22" r="16" fill="#a4ac86" opacity="0.5"/><ellipse cx="30" cy="55" rx="22" ry="14" fill="#a4ac86" opacity="0.4"/></svg></div>`}
           <h3 style="color:#2d4a2b;font-size:1.3rem;margin-bottom:.3rem;">${d.name||'Unnamed'}</h3>
           <p class="doctor-specialty" style="color:#5a6b4a;font-weight:600;margin-bottom:.2rem;">${d.specialty||''}</p>
-          <p class="doctor-qual" style="color:#555;font-size:.85rem;">${d.qualifications?d.qualifications.split(',')[0]:''}</p>
+          <p class="doctor-qual" style="color:#555;font-size:.85rem;line-height:1.5;word-wrap:break-word;">${d.qualifications || ''}</p>
           <a href="appointment.html?doctor=${encodeURIComponent(d.name)}" class="btn btn-outline btn-sm" onclick="event.stopPropagation();" style="margin-top:.8rem;color:#fff;background:#2d4a2b;">Book Appointment</a>
         </div>
       `).join('');
@@ -264,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }).join('');
   }
 
-  // ===== DYNAMIC DEPARTMENTS (homepage: 6 cards + hover effect) =====
+  // ===== DYNAMIC DEPARTMENTS (homepage: 6 cards + hover & touch effect) =====
   const deptGrid = document.getElementById('departments-grid');
   if (deptGrid) {
     (async () => {
@@ -296,21 +293,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (bgImage) {
           styleRules += `
-            #${cardId}:hover {
+            #${cardId}:hover, #${cardId}.touch-hover {
               background-image: url('${bgImage}') !important;
               background-size: cover !important;
               background-position: center !important;
               background-color: transparent !important;
               color: #ffffff !important;
             }
-            #${cardId}:hover h3 {
+            #${cardId}:hover h3, #${cardId}.touch-hover h3 {
               color: #ffffff !important;
               text-shadow: 0 1px 3px rgba(0,0,0,0.6);
             }
-            #${cardId}:hover .service-icon svg {
+            #${cardId}:hover .service-icon svg, #${cardId}.touch-hover .service-icon svg {
               stroke: #ffffff !important;
             }
-            #${cardId}:hover::before {
+            #${cardId}:hover::before, #${cardId}.touch-hover::before {
               display: none !important;
             }
           `;
@@ -325,62 +322,50 @@ document.addEventListener('DOMContentLoaded', () => {
         styleTag.textContent = styleRules;
         document.head.appendChild(styleTag);
       }
+
+      // Touch support for mobile
+      const cards = deptGrid.querySelectorAll('.department-card');
+      cards.forEach(card => {
+        const hasBg = styleRules.includes(card.id);
+        if (hasBg) {
+          card.addEventListener('touchstart', () => card.classList.add('touch-hover'), { passive: true });
+          card.addEventListener('touchend', () => card.classList.remove('touch-hover'), { passive: true });
+          card.addEventListener('touchcancel', () => card.classList.remove('touch-hover'), { passive: true });
+        }
+      });
     })();
   }
 
-  // ===== LATEST UPDATES CAROUSEL (fixed layout) =====
+  // ===== LATEST UPDATES CAROUSEL (with fallback) =====
   const updatesContainer = document.getElementById('updates-carousel');
   if (updatesContainer) {
     (async () => {
       updatesContainer.innerHTML = '<div class="skeleton-card">Loading updates...</div>';
-      const updates = await fetchSheet(SHEET_URLS.updates);
+      let updates = await fetchSheet(SHEET_URLS.updates);
       if (!updates.length) {
-        updatesContainer.innerHTML = '<p class="text-center">No updates at the moment.</p>';
-        return;
+        updates = [
+          { title: 'New Cardiology Wing Opened', description: 'We have expanded our cardiac care with a new wing.', date: '2026-08-01', link: 'https://i.ibb.co/9kYKZsWB/181bf27c6da3.webp' },
+          { title: '24/7 Pharmacy Now Available', description: 'Our pharmacy remains open all day, every day.', date: '2026-07-15' },
+          { title: 'Dialysis Unit Upgraded', description: 'Advanced dialysis machines installed for better care.', date: '2026-06-30' }
+        ];
       }
 
       updates.sort((a, b) => new Date(b.date) - new Date(a.date));
-
       let currentIndex = 0;
       let autoSlideInterval;
 
-      function isVideoURL(url) {
-        if (!url) return false;
-        return url.includes('youtube.com/embed') || url.includes('vimeo.com') || url.match(/\.mp4($|\?)/);
-      }
-
-      function isImageURL(url) {
-        if (!url) return false;
-        return /\.(jpeg|jpg|gif|png|webp|svg|bmp|ico)(\?.*)?$/i.test(url);
-      }
+      function isVideoURL(url) { return url && (url.includes('youtube.com/embed') || url.includes('vimeo.com') || url.match(/\.mp4($|\?)/)); }
+      function isImageURL(url) { return url && /\.(jpeg|jpg|gif|png|webp|svg|bmp|ico)(\?.*)?$/i.test(url); }
 
       const slidesHTML = updates.map((u, i) => {
         const media = u.media_url || u.image_url || u.link;
         let titleContent = u.title;
-
         let mediaArea = '';
-        if (media && isVideoURL(media)) {
-          mediaArea = `<div class="update-media"><iframe src="${media}" frameborder="0" allowfullscreen style="width:100%;height:100%;border:none;"></iframe></div>`;
-        } else if (media && isImageURL(media)) {
-          mediaArea = `<div class="update-media" style="background-image:url('${media}');"></div>`;
-        } else {
-          mediaArea = `<div class="update-media update-media-empty"></div>`;
-        }
-
-        if (media && !isVideoURL(media) && !isImageURL(media)) {
-          titleContent = `<a href="${media}" target="_blank">${u.title}</a>`;
-        }
-
-        return `
-          <div class="update-slide" data-index="${i}">
-            ${mediaArea}
-            <div class="update-caption">
-              <h4>${titleContent}</h4>
-              <p>${u.description}</p>
-              <small>${u.date}</small>
-            </div>
-          </div>
-        `;
+        if (media && isVideoURL(media)) mediaArea = `<div class="update-media"><iframe src="${media}" frameborder="0" allowfullscreen style="width:100%;height:100%;border:none;"></iframe></div>`;
+        else if (media && isImageURL(media)) mediaArea = `<div class="update-media" style="background-image:url('${media}');"></div>`;
+        else mediaArea = `<div class="update-media update-media-empty"></div>`;
+        if (media && !isVideoURL(media) && !isImageURL(media)) titleContent = `<a href="${media}" target="_blank">${u.title}</a>`;
+        return `<div class="update-slide" data-index="${i}">${mediaArea}<div class="update-caption"><h4>${titleContent}</h4><p>${u.description}</p><small>${u.date}</small></div></div>`;
       }).join('');
 
       updatesContainer.innerHTML = `
@@ -389,16 +374,13 @@ document.addEventListener('DOMContentLoaded', () => {
           <button class="carousel-prev" id="carousel-prev" aria-label="Previous">❮</button>
           <button class="carousel-next" id="carousel-next" aria-label="Next">❯</button>
         </div>
-        <div class="carousel-dots" id="carousel-dots">
-          ${updates.map((_, i) => `<span class="dot" data-index="${i}"></span>`).join('')}
-        </div>
+        <div class="carousel-dots" id="carousel-dots">${updates.map((_, i) => `<span class="dot" data-index="${i}"></span>`).join('')}</div>
       `;
 
       const slidesEl = document.getElementById('carousel-slides');
       const dots = document.querySelectorAll('#carousel-dots .dot');
       const prevBtn = document.getElementById('carousel-prev');
       const nextBtn = document.getElementById('carousel-next');
-
       function goToSlide(index) {
         if (index < 0) index = updates.length - 1;
         if (index >= updates.length) index = 0;
@@ -407,47 +389,127 @@ document.addEventListener('DOMContentLoaded', () => {
         dots.forEach(d => d.classList.remove('active'));
         if (dots[currentIndex]) dots[currentIndex].classList.add('active');
       }
-
-      function nextSlide() { goToSlide(currentIndex + 1); }
-      function prevSlide() { goToSlide(currentIndex - 1); }
-
-      prevBtn.addEventListener('click', prevSlide);
-      nextBtn.addEventListener('click', nextSlide);
-
-      dots.forEach(dot => {
-        dot.addEventListener('click', () => {
-          goToSlide(parseInt(dot.getAttribute('data-index')));
-        });
-      });
-
-      autoSlideInterval = setInterval(nextSlide, 5000);
-
+      prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+      nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+      dots.forEach(dot => dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.index))));
+      autoSlideInterval = setInterval(() => goToSlide(currentIndex + 1), 5000);
       updatesContainer.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
-      updatesContainer.addEventListener('mouseleave', () => {
-        autoSlideInterval = setInterval(nextSlide, 5000);
-      });
-
+      updatesContainer.addEventListener('mouseleave', () => autoSlideInterval = setInterval(() => goToSlide(currentIndex + 1), 5000));
       goToSlide(0);
     })();
   }
 
-  // ===== BLOG PREVIEW (index.html) =====
+  // ===== BLOG PREVIEW (with fallback) =====
   const blogPreviewGrid = document.getElementById('blog-preview-grid');
   if (blogPreviewGrid) {
     (async () => {
       blogPreviewGrid.innerHTML = '<div class="skeleton-card">Loading posts...</div>';
       const posts = await fetchSheet(SHEET_URLS.blog);
       const published = posts.filter(p => p.is_published === 'TRUE').slice(0, 3);
-      if (!published.length) { blogPreviewGrid.innerHTML = '<p class="text-center">No articles yet.</p>'; return; }
+      if (!published.length) {
+        const dummy = [
+          { title: 'Tips for Healthy Heart', excerpt: 'Regular TMT and Holter monitoring can detect early cardiac issues.', date: '2026-07-20' },
+          { title: 'Managing Blood Pressure', excerpt: 'ABPM provides accurate 24‑hour blood pressure readings for better control.', date: '2026-07-10' },
+          { title: 'Why Choose Dialysis in Budgam?', excerpt: 'Our dialysis unit provides life‑sustaining care close to home.', date: '2026-06-25' }
+        ];
+        blogPreviewGrid.innerHTML = dummy.map(p => `
+          <article class="blog-preview-card fade-in">
+            <h3><a href="#">${p.title}</a></h3>
+            <time>${p.date}</time>
+            <p>${p.excerpt}</p>
+          </article>
+        `).join('');
+        return;
+      }
       blogPreviewGrid.innerHTML = published.map(p => `
         <article class="blog-preview-card fade-in">
-          ${p.cover_image_url ? `<img src="${p.cover_image_url}" alt="${p.title}" style="width:100%; height:180px; object-fit:cover; border-radius:var(--radius); margin-bottom:0.8rem;">` : ''}
+          ${p.cover_image_url ? `<img src="${p.cover_image_url}" alt="${p.title}" style="width:100%;height:180px;object-fit:cover;border-radius:var(--radius);margin-bottom:0.8rem;">` : ''}
           <h3><a href="blog-post.html?slug=${p.slug}">${p.title}</a></h3>
           <time>${p.published_at}</time>
           <p>${p.excerpt || ''}</p>
         </article>
       `).join('');
     })();
+  }
+
+  // ===== GALLERY (new masonry + video) =====
+  const photoMasonry = document.getElementById('photo-masonry');
+  const videoGrid = document.getElementById('video-grid');
+  if (photoMasonry || videoGrid) {
+    (async () => {
+      const items = await fetchSheet(SHEET_URLS.gallery);
+      const photos = items.filter(i => i.category === 'photo');
+      const videos = items.filter(i => i.category === 'video');
+
+      if (photoMasonry) {
+        if (photos.length) {
+          photoMasonry.innerHTML = photos.map(i => `
+            <div class="photo-item">
+              <img src="${i.image_url}" alt="${i.alt_text || i.title}" loading="lazy">
+              <div class="photo-caption">${i.title}</div>
+            </div>
+          `).join('');
+          initLightbox();
+        } else {
+          photoMasonry.innerHTML = '<p>No photos available.</p>';
+        }
+      }
+
+      if (videoGrid) {
+        if (videos.length) {
+          videoGrid.innerHTML = videos.map(v => `
+            <div class="video-item">
+              <iframe src="${v.image_url}" title="${v.title}" allowfullscreen></iframe>
+              <div class="video-title">${v.title}</div>
+            </div>
+          `).join('');
+        } else {
+          videoGrid.innerHTML = '<p>No videos available.</p>';
+        }
+      }
+    })();
+  }
+
+  function initLightbox() {
+    const photos = document.querySelectorAll('.photo-item img');
+    const lightbox = document.getElementById('lightbox');
+    if (!lightbox || !photos.length) return;
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const closeBtn = document.getElementById('lightbox-close');
+    const prevBtn = document.getElementById('lightbox-prev');
+    const nextBtn = document.getElementById('lightbox-next');
+    const photoArray = Array.from(photos);
+    let currentIndex = 0;
+
+    function openLightbox(index) {
+      currentIndex = index;
+      const img = photoArray[currentIndex];
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightboxCaption.textContent = img.alt || '';
+      lightbox.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lightbox.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    function showNext() { currentIndex = (currentIndex + 1) % photoArray.length; openLightbox(currentIndex); }
+    function showPrev() { currentIndex = (currentIndex - 1 + photoArray.length) % photoArray.length; openLightbox(currentIndex); }
+
+    photos.forEach((img, idx) => img.addEventListener('click', () => openLightbox(idx)));
+    closeBtn.addEventListener('click', closeLightbox);
+    nextBtn.addEventListener('click', showNext);
+    prevBtn.addEventListener('click', showPrev);
+    window.addEventListener('keydown', (e) => {
+      if (lightbox.style.display === 'flex') {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') showNext();
+        if (e.key === 'ArrowLeft') showPrev();
+      }
+    });
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
   }
 
   // ===== BLOG LISTING (blog.html) =====
@@ -490,19 +552,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })();
   }
 
-  // ===== GALLERY =====
-  const photoGrid = document.getElementById('photo-grid');
-  const videoGrid = document.getElementById('video-grid');
-  if (photoGrid || videoGrid) {
-    (async () => {
-      const items = await fetchSheet(SHEET_URLS.gallery);
-      const photos = items.filter(i => i.category === 'photo');
-      const videos = items.filter(i => i.category === 'video');
-      if (photoGrid) photoGrid.innerHTML = photos.length ? photos.map(i => `<img src="${i.image_url}" alt="${i.alt_text || ''}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'gallery-placeholder\\'>Image not available</div>'">`).join('') : '<p>No photos yet.</p>';
-      if (videoGrid) videoGrid.innerHTML = videos.length ? videos.map(i => `<iframe src="${i.image_url}" title="${i.title}" allowfullscreen></iframe>`).join('') : '<p>No videos yet.</p>';
-    })();
-  }
-
   // ===== CAREERS LISTING =====
   const positionsList = document.getElementById('positions-list');
   if (positionsList) {
@@ -531,7 +580,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const phone = document.getElementById('contact-phone')?.value.trim() || '';
       const subject = document.getElementById('contact-subject')?.value.trim() || '';
       const message = document.getElementById('contact-message')?.value.trim() || '';
-
       const body = `Name: ${name}%0D%0APhone: ${phone}%0D%0AEmail: ${email}%0D%0A%0D%0A${message}`;
       const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=ibnsinatechofficial@gmail.com&su=${encodeURIComponent(subject || 'Contact Form')}&body=${body}`;
       window.open(gmailUrl, '_blank');
@@ -549,7 +597,6 @@ document.addEventListener('DOMContentLoaded', () => {
           open.map(p => `<option value="${p.title}">${p.title}</option>`).join('');
       });
     }
-
     careersForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const name = document.getElementById('applicant-name').value.trim();
@@ -557,7 +604,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = document.getElementById('applicant-email').value.trim();
       const position = posSelect?.value || '';
       const cover = document.getElementById('cover-message')?.value.trim() || '';
-
       const body = `Position Applied: ${position}%0D%0AName: ${name}%0D%0APhone: ${phone}%0D%0AEmail: ${email}%0D%0A%0D%0ACover Message:%0D%0A${cover}`;
       const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=ibnsinatechofficial@gmail.com&su=Job Application: ${encodeURIComponent(position || 'Open Position')}&body=${body}`;
       window.open(gmailUrl, '_blank');
@@ -570,10 +616,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const deptSelect = document.getElementById('department');
     const docSelect = document.getElementById('preferred-doctor');
     const successDiv = document.getElementById('appointment-success');
-
     const departments = ['Cardiology','CTVS','Dental','Dermatology','Endocrinology','ENT','Gastroenterology','General Surgery','Gynaecology','Neurosurgery','Neurology','Ophthalmology','Orthopaedics','Pediatrics','Physiotherapy','Plastic Surgery','Psychiatry','Pulmonology','Rheumatology','Urology'];
     if (deptSelect) deptSelect.innerHTML = '<option value="">-- Select --</option>' + departments.map(d => `<option value="${d}">${d}</option>`).join('');
-
     async function populateDoctorsDropdown() {
       if (!docSelect) return;
       try {
@@ -588,7 +632,6 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (err) { docSelect.innerHTML = '<option value="">-- Any Doctor --</option>'; }
     }
     populateDoctorsDropdown();
-
     const hiddenFrame = document.querySelector('iframe[name="hidden-iframe"]');
     if (hiddenFrame) {
       hiddenFrame.addEventListener('load', () => {
