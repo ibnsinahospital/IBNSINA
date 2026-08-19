@@ -1,0 +1,33 @@
+name: Update sitemap.xml
+
+on:
+  # Runs automatically every day at 6:00 AM IST (00:30 UTC)
+  schedule:
+    - cron: '30 0 * * *'
+  # Lets you also trigger it manually from the Actions tab, anytime
+  workflow_dispatch:
+
+jobs:
+  update-sitemap:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Regenerate sitemap.xml
+        run: python3 scripts/generate_sitemap.py
+
+      - name: Commit and push if sitemap changed
+        run: |
+          git config user.name "sitemap-bot"
+          git config user.email "actions@github.com"
+          git add sitemap.xml
+          git diff --cached --quiet || git commit -m "Auto-update sitemap.xml with latest blog posts"
+          git push
