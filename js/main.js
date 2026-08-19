@@ -45,21 +45,46 @@ function normalizeKey(key) {
   return key.replace(/[^a-zA-Z0-9_]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '').toLowerCase();
 }
 function parseCSV(csvText) {
-  const lines = csvText.trim().split('\n');
-  if (lines.length < 2) return [];
-  const rawHeaders = lines[0].split(',').map(h => h.trim().replace(/^"(.*)"$/, '$1'));
-  const headers = rawHeaders.map(normalizeKey);
-  return lines.slice(1).map(line => {
-    const values = [];
-    let current = '', inQuotes = false;
-    for (const char of line) {
-      if (char === '"') { inQuotes = !inQuotes; continue; }
-      if (char === ',' && !inQuotes) { values.push(current.trim().replace(/^"(.*)"$/, '$1')); current = ''; }
-      else { current += char; }
+  // Parses the whole CSV character-by-character so that newlines INSIDE
+  // quoted fields (e.g. a multi-paragraph blog body) don't get treated
+  // as new rows. Splitting on '\n' first (the old approach) breaks any
+  // cell that contains a blank line.
+  const text = csvText.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const rows = [];
+  let row = [];
+  let field = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    if (inQuotes) {
+      if (char === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; } // escaped quote
+        else { inQuotes = false; }
+      } else {
+        field += char;
+      }
+    } else {
+      if (char === '"') { inQuotes = true; }
+      else if (char === ',') { row.push(field); field = ''; }
+      else if (char === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+      else { field += char; }
     }
-    values.push(current.trim().replace(/^"(.*)"$/, '$1'));
+  }
+  // push last field/row if file doesn't end with a newline
+  if (field.length || row.length) { row.push(field); rows.push(row); }
+
+  const nonEmptyRows = rows.filter(r => r.some(v => v.trim() !== ''));
+  if (nonEmptyRows.length < 2) return [];
+
+  const headers = nonEmptyRows[0].map(h => normalizeKey(h.trim()));
+  return nonEmptyRows.slice(1).map(values => {
     const obj = {};
-    headers.forEach((h, i) => { obj[h] = values[i] || ''; });
+    headers.forEach((h, i) => { obj[h] = (values[i] || '').trim(); });
+    // Alias common column-name variants so sheet headers don't have to
+    // match the code's field names exactly.
+    if (obj.short_summary && !obj.excerpt) obj.excerpt = obj.short_summary;
+    if (obj.summary && !obj.excerpt) obj.excerpt = obj.summary;
     return obj;
   });
 }
