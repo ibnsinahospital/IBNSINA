@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /admin.html
 Sitemap: https://ibnsinahospital.in/sitemap.xml
