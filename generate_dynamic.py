@@ -4,6 +4,7 @@ import urllib.request
 from pathlib import Path
 import datetime
 import re
+import os
 
 # ========== CONFIGURATION ==========
 DOCTORS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ_H8Rgr6VOjrap91SR_3nbBQLVf7QOQOHqZSs-pT6SfoNpyHjpj-QD0nNtcHDr5ip439naZ0sTr62Y/pub?output=csv"
@@ -41,11 +42,11 @@ def generate_doctor_pages(doctors):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{doc.get('name', 'Doctor')} | Ibn Sina Hospital</title>
     <meta name="description" content="View profile of {doc.get('name', 'Doctor')} – {doc.get('specialty', 'Doctor')} at Ibn Sina Hospital, Budgam.">
-    <link rel="canonical" href="{SITE_URL}/{filename}">
+    <link rel="canonical" href="{SITE_URL}/doctors/{filename}">
     <meta property="og:title" content="{doc.get('name', 'Doctor')} | Ibn Sina Hospital">
     <meta property="og:description" content="View profile of {doc.get('name', 'Doctor')} – {doc.get('specialty', 'Doctor')} at Ibn Sina Hospital, Budgam.">
     <meta property="og:type" content="profile">
-    <meta property="og:url" content="{SITE_URL}/{filename}">
+    <meta property="og:url" content="{SITE_URL}/doctors/{filename}">
     <meta property="og:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="stylesheet" href="../css/style.css">
 </head>
@@ -79,7 +80,7 @@ def generate_doctor_pages(doctors):
 </body>
 </html>"""
         output_path.write_text(html, encoding='utf-8')
-        urls.append(f'{SITE_URL}/{filename}')
+        urls.append(f'{SITE_URL}/doctors/{filename}')
     return urls
 
 # ========== GENERATE BLOG POST PAGES ==========
@@ -100,11 +101,11 @@ def generate_blog_pages(posts):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{post.get('title', 'Blog Post')} | Ibn Sina Hospital</title>
     <meta name="description" content="{post.get('short_summary', post.get('title', ''))}">
-    <link rel="canonical" href="{SITE_URL}/{filename}">
+    <link rel="canonical" href="{SITE_URL}/blog/{filename}">
     <meta property="og:title" content="{post.get('title', 'Blog Post')} | Ibn Sina Hospital">
     <meta property="og:description" content="{post.get('short_summary', post.get('title', ''))}">
     <meta property="og:type" content="article">
-    <meta property="og:url" content="{SITE_URL}/{filename}">
+    <meta property="og:url" content="{SITE_URL}/blog/{filename}">
     <meta property="og:image" content="{post.get('cover_image_url', 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp')}">
     <link rel="stylesheet" href="../css/style.css">
 </head>
@@ -136,7 +137,7 @@ def generate_blog_pages(posts):
 </body>
 </html>"""
         output_path.write_text(html, encoding='utf-8')
-        urls.append(f'{SITE_URL}/{filename}')
+        urls.append(f'{SITE_URL}/blog/{filename}')
     return urls
 
 # ========== GENERATE DEPARTMENT PAGES ==========
@@ -155,7 +156,7 @@ def generate_department_pages(departments):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{dept.get('name', 'Department')} | Ibn Sina Hospital</title>
     <meta name="description" content="Learn about {dept.get('name', 'Department')} services at Ibn Sina Hospital, Budgam.">
-    <link rel="canonical" href="{SITE_URL}/{filename}">
+    <link rel="canonical" href="{SITE_URL}/departments/{filename}">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -184,7 +185,7 @@ def generate_department_pages(departments):
 </body>
 </html>"""
         output_path.write_text(html, encoding='utf-8')
-        urls.append(f'{SITE_URL}/{filename}')
+        urls.append(f'{SITE_URL}/departments/{filename}')
     return urls
 
 # ========== UPDATE SITEMAP ==========
