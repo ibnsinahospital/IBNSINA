@@ -4,9 +4,14 @@ import urllib.request
 from pathlib import Path
 import datetime
 import re
-import os
+import json
 
 # ========== CONFIGURATION ==========
+# Your IndexNow key
+INDEXNOW_KEY = "78ee931b79be4739af08e1e0b0af036f"
+HOST = "ibnsinahospital.in"
+INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow"
+
 DOCTORS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ_H8Rgr6VOjrap91SR_3nbBQLVf7QOQOHqZSs-pT6SfoNpyHjpj-QD0nNtcHDr5ip439naZ0sTr62Y/pub?output=csv"
 BLOG_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRyksX4tU5UEPKPVbRGUiCe7lXxS-Z0WqSgB1vghBBqEvddzZ9M5ZSMtvfoCFPXRZoLojgWjIEmbQH8/pub?output=csv"
 DEPARTMENTS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSY7cmsIsfCzFSfe6Gf6wG-XWffYscBhXHqnFqv0RvwuqbG7kNnPG7eSmSaR_E-ztlY8qLkHZ2yuL-t/pub?output=csv"
@@ -31,7 +36,6 @@ def generate_doctor_pages(doctors):
     output_dir.mkdir(exist_ok=True)
     urls = []
     for doc in doctors:
-        doc_id = doc.get('id') or slugify(doc.get('name', ''))
         slug = slugify(doc.get('name', ''))
         filename = f'doctor-{slug}.html'
         output_path = output_dir / filename
@@ -211,6 +215,27 @@ def update_sitemap(extra_urls):
     xml_content += '</urlset>'
     sitemap_path.write_text(xml_content, encoding='utf-8')
 
+# ========== INDEXNOW SUBMISSION ==========
+def submit_to_indexnow(url_list):
+    if not url_list:
+        return
+    data = {
+        "host": HOST,
+        "key": INDEXNOW_KEY,
+        "keyLocation": f"https://{HOST}/{INDEXNOW_KEY}.txt",
+        "urlList": url_list
+    }
+    req = urllib.request.Request(
+        INDEXNOW_ENDPOINT,
+        data=json.dumps(data).encode('utf-8'),
+        headers={'Content-Type': 'application/json'}
+    )
+    try:
+        with urllib.request.urlopen(req) as response:
+            print(f"IndexNow submitted {len(url_list)} URLs. Status: {response.status}")
+    except Exception as e:
+        print(f"IndexNow submission failed: {e}")
+
 # ========== MAIN ==========
 if __name__ == "__main__":
     print("Fetching doctors...")
@@ -230,5 +255,6 @@ if __name__ == "__main__":
 
     all_dynamic = doctor_urls + blog_urls + dept_urls
     update_sitemap(all_dynamic)
-    print("Sitemap updated with dynamic pages.")
-    print("Generation complete.")
+    submit_to_indexnow(all_dynamic)
+
+    print("Generation, sitemap update, and IndexNow submission complete.")
