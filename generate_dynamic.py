@@ -5,9 +5,10 @@ from pathlib import Path
 import datetime
 import re
 import json
+import hashlib
+from urllib.parse import quote
 
 # ========== CONFIGURATION ==========
-# Your IndexNow key
 INDEXNOW_KEY = "78ee931b79be4739af08e1e0b0af036f"
 HOST = "ibnsinahospital.in"
 INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow"
@@ -17,6 +18,7 @@ BLOG_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRyksX4tU5UEPKPVbRGU
 DEPARTMENTS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSY7cmsIsfCzFSfe6Gf6wG-XWffYscBhXHqnFqv0RvwuqbG7kNnPG7eSmSaR_E-ztlY8qLkHZ2yuL-t/pub?output=csv"
 
 SITE_URL = "https://ibnsinahospital.in"
+LASTMOD_CACHE_FILE = Path("lastmod_cache.json")
 
 # ========== FETCH CSV ==========
 def fetch_csv(url):
@@ -24,35 +26,138 @@ def fetch_csv(url):
         content = response.read().decode('utf-8')
     return list(csv.DictReader(io.StringIO(content)))
 
-# ========== HELPER: SLUGIFY ==========
+# ========== HELPERS ==========
 def slugify(text):
     text = text.lower()
     text = re.sub(r'[^a-z0-9]+', '-', text).strip('-')
     return text
 
+def clean_name(raw_name):
+    """Normalize inconsistent name formatting from the sheet."""
+    name = (raw_name or '').strip().rstrip('.')
+    name = re.sub(r'^dr\.?\s*', '', name, flags=re.IGNORECASE).strip()
+    name = ' '.join(w.capitalize() for w in name.split())
+    return f"Dr. {name}" if name else "Doctor"
+
+def first_name_of(full_clean_name):
+    parts = full_clean_name.replace('Dr.', '').strip().split()
+    return parts[0] if parts else "the doctor"
+
+def build_about(doc, full_name):
+    about = (doc.get('about') or '').strip()
+    if about:
+        return about
+
+    first_name = first_name_of(full_name)
+    specialty = (doc.get('specialty') or '').strip().lower()
+    department = (doc.get('department') or '').strip().title()
+    qualifications = (doc.get('qualifications') or '').strip()
+    qual_line = f" ({qualifications})" if qualifications else ""
+
+    return (
+        f"{full_name}{qual_line} is a {specialty} at Ibn Sina Hospital, Budgam, "
+        f"heading the {department} department. {first_name} combines clinical "
+        f"precision with a warm, patient-first approach, providing dependable "
+        f"{specialty} care to patients across the Kashmir Valley."
+    )
+
+# ========== LASTMOD CACHE (content-based) ==========
+def load_lastmod_cache():
+    if LASTMOD_CACHE_FILE.exists():
+        return json.loads(LASTMOD_CACHE_FILE.read_text(encoding='utf-8'))
+    return {}
+
+def save_lastmod_cache(cache):
+    LASTMOD_CACHE_FILE.write_text(json.dumps(cache, indent=2), encoding='utf-8')
+
+def get_lastmod(url, content, cache, today):
+    """Only bump lastmod if the page content actually changed."""
+    content_hash = hashlib.sha256(content.encode('utf-8')).hexdigest()
+    entry = cache.get(url)
+    if entry and entry.get('hash') == content_hash:
+        return entry['lastmod']
+    cache[url] = {'hash': content_hash, 'lastmod': today}
+    return today
+
 # ========== GENERATE DOCTOR PAGES ==========
-def generate_doctor_pages(doctors):
+def generate_doctor_pages(doctors, departments_by_name):
     output_dir = Path('doctors')
     output_dir.mkdir(exist_ok=True)
     urls = []
+    pages = []  # (url, content) for lastmod tracking
+
     for doc in doctors:
-        slug = slugify(doc.get('name', ''))
+        full_name = clean_name(doc.get('name', ''))
+        raw_slug_source = doc.get('name', '')
+        slug = slugify(raw_slug_source)
         filename = f'doctor-{slug}.html'
-        output_path = output_dir / filename
+        dept_name = (doc.get('department') or '').strip()
+        dept_slug = slugify(dept_name)
+        specialty = (doc.get('specialty') or 'Doctor').strip()
+        qualifications = (doc.get('qualifications') or '').strip()
+        photo_url = (doc.get('photo_url') or 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp').strip()
+        about_text = build_about(doc, full_name)
+
+        title = f"{full_name} | {specialty.title()} | Ibn Sina Hospital, Budgam"
+        description = f"{full_name} is a {specialty} at Ibn Sina Hospital, Budgam. View qualifications, department and book an appointment."
+        page_url = f'{SITE_URL}/doctors/{filename}'
+        appointment_link = f"../appointment.html?doctor={quote(full_name)}"
+
+        # Related doctors in the same department (internal linking)
+        related_links = ""
+        same_dept_doctors = [
+            d for d in doctors
+            if (d.get('department') or '').strip().lower() == dept_name.lower()
+            and (d.get('name') or '') != doc.get('name', '')
+        ][:4]
+        if same_dept_doctors:
+            items = "".join(
+                f'<li><a href="doctor-{slugify(d.get("name",""))}.html">{clean_name(d.get("name",""))}</a></li>'
+                for d in same_dept_doctors
+            )
+            related_links = f'<div class="related-doctors"><strong>Other {dept_name.title()} Specialists:</strong><ul>{items}</ul></div>'
+
+        dept_link_html = ""
+        if dept_name:
+            dept_link_html = f'<p><a href="../departments/department-{dept_slug}.html">View {dept_name.title()} Department →</a></p>'
+
+        # JSON-LD structured data
+        json_ld = {
+            "@context": "https://schema.org",
+            "@type": "Physician",
+            "name": full_name,
+            "medicalSpecialty": specialty,
+            "worksFor": {
+                "@type": "Hospital",
+                "name": "Ibn Sina Hospital",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Budgam",
+                    "addressRegion": "Jammu and Kashmir",
+                    "addressCountry": "IN"
+                }
+            },
+            "url": page_url,
+            "image": photo_url
+        }
+        if qualifications:
+            json_ld["hasCredential"] = qualifications
+
         html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{doc.get('name', 'Doctor')} | Ibn Sina Hospital</title>
-    <meta name="description" content="View profile of {doc.get('name', 'Doctor')} – {doc.get('specialty', 'Doctor')} at Ibn Sina Hospital, Budgam.">
-    <link rel="canonical" href="{SITE_URL}/doctors/{filename}">
-    <meta property="og:title" content="{doc.get('name', 'Doctor')} | Ibn Sina Hospital">
-    <meta property="og:description" content="View profile of {doc.get('name', 'Doctor')} – {doc.get('specialty', 'Doctor')} at Ibn Sina Hospital, Budgam.">
+    <title>{title}</title>
+    <meta name="description" content="{description}">
+    <link rel="canonical" href="{page_url}">
+    <meta property="og:title" content="{title}">
+    <meta property="og:description" content="{description}">
     <meta property="og:type" content="profile">
-    <meta property="og:url" content="{SITE_URL}/doctors/{filename}">
-    <meta property="og:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+    <meta property="og:url" content="{page_url}">
+    <meta property="og:image" content="{photo_url}">
     <link rel="stylesheet" href="../css/style.css">
+    <script type="application/ld+json">{json.dumps(json_ld, ensure_ascii=False)}</script>
 </head>
 <body>
     <header class="site-header">
@@ -68,50 +173,82 @@ def generate_doctor_pages(doctors):
     </header>
     <main class="section">
         <div class="container">
-            <h1>{doc.get('name', 'Doctor')}</h1>
-            <p><strong>Specialty:</strong> {doc.get('specialty', 'N/A')}</p>
-            <p><strong>Department:</strong> {doc.get('department', 'N/A')}</p>
-            <p><strong>Qualifications:</strong> {doc.get('qualifications', 'N/A')}</p>
-            <div class="doctor-bio"><strong>About:</strong><br>{doc.get('about', 'No biography available.')}</div>
-            <a href="../appointment.html?doctor={doc.get('name', '')}" class="btn btn-primary">Book Appointment</a>
+            <img src="{photo_url}" alt="{full_name} - {specialty} at Ibn Sina Hospital" class="doctor-photo" width="200">
+            <h1>{full_name}</h1>
+            <p><strong>Specialty:</strong> {specialty.title()}</p>
+            <p><strong>Department:</strong> {dept_name.title()}</p>
+            <p><strong>Qualifications:</strong> {qualifications or 'N/A'}</p>
+            {dept_link_html}
+            <div class="doctor-bio"><strong>About:</strong><br>{about_text}</div>
+            {related_links}
+            <a href="{appointment_link}" class="btn btn-primary">Book Appointment</a>
         </div>
     </main>
     <footer class="site-footer">
         <div class="footer-main container">
-            <p>&copy; 2025 Ibn Sina Hospital. All rights reserved.</p>
+            <p>&copy; 2025 Ibn Sina Hospital, Budgam. All rights reserved.</p>
         </div>
     </footer>
 </body>
 </html>"""
+        output_path = output_dir / filename
         output_path.write_text(html, encoding='utf-8')
-        urls.append(f'{SITE_URL}/doctors/{filename}')
-    return urls
+        urls.append(page_url)
+        pages.append((page_url, html))
 
-# ========== GENERATE BLOG POST PAGES ==========
+    return urls, pages
+
+# ========== GENERATE BLOG PAGES ==========
 def generate_blog_pages(posts):
     output_dir = Path('blog')
     output_dir.mkdir(exist_ok=True)
     urls = []
+    pages = []
+
     for post in posts:
         if post.get('is_published', '').strip().lower() not in ['true', 'yes', '1']:
             continue
         slug = slugify(post.get('slug') or post.get('title', ''))
         filename = f'blog-{slug}.html'
-        output_path = output_dir / filename
+        page_url = f'{SITE_URL}/blog/{filename}'
+        title = post.get('title', 'Blog Post')
+        summary = post.get('short_summary', title)
+        image = post.get('cover_image_url', 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp')
+
+        json_ld = {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": title,
+            "description": summary,
+            "image": image,
+            "publisher": {
+                "@type": "Hospital",
+                "name": "Ibn Sina Hospital",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Budgam",
+                    "addressRegion": "Jammu and Kashmir",
+                    "addressCountry": "IN"
+                }
+            },
+            "datePublished": post.get('published_at', '')
+        }
+
         html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{post.get('title', 'Blog Post')} | Ibn Sina Hospital</title>
-    <meta name="description" content="{post.get('short_summary', post.get('title', ''))}">
-    <link rel="canonical" href="{SITE_URL}/blog/{filename}">
-    <meta property="og:title" content="{post.get('title', 'Blog Post')} | Ibn Sina Hospital">
-    <meta property="og:description" content="{post.get('short_summary', post.get('title', ''))}">
+    <title>{title} | Ibn Sina Hospital</title>
+    <meta name="description" content="{summary}">
+    <link rel="canonical" href="{page_url}">
+    <meta property="og:title" content="{title} | Ibn Sina Hospital">
+    <meta property="og:description" content="{summary}">
     <meta property="og:type" content="article">
-    <meta property="og:url" content="{SITE_URL}/blog/{filename}">
-    <meta property="og:image" content="{post.get('cover_image_url', 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp')}">
+    <meta property="og:url" content="{page_url}">
+    <meta property="og:image" content="{image}">
     <link rel="stylesheet" href="../css/style.css">
+    <script type="application/ld+json">{json.dumps(json_ld, ensure_ascii=False)}</script>
 </head>
 <body>
     <header class="site-header">
@@ -127,7 +264,7 @@ def generate_blog_pages(posts):
     <main class="section">
         <div class="container">
             <article>
-                <h1>{post.get('title', '')}</h1>
+                <h1>{title}</h1>
                 <time>{post.get('published_at', '')}</time>
                 <div class="blog-body">{post.get('body', '')}</div>
             </article>
@@ -135,33 +272,69 @@ def generate_blog_pages(posts):
     </main>
     <footer class="site-footer">
         <div class="footer-main container">
-            <p>&copy; 2025 Ibn Sina Hospital. All rights reserved.</p>
+            <p>&copy; 2025 Ibn Sina Hospital, Budgam. All rights reserved.</p>
         </div>
     </footer>
 </body>
 </html>"""
+        output_path = output_dir / filename
         output_path.write_text(html, encoding='utf-8')
-        urls.append(f'{SITE_URL}/blog/{filename}')
-    return urls
+        urls.append(page_url)
+        pages.append((page_url, html))
+
+    return urls, pages
 
 # ========== GENERATE DEPARTMENT PAGES ==========
-def generate_department_pages(departments):
+def generate_department_pages(departments, doctors):
     output_dir = Path('departments')
     output_dir.mkdir(exist_ok=True)
     urls = []
+    pages = []
+
     for dept in departments:
-        slug = slugify(dept.get('slug') or dept.get('name', ''))
+        dept_name = (dept.get('name') or '').strip()
+        slug = slugify(dept.get('slug') or dept_name)
         filename = f'department-{slug}.html'
-        output_path = output_dir / filename
+        page_url = f'{SITE_URL}/departments/{filename}'
+        title = f"{dept_name.title()} Department | Ibn Sina Hospital, Budgam"
+        description = f"{dept_name.title()} department at Ibn Sina Hospital, Budgam — serving patients across Jammu and Kashmir with expert specialists."
+
+        # Doctors belonging to this department (internal linking)
+        dept_doctors = [d for d in doctors if (d.get('department') or '').strip().lower() == dept_name.lower()]
+        doctor_list_html = ""
+        if dept_doctors:
+            items = "".join(
+                f'<li><a href="../doctors/doctor-{slugify(d.get("name",""))}.html">{clean_name(d.get("name",""))} — {(d.get("specialty") or "").title()}</a></li>'
+                for d in dept_doctors
+            )
+            doctor_list_html = f'<div class="dept-doctors"><h2>Our {dept_name.title()} Specialists</h2><ul>{items}</ul></div>'
+
+        json_ld = {
+            "@context": "https://schema.org",
+            "@type": "MedicalClinic",
+            "name": f"{dept_name.title()} Department, Ibn Sina Hospital",
+            "medicalSpecialty": dept_name.title(),
+            "url": page_url,
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Budgam",
+                "addressRegion": "Jammu and Kashmir",
+                "addressCountry": "IN"
+            }
+        }
+
         html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{dept.get('name', 'Department')} | Ibn Sina Hospital</title>
-    <meta name="description" content="Learn about {dept.get('name', 'Department')} services at Ibn Sina Hospital, Budgam.">
-    <link rel="canonical" href="{SITE_URL}/departments/{filename}">
+    <title>{title}</title>
+    <meta name="description" content="{description}">
+    <link rel="canonical" href="{page_url}">
+    <meta property="og:title" content="{title}">
+    <meta property="og:description" content="{description}">
     <link rel="stylesheet" href="../css/style.css">
+    <script type="application/ld+json">{json.dumps(json_ld, ensure_ascii=False)}</script>
 </head>
 <body>
     <header class="site-header">
@@ -176,26 +349,33 @@ def generate_department_pages(departments):
     </header>
     <main class="section">
         <div class="container">
-            <h1>{dept.get('name', 'Department')}</h1>
-            <p>Services and specialists in {dept.get('name', 'Department')} department.</p>
-            <a href="../doctors.html?dept={dept.get('name', '')}" class="btn btn-primary">View Doctors</a>
+            <h1>{dept_name.title()} Department</h1>
+            <p>The {dept_name.title()} department at Ibn Sina Hospital, Budgam provides expert care to patients across Jammu and Kashmir.</p>
+            {doctor_list_html}
+            <a href="../doctors.html" class="btn btn-primary">View All Doctors</a>
         </div>
     </main>
     <footer class="site-footer">
         <div class="footer-main container">
-            <p>&copy; 2025 Ibn Sina Hospital. All rights reserved.</p>
+            <p>&copy; 2025 Ibn Sina Hospital, Budgam. All rights reserved.</p>
         </div>
     </footer>
 </body>
 </html>"""
+        output_path = output_dir / filename
         output_path.write_text(html, encoding='utf-8')
-        urls.append(f'{SITE_URL}/departments/{filename}')
-    return urls
+        urls.append(page_url)
+        pages.append((page_url, html))
 
-# ========== UPDATE SITEMAP ==========
-def update_sitemap(extra_urls):
-    sitemap_path = Path('sitemap.xml')
+    return urls, pages
+
+# ========== UPDATE SITEMAP (content-aware lastmod) ==========
+def update_sitemap(all_pages_with_content):
+    """all_pages_with_content: list of (url, html_content) for dynamic pages.
+       Static pages get today's date since we don't track their content here."""
+    cache = load_lastmod_cache()
     today = datetime.date.today().isoformat()
+
     static_urls = [
         f'{SITE_URL}/',
         f'{SITE_URL}/about.html',
@@ -208,12 +388,28 @@ def update_sitemap(extra_urls):
         f'{SITE_URL}/contact.html',
         f'{SITE_URL}/appointment.html',
     ]
-    all_urls = static_urls + extra_urls
-    xml_content = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    for url in all_urls:
-        xml_content += f'  <url>\n    <loc>{url}</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n'
-    xml_content += '</urlset>'
-    sitemap_path.write_text(xml_content, encoding='utf-8')
+
+    xml_parts = ['<?xml version="1.0" encoding="UTF-8"?>',
+                 '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+
+    # Homepage gets top priority
+    for url in static_urls:
+        priority = "1.0" if url == f'{SITE_URL}/' else "0.7"
+        xml_parts.append(
+            f'  <url>\n    <loc>{url}</loc>\n    <lastmod>{today}</lastmod>'
+            f'\n    <changefreq>weekly</changefreq>\n    <priority>{priority}</priority>\n  </url>'
+        )
+
+    for url, content in all_pages_with_content:
+        lastmod = get_lastmod(url, content, cache, today)
+        xml_parts.append(
+            f'  <url>\n    <loc>{url}</loc>\n    <lastmod>{lastmod}</lastmod>'
+            f'\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>'
+        )
+
+    xml_parts.append('</urlset>')
+    Path('sitemap.xml').write_text('\n'.join(xml_parts), encoding='utf-8')
+    save_lastmod_cache(cache)
 
 # ========== INDEXNOW SUBMISSION ==========
 def submit_to_indexnow(url_list):
@@ -241,20 +437,25 @@ if __name__ == "__main__":
     print("Fetching doctors...")
     doctors = fetch_csv(DOCTORS_URL)
     print(f"Found {len(doctors)} doctors.")
-    doctor_urls = generate_doctor_pages(doctors)
-
-    print("Fetching blog posts...")
-    posts = fetch_csv(BLOG_URL)
-    print(f"Found {len(posts)} blog posts.")
-    blog_urls = generate_blog_pages(posts)
 
     print("Fetching departments...")
     departments = fetch_csv(DEPARTMENTS_URL)
     print(f"Found {len(departments)} departments.")
-    dept_urls = generate_department_pages(departments)
 
-    all_dynamic = doctor_urls + blog_urls + dept_urls
-    update_sitemap(all_dynamic)
-    submit_to_indexnow(all_dynamic)
+    print("Fetching blog posts...")
+    posts = fetch_csv(BLOG_URL)
+    print(f"Found {len(posts)} blog posts.")
+
+    departments_by_name = {(d.get('name') or '').strip().lower(): d for d in departments}
+
+    doctor_urls, doctor_pages = generate_doctor_pages(doctors, departments_by_name)
+    blog_urls, blog_pages = generate_blog_pages(posts)
+    dept_urls, dept_pages = generate_department_pages(departments, doctors)
+
+    all_dynamic_urls = doctor_urls + blog_urls + dept_urls
+    all_pages_with_content = doctor_pages + blog_pages + dept_pages
+
+    update_sitemap(all_pages_with_content)
+    submit_to_indexnow(all_dynamic_urls)
 
     print("Generation, sitemap update, and IndexNow submission complete.")
