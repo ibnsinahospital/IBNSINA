@@ -441,14 +441,18 @@ if __name__ == "__main__":
     print("Fetching doctors...")
     doctors = fetch_csv(DOCTORS_URL)
     print(f"Found {len(doctors)} doctors.")
+    if not doctors:
+        raise RuntimeError("Doctors feed is empty; refusing to delete generated doctor pages.")
 
     print("Fetching departments...")
     departments = fetch_csv(DEPARTMENTS_URL)
     print(f"Found {len(departments)} departments.")
+    if not departments:
+        raise RuntimeError("Departments feed is empty; refusing to delete generated department pages.")
 
     print("Fetching blog posts...")
     posts = fetch_csv(BLOG_URL)
-    print(f"Found {len(posts)} blog posts.")
+    print(f"Found {len(posts)} blog rows.")
 
     doctor_urls, doctor_pages = generate_doctor_pages(doctors)
     blog_urls, blog_pages = generate_blog_pages(posts)
