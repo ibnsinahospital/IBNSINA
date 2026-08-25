@@ -3,25 +3,725 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Post – Ibn Sina Hospital Budgam</title>
-    <meta name="description" content="Read our health article from Ibn Sina Hospital – medical insights and updates.">
+
+    <!-- Dynamic values are updated by main.js -->
+    <title>Health Article | Ibn Sina Hospital</title>
+
+    <meta name="description"
+          content="Health information, medical insights and wellness guidance from Ibn Sina Hospital in Jammu and Kashmir.">
+
+    <meta name="robots" content="index, follow, max-image-preview:large">
+
     <link rel="canonical" href="https://ibnsinahospital.in/blog-post.html">
-    <meta property="og:title" content="Blog Post – Ibn Sina Hospital">
-    <meta property="og:description" content="Read our health article from Ibn Sina Hospital.">
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="Ibn Sina Hospital">
     <meta property="og:type" content="article">
+    <meta property="og:title" content="Health Article | Ibn Sina Hospital">
+    <meta property="og:description"
+          content="Medical insights and health information from Ibn Sina Hospital, Jammu and Kashmir.">
     <meta property="og:url" content="https://ibnsinahospital.in/blog-post.html">
-    <meta property="og:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+    <meta property="og:image"
+          content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Blog Post – Ibn Sina Hospital">
-    <meta name="twitter:description" content="Read our health article from Ibn Sina Hospital.">
-    <meta name="twitter:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
-    <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+    <meta name="twitter:title" content="Health Article | Ibn Sina Hospital">
+    <meta name="twitter:description"
+          content="Medical insights and health information from Ibn Sina Hospital.">
+    <meta name="twitter:image"
+          content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+
+    <link rel="icon"
+          type="image/webp"
+          href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+
     <link rel="stylesheet" href="css/style.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Hospital Schema -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- =========================================================
+         PREMIUM BLOG ARTICLE STYLES
+    ========================================================== -->
+
+    <style>
+
+        /* ---------------------------------------------------------
+           ARTICLE PAGE
+        --------------------------------------------------------- */
+
+        .article-page {
+            background:
+                radial-gradient(circle at 10% 5%, rgba(45,74,43,.06), transparent 28%),
+                radial-gradient(circle at 90% 20%, rgba(164,172,134,.08), transparent 30%),
+                #f8faf6;
+            padding: 0 0 80px;
+        }
+
+        .article-shell {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 28px 20px 0;
+        }
+
+        /* ---------------------------------------------------------
+           BREADCRUMBS
+        --------------------------------------------------------- */
+
+        .article-breadcrumbs {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 28px;
+            color: #71806d;
+            font-size: .85rem;
+            font-weight: 600;
+        }
+
+        .article-breadcrumbs a {
+            color: #2d4a2b;
+            text-decoration: none;
+        }
+
+        .article-breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb-separator {
+            opacity: .45;
+        }
+
+        /* ---------------------------------------------------------
+           HERO
+        --------------------------------------------------------- */
+
+        .article-hero {
+            position: relative;
+            overflow: hidden;
+            border-radius: 30px;
+            min-height: 480px;
+            display: flex;
+            align-items: flex-end;
+            background: #263b25;
+            box-shadow: 0 25px 70px rgba(29, 50, 28, .16);
+            isolation: isolate;
+        }
+
+        .article-hero-media {
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+        }
+
+        .article-hero-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transform: scale(1.01);
+        }
+
+        .article-hero-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(12,20,12,.04) 0%,
+                    rgba(12,20,12,.15) 35%,
+                    rgba(10,18,10,.88) 100%
+                );
+        }
+
+        .article-hero-content {
+            width: 100%;
+            padding: 55px;
+            color: white;
+        }
+
+        .article-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.14);
+            border: 1px solid rgba(255,255,255,.22);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .article-category::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #d6e7b7;
+            box-shadow: 0 0 0 4px rgba(214,231,183,.12);
+        }
+
+        .article-title {
+            max-width: 900px;
+            margin: 0 0 20px;
+            color: #fff !important;
+            font-family: Poppins, sans-serif;
+            font-size: clamp(2rem, 4.5vw, 4rem);
+            line-height: 1.08;
+            letter-spacing: -.035em;
+            font-weight: 800;
+            text-shadow: 0 3px 20px rgba(0,0,0,.2);
+        }
+
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            color: rgba(255,255,255,.88);
+            font-size: .9rem;
+            font-weight: 600;
+        }
+
+        .article-meta-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .article-meta-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.6);
+        }
+
+        /* ---------------------------------------------------------
+           ARTICLE LAYOUT
+        --------------------------------------------------------- */
+
+        .article-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 300px;
+            gap: 45px;
+            max-width: 1080px;
+            margin: 45px auto 0;
+            align-items: start;
+        }
+
+        .article-main {
+            min-width: 0;
+        }
+
+        /* ---------------------------------------------------------
+           INTRO
+        --------------------------------------------------------- */
+
+        .article-intro {
+            margin-bottom: 34px;
+            padding: 27px 30px;
+            background: #fff;
+            border: 1px solid #e3e9df;
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(35,57,32,.06);
+        }
+
+        .article-intro p {
+            margin: 0;
+            color: #4e5c4a;
+            font-size: 1.08rem;
+            line-height: 1.8;
+            font-weight: 600;
+        }
+
+        /* ---------------------------------------------------------
+           ARTICLE BODY
+        --------------------------------------------------------- */
+
+        .blog-body {
+            color: #263126;
+            font-family: Nunito, sans-serif;
+            font-size: 1.08rem;
+            line-height: 1.9;
+        }
+
+        .blog-body p {
+            margin: 0 0 1.45rem;
+        }
+
+        .blog-body h2 {
+            margin: 3rem 0 1rem;
+            color: #263d25;
+            font-family: Poppins, sans-serif;
+            font-size: clamp(1.45rem, 3vw, 2.15rem);
+            line-height: 1.25;
+            font-weight: 800;
+            letter-spacing: -.025em;
+            position: relative;
+        }
+
+        .blog-body h2::before {
+            content: "";
+            display: block;
+            width: 38px;
+            height: 4px;
+            border-radius: 99px;
+            background: #82956b;
+            margin-bottom: 12px;
+        }
+
+        .blog-body h3 {
+            margin: 2.2rem 0 .8rem;
+            color: #344d31;
+            font-family: Poppins, sans-serif;
+            font-size: 1.35rem;
+            line-height: 1.35;
+            font-weight: 700;
+        }
+
+        .blog-body strong {
+            color: #263d25;
+            font-weight: 800;
+        }
+
+        .blog-body a {
+            color: #2d6840;
+            font-weight: 700;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 3px;
+        }
+
+        .blog-body ul,
+        .blog-body ol {
+            margin: 1.2rem 0 1.8rem;
+            padding-left: 1.5rem;
+        }
+
+        .blog-body li {
+            margin-bottom: .65rem;
+            padding-left: .25rem;
+        }
+
+        .blog-body li::marker {
+            color: #66805a;
+            font-weight: 800;
+        }
+
+        .blog-body blockquote {
+            margin: 2rem 0;
+            padding: 22px 25px;
+            border-left: 5px solid #81956d;
+            border-radius: 0 16px 16px 0;
+            background: #edf3e9;
+            color: #3c5138;
+            font-size: 1.12rem;
+            font-weight: 700;
+        }
+
+        .blog-body img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 2rem auto;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(20,40,20,.12);
+        }
+
+        .blog-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .blog-body th,
+        .blog-body td {
+            padding: 13px 15px;
+            border: 1px solid #e1e7df;
+            text-align: left;
+        }
+
+        .blog-body th {
+            background: #edf3e9;
+            color: #30472d;
+            font-weight: 800;
+        }
+
+        /* ---------------------------------------------------------
+           ARTICLE SIDEBAR
+        --------------------------------------------------------- */
+
+        .article-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-card {
+            background: #fff;
+            border: 1px solid #e2e8df;
+            border-radius: 20px;
+            padding: 22px;
+            margin-bottom: 18px;
+            box-shadow: 0 10px 30px rgba(35,57,32,.06);
+        }
+
+        .sidebar-card h3 {
+            margin: 0 0 15px;
+            color: #2d4a2b;
+            font-family: Poppins, sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .article-share {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .share-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            min-height: 42px;
+            border-radius: 11px;
+            border: 1px solid #dfe7dc;
+            background: #f7faf5;
+            color: #365034;
+            text-decoration: none;
+            font-size: .82rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .share-btn:hover {
+            background: #eaf1e6;
+            transform: translateY(-2px);
+        }
+
+        .appointment-card {
+            background:
+                linear-gradient(145deg, #2d4a2b, #496442);
+            color: white;
+            border: none;
+        }
+
+        .appointment-card h3 {
+            color: white;
+        }
+
+        .appointment-card p {
+            margin: 0 0 16px;
+            color: rgba(255,255,255,.82);
+            line-height: 1.6;
+            font-size: .9rem;
+        }
+
+        .appointment-card .article-cta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 44px;
+            border-radius: 11px;
+            background: white;
+            color: #2d4a2b;
+            text-decoration: none;
+            font-weight: 800;
+        }
+
+        /* ---------------------------------------------------------
+           DISCLAIMER
+        --------------------------------------------------------- */
+
+        .medical-disclaimer {
+            margin-top: 40px;
+            padding: 22px 25px;
+            border-radius: 17px;
+            border: 1px solid #e2e8df;
+            background: #f5f8f2;
+            color: #647060;
+            font-size: .86rem;
+            line-height: 1.7;
+        }
+
+        .medical-disclaimer strong {
+            color: #3d513a;
+        }
+
+        /* ---------------------------------------------------------
+           ARTICLE FOOTER CTA
+        --------------------------------------------------------- */
+
+        .article-bottom-cta {
+            margin-top: 55px;
+            padding: 38px;
+            border-radius: 25px;
+            background:
+                radial-gradient(circle at 90% 10%, rgba(255,255,255,.15), transparent 30%),
+                linear-gradient(135deg, #2d4a2b, #536c49);
+            color: white;
+            box-shadow: 0 20px 50px rgba(45,74,43,.18);
+        }
+
+        .article-bottom-cta h2 {
+            margin: 0 0 10px;
+            color: white;
+            font-family: Poppins, sans-serif;
+            font-size: 1.7rem;
+        }
+
+        .article-bottom-cta p {
+            margin: 0 0 20px;
+            color: rgba(255,255,255,.84);
+            line-height: 1.7;
+        }
+
+        .article-bottom-cta a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0 22px;
+            border-radius: 12px;
+            background: white;
+            color: #2d4a2b;
+            text-decoration: none;
+            font-weight: 800;
+        }
+
+        /* ---------------------------------------------------------
+           RELATED ARTICLES
+        --------------------------------------------------------- */
+
+        .related-section {
+            max-width: 1080px;
+            margin: 70px auto 0;
+        }
+
+        .related-heading {
+            margin-bottom: 22px;
+        }
+
+        .related-heading span {
+            display: block;
+            color: #708268;
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .related-heading h2 {
+            margin: 0;
+            color: #2d4a2b;
+            font-family: Poppins, sans-serif;
+            font-size: 2rem;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .related-card {
+            overflow: hidden;
+            background: white;
+            border: 1px solid #e2e8df;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(35,57,32,.06);
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 40px rgba(35,57,32,.11);
+        }
+
+        .related-card-image {
+            height: 165px;
+            overflow: hidden;
+            background: #e9eee5;
+        }
+
+        .related-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .45s ease;
+        }
+
+        .related-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .related-card-content {
+            padding: 18px;
+        }
+
+        .related-card-content time {
+            display: block;
+            margin-bottom: 7px;
+            color: #82907d;
+            font-size: .75rem;
+            font-weight: 700;
+        }
+
+        .related-card-content h3 {
+            margin: 0;
+            font-family: Poppins, sans-serif;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .related-card-content h3 a {
+            color: #2d4a2b;
+            text-decoration: none;
+        }
+
+        /* ---------------------------------------------------------
+           MOBILE
+        --------------------------------------------------------- */
+
+        @media (max-width: 900px) {
+
+            .article-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .article-sidebar {
+                position: static;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+
+            .appointment-card {
+                grid-column: 1 / -1;
+            }
+
+            .related-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .article-shell {
+                padding: 15px 12px 0;
+            }
+
+            .article-breadcrumbs {
+                margin-bottom: 18px;
+                font-size: .76rem;
+            }
+
+            .article-hero {
+                min-height: 480px;
+                border-radius: 22px;
+            }
+
+            .article-hero-content {
+                padding: 28px 22px;
+            }
+
+            .article-title {
+                font-size: 2rem;
+                line-height: 1.12;
+            }
+
+            .article-meta {
+                gap: 8px;
+                font-size: .78rem;
+            }
+
+            .article-layout {
+                margin-top: 25px;
+                gap: 25px;
+            }
+
+            .article-intro {
+                padding: 21px;
+                border-radius: 16px;
+            }
+
+            .article-intro p {
+                font-size: 1rem;
+            }
+
+            .blog-body {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .blog-body h2 {
+                margin-top: 2.3rem;
+            }
+
+            .article-sidebar {
+                display: block;
+            }
+
+            .sidebar-card {
+                margin-bottom: 14px;
+            }
+
+            .related-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-bottom-cta {
+                padding: 28px 22px;
+            }
+        }
+
+        /* ---------------------------------------------------------
+           LOADING
+        --------------------------------------------------------- */
+
+        .article-loading {
+            max-width: 850px;
+            margin: 70px auto;
+            text-align: center;
+            color: #687464;
+        }
+
+        .article-loading-spinner {
+            width: 38px;
+            height: 38px;
+            margin: 0 auto 16px;
+            border: 3px solid #dfe7dc;
+            border-top-color: #2d4a2b;
+            border-radius: 50%;
+            animation: articleSpin .8s linear infinite;
+        }
+
+        @keyframes articleSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+    </style>
+
+    <!-- Hospital / LocalBusiness Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -40,119 +740,380 @@
       },
       "telephone": "+919622552553",
       "email": "weibnsina@gmail.com",
+      "areaServed": [
+        "Budgam",
+        "Srinagar",
+        "Kashmir",
+        "Jammu and Kashmir",
+        "India"
+      ],
       "openingHoursSpecification": [
         {
           "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
           "opens": "00:00",
           "closes": "23:59"
         }
       ]
     }
     </script>
+
+    <!-- Article schema is inserted dynamically by main.js -->
+
 </head>
+
 <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    <header class="site-header" id="site-header">
-        <div class="header-inner container">
-            <a href="index.html" class="logo" aria-label="Ibn Sina Hospital Home">
-                <img src="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp" alt="Ibn Sina Hospital Logo" class="logo-img" style="height: 40px; width: auto;">
-                <span class="logo-text">Ibn Sina <strong>Hospital</strong></span>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- =========================================================
+     HEADER
+========================================================== -->
+
+<header class="site-header" id="site-header">
+
+    <div class="header-inner container">
+
+        <a href="index.html"
+           class="logo"
+           aria-label="Ibn Sina Hospital Home">
+
+            <img
+                src="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp"
+                alt="Ibn Sina Hospital Logo"
+                class="logo-img"
+                style="height:40px;width:auto;"
+            >
+
+            <span class="logo-text">
+                Ibn Sina <strong>Hospital</strong>
+            </span>
+
+        </a>
+
+        <nav
+            class="main-nav"
+            id="main-nav"
+            aria-label="Main navigation">
+
+            <ul class="nav-list">
+
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="doctors.html" class="nav-link">Doctors</a></li>
+                <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                <li><a href="blog.html" class="nav-link active">Blog</a></li>
+                <li><a href="careers.html" class="nav-link">Careers</a></li>
+                <li><a href="faq.html" class="nav-link">FAQ</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+
+            </ul>
+
+        </nav>
+
+        <div class="header-actions">
+
+            <a
+                href="tel:9622552553"
+                class="emergency-badge"
+                aria-label="Emergency call: 9622552553">
+
+                <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true">
+
+                    <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/>
+                </svg>
+
+                <span>Emergency: 9622552553</span>
+
             </a>
-            <nav class="main-nav" id="main-nav" aria-label="Main navigation">
-                <ul class="nav-list">
-                    <li><a href="index.html" class="nav-link">Home</a></li>
-                    <li><a href="about.html" class="nav-link">About</a></li>
-                    <li><a href="services.html" class="nav-link">Services</a></li>
-                    <li><a href="doctors.html" class="nav-link">Doctors</a></li>
-                    <li><a href="gallery.html" class="nav-link">Gallery</a></li>
-                    <li><a href="blog.html" class="nav-link active">Blog</a></li>
-                    <li><a href="careers.html" class="nav-link">Careers</a></li>
-                    <li><a href="faq.html" class="nav-link">FAQ</a></li>
-                    <li><a href="contact.html" class="nav-link">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="header-actions">
-                <a href="tel:9622552553" class="emergency-badge" aria-label="Emergency call: 9622552553">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
-                    <span>Emergency: 9622552553</span>
-                </a>
-                <a href="appointment.html" class="btn btn-primary btn-book">Book Appointment</a>
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-                    <span class="hamburger-line"></span>
-                    <span class="hamburger-line"></span>
-                    <span class="hamburger-line"></span>
-                </button>
-            </div>
-        </div>
-    </header>
 
-    <main id="main-content">
-        <section class="section">
-            <div class="container" id="blog-post-content" style="max-width:720px; margin:0 auto;">
-                <noscript>
-                    <h1>Health Article</h1>
-                    <p>Please enable JavaScript to view this article. For health advice, call <a href="tel:9622552553">9622552553</a>.</p>
-                </noscript>
-            </div>
-        </section>
-    </main>
+            <a
+                href="appointment.html"
+                class="btn btn-primary btn-book">
 
-    <footer class="site-footer">
-        <div class="footer-wave" aria-hidden="true">
-            <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
+                Book Appointment
+
+            </a>
+
+            <button
+                class="hamburger"
+                id="hamburger"
+                aria-label="Toggle menu"
+                aria-expanded="false">
+
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+
+            </button>
+
         </div>
-        <div class="footer-main container">
-            <div class="footer-col">
-                <h3 class="footer-logo">Ibn Sina <strong>Hospital</strong></h3>
-                <address>Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111</address>
-                <p><a href="tel:9622552553">📞 9622552553 / 9419023501</a></p>
-                <p><a href="mailto:weibnsina@gmail.com">✉ weibnsina@gmail.com</a></p>
-            </div>
-            <div class="footer-col">
-                <h4>OPD & Emergency</h4>
-                <p class="footer-note"><strong>OPD, Pharmacy, Lab & Emergency:</strong> 24/7, 365 days</p>
-            </div>
-            <div class="footer-col">
-                <h4>Quick Links</h4>
-                <ul class="footer-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="services.html">Services</a></li>
-                    <li><a href="doctors.html">Doctors</a></li>
-                    <li><a href="gallery.html">Gallery</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="careers.html">Careers</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Stay Connected</h4>
-                <div class="social-icons">
-                    <a href="https://www.facebook.com/share/1HSWNC9UEy/" target="_blank" rel="noopener" aria-label="Facebook" class="social-icon">FB</a>
-                    <a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon">IG</a>
-                    <a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon">YT</a>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     ARTICLE
+========================================================== -->
+
+<main id="main-content">
+
+    <section class="article-page">
+
+        <div class="article-shell">
+
+            <div id="blog-post-content">
+
+                <div class="article-loading">
+
+                    <div class="article-loading-spinner"></div>
+
+                    <p>Loading health article...</p>
+
                 </div>
-                <form class="newsletter-form" id="newsletter-form">
-                    <label for="newsletter-email">Subscribe for health tips:</label>
-                    <div class="newsletter-input-group">
-                        <input type="email" id="newsletter-email" placeholder="Your email" required>
-                        <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="footer-bottom container">
-            <p>&copy; 2025 Ibn Sina Hospital. All rights reserved. | Operating since 2018</p>
-            <p class="google-review-note">See our latest reviews on <a href="https://maps.google.com/?q=IBN+SINA+HOSPITAL+Ompora+Budgam" target="_blank" rel="noopener">Google Maps</a></p>
-        </div>
-    </footer>
 
-    <script src="js/main.js" defer></script>
-    <script src="js/chatbot.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-    <script src="js/animations.js" defer></script>
+                <noscript>
+
+                    <div class="article-loading">
+
+                        <h1>Health Article</h1>
+
+                        <p>
+                            Please enable JavaScript to view this article.
+                            For health advice, call
+                            <a href="tel:9622552553">9622552553</a>.
+                        </p>
+
+                    </div>
+
+                </noscript>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================== -->
+
+<footer class="site-footer">
+
+    <div class="footer-wave" aria-hidden="true">
+
+        <svg
+            viewBox="0 0 1440 50"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none">
+
+            <path
+                d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z"
+                fill="#2d4a2b">
+            </path>
+
+        </svg>
+
+    </div>
+
+    <div class="footer-main container">
+
+        <div class="footer-col">
+
+            <h3 class="footer-logo">
+                Ibn Sina <strong>Hospital</strong>
+            </h3>
+
+            <address>
+                Near Railway Station, Ompora Railway Station Road,
+                Ompora, Budgam, J&K 191111
+            </address>
+
+            <p>
+                <a href="tel:9622552553">
+                    📞 9622552553 / 9419023501
+                </a>
+            </p>
+
+            <p>
+                <a href="mailto:weibnsina@gmail.com">
+                    ✉ weibnsina@gmail.com
+                </a>
+            </p>
+
+        </div>
+
+
+        <div class="footer-col">
+
+            <h4>OPD & Emergency</h4>
+
+            <p class="footer-note">
+                <strong>
+                    OPD, Pharmacy, Lab & Emergency:
+                </strong>
+                24/7, 365 days
+            </p>
+
+        </div>
+
+
+        <div class="footer-col">
+
+            <h4>Quick Links</h4>
+
+            <ul class="footer-links">
+
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="doctors.html">Doctors</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="careers.html">Careers</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">Contact</a></li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="footer-col">
+
+            <h4>Stay Connected</h4>
+
+            <div class="social-icons">
+
+                <a
+                    href="https://www.facebook.com/share/1HSWNC9UEy/"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Facebook"
+                    class="social-icon">
+                    FB
+                </a>
+
+                <a
+                    href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ=="
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Instagram"
+                    class="social-icon">
+                    IG
+                </a>
+
+                <a
+                    href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="YouTube"
+                    class="social-icon">
+                    YT
+                </a>
+
+            </div>
+
+
+            <form
+                class="newsletter-form"
+                id="newsletter-form">
+
+                <label for="newsletter-email">
+                    Subscribe for health tips:
+                </label>
+
+                <div class="newsletter-input-group">
+
+                    <input
+                        type="email"
+                        id="newsletter-email"
+                        placeholder="Your email"
+                        required>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-sm">
+
+                        Subscribe
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom container">
+
+        <p>
+            &copy; 2025 Ibn Sina Hospital.
+            All rights reserved. |
+            Operating since 2018
+        </p>
+
+        <p class="google-review-note">
+
+            See our latest reviews on
+
+            <a
+                href="https://maps.google.com/?q=IBN+SINA+HOSPITAL+Ompora+Budgam"
+                target="_blank"
+                rel="noopener">
+
+                Google Maps
+
+            </a>
+
+        </p>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================================
+     SCRIPTS
+========================================================== -->
+
+<script src="js/main.js" defer></script>
+
+<script src="js/chatbot.js" defer></script>
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    defer>
+</script>
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+    defer>
+</script>
+
+<script src="js/animations.js" defer></script>
+
 </body>
-</html>
+            </html>
