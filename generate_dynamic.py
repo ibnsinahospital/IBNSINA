@@ -81,6 +81,24 @@ def get_lastmod(url, content, cache, today):
     cache[url] = {'hash': content_hash, 'lastmod': today}
     return today
 
+# ========== SAVE JSON DATA (fixes CORS issue for client-side fetches) ==========
+def save_json_data(doctors, departments, posts, gallery_items):
+    """
+    Writes server-fetched sheet data to static JSON files in /data.
+    main.js and chatbot.js should fetch these local files instead of
+    hitting Google Sheets CSV URLs directly from the browser, which
+    fails intermittently due to CORS (Google Sheets doesn't send an
+    Access-Control-Allow-Origin header on the redirected CSV endpoint).
+    """
+    data_dir = Path('data')
+    data_dir.mkdir(exist_ok=True)
+    (data_dir / 'doctors.json').write_text(json.dumps(doctors, ensure_ascii=False), encoding='utf-8')
+    (data_dir / 'departments.json').write_text(json.dumps(departments, ensure_ascii=False), encoding='utf-8')
+    (data_dir / 'blog.json').write_text(json.dumps(posts, ensure_ascii=False), encoding='utf-8')
+    (data_dir / 'gallery.json').write_text(json.dumps(gallery_items, ensure_ascii=False), encoding='utf-8')
+    print(f"Wrote JSON data files: {len(doctors)} doctors, {len(departments)} departments, "
+          f"{len(posts)} blog posts, {len(gallery_items)} gallery items.")
+
 # ========== GENERATE DOCTOR PAGES ==========
 def generate_doctor_pages(doctors, departments_by_name):
     output_dir = Path('doctors')
@@ -477,6 +495,10 @@ if __name__ == "__main__":
     print("Fetching gallery items...")
     gallery_items = fetch_csv(GALLERY_URL)
     print(f"Found {len(gallery_items)} gallery items.")
+
+    # Save raw sheet data as static JSON so main.js / chatbot.js can fetch
+    # same-origin files instead of hitting Google Sheets directly (fixes CORS).
+    save_json_data(doctors, departments, posts, gallery_items)
 
     departments_by_name = {(d.get('name') or '').strip().lower(): d for d in departments}
 
