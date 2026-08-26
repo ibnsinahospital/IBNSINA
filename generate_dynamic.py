@@ -87,8 +87,7 @@ def save_json_data(doctors, departments, posts, gallery_items):
     Writes server-fetched sheet data to static JSON files in /data.
     main.js and chatbot.js should fetch these local files instead of
     hitting Google Sheets CSV URLs directly from the browser, which
-    fails intermittently due to CORS (Google Sheets doesn't send an
-    Access-Control-Allow-Origin header on the redirected CSV endpoint).
+    fails intermittently due to CORS.
     """
     data_dir = Path('data')
     data_dir.mkdir(exist_ok=True)
@@ -418,6 +417,23 @@ def generate_gallery_page(gallery_items):
     Path('gallery.html').write_text(output_html, encoding='utf-8')
     return f'{SITE_URL}/gallery.html', output_html
 
+# ========== NEW: COLLECT MANUAL DEPARTMENT PAGES ==========
+def collect_manual_department_pages():
+    """
+    Scans department-pages/ for HTML files and returns (url, content) tuples.
+    This ensures manually created department pages are included in sitemap.
+    """
+    pages = []
+    dept_dir = Path('department-pages')
+    if not dept_dir.exists():
+        return pages
+
+    for html_file in dept_dir.glob('*.html'):
+        content = html_file.read_text(encoding='utf-8')
+        url = f"{SITE_URL}/department-pages/{html_file.name}"
+        pages.append((url, content))
+    return pages
+
 # ========== UPDATE SITEMAP (content-aware lastmod) ==========
 def update_sitemap(all_pages_with_content):
     cache = load_lastmod_cache()
@@ -496,8 +512,6 @@ if __name__ == "__main__":
     gallery_items = fetch_csv(GALLERY_URL)
     print(f"Found {len(gallery_items)} gallery items.")
 
-    # Save raw sheet data as static JSON so main.js / chatbot.js can fetch
-    # same-origin files instead of hitting Google Sheets directly (fixes CORS).
     save_json_data(doctors, departments, posts, gallery_items)
 
     departments_by_name = {(d.get('name') or '').strip().lower(): d for d in departments}
@@ -507,8 +521,12 @@ if __name__ == "__main__":
     dept_urls, dept_pages = generate_department_pages(departments, doctors)
     gallery_url, gallery_html = generate_gallery_page(gallery_items)
 
-    all_dynamic_urls = doctor_urls + blog_urls + dept_urls + [gallery_url]
-    all_pages_with_content = doctor_pages + blog_pages + dept_pages + [(gallery_url, gallery_html)]
+    # Collect manually created department pages (e.g., department-pages/*.html)
+    manual_dept_pages = collect_manual_department_pages()
+    print(f"Found {len(manual_dept_pages)} manual department pages.")
+
+    all_dynamic_urls = doctor_urls + blog_urls + dept_urls + [gallery_url] + [url for url, _ in manual_dept_pages]
+    all_pages_with_content = doctor_pages + blog_pages + dept_pages + [(gallery_url, gallery_html)] + manual_dept_pages
 
     update_sitemap(all_pages_with_content)
     submit_to_indexnow(all_dynamic_urls)
