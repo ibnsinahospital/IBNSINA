@@ -3,9 +3,9 @@
 // =============================================
 (function () {
   // ---- CONFIGURATION ----
-  const SHEET_URLS = {
-    departments: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSY7cmsIsfCzFSfe6Gf6wG-XWffYscBhXHqnFqv0RvwuqbG7kNnPG7eSmSaR_E-ztlY8qLkHZ2yuL-t/pub?output=csv',
-    doctors: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ_H8Rgr6VOjrap91SR_3nbBQLVf7QOQOHqZSs-pT6SfoNpyHjpj-QD0nNtcHDr5ip439naZ0sTr62Y/pub?output=csv'
+  const DATA_URLS = {
+    departments: '/data/departments.json',
+    doctors: '/data/doctors.json'
   };
   const APPOINTMENT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOmEFb0cu0rQ3IzRKrzP9wLNgjXZLUuvpZJWp2xEcZSvuknyppjiavPWST31QNEWoS/exec';
   const FETCH_TIMEOUT_MS = 8000;
@@ -304,7 +304,8 @@
     const container = document.getElementById('ibn-bot-quick');
     if (!container) return;
     container.innerHTML = '';
-    const list = replies || contextQuickReplies.length ? (replies || contextQuickReplies) : LANG[currentLang].quickReplies;
+    const list = (replies && replies.length) ? replies
+      : (contextQuickReplies.length ? contextQuickReplies : LANG[currentLang].quickReplies);
     list.forEach(label => {
       const btn = document.createElement('button');
       btn.type = 'button';
@@ -331,53 +332,26 @@
     }
   }
 
-  // ---- FETCH CSV ----
-  async function fetchCSV(url) {
+  // ---- FETCH JSON (local, same-origin, build-time generated) ----
+  async function fetchJSON(url) {
     try {
       const res = await fetchWithTimeout(url, FETCH_TIMEOUT_MS);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const csv = await res.text();
-      return parseCSV(csv);
+      const data = await res.json();
+      return Array.isArray(data) ? data : [];
     } catch (e) {
-      console.error('Chatbot CSV fetch error:', e);
+      console.error('Chatbot JSON fetch error:', url, e);
       return [];
     }
   }
 
-  // CSV Parser (handles quotes, multi-line)
-  function parseCSV(csvText) {
-    if (!csvText) return [];
-    const rows = [];
-    let row = [];
-    let field = '';
-    let inQuotes = false;
-    for (let i = 0; i < csvText.length; i++) {
-      const c = csvText[i];
-      const next = csvText[i + 1];
-      if (inQuotes) {
-        if (c === '"' && next === '"') { field += '"'; i++; }
-        else if (c === '"') { inQuotes = false; }
-        else { field += c; }
-      } else {
-        if (c === '"') { inQuotes = true; }
-        else if (c === ',') { row.push(field.trim()); field = ''; }
-        else if (c === '\n' || c === '\r') {
-          if (c === '\r' && next === '\n') i++;
-          row.push(field.trim());
-          if (row.length > 0 && row.some(f => f !== '')) rows.push(row);
-          row = []; field = '';
-        } else { field += c; }
-      }
-    }
-    if (field !== '') row.push(field.trim());
-    if (row.length > 0) rows.push(row);
-    if (rows.length < 2) return [];
-    const headers = rows[0].map(h => h.replace(/[^a-zA-Z0-9_]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '').toLowerCase());
-    return rows.slice(1).map(r => {
-      const obj = {};
-      headers.forEach((h, i) => obj[h] = r[i] || '');
-      return obj;
-    });
+  // ---- CLEAN DOCTOR NAME (matches site-wide formatting) ----
+  function cleanDoctorName(rawName) {
+    let name = (rawName || '').trim().replace(/\.+$/, '');
+    name = name.replace(/^dr\.?\s*/i, '').trim();
+    if (!name) return 'Doctor';
+    name = name.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+    return `Dr. ${name}`;
   }
 
   // ---- PRELOAD DATA ----
@@ -386,8 +360,8 @@
     doctorsLoading = true;
     try {
       const [depts, docs] = await Promise.all([
-        fetchCSV(SHEET_URLS.departments),
-        fetchCSV(SHEET_URLS.doctors)
+        fetchJSON(DATA_URLS.departments),
+        fetchJSON(DATA_URLS.doctors)
       ]);
       cachedDepartments = depts;
       cachedDoctors = docs;
@@ -733,7 +707,7 @@
       if (specialty && cachedDoctors.length) {
         const docs = filterDoctorsBySpecialty(specialty);
         if (docs.length) {
-          const list = docs.map((d, i) => `${i + 1}. ${d.name} (${d.specialty})`).join('\n');
+          const list = docs.map((d, i) => `${i + 1}. ${cleanDoctorName(d.name)} (${d.specialty || 'Specialist'})`).join('\n');
           addBotMessageWithDelay(`${L.doctors_specialty.replace('{specialty}', specialty)}\n${list}`);
           setContextQuickReplies(['Book Appointment', 'All Doctors']);
           return;
@@ -881,9 +855,9 @@
       default:
         // Try to handle doctor name query
         if (cachedDoctors.length) {
-          const docMatch = cachedDoctors.find(d => lower.includes(d.name.toLowerCase()));
+          const docMatch = cachedDoctors.find(d => d.name && lower.includes(d.name.toLowerCase()));
           if (docMatch) {
-            const doctorInfo = `${docMatch.name} (${docMatch.specialty})\nQualifications: ${docMatch.qualifications || 'N/A'}\nDepartment: ${docMatch.department || 'N/A'}`;
+            const doctorInfo = `${cleanDoctorName(docMatch.name)} (${docMatch.specialty || 'Specialist'})\nQualifications: ${docMatch.qualifications || 'N/A'}\nDepartment: ${docMatch.department || 'N/A'}`;
             addBotMessageWithDelay(doctorInfo);
             setContextQuickReplies(['Book Appointment', 'Doctors']);
             return;
@@ -909,7 +883,7 @@
     }
     addBotMessageWithDelay(L.loadingData);
     departmentsLoading = true;
-    const depts = await fetchCSV(SHEET_URLS.departments);
+    const depts = await fetchJSON(DATA_URLS.departments);
     departmentsLoading = false;
     cachedDepartments = depts;
     if (depts.length) {
@@ -924,7 +898,7 @@
   async function respondWithDoctors() {
     const L = LANG[currentLang];
     if (cachedDoctors.length) {
-      const list = cachedDoctors.map((d, i) => `${i + 1}. ${d.name} (${d.specialty})`).join('\n');
+      const list = cachedDoctors.map((d, i) => `${i + 1}. ${cleanDoctorName(d.name)} (${d.specialty || 'Specialist'})`).join('\n');
       addBotMessageWithDelay(`${L.doctors}\n${list}`);
       setContextQuickReplies(['Book Appointment', 'Departments']);
       return;
@@ -935,11 +909,11 @@
     }
     addBotMessageWithDelay(L.loadingData);
     doctorsLoading = true;
-    const docs = await fetchCSV(SHEET_URLS.doctors);
+    const docs = await fetchJSON(DATA_URLS.doctors);
     doctorsLoading = false;
     cachedDoctors = docs;
     if (docs.length) {
-      const list = docs.map((d, i) => `${i + 1}. ${d.name} (${d.specialty})`).join('\n');
+      const list = docs.map((d, i) => `${i + 1}. ${cleanDoctorName(d.name)} (${d.specialty || 'Specialist'})`).join('\n');
       addBotMessageWithDelay(`${L.doctors}\n${list}`);
       setContextQuickReplies(['Book Appointment', 'Departments']);
     } else {
