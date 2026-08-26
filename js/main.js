@@ -429,6 +429,41 @@ function calculateReadingTime(htmlOrText) {
 }
 
 
+function formatBlogBody(raw) {
+  if (!raw) return '';
+  const text = String(raw);
+
+  // If the sheet content already contains real HTML tags, trust it as-is.
+  if (/<(p|div|ul|ol|h2|h3|br)\b/i.test(text)) {
+    return text;
+  }
+
+  // Plain text: split into blocks on blank lines, detect bullet/numbered
+  // lines, and convert them into proper <ul>/<ol> so points appear on
+  // their own line instead of collapsing into one paragraph.
+  const blocks = text.split(/\n\s*\n/);
+  let html = '';
+
+  blocks.forEach(block => {
+    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+    if (!lines.length) return;
+
+    const isBulleted = lines.every(l => /^[-•*]\s+/.test(l));
+    const isNumbered = lines.every(l => /^\d+[.)]\s+/.test(l));
+
+    if (isBulleted) {
+      html += '<ul>' + lines.map(l => `<li>${escapeHTML(l.replace(/^[-•*]\s+/, ''))}</li>`).join('') + '</ul>';
+    } else if (isNumbered) {
+      html += '<ol>' + lines.map(l => `<li>${escapeHTML(l.replace(/^\d+[.)]\s+/, ''))}</li>`).join('') + '</ol>';
+    } else {
+      html += '<p>' + lines.map(l => escapeHTML(l)).join('<br>') + '</p>';
+    }
+  });
+
+  return html;
+}
+
+
 function formatBlogDate(dateValue) {
 
   if (!dateValue) {
@@ -2047,75 +2082,97 @@ document.addEventListener(
 
         blogGrid.innerHTML =
           published
-            .map(p => `
+            .map((p, index) => {
 
-              <article
-                class="blog-preview-card fade-in"
-              >
+              const isFeatured = index === 0;
+              const readTime = calculateReadingTime(p.body);
+              const postUrl = `blog-post.html?slug=${encodeURIComponent(p.slug || '')}`;
+              const categoryLabel = p.category || 'Health & Wellness';
 
-                ${
-                  p.cover_image_url
-                    ? `
-                      <img
-                        src="${escapeHTML(p.cover_image_url)}"
-                        alt="${escapeHTML(p.title || 'Health article')}"
-                        loading="lazy"
-                        style="width:100%;height:180px;object-fit:cover;border-radius:var(--radius);margin-bottom:.8rem;"
-                      >
-                    `
-                    : ''
-                }
+              return `
 
-                <div class="blog-card-content">
+                <article
+                  class="blog-preview-card blog-card fade-in${isFeatured ? ' blog-featured-card' : ''}"
+                  data-category="${escapeHTML(categoryLabel)}"
+                >
 
                   ${
-                    p.category
+                    p.cover_image_url
                       ? `
-                        <span class="blog-category">
-                          ${escapeHTML(p.category)}
-                        </span>
+                        <a
+                          href="${postUrl}"
+                          class="blog-card-image-link"
+                          aria-label="Read ${escapeHTML(p.title || 'health article')}"
+                        >
+                          <div class="blog-card-image-wrapper">
+                            <img
+                              src="${escapeHTML(p.cover_image_url)}"
+                              alt="${escapeHTML(p.title || 'Health article')}"
+                              class="blog-card-image"
+                              loading="${isFeatured ? 'eager' : 'lazy'}"
+                              decoding="async"
+                            >
+                            <span class="blog-image-overlay">Read Article</span>
+                          </div>
+                        </a>
                       `
                       : ''
                   }
 
-                  <h3>
+                  <div class="blog-card-content">
 
-                    <a
-                      href="blog-post.html?slug=${encodeURIComponent(p.slug || '')}"
-                    >
-                      ${escapeHTML(p.title || 'Health Article')}
-                    </a>
+                    <div class="blog-card-meta">
 
-                  </h3>
+                      <span class="blog-category">
+                        ${escapeHTML(categoryLabel)}
+                      </span>
 
-                  <time
-                    datetime="${escapeHTML(p.published_at || p.date || '')}"
-                  >
-                    ${formatBlogDate(
-                      p.published_at ||
-                      p.date
-                    )}
-                  </time>
+                      <time
+                        datetime="${escapeHTML(p.published_at || p.date || '')}"
+                        class="blog-date"
+                      >
+                        ${formatBlogDate(
+                          p.published_at ||
+                          p.date
+                        )}
+                      </time>
 
-                  <p>
-                    ${escapeHTML(
-                      p.short_summary || ''
-                    )}
-                  </p>
+                    </div>
 
-                  <a
-                    href="blog-post.html?slug=${encodeURIComponent(p.slug || '')}"
-                    class="read-more"
-                    aria-label="Read ${escapeHTML(p.title || 'health article')}"
-                  >
-                    Read More →
-                  </a>
+                    <h2 class="blog-card-title">
+                      <a href="${postUrl}">
+                        ${escapeHTML(p.title || 'Health Article')}
+                      </a>
+                    </h2>
 
-                </div>
+                    <p>
+                      ${escapeHTML(
+                        p.short_summary || ''
+                      )}
+                    </p>
 
-              </article>
+                    <div class="blog-card-footer">
 
-            `)
+                      <span class="blog-reading-time">
+                        ${readTime} min read
+                      </span>
+
+                      <a
+                        href="${postUrl}"
+                        class="read-more"
+                        aria-label="Read full article: ${escapeHTML(p.title || 'health article')}"
+                      >
+                        Read Article <span aria-hidden="true">→</span>
+                      </a>
+
+                    </div>
+
+                  </div>
+
+                </article>
+
+              `;
+            })
             .join('');
 
       })();
@@ -2632,7 +2689,7 @@ document.addEventListener(
                   class="blog-article-content blog-body"
                 >
 
-                  ${post.body || ''}
+                  ${formatBlogBody(post.body)}
 
 
                   <!-- ==========================
