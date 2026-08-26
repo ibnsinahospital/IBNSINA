@@ -1364,9 +1364,9 @@ document.addEventListener(
         displayDepts.forEach(
           (d, index) => {
 
+            // 🔗 UPDATED: Link to internal department pages
             const link =
-              d.landing_page_url ||
-              `departments/${d.slug}.html`;
+              `department-pages/${d.slug}.html`;
 
             const iconHtml =
               d.icon_url
