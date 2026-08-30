@@ -99,6 +99,23 @@ def save_json_data(doctors, departments, posts, gallery_items):
           f"{len(posts)} blog posts, {len(gallery_items)} gallery items.")
 
 # ========== GENERATE DOCTOR PAGES ==========
+
+# Folder of hand-built, "better look" department pages. When a department has
+# a page here, doctor pages should link to it instead of the auto-generated
+# departments/ page, so internal links and SEO signal consolidate on one URL.
+MANUAL_DEPARTMENT_PAGES_DIR = Path('department-pages')
+
+def resolve_department_link(dept_name, dept_slug):
+    """
+    Decide which URL a doctor page should link to for a given department:
+    - department-pages/{slug}.html if that manually-built page exists
+    - otherwise fall back to the auto-generated departments/department-{slug}.html
+    """
+    manual_file = MANUAL_DEPARTMENT_PAGES_DIR / f'{dept_slug}.html'
+    if manual_file.exists():
+        return f'../department-pages/{dept_slug}.html'
+    return f'../departments/department-{dept_slug}.html'
+
 def generate_doctor_pages(doctors, departments_by_name):
     output_dir = Path('doctors')
     output_dir.mkdir(exist_ok=True)
@@ -110,7 +127,12 @@ def generate_doctor_pages(doctors, departments_by_name):
         slug = slugify(doc.get('name', ''))
         filename = f'doctor-{slug}.html'
         dept_name = (doc.get('department') or '').strip()
-        dept_slug = slugify(dept_name)
+        # Prefer the department's own registered slug (from the Departments
+        # sheet) over re-slugifying the doctor's free-text department field —
+        # this is what caused mismatches like "general-medicine" vs "medicine"
+        # and "plastic-surgery" vs "plastic" producing dead links.
+        dept_record = departments_by_name.get(dept_name.lower())
+        dept_slug = (dept_record.get('slug') if dept_record else None) or slugify(dept_name)
         specialty = (doc.get('specialty') or 'Doctor').strip()
         qualifications = (doc.get('qualifications') or '').strip()
         photo_url = (doc.get('photo_url') or 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp').strip()
@@ -136,7 +158,8 @@ def generate_doctor_pages(doctors, departments_by_name):
 
         dept_link_html = ""
         if dept_name:
-            dept_link_html = f'<p><a href="../departments/department-{dept_slug}.html">View {dept_name.title()} Department →</a></p>'
+            dept_href = resolve_department_link(dept_name, dept_slug)
+            dept_link_html = f'<p><a href="{dept_href}">View {dept_name.title()} Department →</a></p>'
 
         json_ld = {
             "@context": "https://schema.org",
