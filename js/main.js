@@ -1364,9 +1364,28 @@ document.addEventListener(
         displayDepts.forEach(
           (d, index) => {
 
-            // 🔗 UPDATED: Link to internal department pages
+            // 🔗 Link to the hand-built department-pages/ file when one
+            // exists for this department; otherwise fall back to the
+            // auto-generated departments/department-{slug}.html page.
+            // Keep this list in sync with the files actually present in
+            // department-pages/ (mirrors the fallback logic in
+            // generate_dynamic.py's resolve_department_link()).
+            const MANUAL_DEPARTMENT_SLUGS = new Set([
+              'ent',
+              'gastroenterology',
+              'general-surgery',
+              'gynaecology',
+              'nephrology',
+              'optholmology',
+              'orthropedics',
+              'pediatric-surgery',
+              'rheumatology',
+              'urology'
+            ]);
             const link =
-              `department-pages/${d.slug}.html`;
+              MANUAL_DEPARTMENT_SLUGS.has(d.slug)
+                ? `department-pages/${d.slug}.html`
+                : `departments/department-${d.slug}.html`;
 
             const iconHtml =
               d.icon_url
