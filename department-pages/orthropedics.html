@@ -1,205 +1,435 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orthopaedics & Joint Replacement in Budgam, Kashmir | Ibn Sina Hospital</title>
-    <meta name="description" content="Advanced Orthopaedics & Joint Replacement care in Budgam, Kashmir. Expert orthopaedic surgeons and modern facilities at Ibn Sina Hospital. Serving Srinagar & all J&K.">
-    <link rel="canonical" href="https://ibnsinahospital.in/department-pages/orthropedics.html">
-    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orthopaedics Department | Ibn Sina Hospital Budgam, Srinagar</title>
+    <meta name="description" content="Expert orthopaedics care at Ibn Sina Hospital, Budgam. Joint replacement, sports medicine, trauma, and bone & joint disorders in J&K." />
+    <link rel="canonical" href="https://ibnsinahospital.in/department-pages/orthopaedics.html" />
+
     <!-- Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Orthopaedics & Joint Replacement in Budgam, Kashmir | Ibn Sina Hospital">
-    <meta property="og:description" content="Advanced Orthopaedics & Joint Replacement care in Budgam, Kashmir. Expert orthopaedic surgeons and modern facilities at Ibn Sina Hospital.">
-    <meta property="og:url" content="https://ibnsinahospital.in/department-pages/orthopaedics.html">
-    <meta property="og:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
-    <meta property="og:site_name" content="Ibn Sina Hospital">
-    <meta property="og:locale" content="en_IN">
-    
+    <meta property="og:title" content="Orthopaedics Department | Ibn Sina Hospital" />
+    <meta property="og:description" content="Comprehensive orthopaedic services for joint replacement, sports injuries, fractures, and bone disorders in Budgam, Srinagar, J&K." />
+    <meta property="og:url" content="https://ibnsinahospital.in/department-pages/orthopaedics.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://i.ibb.co/4wsYHvh0/e9bc2e97d0a9.webp" />
+
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Orthopaedics & Joint Replacement in Budgam, Kashmir | Ibn Sina Hospital">
-    <meta name="twitter:description" content="Advanced Orthopaedics & Joint Replacement care in Budgam, Kashmir. Expert orthopaedic surgeons and modern facilities at Ibn Sina Hospital.">
-    <meta name="twitter:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="../css/style.css">
-    
-    <!-- Additional styles for department-specific components -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Orthopaedics Department | Ibn Sina Hospital" />
+    <meta name="twitter:description" content="Expert orthopaedics care in Budgam, Srinagar. Joint replacement, sports medicine, and bone disorders." />
+    <meta name="twitter:image" content="https://i.ibb.co/4wsYHvh0/e9bc2e97d0a9.webp" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- GSAP + ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/style.css" />
+
+    <!-- Page-specific styles -->
     <style>
-        /* Department page badges */
-        .badge {
-            display: inline-block;
-            background: var(--olive);
-            color: var(--forest);
-            padding: 0.3rem 1rem;
-            border-radius: 2rem;
-            font-size: 0.85rem;
+        .hero-orthopaedics {
+            background: linear-gradient(rgba(0, 40, 30, 0.82), rgba(0, 40, 30, 0.88)),
+                url('https://i.ibb.co/4wsYHvh0/e9bc2e97d0a9.webp') center center / cover no-repeat;
+            padding: 80px 0;
+            color: #fff;
+        }
+
+        .hero-orthopaedics .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 1.8rem;
+            opacity: 0.95;
+        }
+
+        .hero-ctas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 2rem;
+        }
+
+        .hero-ctas .btn {
+            padding: 12px 28px;
+            border-radius: 30px;
             font-weight: 600;
-            margin: 0.2rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s ease;
         }
 
-        /* Condition list */
-        .condition-list {
-            columns: 2;
-            list-style: none;
-            padding-left: 0;
+        .trust-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px 32px;
+            font-size: 0.95rem;
         }
-        .condition-list li {
-            margin-bottom: 0.5rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-        .condition-list li::before {
-            content: "✔";
-            position: absolute;
-            left: 0;
-            color: var(--forest);
+        .trust-badges span i {
+            margin-right: 8px;
+            color: #6fcf97;
         }
 
-        /* Process steps */
         .process-steps {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
+            gap: 30px;
+            margin-top: 30px;
         }
         .process-step {
-            background: #fff;
-            padding: 1.5rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
+            background: #f8faf9;
+            padding: 30px 20px;
+            border-radius: 12px;
             text-align: center;
+            border-left: 4px solid #0a7e6f;
+            transition: transform 0.25s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
-        .process-step h3 {
-            margin-bottom: 0.5rem;
+        .process-step:hover {
+            transform: translateY(-6px);
+        }
+        .process-step .step-number {
+            display: inline-block;
+            background: #0a7e6f;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 50%;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .process-step h4 {
+            color: #0a3d36;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        .process-step p {
+            color: #4a5a55;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .process-note {
+            margin-top: 28px;
+            text-align: center;
+            font-weight: 500;
+            color: #0a3d36;
+            background: #e9f4f1;
+            padding: 14px 20px;
+            border-radius: 40px;
+            display: inline-block;
         }
 
-        /* Mobile responsive */
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 28px;
+            left: 28px;
+            z-index: 999;
+            background: #25D366;
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .floating-whatsapp:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 32px rgba(37, 211, 102, 0.5);
+        }
+        .floating-whatsapp svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
         @media (max-width: 768px) {
-            .condition-list { columns: 1; }
-            .process-steps { grid-template-columns: 1fr; }
+            .hero-orthopaedics {
+                padding: 50px 0;
+                text-align: center;
+            }
+            .hero-ctas {
+                justify-content: center;
+            }
+            .trust-badges {
+                justify-content: center;
+                gap: 14px 24px;
+            }
+            .process-steps {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+            .floating-whatsapp {
+                width: 54px;
+                height: 54px;
+                bottom: 20px;
+                left: 20px;
+            }
+            .floating-whatsapp svg {
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+        .treat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 20px 0 10px;
+        }
+        .treat-item {
+            background: #f4f8f7;
+            padding: 14px 18px;
+            border-radius: 30px;
+            font-weight: 500;
+            color: #0a3d36;
+            border: 1px solid #dce8e3;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+        .treat-note {
+            margin-top: 18px;
+            font-style: italic;
+            color: #3d5a52;
+        }
+
+        .facilities-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px 30px;
+            margin-top: 10px;
+        }
+        .facilities-list li {
+            font-size: 1rem;
+            padding: 10px 0;
+            border-bottom: 1px dashed #e2e8e6;
+        }
+        .facilities-list li i {
+            color: #0a7e6f;
+            width: 28px;
+            margin-right: 10px;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 10px;
+        }
+        .why-card {
+            background: #fff;
+            padding: 28px 20px 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            text-align: center;
+            border: 1px solid #e9eeec;
+            transition: box-shadow 0.3s ease;
+        }
+        .why-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        .why-card .icon {
+            font-size: 2.6rem;
+            color: #0a7e6f;
+            margin-bottom: 14px;
+        }
+        .why-card h4 {
+            color: #0a3d36;
+            margin-bottom: 8px;
+        }
+        .why-card p {
+            color: #4a5a55;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            background: #fff;
+            border: 1px solid #e2e8e6;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            padding: 0 20px;
+            transition: border-color 0.2s;
+        }
+        .faq-item:hover {
+            border-color: #b0c8c0;
+        }
+        .faq-item summary {
+            padding: 18px 0;
+            font-weight: 600;
+            color: #0a3d36;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-item summary::after {
+            content: '+';
+            font-size: 1.6rem;
+            color: #0a7e6f;
+            line-height: 1;
+            margin-left: 12px;
+        }
+        .faq-item[open] summary::after {
+            content: '−';
+        }
+        .faq-item .faq-answer {
+            padding-bottom: 22px;
+            color: #3d4e48;
+            line-height: 1.7;
+        }
+
+        .appointment-form-section form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #f9fbfa;
+            padding: 32px 28px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #0a3d36;
+            margin-bottom: 4px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d0dcd7;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #fff;
+            transition: border 0.2s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0a7e6f;
+            box-shadow: 0 0 0 3px rgba(10, 126, 111, 0.15);
         }
     </style>
-    
-    <!-- GSAP CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-    
-    <!-- Scripts -->
-    <script src="../js/main.js" defer></script>
-    <script src="../js/chatbot.js" defer></script>
-    <script src="../js/animations.js" defer></script>
-    
-    <!-- Hospital Schema -->
+
+    <!-- JSON-LD: Hospital -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Hospital",
-        "name": "Ibn Sina Hospital",
-        "url": "https://ibnsinahospital.in",
-        "logo": "https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Near Railway Station, Ompora Railway Station Road, Ompora",
-            "addressLocality": "Budgam",
-            "addressRegion": "Jammu and Kashmir",
-            "postalCode": "191111",
-            "addressCountry": "IN"
-        },
-        "telephone": "+91-9622552553",
-        "email": "weibnsina@gmail.com",
-        "areaServed": ["Budgam", "Srinagar", "Kashmir", "Jammu and Kashmir"],
-        "medicalSpecialty": "Orthopaedics & Joint Replacement",
-        "availableService": {
-            "@type": "MedicalProcedure",
-            "name": "Orthopaedics & Joint Replacement Consultation and Treatment"
+        {
+            "@context": "https://schema.org",
+            "@type": "Hospital",
+            "name": "Ibn Sina Hospital",
+            "description": "Multi-specialty hospital in Budgam, Srinagar, J&K offering orthopaedics, joint replacement, and sports medicine.",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Budgam",
+                "addressRegion": "Jammu and Kashmir",
+                "addressCountry": "IN"
+            },
+            "telephone": "+919622552553",
+            "areaServed": ["Budgam", "Srinagar", "Jammu and Kashmir"],
+            "url": "https://ibnsinahospital.in"
         }
-    }
     </script>
-    
-    <!-- FAQ Schema -->
+
+    <!-- JSON-LD: FAQPage -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [{
                 "@type": "Question",
-                "name": "How can I book an appointment with an orthopaedic surgeon at Ibn Sina Hospital?",
+                "name": "What conditions do orthopaedic surgeons treat?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "You can book an appointment by calling our hospital reception, visiting us in person, or using our online appointment system. Our staff will help you schedule a convenient time with the surgeon best suited to your condition."
+                    "text": "Orthopaedic surgeons treat a wide range of conditions including fractures, joint pain, arthritis, back and neck pain, sports injuries, ligament tears (ACL, meniscus), tendonitis, osteoarthritis, rheumatoid arthritis, and deformities of the bones and joints."
                 }
-            },
-            {
+            }, {
                 "@type": "Question",
-                "name": "Do you offer joint replacement surgery for elderly patients with arthritis?",
+                "name": "When should I consider joint replacement surgery?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes. We specialise in total knee replacement, hip replacement, and shoulder replacement surgeries, particularly for elderly patients suffering from severe arthritis. Our team carefully evaluates each patient’s fitness for surgery and provides comprehensive pre- and post-operative care."
+                    "text": "Joint replacement is considered when conservative treatments (medications, physiotherapy, injections) no longer provide relief from severe joint pain and stiffness. Common symptoms include persistent pain that limits daily activities, joint deformity, and difficulty walking or climbing stairs."
                 }
-            },
-            {
+            }, {
                 "@type": "Question",
-                "name": "Does my health insurance cover orthopaedic surgery and joint replacement?",
+                "name": "Do you offer sports medicine and arthroscopic surgery?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "We accept most major health insurance policies and offer cashless treatment for eligible patients. Please bring your insurance card and valid identification at the time of admission, and our billing department will guide you through the entire process."
+                    "text": "Yes, we offer comprehensive sports medicine services including arthroscopic surgery for ligament reconstruction (ACL repair), meniscus repair, and rotator cuff surgery. Our team works with athletes to ensure optimal recovery and return to sport."
                 }
-            },
-            {
+            }, {
                 "@type": "Question",
-                "name": "Is physiotherapy available after surgery or injury?",
+                "name": "What is the recovery time after joint replacement surgery?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Absolutely. We have a dedicated physiotherapy department with qualified orthopaedic physiotherapists who work with you from day one – whether you have had a joint replacement, a fracture, or a sports injury. Rehabilitation is a key part of your recovery, and we ensure you have all the support you need."
+                    "text": "Recovery time varies depending on the joint and individual health. Generally, patients are mobile with support within 24-48 hours, continue physiotherapy for 6-12 weeks, and can expect to return to normal activities within 3-6 months. Our team provides comprehensive rehabilitation support."
                 }
-            },
-            {
+            }, {
                 "@type": "Question",
-                "name": "What should I do if I have an orthopaedic emergency – like a broken bone or severe joint injury – after hours?",
+                "name": "Do you treat osteoporosis and age-related bone conditions?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Ibn Sina Hospital has a fully functional 24/7 emergency department with an on-call orthopaedic surgeon available at all times. If you experience a fracture, dislocation, or any severe bone or joint injury, come directly to the hospital or call our emergency helpline. We are always ready to provide immediate, life-saving care."
+                    "text": "Yes, our orthopaedics department provides comprehensive care for osteoporosis, osteoarthritis, and age-related bone conditions. We offer medical management, fall prevention strategies, nutritional counselling, and surgical interventions when needed."
                 }
-            }
-        ]
-    }
+            }]
+        }
     </script>
 </head>
+
 <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- SKIP LINK -->
+    <a href="#main-content" class="skip-link" aria-label="Skip to main content">Skip to main content</a>
+
+    <!-- ===== HEADER ===== -->
     <header class="site-header" id="site-header">
         <div class="header-inner container">
-            <a href="../index.html" class="logo" aria-label="Ibn Sina Hospital Home">
-                <img src="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp" alt="Ibn Sina Hospital Logo" class="logo-img" style="height: 40px; width: auto;">
-                <span class="logo-text">Ibn Sina <strong>Hospital</strong></span>
+            <a class="logo" href="../index.html">
+                <img class="logo-img" src="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp" alt="Ibn Sina Hospital logo" style="height: 40px; width: auto;" />
+                <span class="logo-text">Ibn Sina Hospital</span>
             </a>
-            <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+            <nav class="main-nav" id="main-nav">
                 <ul class="nav-list">
-                    <li><a href="../index.html" class="nav-link">Home</a></li>
-                    <li><a href="../about.html" class="nav-link">About</a></li>
-                    <li><a href="../services.html" class="nav-link">Services</a></li>
-                    <li><a href="../doctors.html" class="nav-link">Doctors</a></li>
-                    <li><a href="../gallery.html" class="nav-link">Gallery</a></li>
-                    <li><a href="../blog.html" class="nav-link">Blog</a></li>
-                    <li><a href="../careers.html" class="nav-link">Careers</a></li>
-                    <li><a href="../faq.html" class="nav-link">FAQ</a></li>
-                    <li><a href="../contact.html" class="nav-link">Contact</a></li>
+                    <li><a class="nav-link" href="../index.html">Home</a></li>
+                    <li><a class="nav-link" href="../about.html">About</a></li>
+                    <li><a class="nav-link" href="../services.html">Services</a></li>
+                    <li><a class="nav-link" href="../doctors.html">Doctors</a></li>
+                    <li><a class="nav-link" href="../gallery.html">Gallery</a></li>
+                    <li><a class="nav-link" href="../blog.html">Blog</a></li>
+                    <li><a class="nav-link" href="../careers.html">Careers</a></li>
+                    <li><a class="nav-link" href="../faq.html">FAQ</a></li>
+                    <li><a class="nav-link" href="../contact.html">Contact</a></li>
                 </ul>
             </nav>
             <div class="header-actions">
-                <a href="tel:9622552553" class="emergency-badge" aria-label="Emergency call: 9622552553">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
-                    <span>Emergency: 9622552553</span>
+                <a href="tel:+919622552553" class="emergency-badge" aria-label="Emergency phone number 9622552553">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <span>9622552553</span>
                 </a>
                 <a href="../appointment.html" class="btn btn-primary btn-book">Book Appointment</a>
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
@@ -208,221 +438,239 @@
         </div>
     </header>
 
+    <!-- ===== MAIN CONTENT ===== -->
     <main id="main-content">
-        <!-- ========== HERO (Above the Fold) ========== -->
-        <section class="hero" style="background: linear-gradient(rgba(45,74,43,0.85), rgba(45,74,43,0.85)), url('https://i.ibb.co/9kYKZsWB/181bf27c6da3.webp') center/cover no-repeat;">
-            <div class="hero-content container">
-                <h1 class="hero-title">Orthopaedics & Joint Replacement</h1>
-                <p class="hero-subtitle">Advanced Bone & Joint Care in Budgam, Serving Srinagar & All J&K</p>
+
+        <!-- 1. HERO -->
+        <section class="hero-orthopaedics fade-in">
+            <div class="container">
+                <h1>Orthopaedics</h1>
+                <p class="subtitle">Orthopaedics – Advanced Bone, Joint &amp; Sports Care in Budgam, Serving Srinagar &amp; All J&K</p>
                 <div class="hero-ctas">
-                    <a href="../appointment.html" class="btn btn-primary btn-lg">Book Appointment</a>
-                    <a href="https://wa.me/919622552553" class="btn btn-emergency btn-lg" target="_blank">WhatsApp / Call Now</a>
+                    <a href="../appointment.html" class="btn btn-primary">Book Appointment</a>
+                    <a href="https://wa.me/919622552553" class="btn btn-emergency"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                    <a href="tel:+919622552553" class="btn btn-outline"><i class="fas fa-phone"></i> Call Now</a>
                 </div>
-                <div class="hero-badges" style="margin-top:1rem;">
-                    <span class="badge">24x7 OPD & Emergency</span>
-                    <span class="badge">Consultant-Led Care</span>
-                    <span class="badge">Cashless Insurance</span>
-                    <span class="badge">3 Expert Doctors</span>
+                <div class="trust-badges">
+                    <span><i class="fas fa-clock"></i> 24x7 OPD &amp; Emergency</span>
+                    <span><i class="fas fa-user-md"></i> Consultant-Led Care</span>
+                    <span><i class="fas fa-file-invoice"></i> Cashless Insurance</span>
+                    <span><i class="fas fa-users"></i> 3+ Orthopaedic Surgeons</span>
                 </div>
             </div>
         </section>
 
-        <!-- ========== WHAT WE TREAT ========== -->
-        <section class="section">
+        <!-- 2. WHAT WE TREAT -->
+        <section class="what-we-treat fade-in section-padding">
             <div class="container">
-                <h2 class="section-title">What We Treat</h2>
-                <ul class="condition-list">
-                    <li>Osteoarthritis and rheumatoid arthritis of the hip, knee, and shoulder</li>
-                    <li>Sports injuries – ligament tears, meniscal injuries, and rotator cuff damage</li>
-                    <li>Fractures and trauma – from simple breaks to complex bone injuries</li>
-                    <li>Degenerative joint diseases requiring partial or total joint replacement</li>
-                    <li>Back and neck pain, including slipped discs and spinal stenosis</li>
-                    <li>Chronic joint pain and stiffness limiting daily activities</li>
-                    <li>Bone infections (osteomyelitis) and non-healing fractures</li>
-                    <li>Arthroscopic surgeries for cartilage repair and ligament reconstruction</li>
-                </ul>
+                <h2>What We Treat</h2>
+                <div class="treat-grid">
+                    <div class="treat-item">Joint Replacement (Hip, Knee, Shoulder)</div>
+                    <div class="treat-item">Sports Injuries &amp; Arthroscopy</div>
+                    <div class="treat-item">Fractures &amp; Trauma Management</div>
+                    <div class="treat-item">Spinal Disorders &amp; Back Pain</div>
+                    <div class="treat-item">Arthritis &amp; Osteoarthritis</div>
+                    <div class="treat-item">Ligament &amp; Tendon Injuries</div>
+                    <div class="treat-item">Pediatric Orthopaedics</div>
+                    <div class="treat-item">Osteoporosis &amp; Bone Health</div>
+                </div>
+                <p class="treat-note">We provide compassionate, expert orthopaedic care for patients across Budgam, Srinagar, and all of Kashmir.</p>
             </div>
         </section>
 
-        <!-- ========== OUR DOCTORS ========== -->
-        <section class="section" style="background:#faf9f6;">
+        <!-- 3. OUR DOCTORS -->
+        <section class="our-doctors fade-in section-padding">
             <div class="container">
-                <h2 class="section-title">Our Doctors</h2>
-                <div class="doctor-cards-grid">
+                <h2>Our Orthopaedics Team</h2>
+                <div class="doctors-grid">
+
+                    <!-- Doctor 1: Dr. Azad Shah -->
                     <div class="doctor-card">
-                        <img src="https://i.ibb.co/fdLxrJR8/136bedc2c327.webp" alt="Dr. Azad Shah" style="width:80px;height:80px;object-fit:cover;border-radius:50%;margin:0 auto 1rem;display:block;">
+                        <img src="https://i.ibb.co/fdLxrJR8/136bedc2c327.webp" alt="Dr. Azad Shah - Orthopaedic Surgeon at Ibn Sina Hospital Budgam" loading="lazy" />
                         <h3>Dr. Azad Shah</h3>
                         <p class="doctor-specialty">Orthopaedic Surgeon</p>
-                        <p class="doctor-qual">MBBS – MS Ortho</p>
-                        <a href="../doctors/doctor-dr-azad-shah.html" class="btn btn-outline btn-sm">View Profile</a>
+                        <p class="doctor-qual">MBBS - MS (Orthopaedics)</p>
+                        <p class="doctor-about">Dr. Azad Shah is an Orthopaedic Surgeon specializing in bone and joint disorders, trauma management, and joint replacement procedures.</p>
+                        <a href="../doctors/doctor-dr-azad-shah.html" class="btn btn-outline btn-view-profile">View Profile</a>
                     </div>
+
+                    <!-- Doctor 2: Dr. Yawar Haider -->
                     <div class="doctor-card">
-                        <img src="https://i.ibb.co/k6qQCBFj/7a25f73afe97.webp" alt="Dr. Yawar Haider" style="width:80px;height:80px;object-fit:cover;border-radius:50%;margin:0 auto 1rem;display:block;">
+                        <img src="https://i.ibb.co/k6qQCBFj/7a25f73afe97.webp" alt="Dr. Yawar Haider - Orthopaedic Surgeon at Ibn Sina Hospital" loading="lazy" />
                         <h3>Dr. Yawar Haider</h3>
-                        <p class="doctor-specialty">Consultant Orthopaedic Surgeon</p>
-                        <p class="doctor-qual">MBBS – MS Ortho – FNB (Sports & Arthroscopy)</p>
-                        <a href="../doctors/doctor-dr-yawar-haider.html" class="btn btn-outline btn-sm">View Profile</a>
+                        <p class="doctor-specialty">Orthopaedic Surgeon</p>
+                        <p class="doctor-qual">MBBS - MS (Ortho) - FNB (Sports &amp; Arthroscopy)</p>
+                        <p class="doctor-about">Dr. Yawar Haider is a Consultant Orthopaedic Surgeon specializing in sports medicine, arthroscopy, and advanced joint reconstruction.</p>
+                        <a href="../doctors/doctor-dr-yawar-haider.html" class="btn btn-outline btn-view-profile">View Profile</a>
                     </div>
+
+                    <!-- Doctor 3: Dr. Sukhjeet Singh -->
                     <div class="doctor-card">
-                        <img src="https://i.ibb.co/d0LZPC33/e0404e40aefa.webp" alt="Dr. Sukhjeet Singh" style="width:80px;height:80px;object-fit:cover;border-radius:50%;margin:0 auto 1rem;display:block;">
+                        <img src="https://i.ibb.co/d0LZPC33/e0404e40aefa.webp" alt="Dr. Sukhjeet Singh - Senior Orthopaedic Surgeon at Ibn Sina Hospital" loading="lazy" />
                         <h3>Dr. Sukhjeet Singh</h3>
-                        <p class="doctor-specialty">Senior Consultant Orthopaedic Surgeon</p>
-                        <p class="doctor-qual">MBBS – MS Ortho – Senior Consultant</p>
-                        <a href="../doctors/doctor-dr-sukhjeet-singh.html" class="btn btn-outline btn-sm">View Profile</a>
+                        <p class="doctor-specialty">Senior Orthopaedic Surgeon</p>
+                        <p class="doctor-qual">MBBS - MS (Ortho) - Senior Consultant</p>
+                        <p class="doctor-about">Dr. Sukhjeet Singh is a Senior Consultant Orthopaedic Surgeon focusing on complex bone trauma, joint replacement, and degenerative joint diseases.</p>
+                        <a href="../doctors/doctor-dr-sukhjeet-singh.html" class="btn btn-outline btn-view-profile">View Profile</a>
                     </div>
+
                 </div>
-                <p class="text-center" style="margin-top:1rem;"><a href="../doctors.html" class="btn btn-outline">View All Doctors</a></p>
             </div>
         </section>
 
-        <!-- ========== TREATMENT PROCESS ========== -->
-        <section class="section">
+        <!-- 4. WHAT TO EXPECT (PROCESS) -->
+        <section class="treatment-process fade-in section-padding">
             <div class="container">
-                <h2 class="section-title">What to Expect</h2>
+                <h2>What to Expect – Your Orthopaedic Journey</h2>
                 <div class="process-steps">
                     <div class="process-step">
-                        <h3>1. Consultation</h3>
-                        <p>Your journey begins with a thorough one-on-one consultation with one of our orthopaedic surgeons. We take a detailed history of your pain, injury, or limitation, and we listen carefully to your goals – whether you want to walk without a limp, play cricket again, or simply get through your day without discomfort.</p>
+                        <span class="step-number">1</span>
+                        <h4>Comprehensive Orthopaedic Assessment</h4>
+                        <p>Our specialists perform a detailed clinical evaluation including history, physical examination, and functional assessment of your musculoskeletal system.</p>
                     </div>
                     <div class="process-step">
-                        <h3>2. Diagnosis</h3>
-                        <p>We use state-of-the-art imaging facilities available right here at Ibn Sina Hospital, including digital X-ray, ultrasound, and advanced MRI scans. Our radiologists work closely with the orthopaedic team to pinpoint the exact cause of your problem, so we never treat blindly.</p>
+                        <span class="step-number">2</span>
+                        <h4>Advanced Diagnostics</h4>
+                        <p>We utilize digital X-rays, CT scans, MRI, and ultrasound to accurately diagnose fractures, joint conditions, and soft tissue injuries.</p>
                     </div>
                     <div class="process-step">
-                        <h3>3. Treatment</h3>
-                        <p>Your treatment is tailor-made for you. It may range from physiotherapy and medication to minimally invasive arthroscopic surgery or full joint replacement. For patients needing surgery, we use modern techniques that minimise tissue damage, reduce hospital stays, and speed up recovery. Our joint replacement surgeries use high-quality implants designed for long-lasting function.</p>
+                        <span class="step-number">3</span>
+                        <h4>Personalised Treatment Plan</h4>
+                        <p>From conservative management (physiotherapy, medications, injections) to minimally invasive surgery, arthroscopy, and joint replacement, we tailor treatment to your needs.</p>
                     </div>
                     <div class="process-step">
-                        <h3>4. Follow-up & Rehabilitation</h3>
-                        <p>Recovery does not end in the operating theatre. We provide a structured rehabilitation plan, including on-site physiotherapy, to help you regain strength, flexibility, and confidence. Our team monitors your progress closely and is always available to answer your questions during follow-up visits.</p>
+                        <span class="step-number">4</span>
+                        <h4>Rehabilitation &amp; Recovery</h4>
+                        <p>We provide comprehensive physiotherapy and rehabilitation, regular follow-ups, and 24/7 emergency care for any post-treatment concerns.</p>
                     </div>
+                </div>
+                <div style="text-align:center;">
+                    <p class="process-note"><i class="fas fa-flask" style="margin-right:8px;"></i> Our 24/7 laboratory, imaging, and pharmacy support all diagnostic and treatment needs.</p>
                 </div>
             </div>
         </section>
 
-        <!-- ========== FACILITIES ========== -->
-        <section class="section" style="background:#faf9f6;">
+        <!-- 5. FACILITIES -->
+        <section class="facilities fade-in section-padding">
             <div class="container">
-                <h2 class="section-title">Facilities</h2>
+                <h2>Our Orthopaedics Facilities</h2>
                 <ul class="facilities-list">
-                    <li>State-of-the-art modular operation theatres designed for joint replacement and arthroscopic surgeries</li>
-                    <li>High-resolution digital X-ray and MRI services for accurate diagnosis</li>
-                    <li>Dedicated fracture and trauma care unit with 24/7 emergency coverage</li>
-                    <li>In-house physiotherapy and rehabilitation centre with experienced therapists</li>
-                    <li>Advanced arthroscopy equipment for keyhole ligament and cartilage repair</li>
-                    <li>Private patient rooms with comfortable recovery spaces</li>
-                    <li>On-site blood bank and intensive care backup for major surgical cases</li>
+                    <li><i class="fas fa-scalpel"></i> Advanced Joint Replacement Surgery Suite</li>
+                    <li><i class="fas fa-running"></i> Sports Medicine &amp; Arthroscopy Unit</li>
+                    <li><i class="fas fa-x-ray"></i> Digital X-Ray &amp; MRI Services</li>
+                    <li><i class="fas fa-hand-holding-heart"></i> Physiotherapy &amp; Rehabilitation Centre</li>
+                    <li><i class="fas fa-flask"></i> In-house Pharmacy &amp; Lab</li>
+                    <li><i class="fas fa-ambulance"></i> 24/7 Trauma &amp; Emergency Care</li>
                 </ul>
             </div>
         </section>
 
-        <!-- ========== WHY US IN J&K ========== -->
-        <section class="section">
+        <!-- 6. WHY US IN J&K -->
+        <section class="why-us fade-in section-padding">
             <div class="container">
-                <h2 class="section-title">Why Ibn Sina in J&K</h2>
+                <h2>Why Ibn Sina Hospital in Jammu &amp; Kashmir?</h2>
                 <div class="why-grid">
                     <div class="why-card">
-                        <h3>24/7 Trauma and Emergency Orthopaedic Care</h3>
-                        <p>Fractures and accidents do not wait for office hours. Our orthopaedic team is on call round the clock, every day of the year, ready to manage any emergency – from road traffic accidents to domestic falls.</p>
+                        <div class="icon"><i class="fas fa-clock"></i></div>
+                        <h4>24/7 OPD &amp; Emergency</h4>
+                        <p>Round-the-clock outpatient and emergency orthopaedic care for fractures, dislocations, and trauma.</p>
                     </div>
                     <div class="why-card">
-                        <h3>Consultant-Led, Personalised Treatment</h3>
-                        <p>Every patient is assessed and treated by a senior consultant orthopaedic surgeon. We do not believe in one-size-fits-all; your surgical plan, implant choice, and rehabilitation schedule are tailored specifically to your age, lifestyle, and medical needs.</p>
+                        <div class="icon"><i class="fas fa-stethoscope"></i></div>
+                        <h4>Consultant-Led Care</h4>
+                        <p>Every patient is managed by experienced orthopaedic surgeons with specialized training.</p>
                     </div>
                     <div class="why-card">
-                        <h3>Multi-Specialty Backup Under One Roof</h3>
-                        <p>Complex orthopaedic cases often involve other systems. Our team works seamlessly with internal medicine, radiology, physiotherapy, and intensive care specialists – all on the same campus – to provide holistic care without unnecessary transfers.</p>
+                        <div class="icon"><i class="fas fa-hospital-user"></i></div>
+                        <h4>Multi-Specialty Backup</h4>
+                        <p>Access to rheumatologists, physiotherapists, and other specialists for comprehensive care.</p>
                     </div>
                     <div class="why-card">
-                        <h3>Serving All of Kashmir</h3>
-                        <p>Located centrally in Budgam, our hospital is easily accessible to patients from Srinagar, Pulwama, Baramulla, Anantnag, and every corner of the valley. We bring world-class orthopaedic and joint replacement services closer to your home, so you and your family never have to travel far for quality bone and joint care.</p>
+                        <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <h4>Serving All Kashmir</h4>
+                        <p>We are proud to serve patients from Budgam, Srinagar, and every corner of the valley.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ========== FAQ ========== -->
-        <section class="section" style="background:#faf9f6;">
+        <!-- 7. FAQs -->
+        <section class="faq-section fade-in section-padding">
             <div class="container">
-                <h2 class="section-title">Frequently Asked Questions</h2>
+                <h2>Frequently Asked Questions</h2>
                 <div class="faq-list">
-                    <details open>
-                        <summary>How can I book an appointment with an orthopaedic surgeon at Ibn Sina Hospital?</summary>
-                        <p>You can book an appointment by calling our hospital reception, visiting us in person, or using our online appointment system. Our staff will help you schedule a convenient time with the surgeon best suited to your condition.</p>
+                    <details class="faq-item">
+                        <summary>What conditions do orthopaedic surgeons treat?</summary>
+                        <div class="faq-answer">Orthopaedic surgeons treat a wide range of conditions including fractures, joint pain, arthritis, back and neck pain, sports injuries, ligament tears (ACL, meniscus), tendonitis, osteoarthritis, rheumatoid arthritis, and deformities of the bones and joints.</div>
                     </details>
-                    <details>
-                        <summary>Do you offer joint replacement surgery for elderly patients with arthritis?</summary>
-                        <p>Yes. We specialise in total knee replacement, hip replacement, and shoulder replacement surgeries, particularly for elderly patients suffering from severe arthritis. Our team carefully evaluates each patient’s fitness for surgery and provides comprehensive pre- and post-operative care.</p>
+                    <details class="faq-item">
+                        <summary>When should I consider joint replacement surgery?</summary>
+                        <div class="faq-answer">Joint replacement is considered when conservative treatments (medications, physiotherapy, injections) no longer provide relief from severe joint pain and stiffness. Common symptoms include persistent pain that limits daily activities, joint deformity, and difficulty walking or climbing stairs.</div>
                     </details>
-                    <details>
-                        <summary>Does my health insurance cover orthopaedic surgery and joint replacement?</summary>
-                        <p>We accept most major health insurance policies and offer cashless treatment for eligible patients. Please bring your insurance card and valid identification at the time of admission, and our billing department will guide you through the entire process.</p>
+                    <details class="faq-item">
+                        <summary>Do you offer sports medicine and arthroscopic surgery?</summary>
+                        <div class="faq-answer">Yes, we offer comprehensive sports medicine services including arthroscopic surgery for ligament reconstruction (ACL repair), meniscus repair, and rotator cuff surgery. Our team works with athletes to ensure optimal recovery and return to sport.</div>
                     </details>
-                    <details>
-                        <summary>Is physiotherapy available after surgery or injury?</summary>
-                        <p>Absolutely. We have a dedicated physiotherapy department with qualified orthopaedic physiotherapists who work with you from day one – whether you have had a joint replacement, a fracture, or a sports injury. Rehabilitation is a key part of your recovery, and we ensure you have all the support you need.</p>
+                    <details class="faq-item">
+                        <summary>What is the recovery time after joint replacement surgery?</summary>
+                        <div class="faq-answer">Recovery time varies depending on the joint and individual health. Generally, patients are mobile with support within 24-48 hours, continue physiotherapy for 6-12 weeks, and can expect to return to normal activities within 3-6 months. Our team provides comprehensive rehabilitation support.</div>
                     </details>
-                    <details>
-                        <summary>What should I do if I have an orthopaedic emergency – like a broken bone or severe joint injury – after hours?</summary>
-                        <p>Ibn Sina Hospital has a fully functional 24/7 emergency department with an on-call orthopaedic surgeon available at all times. If you experience a fracture, dislocation, or any severe bone or joint injury, come directly to the hospital or call our emergency helpline. We are always ready to provide immediate, life-saving care.</p>
+                    <details class="faq-item">
+                        <summary>Do you treat osteoporosis and age-related bone conditions?</summary>
+                        <div class="faq-answer">Yes, our orthopaedics department provides comprehensive care for osteoporosis, osteoarthritis, and age-related bone conditions. We offer medical management, fall prevention strategies, nutritional counselling, and surgical interventions when needed.</div>
                     </details>
                 </div>
             </div>
         </section>
 
-        <!-- ========== APPOINTMENT FORM ========== -->
-        <section class="section">
-            <div class="container" style="max-width:600px; margin:0 auto;">
-                <h2 class="section-title text-center">Book an Appointment</h2>
-                <form id="appointment-form" action="https://script.google.com/macros/s/AKfycbwOmEFb0cu0rQ3IzRKrzP9wLNgjXZLUuvpZJWp2xEcZSvuknyppjiavPWST31QNEWoS/exec" method="POST" target="hidden-iframe">
+        <!-- 8. APPOINTMENT FORM -->
+        <section class="appointment-form-section fade-in section-padding">
+            <div class="container">
+                <h2>Book Your Appointment</h2>
+                <form action="https://script.google.com/macros/s/AKfycbwOmEFb0cu0rQ3IzRKrzP9wLNgjXZLUuvpZJWp2xEcZSvuknyppjiavPWST31QNEWoS/exec" method="POST" target="hidden-iframe">
                     <div class="form-group">
-                        <label for="patient-name">Your Name *</label>
-                        <input type="text" id="patient-name" name="patient_name" required placeholder="Full name">
+                        <label for="patient_name">Full Name</label>
+                        <input type="text" id="patient_name" name="patient_name" required />
                     </div>
                     <div class="form-group">
-                        <label for="patient-phone">Phone Number *</label>
-                        <input type="tel" id="patient-phone" name="phone" required placeholder="Mobile number">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required />
                     </div>
                     <div class="form-group">
                         <label for="department">Department</label>
                         <select id="department" name="department">
-                            <option value="Orthopaedics & Joint Replacement">Orthopaedics & Joint Replacement</option>
+                            <option value="Orthopaedics" selected>Orthopaedics</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="preferred-date">Preferred Date (optional)</label>
-                        <input type="date" id="preferred-date" name="preferred_date">
+                        <label for="preferred_date">Preferred Date</label>
+                        <input type="date" id="preferred_date" name="preferred_date" />
                     </div>
                     <div class="form-group">
-                        <label for="reason">Short Note (optional)</label>
-                        <textarea id="reason" name="reason" rows="3" placeholder="Any specific concern..."></textarea>
+                        <label for="reason">Short Note (Symptoms / Reason)</label>
+                        <textarea id="reason" name="reason" rows="3"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">Request Appointment</button>
+                    <button type="submit" class="btn btn-primary">Request Appointment</button>
                 </form>
                 <iframe name="hidden-iframe" style="display:none;"></iframe>
-                <div id="appointment-success" style="display:none; text-align:center; padding:2rem;">
-                    <h2>Thank you!</h2>
-                    <p>We'll call you shortly to schedule your visit.</p>
-                    <a href="../index.html" class="btn btn-outline">Back to Home</a>
-                </div>
             </div>
         </section>
+
     </main>
 
+    <!-- ===== FOOTER ===== -->
     <footer class="site-footer">
-        <div class="footer-wave" aria-hidden="true">
-            <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
+        <div class="footer-wave">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.32C49.47,112.53,117.19,107.21,177.45,93.74,227.76,82.24,269.22,67.66,321.39,56.44Z" />
+            </svg>
         </div>
-        <div class="footer-main container">
+        <div class="footer-main">
             <div class="footer-col">
-                <h3 class="footer-logo">Ibn Sina <strong>Hospital</strong></h3>
-                <address>Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111</address>
-                <p><a href="tel:9622552553">📞 9622552553 / 9419023501</a></p>
-                <p><a href="mailto:weibnsina@gmail.com">✉ weibnsina@gmail.com</a></p>
-            </div>
-            <div class="footer-col">
-                <h4>OPD & Emergency</h4>
-                <p class="footer-note"><strong>OPD, Pharmacy, Lab & Emergency:</strong> 24/7, 365 days</p>
+                <h3>Ibn Sina Hospital</h3>
+                <p>Budgam, Jammu &amp; Kashmir</p>
+                <p><i class="fas fa-phone"></i> <a href="tel:+919622552553">9622552553</a></p>
+                <p><i class="fas fa-envelope"></i> <a href="mailto:weibnsina@gmail.com">weibnsina@gmail.com</a></p>
             </div>
             <div class="footer-col">
                 <h4>Quick Links</h4>
@@ -431,38 +679,42 @@
                     <li><a href="../about.html">About Us</a></li>
                     <li><a href="../services.html">Services</a></li>
                     <li><a href="../doctors.html">Doctors</a></li>
-                    <li><a href="../gallery.html">Gallery</a></li>
-                    <li><a href="../blog.html">Blog</a></li>
-                    <li><a href="../careers.html">Careers</a></li>
-                    <li><a href="../faq.html">FAQ</a></li>
                     <li><a href="../contact.html">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Stay Connected</h4>
+                <h4>Follow Us</h4>
                 <div class="social-icons">
-                    <a href="https://www.facebook.com/share/1HSWNC9UEy/" target="_blank" rel="noopener" aria-label="Facebook" class="social-icon">FB</a>
-                    <a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon">IG</a>
-                    <a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon">YT</a>
+                    <a href="https://www.facebook.com/share/1HSWNC9UEy/" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                 </div>
-                <form class="newsletter-form" id="newsletter-form">
-                    <label for="newsletter-email">Subscribe for health tips:</label>
+            </div>
+            <div class="footer-col">
+                <h4>Newsletter</h4>
+                <form class="newsletter-form">
                     <div class="newsletter-input-group">
-                        <input type="email" id="newsletter-email" placeholder="Your email" required>
-                        <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
+                        <input type="email" placeholder="Your email address" required />
+                        <button type="submit" aria-label="Subscribe"><i class="fas fa-arrow-right"></i></button>
                     </div>
                 </form>
             </div>
         </div>
         <div class="footer-bottom container">
-            <p>&copy; 2025 Ibn Sina Hospital. All rights reserved. | Operating since 2018</p>
-            <p class="google-review-note">See our latest reviews on <a href="https://maps.google.com/?q=IBN+SINA+HOSPITAL+Ompora+Budgam" target="_blank" rel="noopener">Google Maps</a></p>
+            <p>&copy; 2026 Ibn Sina Hospital. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/919622552553" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp" style="position:fixed; bottom:20px; right:20px; z-index:1000;">
-        <svg width="50" height="50" viewBox="0 0 24 24" fill="#25D366" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.83 14.12c-.25.7-1.45 1.34-2.03 1.42-.52.07-1.17.1-1.88-.12-.43-.13-.99-.32-1.7-.63-3.01-1.3-4.97-4.33-5.12-4.53-.15-.2-1.22-1.62-1.22-3.09 0-1.47.77-2.19 1.04-2.49.27-.3.59-.37.79-.37.2 0 .39.01.56.01.18.01.42-.07.66.5.25.58.84 2.04.91 2.19.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.18-.32.4-.45.53-.15.15-.31.31-.13.61.18.3.8 1.32 1.72 2.14 1.18 1.05 2.17 1.38 2.48 1.53.3.15.48.13.66-.07.18-.2.76-.88.96-1.18.2-.3.4-.25.67-.15.27.1 1.72.81 2.01.96.3.15.5.22.57.35.07.12.07.72-.18 1.42z"/></svg>
+    <!-- ===== FLOATING WHATSAPP - LEFT SIDE ===== -->
+    <a href="https://wa.me/919622552553" class="floating-whatsapp" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
     </a>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="../js/main.js"></script>
+    <script src="../js/chatbot.js"></script>
+    <script src="../js/animations.js"></script>
 </body>
 </html>
