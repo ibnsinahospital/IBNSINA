@@ -1371,14 +1371,22 @@ document.addEventListener(
             // department-pages/ (mirrors the fallback logic in
             // generate_dynamic.py's resolve_department_link()).
             const MANUAL_DEPARTMENT_SLUGS = new Set([
+              'cardiology',
+              'dentistry',
+              'dermatology',
               'ent',
               'gastroenterology',
+              'general-medicine',
               'general-surgery',
               'gynaecology',
               'nephrology',
-              'optholmology',
-              'orthropedics',
+              'ophthalmology',
+              'orthopaedics',
               'pediatric-surgery',
+              'physiotherapy',
+              'plastic-surgery',
+              'pulmonology',
+              'radiology',
               'rheumatology',
               'urology'
             ]);
