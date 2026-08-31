@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Radiology Department | Ibn Sina Hospital Budgam, Srinagar</title>
+    <meta name="description" content="Expert radiology and diagnostic imaging at Ibn Sina Hospital, Budgam. MRI, CT scans, ultrasound, X-ray, and advanced imaging services in J&K." />
+    <link rel="canonical" href="https://ibnsinahospital.in/department-pages/radiology.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Radiology Department | Ibn Sina Hospital" />
+    <meta property="og:description" content="Comprehensive radiology and diagnostic imaging services including MRI, CT, ultrasound, and X-ray in Budgam, Srinagar, J&K." />
+    <meta property="og:url" content="https://ibnsinahospital.in/department-pages/radiology.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://i.ibb.co/4wsYHvh0/e9bc2e97d0a9.webp" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Radiology Department | Ibn Sina Hospital" />
+    <meta name="twitter:description" content="Expert radiology and diagnostic imaging in Budgam, Srinagar. Advanced MRI, CT, and ultrasound." />
+    <meta name="twitter:image" content="https://i.ibb.co/4wsYHvh0/e9bc2e97d0a9.webp" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- GSAP + ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../css/style.css" />
+
+    <!-- Page-specific styles -->
+    <style>
+        .hero-radiology {
+            background: linear-gradient(rgba(0, 40, 30, 0.82), rgba(0, 40, 30, 0.88)),
+                url('https://i.ibb.co/4wsYHvh0/e9bc2e97d0a9.webp') center center / cover no-repeat;
+            padding: 80px 0;
+            color: #fff;
+        }
+
+        .hero-radiology .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 1.8rem;
+            opacity: 0.95;
+        }
+
+        .hero-ctas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 2rem;
+        }
+
+        .hero-ctas .btn {
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s ease;
+        }
+
+        .trust-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px 32px;
+            font-size: 0.95rem;
+        }
+        .trust-badges span i {
+            margin-right: 8px;
+            color: #6fcf97;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .process-step {
+            background: #f8faf9;
+            padding: 30px 20px;
+            border-radius: 12px;
+            text-align: center;
+            border-left: 4px solid #0a7e6f;
+            transition: transform 0.25s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .process-step:hover {
+            transform: translateY(-6px);
+        }
+        .process-step .step-number {
+            display: inline-block;
+            background: #0a7e6f;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 50%;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .process-step h4 {
+            color: #0a3d36;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        .process-step p {
+            color: #4a5a55;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .process-note {
+            margin-top: 28px;
+            text-align: center;
+            font-weight: 500;
+            color: #0a3d36;
+            background: #e9f4f1;
+            padding: 14px 20px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 28px;
+            left: 28px;
+            z-index: 999;
+            background: #25D366;
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .floating-whatsapp:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 32px rgba(37, 211, 102, 0.5);
+        }
+        .floating-whatsapp svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .hero-radiology {
+                padding: 50px 0;
+                text-align: center;
+            }
+            .hero-ctas {
+                justify-content: center;
+            }
+            .trust-badges {
+                justify-content: center;
+                gap: 14px 24px;
+            }
+            .process-steps {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+            .floating-whatsapp {
+                width: 54px;
+                height: 54px;
+                bottom: 20px;
+                left: 20px;
+            }
+            .floating-whatsapp svg {
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+        .treat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 20px 0 10px;
+        }
+        .treat-item {
+            background: #f4f8f7;
+            padding: 14px 18px;
+            border-radius: 30px;
+            font-weight: 500;
+            color: #0a3d36;
+            border: 1px solid #dce8e3;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+        .treat-note {
+            margin-top: 18px;
+            font-style: italic;
+            color: #3d5a52;
+        }
+
+        .facilities-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px 30px;
+            margin-top: 10px;
+        }
+        .facilities-list li {
+            font-size: 1rem;
+            padding: 10px 0;
+            border-bottom: 1px dashed #e2e8e6;
+        }
+        .facilities-list li i {
+            color: #0a7e6f;
+            width: 28px;
+            margin-right: 10px;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 10px;
+        }
+        .why-card {
+            background: #fff;
+            padding: 28px 20px 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            text-align: center;
+            border: 1px solid #e9eeec;
+            transition: box-shadow 0.3s ease;
+        }
+        .why-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        .why-card .icon {
+            font-size: 2.6rem;
+            color: #0a7e6f;
+            margin-bottom: 14px;
+        }
+        .why-card h4 {
+            color: #0a3d36;
+            margin-bottom: 8px;
+        }
+        .why-card p {
+            color: #4a5a55;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            background: #fff;
+            border: 1px solid #e2e8e6;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            padding: 0 20px;
+            transition: border-color 0.2s;
+        }
+        .faq-item:hover {
+            border-color: #b0c8c0;
+        }
+        .faq-item summary {
+            padding: 18px 0;
+            font-weight: 600;
+            color: #0a3d36;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-item summary::after {
+            content: '+';
+            font-size: 1.6rem;
+            color: #0a7e6f;
+            line-height: 1;
+            margin-left: 12px;
+        }
+        .faq-item[open] summary::after {
+            content: '−';
+        }
+        .faq-item .faq-answer {
+            padding-bottom: 22px;
+            color: #3d4e48;
+            line-height: 1.7;
+        }
+
+        .appointment-form-section form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #f9fbfa;
+            padding: 32px 28px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #0a3d36;
+            margin-bottom: 4px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d0dcd7;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #fff;
+            transition: border 0.2s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0a7e6f;
+            box-shadow: 0 0 0 3px rgba(10, 126, 111, 0.15);
+        }
+    </style>
+
+    <!-- JSON-LD: Hospital -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Hospital",
+            "name": "Ibn Sina Hospital",
+            "description": "Multi-specialty hospital in Budgam, Srinagar, J&K offering radiology and diagnostic imaging services.",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Budgam",
+                "addressRegion": "Jammu and Kashmir",
+                "addressCountry": "IN"
+            },
+            "telephone": "+919622552553",
+            "areaServed": ["Budgam", "Srinagar", "Jammu and Kashmir"],
+            "url": "https://ibnsinahospital.in"
+        }
+    </script>
+
+    <!-- JSON-LD: FAQPage -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [{
+                "@type": "Question",
+                "name": "What imaging services does Ibn Sina Hospital offer?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "We offer a full range of diagnostic imaging services including MRI, CT scan, digital X-ray, ultrasound, Doppler studies, and mammography. Our advanced equipment ensures high-quality images for accurate diagnosis."
+                }
+            }, {
+                "@type": "Question",
+                "name": "Do I need a referral for a radiology test?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, most radiology tests require a referral from a doctor. However, we also accept walk-in patients for general X-rays and ultrasounds with a valid prescription. For advanced imaging like MRI and CT, a referral is mandatory."
+                }
+            }, {
+                "@type": "Question",
+                "name": "How long does it take to get radiology results?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Preliminary results are usually available within 24 hours. Urgent cases are prioritized and reported immediately. Our radiologists provide detailed reports to your referring physician promptly."
+                }
+            }, {
+                "@type": "Question",
+                "name": "Is radiology safe during pregnancy?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Ultrasound is safe during pregnancy and commonly used. X-rays and CT scans are generally avoided unless absolutely necessary. Our team takes extra precautions to minimize exposure and only perform these when the benefit outweighs the risk."
+                }
+            }, {
+                "@type": "Question",
+                "name": "Do you offer contrast-enhanced scans?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, we offer contrast-enhanced CT and MRI scans to better visualize blood vessels, tumors, and other structures. Our staff will explain the procedure and any necessary preparation."
+                }
+            }]
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- SKIP LINK -->
+    <a href="#main-content" class="skip-link" aria-label="Skip to main content">Skip to main content</a>
+
+    <!-- ===== HEADER ===== -->
+    <header class="site-header" id="site-header">
+        <div class="header-inner container">
+            <a class="logo" href="../index.html">
+                <img class="logo-img" src="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp" alt="Ibn Sina Hospital logo" style="height: 40px; width: auto;" />
+                <span class="logo-text">Ibn Sina Hospital</span>
+            </a>
+            <nav class="main-nav" id="main-nav">
+                <ul class="nav-list">
+                    <li><a class="nav-link" href="../index.html">Home</a></li>
+                    <li><a class="nav-link" href="../about.html">About</a></li>
+                    <li><a class="nav-link" href="../services.html">Services</a></li>
+                    <li><a class="nav-link" href="../doctors.html">Doctors</a></li>
+                    <li><a class="nav-link" href="../gallery.html">Gallery</a></li>
+                    <li><a class="nav-link" href="../blog.html">Blog</a></li>
+                    <li><a class="nav-link" href="../careers.html">Careers</a></li>
+                    <li><a class="nav-link" href="../faq.html">FAQ</a></li>
+                    <li><a class="nav-link" href="../contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="tel:+919622552553" class="emergency-badge" aria-label="Emergency phone number 9622552553">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <span>9622552553</span>
+                </a>
+                <a href="../appointment.html" class="btn btn-primary btn-book">Book Appointment</a>
+                <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main id="main-content">
+
+        <!-- 1. HERO -->
+        <section class="hero-radiology fade-in">
+            <div class="container">
+                <h1>Radiology</h1>
+                <p class="subtitle">Radiology – Advanced Diagnostic Imaging in Budgam, Serving Srinagar &amp; All J&K</p>
+                <div class="hero-ctas">
+                    <a href="../appointment.html" class="btn btn-primary">Book Appointment</a>
+                    <a href="https://wa.me/919622552553" class="btn btn-emergency"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                    <a href="tel:+919622552553" class="btn btn-outline"><i class="fas fa-phone"></i> Call Now</a>
+                </div>
+                <div class="trust-badges">
+                    <span><i class="fas fa-clock"></i> 24x7 Emergency Imaging</span>
+                    <span><i class="fas fa-user-md"></i> Consultant-Led Care</span>
+                    <span><i class="fas fa-file-invoice"></i> Cashless Insurance</span>
+                    <span><i class="fas fa-users"></i> 1+ Radiologist</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. WHAT WE TREAT -->
+        <section class="what-we-treat fade-in section-padding">
+            <div class="container">
+                <h2>Our Imaging Services</h2>
+                <div class="treat-grid">
+                    <div class="treat-item">MRI (Magnetic Resonance Imaging)</div>
+                    <div class="treat-item">CT Scan (Computed Tomography)</div>
+                    <div class="treat-item">Digital X-Ray &amp; Fluoroscopy</div>
+                    <div class="treat-item">Ultrasound &amp; Doppler Studies</div>
+                    <div class="treat-item">Mammography &amp; Breast Imaging</div>
+                    <div class="treat-item">Contrast-Enhanced Studies</div>
+                    <div class="treat-item">Interventional Radiology Procedures</div>
+                    <div class="treat-item">Emergency &amp; Trauma Imaging</div>
+                </div>
+                <p class="treat-note">We provide accurate, high-quality diagnostic imaging for patients across Budgam, Srinagar, and all of Kashmir.</p>
+            </div>
+        </section>
+
+        <!-- 3. OUR DOCTORS -->
+        <section class="our-doctors fade-in section-padding">
+            <div class="container">
+                <h2>Our Radiology Team</h2>
+                <div class="doctors-grid">
+
+                    <!-- Doctor: Dr. Ishan Shabir Wani -->
+                    <div class="doctor-card">
+                        <img src="https://i.ibb.co/93qgvhQ9/ebf25f9f887b.webp" alt="Dr. Ishan Shabir Wani - Radiologist at Ibn Sina Hospital Budgam" loading="lazy" />
+                        <h3>Dr. Ishan Shabir Wani</h3>
+                        <p class="doctor-specialty">Consultant Radiologist</p>
+                        <p class="doctor-qual">MD (Radiology) - Gold Medalist</p>
+                        <p class="doctor-about">Dr. Ishan Shabir Wani is a Gold Medalist Radiologist specializing in advanced diagnostic imaging, including MRI, CT scans, and ultrasound diagnostics.</p>
+                        <a href="../doctors/doctor-dr-ishan-shabir-wani.html" class="btn btn-outline btn-view-profile">View Profile</a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. WHAT TO EXPECT (PROCESS) -->
+        <section class="treatment-process fade-in section-padding">
+            <div class="container">
+                <h2>What to Expect – Your Imaging Journey</h2>
+                <div class="process-steps">
+                    <div class="process-step">
+                        <span class="step-number">1</span>
+                        <h4>Referral &amp; Scheduling</h4>
+                        <p>Your doctor provides a referral, and our team schedules your imaging at a convenient time. We offer flexible appointments including walk-ins for X-rays.</p>
+                    </div>
+                    <div class="process-step">
+                        <span class="step-number">2</span>
+                        <h4>Preparation &amp; Procedure</h4>
+                        <p>Our staff guides you through preparation (if needed) and performs the imaging using state-of-the-art equipment with maximum comfort and safety.</p>
+                    </div>
+                    <div class="process-step">
+                        <span class="step-number">3</span>
+                        <h4>Expert Interpretation</h4>
+                        <p>Our radiologist analyzes the images and provides a detailed report to your referring physician for accurate diagnosis and treatment planning.</p>
+                    </div>
+                    <div class="process-step">
+                        <span class="step-number">4</span>
+                        <h4>Results &amp; Follow-up</h4>
+                        <p>You receive your results promptly, and we coordinate with your doctor to ensure seamless follow-up care and any additional imaging if needed.</p>
+                    </div>
+                </div>
+                <div style="text-align:center;">
+                    <p class="process-note"><i class="fas fa-clock" style="margin-right:8px;"></i> 24/7 emergency imaging services available for urgent cases.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. FACILITIES -->
+        <section class="facilities fade-in section-padding">
+            <div class="container">
+                <h2>Our Radiology Facilities</h2>
+                <ul class="facilities-list">
+                    <li><i class="fas fa-magnet"></i> 3T MRI &amp; High-Field MRI</li>
+                    <li><i class="fas fa-ct"></i> 128-Slice CT Scanner</li>
+                    <li><i class="fas fa-x-ray"></i> Digital Radiography (DR) &amp; Fluoroscopy</li>
+                    <li><i class="fas fa-stethoscope"></i> High-Resolution Ultrasound &amp; Doppler</li>
+                    <li><i class="fas fa-ambulance"></i> Portable X-Ray for ICU &amp; Emergency</li>
+                    <li><i class="fas fa-flask"></i> Contrast Injection &amp; Interventional Suite</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 6. WHY US IN J&K -->
+        <section class="why-us fade-in section-padding">
+            <div class="container">
+                <h2>Why Ibn Sina Hospital in Jammu &amp; Kashmir?</h2>
+                <div class="why-grid">
+                    <div class="why-card">
+                        <div class="icon"><i class="fas fa-clock"></i></div>
+                        <h4>24/7 Emergency Imaging</h4>
+                        <p>Round-the-clock imaging services for trauma, stroke, and emergency cases to support rapid diagnosis and treatment.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="icon"><i class="fas fa-stethoscope"></i></div>
+                        <h4>Consultant-Led Reports</h4>
+                        <p>All images are interpreted by experienced radiologists to ensure accurate and timely diagnosis.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="icon"><i class="fas fa-hospital-user"></i></div>
+                        <h4>Multi-Specialty Support</h4>
+                        <p>Our imaging services support all departments including cardiology, neurology, orthopaedics, and oncology.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <h4>Serving All Kashmir</h4>
+                        <p>We are proud to serve patients from Budgam, Srinagar, and every corner of the valley.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. FAQs -->
+        <section class="faq-section fade-in section-padding">
+            <div class="container">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-list">
+                    <details class="faq-item">
+                        <summary>What imaging services does Ibn Sina Hospital offer?</summary>
+                        <div class="faq-answer">We offer a full range of diagnostic imaging services including MRI, CT scan, digital X-ray, ultrasound, Doppler studies, and mammography. Our advanced equipment ensures high-quality images for accurate diagnosis.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Do I need a referral for a radiology test?</summary>
+                        <div class="faq-answer">Yes, most radiology tests require a referral from a doctor. However, we also accept walk-in patients for general X-rays and ultrasounds with a valid prescription. For advanced imaging like MRI and CT, a referral is mandatory.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>How long does it take to get radiology results?</summary>
+                        <div class="faq-answer">Preliminary results are usually available within 24 hours. Urgent cases are prioritized and reported immediately. Our radiologists provide detailed reports to your referring physician promptly.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Is radiology safe during pregnancy?</summary>
+                        <div class="faq-answer">Ultrasound is safe during pregnancy and commonly used. X-rays and CT scans are generally avoided unless absolutely necessary. Our team takes extra precautions to minimize exposure and only perform these when the benefit outweighs the risk.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Do you offer contrast-enhanced scans?</summary>
+                        <div class="faq-answer">Yes, we offer contrast-enhanced CT and MRI scans to better visualize blood vessels, tumors, and other structures. Our staff will explain the procedure and any necessary preparation.</div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. APPOINTMENT FORM -->
+        <section class="appointment-form-section fade-in section-padding">
+            <div class="container">
+                <h2>Book Your Appointment</h2>
+                <form action="https://script.google.com/macros/s/AKfycbwOmEFb0cu0rQ3IzRKrzP9wLNgjXZLUuvpZJWp2xEcZSvuknyppjiavPWST31QNEWoS/exec" method="POST" target="hidden-iframe">
+                    <div class="form-group">
+                        <label for="patient_name">Full Name</label>
+                        <input type="text" id="patient_name" name="patient_name" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select id="department" name="department">
+                            <option value="Radiology" selected>Radiology</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="preferred_date">Preferred Date</label>
+                        <input type="date" id="preferred_date" name="preferred_date" />
+                    </div>
+                    <div class="form-group">
+                        <label for="reason">Short Note (Reason for Imaging)</label>
+                        <textarea id="reason" name="reason" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Request Appointment</button>
+                </form>
+                <iframe name="hidden-iframe" style="display:none;"></iframe>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="site-footer">
+        <div class="footer-wave">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.32C49.47,112.53,117.19,107.21,177.45,93.74,227.76,82.24,269.22,67.66,321.39,56.44Z" />
+            </svg>
+        </div>
+        <div class="footer-main">
+            <div class="footer-col">
+                <h3>Ibn Sina Hospital</h3>
+                <p>Budgam, Jammu &amp; Kashmir</p>
+                <p><i class="fas fa-phone"></i> <a href="tel:+919622552553">9622552553</a></p>
+                <p><i class="fas fa-envelope"></i> <a href="mailto:weibnsina@gmail.com">weibnsina@gmail.com</a></p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../about.html">About Us</a></li>
+                    <li><a href="../services.html">Services</a></li>
+                    <li><a href="../doctors.html">Doctors</a></li>
+                    <li><a href="../contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/share/1HSWNC9UEy/" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Newsletter</h4>
+                <form class="newsletter-form">
+                    <div class="newsletter-input-group">
+                        <input type="email" placeholder="Your email address" required />
+                        <button type="submit" aria-label="Subscribe"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom container">
+            <p>&copy; 2026 Ibn Sina Hospital. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ===== FLOATING WHATSAPP - LEFT SIDE ===== -->
+    <a href="https://wa.me/919622552553" class="floating-whatsapp" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+    </a>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="../js/main.js"></script>
+    <script src="../js/chatbot.js"></script>
+    <script src="../js/animations.js"></script>
+</body>
+</html>
