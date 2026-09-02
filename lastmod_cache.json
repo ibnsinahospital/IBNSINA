@@ -128,20 +128,20 @@
     "lastmod": "2026-08-31"
   },
   "https://ibnsinahospital.in/blog/blog-emergency-vs-opd.html": {
-    "hash": "05df9a90ee1144b3b9655e3a431a62be6da9b747e02a9be94e881475a9abaaf0",
-    "lastmod": "2026-08-23"
+    "hash": "2321fec35e73f63cb16045f497517b67112c9ba1977126b398c6145fe2c9343f",
+    "lastmod": "2026-09-02"
   },
   "https://ibnsinahospital.in/blog/blog-understanding-tmt-holter-abpm.html": {
-    "hash": "63e234861f3804714a9c331cb383ebadc3160f822a2550e9c3aa2869e670304a",
-    "lastmod": "2026-08-23"
+    "hash": "9b5ad4749ae5cf3b63683105549e343a22cbadf705eaa939def440a28ab840f6",
+    "lastmod": "2026-09-02"
   },
   "https://ibnsinahospital.in/blog/blog-understanding-dialysis-guide.html": {
-    "hash": "07bd7d593312483720e231e4d932f0b5c1d0094c12394bb4ef8ef30d7ee0cd0e",
-    "lastmod": "2026-08-23"
+    "hash": "a6c3731d2956c0f23f413c37e0d65f1a32b5bf5b071e952097e07ccfcde42f45",
+    "lastmod": "2026-09-02"
   },
   "https://ibnsinahospital.in/blog/blog-kashmir-winter-health-tips.html": {
-    "hash": "96ef014ccc1a4d6a714b9589fb79515f1e949394eb1270ece448155e3d5835dc",
-    "lastmod": "2026-08-23"
+    "hash": "74237e81f1abb114da9af34de3d1039a7c4fa1035bdaf62859ccf752bf613a0e",
+    "lastmod": "2026-09-02"
   },
   "https://ibnsinahospital.in/departments/department-gynaecolgy.html": {
     "hash": "0ef1a8441004e8a376ec0987d76d3bb3701077a5bd6a5cbf953576d6d2dcb079",
@@ -236,12 +236,12 @@
     "lastmod": "2026-08-24"
   },
   "https://ibnsinahospital.in/blog/blog-kidney-warning-signs-jk.html": {
-    "hash": "ff265400ae361674bca4ff32f873daea067e4a9adfeeeeb7bb61c2d185efb68a",
-    "lastmod": "2026-08-25"
+    "hash": "19039d54c12b1a9c5a6283bcdeb4d8465354f3a1bd88ff4b580245ccda37bfd2",
+    "lastmod": "2026-09-02"
   },
   "https://ibnsinahospital.in/blog/blog-addiction-support-jk-families.html": {
-    "hash": "a314fc7cb26ce40c505cfa869049375cba30df0b66925f177861b1901a02e3fb",
-    "lastmod": "2026-08-26"
+    "hash": "32c352991ac88c144ab1f18f65bd3abdc012ca97130a01db44a46e967cdaf493",
+    "lastmod": "2026-09-02"
   },
   "https://ibnsinahospital.in/departments/department-gynaecology.html": {
     "hash": "c6cabf9fb0af33d7a6d6d16551d383a00e62818fe9d22d18420d54a4a6afe953",
@@ -300,8 +300,8 @@
     "lastmod": "2026-08-31"
   },
   "https://ibnsinahospital.in/blog/blog-why-families-across-jk-choose-ibn-sina.html": {
-    "hash": "81604b19d317180b3eda3dd405aff5f2a75f6c2d5fdfb05740ce9580f91fd6b6",
-    "lastmod": "2026-08-30"
+    "hash": "21e0142de1f96210c25f2ab53f7f2c46ea26586a4bdb22b6773c3be181e0e6a5",
+    "lastmod": "2026-09-02"
   },
   "https://ibnsinahospital.in/departments/department-ophthalmology.html": {
     "hash": "8d3255e98fb44158225fc892a6463f876db53b7876a6f6ccbda60b44140f64e9",
@@ -362,5 +362,57 @@
   "https://ibnsinahospital.in/department-pages/ophthalmology.html": {
     "hash": "25ed54a91fb5f6a753d64d424d49a08787c0dfc7d723a29f22bcfb7ba9f12f7f",
     "lastmod": "2026-08-31"
+  },
+  "https://ibnsinahospital.in/": {
+    "hash": "3b984520d21259ba452fd559aa9295baec0c967b8f3a1692ba7f064d1b4e6ed8",
+    "lastmod": "2026-09-02"
+  },
+  "https://ibnsinahospital.in/about.html": {
+    "hash": "957d48a9467782013dcfd8c233ccf38fcebb288ee64fbd5b911c7dc6f0cdaa44",
+    "lastmod": "2026-09-02"
+  },
+  "https://ibnsinahospital.in/services.html": {
+    "hash": "f7c6b1506e6020aaad9427906126c6661d21271e8fcb97d84b98ffb9fe087788",
+    "lastmod": "2026-09-02"
+  },
+  "https://ibnsinahospital.in/doctors.html": {
+    "hash": "6bf3a358e0f56f357e8b8710ab7cbbe182eea451cb560e90c79aceb088a7d46a",
+    "lastmod": "2026-09-02"
+  },
+  "https://ibnsinahospital.in/blog.html": {
+    "hash": "8d0945693cf5ac33c4f4accbea2ddbd5ad04d17d633299b9318e955ec45b7d73",
+    "lastmod": "2026-09-02"
+  },
+  "https://ibnsinahospital.in/careers.html": {
+    "hash": "aaef814bebe7d42747f6071d1f1844988633ef642560ecd6193c18c508daf700",
+    "lastmod": "2026-09-02"
+  },
+  "https://ibnsinahospital.in/faq.html": {
+    "hash": "865ca46b6d55111c6335cad535e4dde81530d37e07c67c7b7ec9929c93f842c0",
+    "lastmod": "2026-09-02"
+  },
+  "https://ibnsinahospital.in/contact.html": {
+    "hash": "eeedae515f0b8fcfe4cecf7f99203a3627821879c0e257e6cfc8537f0b40e3c1",
+    "lastmod": "2026-09-02"
+  },
+  "https://ibnsinahospital.in/appointment.html": {
+    "hash": "1f4aef034172d7e45d200ef2ceafffa732abf286e047c29d442aa8a5f7862b31",
+    "lastmod": "2026-09-02"
+  },
+  "https://ibnsinahospital.in/blog/blog-high-blood-pressure-jk-guide.html": {
+    "hash": "14e9837bb41a191d5a3768eee2f69a9d14513f322c08dcbc0be83e73863c3b6a",
+    "lastmod": "2026-09-02"
+  },
+  "https://ibnsinahospital.in/department-pages/specialties-directory.html": {
+    "hash": "9ffb26d08ce57bd918d2b5e1dc27df7aecebe23dfb1e8e30329423dc60639ff2",
+    "lastmod": "2026-09-02"
+  },
+  "https://ibnsinahospital.in/department-pages/doctor-directory.html": {
+    "hash": "8d16ed02aaa70d1c4be09c33dd01c567d67bf089afb78dff12f07fb5ca48365a",
+    "lastmod": "2026-09-02"
+  },
+  "https://ibnsinahospital.in/department-pages/jammu-kashmir-healthcare.html": {
+    "hash": "b905787972034d2544efa9ec04115609b8b961ec336141822f6ca282eef32c19",
+    "lastmod": "2026-09-02"
   }
 }
