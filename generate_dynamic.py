@@ -7,6 +7,7 @@ import re
 import json
 import hashlib
 from urllib.parse import quote
+from html import escape
 
 # ========== CONFIGURATION ==========
 INDEXNOW_KEY = "78ee931b79be4739af08e1e0b0af036f"
@@ -63,10 +64,112 @@ def build_about(doc, full_name):
         f"{specialty} care to patients across the Kashmir Valley."
     )
 
+# ========== BLOG SEO HELPERS ==========
+def meta_description(text, fallback):
+    """Create a clean, bounded description suitable for search snippets."""
+    text = re.sub(r'\s+', ' ', (text or '').strip())
+    text = re.sub(r'<[^>]+>', ' ', text)
+    text = text.strip(' -–—|') or fallback
+    if len(text) > 158:
+        text = text[:155].rsplit(' ', 1)[0].rstrip(' ,;:-') + '...'
+    return text
+
+def seo_title(title):
+    """Keep the generated search title useful without changing the article H1."""
+    title = (title or 'Blog Post').strip()
+    suffix = ' | Ibn Sina Hospital, Budgam'
+    if len(title) + len(suffix) <= 60:
+        return title + suffix
+    shorter_suffix = ' | Ibn Sina Hospital'
+    if len(title) + len(shorter_suffix) <= 60:
+        return title + shorter_suffix
+    return title
+
+def normalize_date(value):
+    """Return an ISO date/datetime when possible; otherwise leave the source value out of schema."""
+    value = (value or '').strip()
+    if not value:
+        return ''
+    if re.fullmatch(r'\d{4}-\d{2}-\d{2}', value):
+        return value
+    if re.fullmatch(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?(?:Z|[+-]\d{2}:\d{2})?', value):
+        return value
+    for fmt in ('%d/%m/%Y', '%m/%d/%Y', '%d-%m-%Y', '%Y/%m/%d'):
+        try:
+            return datetime.datetime.strptime(value, fmt).date().isoformat()
+        except ValueError:
+            pass
+    return ''
+
+def blog_body_html(body):
+    """Convert the Sheet's plain-text article into safe, crawlable semantic HTML."""
+    raw = (body or '').strip()
+    if not raw:
+        return '<p>Medical information from Ibn Sina Hospital, Budgam.</p>'
+
+    # The Sheet is treated as plain text. This prevents arbitrary HTML/JS from
+    # being published directly to the website through a spreadsheet cell.
+    raw = re.sub(r'<[^>]*>', ' ', raw)
+    blocks = re.split(r'\n\s*\n+', raw)
+    rendered = []
+    for block in blocks:
+        text = re.sub(r'\s*\n\s*', ' ', block).strip()
+        if not text:
+            continue
+        safe = escape(text)
+        is_heading = (
+            len(text) <= 90
+            and not re.search(r'[.!?]$', text)
+            and (
+                re.match(r'^\d+[.)]\s+', text)
+                or re.match(r'^(what|when|who|why|how|our|specialist|still|when to|common|understanding|tmt|holter|abpm|specialist care|to book)', text, flags=re.IGNORECASE)
+            )
+        )
+        if is_heading:
+            safe = re.sub(r'^\d+[.)]\s+', '', safe)
+            rendered.append(f'<h2>{safe}</h2>')
+        else:
+            rendered.append(f'<p>{safe}</p>')
+    return '\n'.join(rendered) or '<p>Medical information from Ibn Sina Hospital, Budgam.</p>'
+
+# Only high-confidence topic → department relationships are automated.
+# Ambiguous topics intentionally receive no department link rather than a wrong one.
+BLOG_DEPARTMENT_LINKS = [
+    (r'\b(kidney|kidneys|renal|dialysis|nephrology)\b', '../department-pages/nephrology.html', 'Nephrology'),
+    (r'\b(heart|cardiac|cardiology|tmt|holter|abpm|blood pressure)\b', '../department-pages/cardiology.html', 'Cardiology'),
+    (r'\b(eye|eyes|vision|ophthalmology|cataract)\b', '../department-pages/ophthalmology.html', 'Ophthalmology'),
+    (r'\b(lung|lungs|respiratory|asthma|bronchitis|pulmonology|breathing)\b', '../department-pages/pulmonology.html', 'Pulmonology'),
+    (r'\b(joint|bone|bones|arthritis|orthopaedic|orthopaedics)\b', '../department-pages/orthopaedics.html', 'Orthopaedics'),
+    (r'\b(women|woman|pregnan|gynaec|gynec|pcos|pcod|fertility)\b', '../department-pages/gynaecology.html', 'Gynaecology'),
+    (r'\b(skin|dermatology|acne|rash)\b', '../department-pages/dermatology.html', 'Dermatology'),
+    (r'\b(stomach|digestive|gastro|liver|endoscopy)\b', '../department-pages/gastroenterology.html', 'Gastroenterology'),
+    (r'\b(ear|nose|throat|ent)\b', '../department-pages/ent.html', 'ENT'),
+]
+
+def related_blog_links(title, summary, body):
+    """Build relevant internal links without inventing a specialty relationship."""
+    text = f"{title} {summary} {body}"
+    links = []
+    seen = set()
+    for pattern, href, label in BLOG_DEPARTMENT_LINKS:
+        if re.search(pattern, text, flags=re.IGNORECASE) and href not in seen:
+            links.append(f'<li><a href="{href}">{label} Department</a></li>')
+            seen.add(href)
+        if len(links) >= 3:
+            break
+    links.extend([
+        '<li><a href="../doctors.html">Meet Our Doctors &amp; Specialists</a></li>',
+        '<li><a href="../appointment.html">Book an Appointment</a></li>',
+    ])
+    return '<aside class="blog-related-links"><h2>Related Care at Ibn Sina Hospital</h2><ul>' + ''.join(links[:5]) + '</ul></aside>'
+
 # ========== LASTMOD CACHE (content-based) ==========
 def load_lastmod_cache():
     if LASTMOD_CACHE_FILE.exists():
-        return json.loads(LASTMOD_CACHE_FILE.read_text(encoding='utf-8'))
+        try:
+            return json.loads(LASTMOD_CACHE_FILE.read_text(encoding='utf-8'))
+        except (json.JSONDecodeError, OSError):
+            return {}
     return {}
 
 def save_lastmod_cache(cache):
@@ -243,51 +346,123 @@ def generate_blog_pages(posts):
     output_dir.mkdir(exist_ok=True)
     urls = []
     pages = []
+    seen_slugs = set()
 
     for post in posts:
         if post.get('is_published', '').strip().lower() not in ['true', 'yes', '1']:
             continue
+
         slug = slugify(post.get('slug') or post.get('title', ''))
+        if not slug:
+            raise ValueError('Published blog post is missing a usable slug/title.')
+        if slug in seen_slugs:
+            raise ValueError(f'Duplicate published blog slug detected: {slug}')
+        seen_slugs.add(slug)
+
         filename = f'blog-{slug}.html'
         page_url = f'{SITE_URL}/blog/{filename}'
-        title = post.get('title', 'Blog Post')
-        summary = post.get('short_summary', title)
-        image = post.get('cover_image_url', 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp')
+        title = (post.get('title') or 'Blog Post').strip()
+        summary_source = post.get('short summary') or post.get('short_summary') or title
+        summary = meta_description(summary_source, title)
+        image = (post.get('cover_image_url') or 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp').strip()
+        body = post.get('body') or ''
+        published_at = (post.get('published_at') or '').strip()
+        published_iso = normalize_date(published_at)
+        body_html = blog_body_html(body)
+        related_links = related_blog_links(title, summary, body)
+        full_title = seo_title(title)
 
-        json_ld = {
-            "@context": "https://schema.org",
+        article_ld = {
             "@type": "Article",
+            "@id": f"{page_url}#article",
             "headline": title,
             "description": summary,
-            "image": image,
-            "publisher": {
-                "@type": "Hospital",
-                "name": "Ibn Sina Hospital",
-                "address": {
-                    "@type": "PostalAddress",
-                    "addressLocality": "Budgam",
-                    "addressRegion": "Jammu and Kashmir",
-                    "addressCountry": "IN"
-                }
+            "image": [image],
+            "mainEntityOfPage": {"@id": f"{page_url}#webpage"},
+            "author": {
+                "@type": "Organization",
+                "name": "Ibn Sina Hospital"
             },
-            "datePublished": post.get('published_at', '')
+            "publisher": {"@id": f"{SITE_URL}/#hospital"},
+            "inLanguage": "en-IN"
+        }
+        if published_iso:
+            article_ld["datePublished"] = published_iso
+            article_ld["dateModified"] = published_iso
+
+        webpage_ld = {
+            "@type": "MedicalWebPage",
+            "@id": f"{page_url}#webpage",
+            "url": page_url,
+            "name": full_title,
+            "description": summary,
+            "isPartOf": {"@id": f"{SITE_URL}/#website"},
+            "about": {"@id": f"{SITE_URL}/#hospital"},
+            "mainEntity": {"@id": f"{page_url}#article"},
+            "inLanguage": "en-IN"
+        }
+
+        hospital_ld = {
+            "@type": "Hospital",
+            "@id": f"{SITE_URL}/#hospital",
+            "name": "Ibn Sina Hospital",
+            "url": SITE_URL,
+            "telephone": "+91-9622552553",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Budgam",
+                "addressRegion": "Jammu and Kashmir",
+                "addressCountry": "IN"
+            }
+        }
+
+        website_ld = {
+            "@type": "WebSite",
+            "@id": f"{SITE_URL}/#website",
+            "url": SITE_URL,
+            "name": "Ibn Sina Hospital",
+            "publisher": {"@id": f"{SITE_URL}/#hospital"}
+        }
+
+        graph_ld = {
+            "@context": "https://schema.org",
+            "@graph": [article_ld, webpage_ld, hospital_ld, website_ld]
+        }
+
+        breadcrumb_ld = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Home", "item": f"{SITE_URL}/"},
+                {"@type": "ListItem", "position": 2, "name": "Health Blog", "item": f"{SITE_URL}/blog.html"},
+                {"@type": "ListItem", "position": 3, "name": title, "item": page_url}
+            ]
         }
 
         html = f"""<!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} | Ibn Sina Hospital</title>
-    <meta name="description" content="{summary}">
+    <title>{escape(full_title)}</title>
+    <meta name="description" content="{escape(summary)}">
+    <meta name="robots" content="index, follow, max-image-preview:large">
     <link rel="canonical" href="{page_url}">
-    <meta property="og:title" content="{title} | Ibn Sina Hospital">
-    <meta property="og:description" content="{summary}">
+    <meta property="og:site_name" content="Ibn Sina Hospital">
+    <meta property="og:title" content="{escape(full_title)}">
+    <meta property="og:description" content="{escape(summary)}">
     <meta property="og:type" content="article">
     <meta property="og:url" content="{page_url}">
-    <meta property="og:image" content="{image}">
+    <meta property="og:image" content="{escape(image)}">
+    <meta property="og:image:alt" content="{escape(title)} — Ibn Sina Hospital, Budgam">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{escape(full_title)}">
+    <meta name="twitter:description" content="{escape(summary)}">
+    <meta name="twitter:image" content="{escape(image)}">
+    <meta name="twitter:image:alt" content="{escape(title)} — Ibn Sina Hospital, Budgam">
     <link rel="stylesheet" href="../css/style.css">
-    <script type="application/ld+json">{json.dumps(json_ld, ensure_ascii=False)}</script>
+    <script type="application/ld+json">{json.dumps(graph_ld, ensure_ascii=False)}</script>
+    <script type="application/ld+json">{json.dumps(breadcrumb_ld, ensure_ascii=False)}</script>
 </head>
 <body>
     <header class="site-header">
@@ -296,16 +471,28 @@ def generate_blog_pages(posts):
             <nav class="main-nav"><ul class="nav-list">
                 <li><a href="../index.html">Home</a></li>
                 <li><a href="../blog.html">Blog</a></li>
+                <li><a href="../doctors.html">Doctors</a></li>
+                <li><a href="../services.html">Services</a></li>
                 <li><a href="../contact.html">Contact</a></li>
             </ul></nav>
         </div>
     </header>
     <main class="section">
         <div class="container">
+            <nav class="breadcrumbs" aria-label="Breadcrumb">
+                <a href="../index.html">Home</a> <span aria-hidden="true">›</span>
+                <a href="../blog.html">Health Blog</a> <span aria-hidden="true">›</span>
+                <span>{escape(title)}</span>
+            </nav>
             <article>
-                <h1>{title}</h1>
-                <time>{post.get('published_at', '')}</time>
-                <div class="blog-body">{post.get('body', '')}</div>
+                <header>
+                    <p class="eyebrow">Health Blog · Ibn Sina Hospital, Budgam</p>
+                    <h1>{escape(title)}</h1>
+                    <time datetime="{escape(published_iso or published_at)}">{escape(published_at)}</time>
+                </header>
+                <div class="blog-body">{body_html}</div>
+                {related_links}
+                <p><strong>Need medical advice?</strong> <a href="../appointment.html">Book an appointment</a> or call <a href="tel:+919622552553">9622552553</a>. Ibn Sina Hospital in Budgam serves patients across the Kashmir Valley and Jammu &amp; Kashmir.</p>
             </article>
         </div>
     </main>
@@ -462,30 +649,41 @@ def update_sitemap(all_pages_with_content):
     cache = load_lastmod_cache()
     today = datetime.date.today().isoformat()
 
-    static_urls = [
-        f'{SITE_URL}/',
-        f'{SITE_URL}/about.html',
-        f'{SITE_URL}/services.html',
-        f'{SITE_URL}/doctors.html',
-        f'{SITE_URL}/gallery.html',
-        f'{SITE_URL}/blog.html',
-        f'{SITE_URL}/careers.html',
-        f'{SITE_URL}/faq.html',
-        f'{SITE_URL}/contact.html',
-        f'{SITE_URL}/appointment.html',
+    static_paths = [
+        '/',
+        '/about.html',
+        '/services.html',
+        '/doctors.html',
+        '/gallery.html',
+        '/blog.html',
+        '/careers.html',
+        '/faq.html',
+        '/contact.html',
+        '/appointment.html',
     ]
 
     xml_parts = ['<?xml version="1.0" encoding="UTF-8"?>',
                  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
 
-    for url in static_urls:
-        priority = "1.0" if url == f'{SITE_URL}/' else "0.7"
+    for path in static_paths:
+        url = f'{SITE_URL}{path}'
+        file_path = Path('index.html') if path == '/' else Path(path.lstrip('/'))
+        if file_path.exists():
+            content = file_path.read_text(encoding='utf-8')
+            lastmod = get_lastmod(url, content, cache, today)
+        else:
+            lastmod = today
+        priority = "1.0" if path == '/' else "0.7"
         xml_parts.append(
-            f'  <url>\n    <loc>{url}</loc>\n    <lastmod>{today}</lastmod>'
+            f'  <url>\n    <loc>{url}</loc>\n    <lastmod>{lastmod}</lastmod>'
             f'\n    <changefreq>weekly</changefreq>\n    <priority>{priority}</priority>\n  </url>'
         )
 
+    seen_urls = set()
     for url, content in all_pages_with_content:
+        if url in seen_urls:
+            continue
+        seen_urls.add(url)
         lastmod = get_lastmod(url, content, cache, today)
         xml_parts.append(
             f'  <url>\n    <loc>{url}</loc>\n    <lastmod>{lastmod}</lastmod>'
@@ -500,6 +698,7 @@ def update_sitemap(all_pages_with_content):
 def submit_to_indexnow(url_list):
     if not url_list:
         return
+    url_list = list(dict.fromkeys(url_list))
     data = {
         "host": HOST,
         "key": INDEXNOW_KEY,
