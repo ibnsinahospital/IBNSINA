@@ -661,6 +661,31 @@ def collect_manual_department_pages():
         pages.append((url, content))
     return pages
 
+def collect_public_html_pages():
+    """Discover public HTML pages so newly added pages enter the sitemap automatically."""
+    pages = []
+    roots = [Path('.'), Path('doctors'), Path('departments'), Path('department-pages'), Path('blog')]
+    excluded_names = {'404.html', 'google-site-verification.html'}
+    seen_paths = set()
+
+    for root in roots:
+        if not root.exists():
+            continue
+        for html_file in root.glob('*.html'):
+            if html_file.name in excluded_names:
+                continue
+            resolved = html_file.as_posix()
+            if resolved in seen_paths:
+                continue
+            seen_paths.add(resolved)
+            content = html_file.read_text(encoding='utf-8')
+            if html_file.parent == Path('.'):
+                url_path = '/' + html_file.name
+            else:
+                url_path = '/' + resolved
+            pages.append((f"{SITE_URL}{url_path}", content))
+    return pages
+
 # ========== UPDATE SITEMAP (content-aware lastmod) ==========
 def update_sitemap(all_pages_with_content):
     cache = load_lastmod_cache()
@@ -696,7 +721,8 @@ def update_sitemap(all_pages_with_content):
             f'\n    <changefreq>weekly</changefreq>\n    <priority>{priority}</priority>\n  </url>'
         )
 
-    seen_urls = set()
+    # Seed with static URLs so generated/auto-discovered pages cannot duplicate them.
+    seen_urls = {f'{SITE_URL}{path}' for path in static_paths}
     for url, content in all_pages_with_content:
         if url in seen_urls:
             continue
@@ -766,6 +792,12 @@ if __name__ == "__main__":
 
     all_dynamic_urls = doctor_urls + blog_urls + dept_urls + [gallery_url] + [url for url, _ in manual_dept_pages]
     all_pages_with_content = doctor_pages + blog_pages + dept_pages + [(gallery_url, gallery_html)] + manual_dept_pages
+
+    discovered_pages = collect_public_html_pages()
+    discovered_urls = [url for url, _ in discovered_pages]
+    discovered_by_url = {url: content for url, content in discovered_pages}
+    all_pages_with_content.extend((url, content) for url, content in discovered_by_url.items())
+    all_dynamic_urls.extend(url for url in discovered_urls if url not in all_dynamic_urls)
 
     update_sitemap(all_pages_with_content)
     submit_to_indexnow(all_dynamic_urls)
