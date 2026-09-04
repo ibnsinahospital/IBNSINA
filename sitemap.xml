@@ -272,7 +272,7 @@
   </url>
   <url>
     <loc>https://ibnsinahospital.in/blog/blog-emergency-vs-opd.html</loc>
-    <lastmod>2026-09-02</lastmod>
+    <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -284,19 +284,19 @@
   </url>
   <url>
     <loc>https://ibnsinahospital.in/blog/blog-understanding-dialysis-guide.html</loc>
-    <lastmod>2026-09-02</lastmod>
+    <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ibnsinahospital.in/blog/blog-kashmir-winter-health-tips.html</loc>
-    <lastmod>2026-09-02</lastmod>
+    <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ibnsinahospital.in/blog/blog-kidney-warning-signs-jk.html</loc>
-    <lastmod>2026-09-02</lastmod>
+    <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -308,13 +308,13 @@
   </url>
   <url>
     <loc>https://ibnsinahospital.in/blog/blog-why-families-across-jk-choose-ibn-sina.html</loc>
-    <lastmod>2026-09-02</lastmod>
+    <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ibnsinahospital.in/blog/blog-high-blood-pressure-jk-guide.html</loc>
-    <lastmod>2026-09-02</lastmod>
+    <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -439,49 +439,31 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ibnsinahospital.in/department-pages/ophthalmology.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ibnsinahospital.in/department-pages/jammu-kashmir-healthcare.html</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ibnsinahospital.in/department-pages/doctor-directory.html</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ibnsinahospital.in/department-pages/specialties-directory.html</loc>
     <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ibnsinahospital.in/department-pages/urology.html</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ibnsinahospital.in/department-pages/dermatology.html</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ibnsinahospital.in/department-pages/nephrology.html</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://ibnsinahospital.in/department-pages/radiology.html</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ibnsinahospital.in/department-pages/cardiology.html</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ibnsinahospital.in/department-pages/pulmonology.html</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ibnsinahospital.in/department-pages/gastroenterology.html</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -493,8 +475,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ibnsinahospital.in/department-pages/doctor-directory.html</loc>
-    <lastmod>2026-09-02</lastmod>
+    <loc>https://ibnsinahospital.in/department-pages/rheumatology.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ibnsinahospital.in/department-pages/urology.html</loc>
+    <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -511,37 +499,25 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ibnsinahospital.in/department-pages/general-medicine.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ibnsinahospital.in/department-pages/dentistry.html</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ibnsinahospital.in/department-pages/jammu-kashmir-healthcare.html</loc>
-    <lastmod>2026-09-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ibnsinahospital.in/department-pages/rheumatology.html</loc>
+    <loc>https://ibnsinahospital.in/department-pages/cardiology.html</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ibnsinahospital.in/department-pages/physiotherapy.html</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ibnsinahospital.in/department-pages/general-surgery.html</loc>
-    <lastmod>2026-08-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ibnsinahospital.in/department-pages/general-medicine.html</loc>
+    <loc>https://ibnsinahospital.in/department-pages/pediatric-surgery.html</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -553,13 +529,37 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ibnsinahospital.in/department-pages/ophthalmology.html</loc>
+    <loc>https://ibnsinahospital.in/department-pages/pulmonology.html</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ibnsinahospital.in/department-pages/pediatric-surgery.html</loc>
+    <loc>https://ibnsinahospital.in/department-pages/dermatology.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ibnsinahospital.in/department-pages/physiotherapy.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ibnsinahospital.in/department-pages/nephrology.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ibnsinahospital.in/department-pages/gastroenterology.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ibnsinahospital.in/department-pages/general-surgery.html</loc>
     <lastmod>2026-08-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
