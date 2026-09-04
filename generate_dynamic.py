@@ -102,7 +102,7 @@ def normalize_date(value):
     return ''
 
 def blog_body_html(body):
-    """Convert the Sheet's plain-text article into safe, crawlable semantic HTML."""
+    """Convert Sheet text into safe, crawlable semantic HTML with predictable headings."""
     raw = (body or '').strip()
     if not raw:
         return '<p>Medical information from Ibn Sina Hospital, Budgam.</p>'
@@ -146,22 +146,38 @@ BLOG_DEPARTMENT_LINKS = [
     (r'\b(ear|nose|throat|ent)\b', '../department-pages/ent.html', 'ENT'),
 ]
 
-def related_blog_links(title, summary, body):
-    """Build relevant internal links without inventing a specialty relationship."""
-    text = f"{title} {summary} {body}"
+def related_blog_links(title, summary, body, department_slug=''):
+    """Build relevant internal links, preferring an explicit Sheet department slug."""
     links = []
     seen = set()
-    for pattern, href, label in BLOG_DEPARTMENT_LINKS:
-        if re.search(pattern, text, flags=re.IGNORECASE) and href not in seen:
+    if department_slug:
+        slug = slugify(department_slug)
+        allowed = {
+            'cardiology': ('../department-pages/cardiology.html', 'Cardiology'),
+            'nephrology': ('../department-pages/nephrology.html', 'Nephrology'),
+            'ophthalmology': ('../department-pages/ophthalmology.html', 'Ophthalmology'),
+            'pulmonology': ('../department-pages/pulmonology.html', 'Pulmonology'),
+            'orthopaedics': ('../department-pages/orthopaedics.html', 'Orthopaedics'),
+            'gynaecology': ('../department-pages/gynaecology.html', 'Gynaecology'),
+            'dermatology': ('../department-pages/dermatology.html', 'Dermatology'),
+            'gastroenterology': ('../department-pages/gastroenterology.html', 'Gastroenterology'),
+            'ent': ('../department-pages/ent.html', 'ENT'),
+        }
+        if slug in allowed:
+            href, label = allowed[slug]
             links.append(f'<li><a href="{href}">{label} Department</a></li>')
             seen.add(href)
-        if len(links) >= 3:
-            break
+    if not links:
+        text = f"{title} {summary} {body}"
+        for pattern, href, label in BLOG_DEPARTMENT_LINKS:
+            if re.search(pattern, text, flags=re.IGNORECASE) and href not in seen:
+                links.append(f'<li><a href="{href}">{label} Department</a></li>')
+                break
     links.extend([
         '<li><a href="../doctors.html">Meet Our Doctors &amp; Specialists</a></li>',
         '<li><a href="../appointment.html">Book an Appointment</a></li>',
     ])
-    return '<aside class="blog-related-links"><h2>Related Care at Ibn Sina Hospital</h2><ul>' + ''.join(links[:5]) + '</ul></aside>'
+    return '<aside class="blog-related-links"><h2>Related Care at Ibn Sina Hospital</h2><ul>' + ''.join(links[:3]) + '</ul></aside>'
 
 # ========== LASTMOD CACHE (content-based) ==========
 def load_lastmod_cache():
@@ -369,7 +385,8 @@ def generate_blog_pages(posts):
         published_at = (post.get('published_at') or '').strip()
         published_iso = normalize_date(published_at)
         body_html = blog_body_html(body)
-        related_links = related_blog_links(title, summary, body)
+        department_slug = (post.get('department_slug') or post.get('department') or '').strip()
+        related_links = related_blog_links(title, summary, body, department_slug)
         full_title = seo_title(title)
 
         article_ld = {
