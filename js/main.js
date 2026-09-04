@@ -487,95 +487,149 @@ function formatBlogDate(dateValue) {
 }
 
 
-function addBlogArticleSchema(post) {
+function setMetaContent(selector, content) {
+  const el = document.querySelector(selector);
+  if (el) el.setAttribute('content', content);
+}
 
-  const existing =
-    document.getElementById(
-      'dynamic-blog-article-schema'
-    );
-
-  if (existing) {
-    existing.remove();
+function upsertLinkRel(rel, href) {
+  let el = document.querySelector(`link[rel="${rel}"]`);
+  if (!el) {
+    el = document.createElement('link');
+    el.setAttribute('rel', rel);
+    document.head.appendChild(el);
   }
+  el.setAttribute('href', href);
+}
 
-  const slug = post.slug || '';
+function normalizeBlogDescription(value, fallback) {
+  const text = String(value || fallback || '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 
-  const articleURL =
-    `https://ibnsinahospital.in/blog-post.html?slug=${encodeURIComponent(slug)}`;
+  if (!text) return 'Health information and medical insights from Ibn Sina Hospital, Budgam, Jammu and Kashmir.';
+  return text.length > 160 ? text.slice(0, 157).replace(/\s+\S*$/, '') + '...' : text;
+}
 
-  const image =
-    post.cover_image_url ||
-    'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp';
+function addBlogArticleSchema(post) {
+  const existing = document.getElementById('dynamic-blog-article-schema');
+  if (existing) existing.remove();
 
-  const published =
-    post.published_at ||
-    post.date ||
-    '';
+  const slug = String(post.slug || '').trim();
+  const articleURL = `https://ibnsinahospital.in/blog-post.html?slug=${encodeURIComponent(slug)}`;
+  const image = post.cover_image_url || 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp';
+  const published = post.published_at || post.date || '';
+  const modified = post.updated_at || post.modified_at || published;
+  const title = post.title || 'Health Article';
+  const description = normalizeBlogDescription(post.short_summary, title);
 
   const schema = {
-
     "@context": "https://schema.org",
-
-    "@type": "MedicalWebPage",
-
-    "headline": post.title || 'Health Article',
-
-    "description":
-      post.short_summary ||
-      post.title ||
-      'Health information from Ibn Sina Hospital.',
-
-    "url": articleURL,
-
-    "image": image,
-
-    "datePublished": published,
-
-    "publisher": {
-
-      "@type": "Hospital",
-
-      "name": "Ibn Sina Hospital",
-
-      "url": "https://ibnsinahospital.in/",
-
-      "logo": {
-
-        "@type": "ImageObject",
-
-        "url":
-          "https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp"
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${articleURL}#article`,
+        "headline": title,
+        "description": description,
+        "url": articleURL,
+        "mainEntityOfPage": { "@id": `${articleURL}#webpage` },
+        "image": image,
+        "datePublished": published || undefined,
+        "dateModified": modified || undefined,
+        "inLanguage": "en-IN",
+        "author": {
+          "@type": "Organization",
+          "name": "Ibn Sina Hospital",
+          "url": "https://ibnsinahospital.in/"
+        },
+        "publisher": { "@id": "https://ibnsinahospital.in/#hospital" }
+      },
+      {
+        "@type": "MedicalWebPage",
+        "@id": `${articleURL}#webpage`,
+        "url": articleURL,
+        "name": title,
+        "description": description,
+        "isPartOf": { "@id": "https://ibnsinahospital.in/#website" },
+        "about": { "@type": "Thing", "name": "Health information" },
+        "inLanguage": "en-IN",
+        "datePublished": published || undefined,
+        "dateModified": modified || undefined,
+        "publisher": { "@id": "https://ibnsinahospital.in/#hospital" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${articleURL}#breadcrumb`,
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://ibnsinahospital.in/" },
+          { "@type": "ListItem", "position": 2, "name": "Health Insights", "item": "https://ibnsinahospital.in/blog.html" },
+          { "@type": "ListItem", "position": 3, "name": title, "item": articleURL }
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://ibnsinahospital.in/#website",
+        "url": "https://ibnsinahospital.in/",
+        "name": "Ibn Sina Hospital",
+        "publisher": { "@id": "https://ibnsinahospital.in/#hospital" }
+      },
+      {
+        "@type": "Hospital",
+        "@id": "https://ibnsinahospital.in/#hospital",
+        "name": "Ibn Sina Hospital",
+        "url": "https://ibnsinahospital.in/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp"
+        },
+        "telephone": "+919622552553",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Budgam",
+          "addressRegion": "Jammu and Kashmir",
+          "postalCode": "191111",
+          "addressCountry": "IN"
+        }
       }
-    },
-
-    "mainEntityOfPage": {
-
-      "@type": "WebPage",
-
-      "@id": articleURL
-    },
-
-    "areaServed": {
-
-      "@type": "AdministrativeArea",
-
-      "name": "Jammu and Kashmir"
-    }
+    ]
   };
 
-  const script =
-    document.createElement('script');
+  Object.values(schema["@graph"]).forEach(node => {
+    Object.keys(node).forEach(key => {
+      if (node[key] === undefined) delete node[key];
+    });
+  });
 
-  script.type =
-    'application/ld+json';
-
-  script.id =
-    'dynamic-blog-article-schema';
-
-  script.textContent =
-    JSON.stringify(schema);
-
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.id = 'dynamic-blog-article-schema';
+  script.textContent = JSON.stringify(schema);
   document.head.appendChild(script);
+}
+
+function renderRelatedBlogLinks(posts, currentSlug) {
+  const candidates = posts
+    .filter(p => isPublished(p) && String(p.slug || '') !== String(currentSlug || ''))
+    .sort((a, b) => new Date(b.published_at || b.date || 0) - new Date(a.published_at || a.date || 0))
+    .slice(0, 3);
+
+  if (!candidates.length) return '';
+
+  return `
+    <section class="blog-related-articles" aria-labelledby="related-articles-heading">
+      <h2 id="related-articles-heading">Related Health Insights</h2>
+      <ul>
+        ${candidates.map(p => `
+          <li>
+            <a href="blog-post.html?slug=${encodeURIComponent(p.slug || '')}">
+              ${escapeHTML(p.title || 'Health Article')}
+            </a>
+          </li>
+        `).join('')}
+      </ul>
+    </section>
+  `;
 }
 
 
@@ -2360,143 +2414,35 @@ document.addEventListener(
           // DYNAMIC SEO
           // ==================================================
 
+          const articleURL =
+            `https://ibnsinahospital.in/blog-post.html?slug=${encodeURIComponent(slug)}`;
+
+          const seoDescription =
+            normalizeBlogDescription(
+              summary,
+              'Health information and medical insights from Ibn Sina Hospital, Budgam, Jammu and Kashmir.'
+            );
+
           document.title =
-            `${title} | Ibn Sina Hospital Jammu & Kashmir`;
+            `${title} | Ibn Sina Hospital, Budgam, Jammu & Kashmir`;
 
-
-          const metaDescription =
-            document.querySelector(
-              'meta[name="description"]'
-            );
-
-          if (metaDescription) {
-
-            metaDescription.setAttribute(
-              'content',
-              summary
-            );
-          }
-
-
-          const canonical =
-            document.querySelector(
-              'link[rel="canonical"]'
-            );
-
-          if (canonical) {
-
-            canonical.setAttribute(
-              'href',
-              `https://ibnsinahospital.in/blog-post.html?slug=${encodeURIComponent(slug)}`
-            );
-          }
-
-
-          const ogTitle =
-            document.querySelector(
-              'meta[property="og:title"]'
-            );
-
-          if (ogTitle) {
-
-            ogTitle.setAttribute(
-              'content',
-              title
-            );
-          }
-
-
-          const ogDescription =
-            document.querySelector(
-              'meta[property="og:description"]'
-            );
-
-          if (ogDescription) {
-
-            ogDescription.setAttribute(
-              'content',
-              summary
-            );
-          }
-
-
-          const ogURL =
-            document.querySelector(
-              'meta[property="og:url"]'
-            );
-
-          if (ogURL) {
-
-            ogURL.setAttribute(
-              'content',
-              window.location.href
-            );
-          }
-
-
-          const ogImage =
-            document.querySelector(
-              'meta[property="og:image"]'
-            );
-
-          if (ogImage) {
-
-            ogImage.setAttribute(
-              'content',
-              coverImage
-            );
-          }
-
-
-          const twitterTitle =
-            document.querySelector(
-              'meta[name="twitter:title"]'
-            );
-
-          if (twitterTitle) {
-
-            twitterTitle.setAttribute(
-              'content',
-              title
-            );
-          }
-
-
-          const twitterDescription =
-            document.querySelector(
-              'meta[name="twitter:description"]'
-            );
-
-          if (twitterDescription) {
-
-            twitterDescription.setAttribute(
-              'content',
-              summary
-            );
-          }
-
-
-          const twitterImage =
-            document.querySelector(
-              'meta[name="twitter:image"]'
-            );
-
-          if (twitterImage) {
-
-            twitterImage.setAttribute(
-              'content',
-              coverImage
-            );
-          }
-
-
-          // ==================================================
-          // ARTICLE STRUCTURED DATA
-          // ==================================================
-
-          addBlogArticleSchema(
-            post
+          setMetaContent(
+            'meta[name="description"]',
+            seoDescription
           );
+
+          upsertLinkRel('canonical', articleURL);
+
+          setMetaContent('meta[property="og:title"]', title);
+          setMetaContent('meta[property="og:description"]', seoDescription);
+          setMetaContent('meta[property="og:url"]', articleURL);
+          setMetaContent('meta[property="og:image"]', coverImage);
+
+          setMetaContent('meta[name="twitter:title"]', title);
+          setMetaContent('meta[name="twitter:description"]', seoDescription);
+          setMetaContent('meta[name="twitter:image"]', coverImage);
+
+          addBlogArticleSchema(post);
 
 
           // ==================================================
@@ -2534,8 +2480,8 @@ document.addEventListener(
                   /
                 </span>
 
-                <span>
-                  Article
+                <span aria-current="page">
+                  ${escapeHTML(title)}
                 </span>
 
               </nav>
@@ -2717,6 +2663,8 @@ document.addEventListener(
                 >
 
                   ${formatBlogBody(post.body)}
+
+                  ${renderRelatedBlogLinks(posts, slug)}
 
 
                   <!-- ==========================
