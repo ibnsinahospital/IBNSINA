@@ -662,11 +662,11 @@ def collect_manual_department_pages():
     return pages
 
 def collect_public_html_pages():
-    """Discover public HTML pages so newly added pages enter the sitemap automatically."""
+    """Discover only canonical, indexable HTML pages for automatic sitemap inclusion."""
     pages = []
-    roots = [Path('.'), Path('doctors'), Path('departments'), Path('department-pages'), Path('blog')]
+    roots = [Path('doctors'), Path('departments'), Path('department-pages'), Path('blog')]
     excluded_names = {'404.html', 'google-site-verification.html'}
-    seen_paths = set()
+    seen_urls = set()
 
     for root in roots:
         if not root.exists():
@@ -674,17 +674,28 @@ def collect_public_html_pages():
         for html_file in root.glob('*.html'):
             if html_file.name in excluded_names:
                 continue
-            resolved = html_file.as_posix()
-            if resolved in seen_paths:
-                continue
-            seen_paths.add(resolved)
+
             content = html_file.read_text(encoding='utf-8')
-            if html_file.parent == Path('.'):
-                url_path = '/' + html_file.name
-            else:
-                url_path = '/' + resolved
-            pages.append((f"{SITE_URL}{url_path}", content))
+            url = f"{SITE_URL}/{html_file.parent.as_posix()}/{html_file.name}"
+            canonical_match = re.search(
+                r'<link\\s+rel=["\\\']canonical["\\\']\\s+href=["\\\']([^"\\\']+)["\\\']',
+                content,
+                flags=re.IGNORECASE
+            )
+
+            # Only add pages that explicitly identify this exact URL as canonical.
+            # This prevents template shells and legacy/duplicate pages from entering
+            # the sitemap merely because an HTML file happens to exist.
+            if not canonical_match or canonical_match.group(1).rstrip('/') != url.rstrip('/'):
+                continue
+
+            if url in seen_urls:
+                continue
+            seen_urls.add(url)
+            pages.append((url, content))
+
     return pages
+
 
 # ========== UPDATE SITEMAP (content-aware lastmod) ==========
 def update_sitemap(all_pages_with_content):
