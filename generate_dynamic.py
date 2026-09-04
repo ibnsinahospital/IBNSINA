@@ -122,7 +122,7 @@ def blog_body_html(body):
             and not re.search(r'[.!?]$', text)
             and (
                 re.match(r'^\d+[.)]\s+', text)
-                or re.match(r'^(what|when|who|why|how|our|specialist|still|when to|common|understanding|tmt|holter|abpm|specialist care|to book)', text, flags=re.IGNORECASE)
+                or re.match(r'^(what|when|who|why|how|our|specialist|still|when to|common|understanding|tmt|holter|abpm|specialist care|to book|symptoms to watch for|the risks of leaving it unchecked|how we can help|when should you|when to see a doctor)', text, flags=re.IGNORECASE)
             )
         )
         if is_heading:
