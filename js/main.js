@@ -2480,8 +2480,8 @@ document.addEventListener(
                   /
                 </span>
 
-                <span>
-                  Article
+                <span aria-current="page">
+                  ${escapeHTML(title)}
                 </span>
 
               </nav>
@@ -2663,6 +2663,8 @@ document.addEventListener(
                 >
 
                   ${formatBlogBody(post.body)}
+
+                  ${renderRelatedBlogLinks(posts, slug)}
 
 
                   <!-- ==========================
