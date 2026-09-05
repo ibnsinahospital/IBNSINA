@@ -1434,6 +1434,7 @@ document.addEventListener(
               'general-surgery',
               'gynaecology',
               'nephrology',
+              'neonatal-intensive-care-unit',
               'ophthalmology',
               'orthopaedics',
               'pediatric-surgery',
