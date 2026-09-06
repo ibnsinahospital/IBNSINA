@@ -1,0 +1,155 @@
+/* ============================================================
+   IBN SINA HOSPITAL — MOBILE FIXES
+   Loaded after style.css. Keep this file limited to safe,
+   mobile-specific corrections that layer over the main stylesheet.
+   ============================================================ */
+
+@media (max-width: 768px) {
+    /* Prevent replaced elements and embeds from creating horizontal overflow. */
+    img,
+    svg,
+    video,
+    canvas,
+    iframe {
+        max-width: 100%;
+    }
+
+    iframe {
+        width: 100%;
+        border: 0;
+    }
+
+    table {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Keep long content from forcing the viewport wider. */
+    pre,
+    code,
+    .container,
+    .section-padding,
+    .site-footer,
+    .footer-main {
+        max-width: 100%;
+    }
+
+    /* Comfortable touch targets without changing desktop sizing. */
+    .btn,
+    .nav-link,
+    .hamburger,
+    .emergency-badge,
+    .social-icon,
+    button,
+    input[type="submit"],
+    input[type="button"] {
+        min-height: 44px;
+    }
+
+    .hamburger {
+        min-width: 44px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Prevent the mobile menu from obscuring the page beneath it. */
+    .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .main-nav {
+        z-index: 1001;
+    }
+
+    .main-nav.open {
+        max-height: calc(100vh - 60px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Forms and common controls should fit their containing column. */
+    form,
+    input,
+    select,
+    textarea,
+    button {
+        max-width: 100%;
+    }
+
+    input,
+    select,
+    textarea {
+        box-sizing: border-box;
+    }
+
+    /* Avoid unusually long headings overflowing narrow layouts. */
+    h1,
+    h2,
+    h3,
+    h4 {
+        overflow-wrap: anywhere;
+    }
+
+    /* Embedded maps and other iframe-based content remain fluid. */
+    .map-container,
+    .google-map,
+    .map-wrapper,
+    .iframe-container {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: clamp(1.65rem, 8vw, 2.2rem);
+    }
+
+    h2 {
+        font-size: clamp(1.35rem, 6.5vw, 1.8rem);
+    }
+
+    h3 {
+        font-size: clamp(1.15rem, 5.5vw, 1.4rem);
+    }
+
+    /* Override the compact 38px controls in style.css with a true
+       touch-friendly target while retaining their existing shape. */
+    .btn-book,
+    .emergency-badge {
+        min-height: 44px;
+    }
+
+    .btn-book {
+        min-width: 44px;
+        width: 44px !important;
+        height: 44px !important;
+    }
+
+    .emergency-badge {
+        width: 44px;
+        height: 44px;
+    }
+
+    .hamburger {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 4px !important;
+    }
+
+    .nav-list {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .nav-list a {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+}
