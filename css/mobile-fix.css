@@ -1,0 +1,128 @@
+/* IBN Sina Hospital — mobile safety fixes
+ * Loaded after style.css so these rules layer on top of the site's existing responsive styles.
+ */
+
+@media (max-width: 768px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  img,
+  video,
+  svg,
+  canvas {
+    max-width: 100%;
+    height: auto;
+  }
+
+  iframe {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .site-header {
+    z-index: 1000;
+  }
+
+  .main-nav.open {
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-list a,
+  .btn,
+  button,
+  input[type="submit"],
+  input[type="button"] {
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+
+  .nav-list a {
+    display: flex;
+    align-items: center;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea,
+  input,
+  select,
+  textarea {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .map-container,
+  .map-wrapper,
+  .google-map {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title,
+  h1 {
+    font-size: clamp(1.6rem, 8vw, 2rem);
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: clamp(1.35rem, 6.5vw, 1.7rem);
+  }
+
+  .header-inner {
+    min-width: 0;
+  }
+
+  .logo {
+    min-width: 0;
+  }
+
+  .logo-text {
+    white-space: nowrap;
+  }
+
+  .hamburger {
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-book {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  .emergency-badge {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .main-nav.open {
+    max-height: calc(100vh - 58px);
+  }
+
+  .nav-list a {
+    min-height: 44px;
+    padding: 0.65rem 0;
+  }
+}
