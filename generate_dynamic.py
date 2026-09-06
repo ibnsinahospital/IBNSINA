@@ -297,13 +297,26 @@ def generate_blog_pages(posts):
 # ========== GENERATE DEPARTMENT PAGES ==========
 def generate_department_pages(departments, doctors):
     output_dir = Path('departments')
-    output_dir.mkdir(exist_ok=True)
+    manual_dir = Path('department-pages')
     urls = []
     pages = []
 
     for dept in departments:
         dept_name = (dept.get('name') or '').strip()
         slug = slugify(dept.get('slug') or dept_name)
+
+        # Skip the thin auto-generated page entirely when a hand-built,
+        # fuller page already exists in department-pages/ for this slug.
+        # WITHOUT THIS CHECK, this function unconditionally recreates
+        # departments/department-{slug}.html on every workflow run,
+        # reintroducing duplicate/competing URLs for departments that
+        # already have a proper hand-built page. This exact regression
+        # happened once already (Sep 2026) when this file was rewritten
+        # without this guard -- do not remove it again.
+        if (manual_dir / f'{slug}.html').exists():
+            continue
+
+        output_dir.mkdir(exist_ok=True)
         filename = f'department-{slug}.html'
         page_url = f'{SITE_URL}/departments/{filename}'
         title = f"{dept_name.title()} Department | Ibn Sina Hospital, Budgam"
