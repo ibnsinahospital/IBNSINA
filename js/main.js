@@ -774,53 +774,6 @@ document.addEventListener(
 
 
     // ========================================================
-    // NEWSLETTER
-    // ========================================================
-
-    const newsletterForm =
-      document.getElementById(
-        'newsletter-form'
-      );
-
-    if (newsletterForm) {
-
-      newsletterForm.addEventListener(
-        'submit',
-        e => {
-
-          e.preventDefault();
-
-          const email =
-            document.getElementById(
-              'newsletter-email'
-            );
-
-          if (
-            email &&
-            email.value.trim() &&
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-              .test(email.value)
-          ) {
-
-            alert(
-              'Thank you for subscribing!'
-            );
-
-            newsletterForm.reset();
-
-          } else {
-
-            alert(
-              'Please enter a valid email address.'
-            );
-          }
-
-        }
-      );
-    }
-
-
-    // ========================================================
     // DOCTOR LISTING
     // doctors.html
     // ========================================================
