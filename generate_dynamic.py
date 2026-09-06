@@ -530,13 +530,23 @@ def generate_blog_pages(posts):
 # ========== GENERATE DEPARTMENT PAGES ==========
 def generate_department_pages(departments, doctors):
     output_dir = Path('departments')
-    output_dir.mkdir(exist_ok=True)
+    manual_dir = Path('department-pages')
     urls = []
     pages = []
 
     for dept in departments:
         dept_name = (dept.get('name') or '').strip()
         slug = slugify(dept.get('slug') or dept_name)
+
+        # Skip the thin auto-generated page entirely when a hand-built,
+        # fuller page already exists in department-pages/ for this slug.
+        # Without this, the nightly workflow would keep recreating
+        # departments/department-{slug}.html and reintroducing duplicate,
+        # competing URLs for departments that already have a proper page.
+        if (manual_dir / f'{slug}.html').exists():
+            continue
+
+        output_dir.mkdir(exist_ok=True)
         filename = f'department-{slug}.html'
         page_url = f'{SITE_URL}/departments/{filename}'
         title = f"{dept_name.title()} Department | Ibn Sina Hospital, Budgam"
@@ -678,7 +688,7 @@ def collect_public_html_pages():
             content = html_file.read_text(encoding='utf-8')
             url = f"{SITE_URL}/{html_file.parent.as_posix()}/{html_file.name}"
             canonical_match = re.search(
-                r'<link\\s+rel=["\\\']canonical["\\\']\\s+href=["\\\']([^"\\\']+)["\\\']',
+                r'<link\s+rel=["\']canonical["\']\s+href=["\']([^"\']+)["\']',
                 content,
                 flags=re.IGNORECASE
             )
