@@ -302,14 +302,84 @@
                     <a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon">IG</a>
                     <a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon">YT</a>
                 </div>
-                <form class="newsletter-form" id="newsletter-form">
-                    <label for="newsletter-email">Subscribe for health tips:</label>
-                    <div class="newsletter-input-group">
-                        <input type="email" id="newsletter-email" placeholder="Your email" required>
-                        <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
-                    </div>
-                </form>
+                
             </div>
+        </div>
+        <div class="footer-bottom container">
+            <p>&copy; 2025 Ibn Sina Hospital. All rights reserved. | Operating since 2018</p>
+            <p class="google-review-note">See our latest reviews on <a href="https://maps.google.com/?q=IBN+SINA+HOSPITAL+Ompora+Budgam" target="_blank" rel="noopener">Google Maps</a></p>
+        </div>
+    </footer>
+
+    <!-- Lightbox overlay -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+        <button class="lightbox-prev" id="lightbox-prev" aria-label="Previous">&#10094;</button>
+        <img src="" alt="" id="lightbox-img">
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+        <button class="lightbox-next" id="lightbox-next" aria-label="Next">&#10095;</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <script src="js/animations.js" defer></script>
+    <script src="js/main.js" defer></script>
+    <script src="js/chatbot.js" defer></script>
+    <script>
+        // Gallery lightbox functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const photos = document.querySelectorAll('.photo-item img');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const closeBtn = document.getElementById('lightbox-close');
+            const prevBtn = document.getElementById('lightbox-prev');
+            const nextBtn = document.getElementById('lightbox-next');
+            let currentIndex = 0;
+            const photoArray = Array.from(photos);
+
+            function openLightbox(index) {
+                currentIndex = index;
+                const img = photoArray[currentIndex];
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightboxCaption.textContent = img.alt || '';
+                lightbox.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+            function closeLightbox() {
+                lightbox.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+            function showNext() {
+                currentIndex = (currentIndex + 1) % photoArray.length;
+                openLightbox(currentIndex);
+            }
+            function showPrev() {
+                currentIndex = (currentIndex - 1 + photoArray.length) % photoArray.length;
+                openLightbox(currentIndex);
+            }
+
+            photos.forEach((img, idx) => {
+                img.addEventListener('click', () => openLightbox(idx));
+            });
+            closeBtn.addEventListener('click', closeLightbox);
+            nextBtn.addEventListener('click', showNext);
+            prevBtn.addEventListener('click', showPrev);
+            window.addEventListener('keydown', (e) => {
+                if (lightbox.style.display === 'flex') {
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowRight') showNext();
+                    if (e.key === 'ArrowLeft') showPrev();
+                }
+            });
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) closeLightbox();
+            });
+        });
+    </script>
+</body>
+</html>
         </div>
         <div class="footer-bottom container">
             <p>&copy; 2025 Ibn Sina Hospital. All rights reserved. | Operating since 2018</p>
