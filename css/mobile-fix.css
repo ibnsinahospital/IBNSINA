@@ -1,0 +1,137 @@
+/* ===== MOBILE FIXES ===== */
+/* Loaded after style.css so these rules safely layer on top of the existing site styles. */
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas,
+iframe {
+    max-width: 100%;
+}
+
+table {
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+iframe {
+    border: 0;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea,
+input,
+select,
+textarea {
+    max-width: 100%;
+}
+
+@media (max-width: 767px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .site-header {
+        isolation: isolate;
+    }
+
+    .main-nav {
+        z-index: 1001;
+    }
+
+    .main-nav .nav-list a,
+    .nav-link,
+    .btn,
+    button,
+    input[type="submit"],
+    input[type="button"] {
+        min-height: 44px;
+    }
+
+    .main-nav .nav-list a {
+        display: flex;
+        align-items: center;
+    }
+
+    .hero-title,
+    .hero h1 {
+        font-size: clamp(1.65rem, 8vw, 2.2rem);
+        line-height: 1.2;
+    }
+
+    .hero-subtitle {
+        font-size: clamp(0.95rem, 4vw, 1.1rem);
+    }
+
+    .hero-ctas .btn {
+        white-space: normal;
+    }
+
+    .main-nav.open {
+        max-height: calc(100vh - var(--mobile-header-height, 64px));
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
+    .form-row .form-group {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        min-height: 44px;
+    }
+
+    .contact-grid,
+    .about-snapshot-grid {
+        min-width: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding-left: 0.875rem;
+        padding-right: 0.875rem;
+    }
+
+    h1 {
+        font-size: clamp(1.55rem, 8vw, 2rem);
+    }
+
+    h2 {
+        font-size: clamp(1.35rem, 7vw, 1.75rem);
+    }
+
+    .main-nav .nav-list {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .main-nav .nav-list a {
+        min-height: 44px;
+        padding-top: 0.65rem;
+        padding-bottom: 0.65rem;
+    }
+
+    .btn {
+        min-height: 44px;
+    }
+
+    .appointment-form-section form {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
