@@ -997,6 +997,7 @@ document.addEventListener(
                 <a
                   href="appointment.html?doctor=${encodeURIComponent(d.name || '')}"
                   class="btn btn-outline btn-sm"
+                  aria-label="Book Appointment with ${escapeHTML(d.name || 'this doctor')}"
                   onclick="event.stopPropagation();"
                   style="margin-top:.8rem;color:#fff;background:#2d4a2b;"
                 >
@@ -1131,6 +1132,7 @@ document.addEventListener(
                 <a
                   href="appointment.html?doctor=${encodeURIComponent(d.name || '')}"
                   class="btn btn-outline btn-sm"
+                  aria-label="Book Appointment with ${escapeHTML(d.name || 'this doctor')}"
                   onclick="event.stopPropagation();"
                   style="margin-top:.8rem;color:#fff;background:#2d4a2b;"
                 >
@@ -1756,9 +1758,9 @@ document.addEventListener(
 
                   <div class="update-caption">
 
-                    <h4>
+                    <h3>
                       ${titleContent}
-                    </h4>
+                    </h3>
 
                     <p>
                       ${escapeHTML(u.description || '')}
