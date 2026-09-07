@@ -6,7 +6,6 @@ import datetime
 import re
 import json
 import hashlib
-import html
 from urllib.parse import quote
 
 # ========== CONFIGURATION ==========
@@ -211,344 +210,87 @@ def generate_doctor_pages(doctors, departments_by_name):
 
 # ========== GENERATE BLOG PAGES ==========
 def generate_blog_pages(posts):
-    """Generate one canonical, responsive static article page per published Sheet post."""
     output_dir = Path('blog')
     output_dir.mkdir(exist_ok=True)
     urls = []
     pages = []
 
-    def esc(value):
-        return html.escape(str(value or ''), quote=True)
-
-    def sanitize_article_html(raw):
-        """Keep useful author HTML while removing executable/dangerous markup."""
-        text = str(raw or '')
-        text = re.sub(r'<script\b[^>]*>.*?</script\s*>', '', text, flags=re.I | re.S)
-        text = re.sub(r'<style\b[^>]*>.*?</style\s*>', '', text, flags=re.I | re.S)
-        text = re.sub(r'\son\w+\s*=\s*(".*?"|\'.*?\'|[^\s>]+)', '', text, flags=re.I | re.S)
-        text = re.sub(r'\s(?:href|src)\s*=\s*([\'"])javascript:[^\'"]*\1', '', text, flags=re.I)
-        return text
-
-    def format_body(raw):
-        if not raw:
-            return '<p>No article content is available yet.</p>'
-
-        text = str(raw).replace('\r\n', '\n').replace('\r', '\n').strip()
-
-        if re.search(r'<(p|div|ul|ol|h2|h3|blockquote|table|br)\b', text, re.I):
-            return sanitize_article_html(text)
-
-        blocks = re.split(r'\n\s*\n+', text)
-        out = []
-
-        for block in blocks:
-            lines = [line.strip() for line in block.split('\n') if line.strip()]
-            if not lines:
-                continue
-
-            if all(re.match(r'^[-•*]\s+', line) for line in lines):
-                items = ''.join(
-                    f'<li>{esc(re.sub(r"^[-•*]\s+", "", line))}</li>' for line in lines
-                )
-                out.append(f'<ul>{items}</ul>')
-                continue
-
-            if all(re.match(r'^\d+[.)]\s+', line) for line in lines):
-                items = ''.join(
-                    f'<li>{esc(re.sub(r"^\d+[.)]\s+", "", line))}</li>' for line in lines
-                )
-                out.append(f'<ol>{items}</ol>')
-                continue
-
-            # Explicit headings are preferred: "## Heading" or "### Heading".
-            if len(lines) == 1:
-                heading = re.match(r'^(#{2,3})\s+(.+)$', lines[0])
-                if heading:
-                    out.append(f'<h{len(heading.group(1))}>{esc(heading.group(2))}</h{len(heading.group(1))}>')
-                    continue
-
-            out.append(f'<p>{"<br>".join(esc(line) for line in lines)}</p>')
-
-        return '\n'.join(out)
-
-    def internal_links_html(post):
-        text = f"{post.get('title', '')} {post.get('short_summary', '')} {post.get('body', '')}".lower()
-
-        department_map = [
-            (r'\b(cardio|heart|hypertension|tmt|holter|abpm)\b', 'Cardiology', '../department-pages/cardiology.html'),
-            (r'\b(dermatology|skin|acne|eczema)\b', 'Dermatology', '../department-pages/dermatology.html'),
-            (r'\b(ent|ear|nose|throat|sinus)\b', 'ENT', '../department-pages/ent.html'),
-            (r'\b(gastro|gastric|stomach|colon|colonoscopy|endoscopy)\b', 'Gastroenterology', '../department-pages/gastroenterology.html'),
-            (r'\b(gynaec|gynec|pcos|pregnan|fertility|women)\b', 'Gynaecology', '../department-pages/gynaecology.html'),
-            (r'\b(kidney|renal|dialysis|nephro)\b', 'Nephrology', '../department-pages/nephrology.html'),
-            (r'\b(eye|vision|cataract|glaucoma|ophthal)\b', 'Ophthalmology', '../department-pages/ophthalmology.html'),
-            (r'\b(orthop|bone|joint|arthritis|fracture)\b', 'Orthopaedics', '../department-pages/orthopaedics.html'),
-            (r'\b(lung|respiratory|asthma|copd|pulmon)\b', 'Pulmonology', '../department-pages/pulmonology.html'),
-            (r'\b(urology|prostate|urinary)\b', 'Urology', '../department-pages/urology.html'),
-        ]
-
-        department_link = None
-        for pattern, label, href in department_map:
-            if re.search(pattern, text, re.I):
-                department_link = (label, href)
-                break
-
-        cards = []
-        if department_link:
-            label, href = department_link
-            cards.append(
-                f'<a class="blog-resource-link" href="{href}">'
-                f'<span><strong>{esc(label)} Department</strong>'
-                f'<small>Explore specialist care and related services.</small></span>'
-                f'<span aria-hidden="true">→</span></a>'
-            )
-
-        cards.extend([
-            '<a class="blog-resource-link" href="../doctors.html">'
-            '<span><strong>Our Doctors</strong><small>Meet our specialists and clinical team.</small></span>'
-            '<span aria-hidden="true">→</span></a>',
-            '<a class="blog-resource-link" href="../appointment.html">'
-            '<span><strong>Book an Appointment</strong><small>Arrange a consultation with our team.</small></span>'
-            '<span aria-hidden="true">→</span></a>',
-        ])
-
-        return (
-            '<aside class="blog-internal-links" aria-label="Related hospital resources">'
-            '<div class="blog-internal-links-heading">'
-            '<span class="blog-eyebrow">Explore More</span>'
-            '<h2>Related Hospital Resources</h2>'
-            '<p>Useful hospital pages related to this article.</p>'
-            '</div>'
-            f'<div class="blog-resource-grid">{"".join(cards)}</div>'
-            '</aside>'
-        )
-
-    def related_html(current_slug, current_post):
-        current_text = f"{current_post.get('title', '')} {current_post.get('category', '')} {current_post.get('department', '')}".lower()
-        current_words = set(re.findall(r'[a-z]{4,}', current_text))
-
-        candidates = []
-        for post in posts:
-            if post.get('is_published', '').strip().lower() not in ['true', 'yes', '1']:
-                continue
-            other_slug = slugify(post.get('slug') or post.get('title', ''))
-            if other_slug == current_slug:
-                continue
-
-            other_text = f"{post.get('title', '')} {post.get('category', '')} {post.get('department', '')}".lower()
-            other_words = set(re.findall(r'[a-z]{4,}', other_text))
-            overlap = len(current_words & other_words)
-
-            try:
-                timestamp = datetime.datetime.fromisoformat(
-                    str(post.get('published_at', '')).replace('Z', '+00:00')
-                ).timestamp()
-            except Exception:
-                timestamp = 0
-
-            candidates.append((overlap, timestamp, post))
-
-        candidates.sort(key=lambda item: (item[0], item[1]), reverse=True)
-
-        cards = []
-        for _, _, post in candidates[:3]:
-            other_slug = slugify(post.get('slug') or post.get('title', ''))
-            other_title = post.get('title', 'Health Article')
-            other_image = post.get('cover_image_url', '')
-            image_html = (
-                f'<img src="{esc(other_image)}" alt="{esc(other_title)}" loading="lazy">'
-                if other_image else
-                '<div class="blog-related-placeholder">Ibn Sina Hospital</div>'
-            )
-            cards.append(
-                '<article class="blog-related-card">'
-                f'<a class="blog-related-image" href="blog-{esc(other_slug)}.html">{image_html}</a>'
-                '<div class="blog-related-content">'
-                f'<h3><a href="blog-{esc(other_slug)}.html">{esc(other_title)}</a></h3>'
-                f'<a class="blog-related-read" href="blog-{esc(other_slug)}.html">Read article →</a>'
-                '</div></article>'
-            )
-
-        if not cards:
-            return ''
-
-        return (
-            '<section class="blog-related-section" aria-labelledby="related-articles-heading">'
-            '<div class="blog-section-heading"><span class="blog-eyebrow">Keep Reading</span>'
-            '<h2 id="related-articles-heading">More Health Articles</h2></div>'
-            f'<div class="blog-related-grid">{"".join(cards)}</div></section>'
-        )
-
     for post in posts:
         if post.get('is_published', '').strip().lower() not in ['true', 'yes', '1']:
             continue
-
         slug = slugify(post.get('slug') or post.get('title', ''))
         filename = f'blog-{slug}.html'
         page_url = f'{SITE_URL}/blog/{filename}'
-        title = post.get('title', 'Health Article')
+        title = post.get('title', 'Blog Post')
         summary = post.get('short_summary', title)
         image = post.get('cover_image_url', 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp')
-        published = post.get('published_at', '')
-        body_html = format_body(post.get('body', ''))
-        word_count = len(re.findall(r'\b\w+\b', re.sub(r'<[^>]+>', ' ', body_html)))
-        reading_time = max(1, (word_count + 199) // 200)
 
         json_ld = {
             "@context": "https://schema.org",
             "@type": "Article",
-            "@id": f"{page_url}#article",
             "headline": title,
             "description": summary,
             "image": image,
-            "url": page_url,
-            "mainEntityOfPage": {"@type": "WebPage", "@id": page_url},
-            "datePublished": published,
-            "author": {"@type": "Organization", "name": "Ibn Sina Hospital", "url": SITE_URL},
             "publisher": {
                 "@type": "Hospital",
                 "name": "Ibn Sina Hospital",
-                "url": SITE_URL,
                 "address": {
                     "@type": "PostalAddress",
                     "addressLocality": "Budgam",
                     "addressRegion": "Jammu and Kashmir",
                     "addressCountry": "IN"
                 }
-            }
+            },
+            "datePublished": post.get('published_at', '')
         }
 
-        html_page = f"""<!DOCTYPE html>
+        html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{esc(title)} | Ibn Sina Hospital, Budgam</title>
-<meta name="description" content="{esc(summary)}">
-<meta name="robots" content="index, follow, max-image-preview:large">
-<link rel="canonical" href="{esc(page_url)}">
-<meta property="og:type" content="article">
-<meta property="og:title" content="{esc(title)} | Ibn Sina Hospital">
-<meta property="og:description" content="{esc(summary)}">
-<meta property="og:url" content="{esc(page_url)}">
-<meta property="og:image" content="{esc(image)}">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{esc(title)} | Ibn Sina Hospital">
-<meta name="twitter:description" content="{esc(summary)}">
-<meta name="twitter:image" content="{esc(image)}">
-<link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
-<link rel="stylesheet" href="../css/style.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script type="application/ld+json">{json.dumps(json_ld, ensure_ascii=False)}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title} | Ibn Sina Hospital</title>
+    <meta name="description" content="{summary}">
+    <link rel="canonical" href="{page_url}">
+    <meta property="og:title" content="{title} | Ibn Sina Hospital">
+    <meta property="og:description" content="{summary}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{page_url}">
+    <meta property="og:image" content="{image}">
+    <link rel="stylesheet" href="../css/style.css">
+    <script type="application/ld+json">{json.dumps(json_ld, ensure_ascii=False)}</script>
 </head>
-<body class="generated-blog-page">
-<a class="skip-link" href="#main-content">Skip to content</a>
-
-<header class="site-header" id="site-header">
-  <div class="header-inner container">
-    <a href="../index.html" class="logo" aria-label="Ibn Sina Hospital Home">
-      <img src="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp" alt="Ibn Sina Hospital Logo" class="logo-img" style="height:40px;width:auto;">
-      <span class="logo-text">Ibn Sina <strong>Hospital</strong></span>
-    </a>
-    <nav class="main-nav" id="main-nav" aria-label="Main navigation">
-      <ul class="nav-list">
-        <li><a href="../index.html" class="nav-link">Home</a></li>
-        <li><a href="../about.html" class="nav-link">About</a></li>
-        <li><a href="../services.html" class="nav-link">Services</a></li>
-        <li><a href="../doctors.html" class="nav-link">Doctors</a></li>
-        <li><a href="../gallery.html" class="nav-link">Gallery</a></li>
-        <li><a href="../blog.html" class="nav-link active">Blog</a></li>
-        <li><a href="../careers.html" class="nav-link">Careers</a></li>
-        <li><a href="../faq.html" class="nav-link">FAQ</a></li>
-        <li><a href="../contact.html" class="nav-link">Contact</a></li>
-      </ul>
-    </nav>
-    <div class="header-actions">
-      <a href="tel:9622552553" class="emergency-badge" aria-label="Emergency call 9622552553">Emergency: 9622552553</a>
-      <a href="../appointment.html" class="btn btn-primary btn-book">Book Appointment</a>
-      <button class="hamburger" id="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false">
-        <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<main id="main-content">
-  <div class="generated-blog-shell container">
-    <nav class="generated-blog-breadcrumbs" aria-label="Breadcrumb">
-      <a href="../index.html">Home</a><span>/</span><a href="../blog.html">Health Insights</a><span>/</span><span>{esc(title)}</span>
-    </nav>
-
-    <article class="generated-blog-article">
-      <header class="generated-blog-header">
-        <span class="generated-blog-label">Health Insights</span>
-        <h1>{esc(title)}</h1>
-        <p class="generated-blog-summary">{esc(summary)}</p>
-        <div class="generated-blog-meta">
-          <span>Ibn Sina Hospital</span>
-          <time datetime="{esc(published)}">{esc(published)}</time>
-          <span>{reading_time} min read</span>
+<body>
+    <header class="site-header">
+        <div class="header-inner container">
+            <a href="../index.html" class="logo">Ibn Sina <strong>Hospital</strong></a>
+            <nav class="main-nav"><ul class="nav-list">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../blog.html">Blog</a></li>
+                <li><a href="../contact.html">Contact</a></li>
+            </ul></nav>
         </div>
-      </header>
-
-      <figure class="generated-blog-cover">
-        <img src="{esc(image)}" alt="{esc(title)}" width="1200" loading="eager" fetchpriority="high">
-      </figure>
-
-      <div class="generated-blog-layout">
-        <aside class="generated-blog-sidebar">
-          <div class="generated-sidebar-card">
-            <h2>About this article</h2>
-            <p>Health information from Ibn Sina Hospital, Budgam. This article is for general education and does not replace medical advice.</p>
-            <a href="../appointment.html">Need medical advice? →</a>
-          </div>
-        </aside>
-
-        <div class="generated-blog-main">
-          <div class="generated-blog-body" id="article-content">{body_html}</div>
-          {internal_links_html(post)}
-          <aside class="generated-medical-note"><strong>Medical Disclaimer</strong><p>This article is for general educational purposes and is not a substitute for professional medical advice, diagnosis or treatment. Please consult a qualified healthcare professional for personal medical concerns.</p></aside>
+    </header>
+    <main class="section">
+        <div class="container">
+            <article>
+                <h1>{title}</h1>
+                <time>{post.get('published_at', '')}</time>
+                <div class="blog-body">{post.get('body', '')}</div>
+            </article>
         </div>
-      </div>
-    </article>
-
-    {related_html(slug, post)}
-
-    <section class="generated-blog-cta">
-      <div><span class="blog-eyebrow">Trusted care close to home</span><h2>Need expert medical advice?</h2><p>Speak with the healthcare team at Ibn Sina Hospital, Budgam.</p></div>
-      <div class="generated-blog-cta-actions"><a class="btn btn-primary" href="../appointment.html">Book an Appointment</a><a class="btn btn-outline-light" href="tel:9622552553">Call 9622552553</a></div>
-    </section>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div class="footer-wave" aria-hidden="true"><svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"></path></svg></div>
-  <div class="footer-main container">
-    <div class="footer-col"><h3 class="footer-logo">Ibn Sina <strong>Hospital</strong></h3><address>Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111</address><p><a href="tel:9622552553">📞 9622552553 / 9419023501</a></p><p><a href="mailto:weibnsina@gmail.com">✉ weibnsina@gmail.com</a></p></div>
-    <div class="footer-col"><h4>OPD & Emergency</h4><p class="footer-note"><strong>OPD, Pharmacy, Lab & Emergency:</strong> 24/7, 365 days</p></div>
-    <div class="footer-col"><h4>Quick Links</h4><ul class="footer-links"><li><a href="../index.html">Home</a></li><li><a href="../about.html">About Us</a></li><li><a href="../services.html">Services</a></li><li><a href="../doctors.html">Doctors</a></li><li><a href="../gallery.html">Gallery</a></li><li><a href="../blog.html">Blog</a></li><li><a href="../careers.html">Careers</a></li><li><a href="../faq.html">FAQ</a></li><li><a href="../contact.html">Contact</a></li></ul></div>
-    <div class="footer-col"><h4>Stay Connected</h4><div class="social-icons"><a href="https://www.facebook.com/share/1HSWNC9UEy/" target="_blank" rel="noopener" class="social-icon" aria-label="Facebook">FB</a><a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram">IG</a><a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" target="_blank" rel="noopener" class="social-icon" aria-label="YouTube">YT</a></div></div>
-  </div>
-  <div class="footer-bottom container"><p>&copy; 2026 Ibn Sina Hospital. All rights reserved. | Operating since 2018</p><p class="google-review-note">See our latest reviews on <a href="https://maps.google.com/?q=IBN+SINA+HOSPITAL+Ompora+Budgam" target="_blank" rel="noopener">Google Maps</a></p></div>
-</footer>
-
-<script>
-document.getElementById('hamburger')?.addEventListener('click', function () {
-  const nav = document.getElementById('main-nav');
-  const expanded = this.getAttribute('aria-expanded') === 'true';
-  this.setAttribute('aria-expanded', String(!expanded));
-  nav?.classList.toggle('open');
-});
-</script>
+    </main>
+    <footer class="site-footer">
+        <div class="footer-main container">
+            <p>&copy; 2025 Ibn Sina Hospital, Budgam. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>"""
-
         output_path = output_dir / filename
-        output_path.write_text(html_page, encoding='utf-8')
+        output_path.write_text(html, encoding='utf-8')
         urls.append(page_url)
-        pages.append((page_url, html_page))
+        pages.append((page_url, html))
 
     return urls, pages
 
