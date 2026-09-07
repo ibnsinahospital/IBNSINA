@@ -223,8 +223,8 @@ def generate_blog_pages(posts):
         text = str(raw or "")
         text = re.sub(r"<script\b[^>]*>.*?</script\s*>", "", text, flags=re.I | re.S)
         text = re.sub(r"<style\b[^>]*>.*?</style\s*>", "", text, flags=re.I | re.S)
-        text = re.sub(r"\son\w+\s*=\s*(""[^""]*""|''[^'']*''|[^\s>]+)", "", text, flags=re.I)
-        text = re.sub(r"(?i)\s(?:href|src)\s*=\s*(['""])javascript:[^'""\s]*\1", "", text)
+        text = re.sub(r'\son\w+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)', '', text, flags=re.I)
+        text = re.sub(r'(?i)\s(?:href|src)\s*=\s*([\'"'])javascript:[^\'"\s]*\1', '', text)
         return text
 
     def format_body(raw):
