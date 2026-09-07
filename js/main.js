@@ -407,6 +407,11 @@ function isPublished(post) {
 }
 
 
+function getStaticBlogUrl(slug) {
+  const value = String(slug || '').trim();
+  return value ? `blog/blog-${encodeURIComponent(value)}.html` : 'blog.html';
+}
+
 function calculateReadingTime(htmlOrText) {
 
   if (!htmlOrText) {
@@ -517,7 +522,7 @@ function addBlogArticleSchema(post) {
   if (existing) existing.remove();
 
   const slug = String(post.slug || '').trim();
-  const articleURL = `https://ibnsinahospital.in/blog-post.html?slug=${encodeURIComponent(slug)}`;
+  const articleURL = `https://ibnsinahospital.in/${getStaticBlogUrl(slug)}`;
   const image = post.cover_image_url || 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp';
   const published = post.published_at || post.date || '';
   const modified = post.updated_at || post.modified_at || published;
@@ -2369,7 +2374,7 @@ document.addEventListener(
           // ==================================================
 
           const articleURL =
-            `https://ibnsinahospital.in/blog-post.html?slug=${encodeURIComponent(slug)}`;
+            `https://ibnsinahospital.in/${getStaticBlogUrl(slug)}`;
 
           const seoDescription =
             normalizeBlogDescription(
