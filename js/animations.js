@@ -72,13 +72,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Hero: smooth slide-up with spring
+    // NOTE: .hero-ctas .btn is intentionally NOT animated here (no
+    // gsap.from opacity:0 tween). gsap.from() sets an element to its
+    // "from" state (opacity:0) immediately and only reveals it once
+    // GSAP's animation actually completes. If the GSAP/ScrollTrigger
+    // CDN script is slow, blocked, or fails on a visitor's network,
+    // the tween never runs and the element is stuck invisible forever.
+    // This caused the "Book an Appointment" / "Call Emergency" buttons
+    // to permanently disappear for some visitors. Do not add an
+    // opacity-based gsap.from() to .hero-ctas .btn again — these
+    // buttons must always render via plain CSS only.
     const hero = document.querySelector('.hero');
     if (hero) {
       gsap.from(hero, { opacity: 0, duration: 0.7, ease: 'power2.out' });
       gsap.from('.hero-title', { opacity: 0, y: 40, duration: 0.8, delay: 0.1, ease: 'back.out(1.4)' });
       gsap.from('.hero-subtitle', { opacity: 0, y: 30, duration: 0.7, delay: 0.2, ease: 'power2.out' });
       gsap.from('.hero-desc', { opacity: 0, y: 25, duration: 0.7, delay: 0.3, ease: 'power2.out' });
-      gsap.from('.hero-ctas .btn', { opacity: 0, y: 25, duration: 0.6, delay: 0.4, stagger: 0.15, ease: 'back.out(1.7)' });
     }
 
     // Section titles: clip reveal
@@ -157,13 +166,11 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // CTA banner: slide up
-    gsap.utils.toArray('.cta-banner').forEach(banner => {
-      gsap.from(banner.querySelectorAll('.btn'), {
-        scale: 0.8, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'back.out(1.7)',
-        scrollTrigger: { trigger: banner, start: 'top 90%' }
-      });
-    });
+    // NOTE: .cta-banner .btn is intentionally NOT animated (see note
+    // above the hero block for why an opacity-based gsap.from() on a
+    // "Book Appointment" button is unsafe). The "Book an Appointment"
+    // and "Find Us on Map" buttons in the CTA banner render via plain
+    // CSS only.
 
     // Footer: fade up
     gsap.from('.site-footer', {
@@ -200,6 +207,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Hero parallax & stagger
+    // NOTE: see the mobile block above for why .hero-ctas .btn is
+    // intentionally excluded from any opacity-based gsap.from() tween.
     const hero = document.querySelector('.hero');
     if (hero) {
       gsap.from(hero, { opacity: 0, scale: 1.08, duration: 1.2, ease: 'power2.out' });
@@ -220,7 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       gsap.from('.hero-subtitle', { opacity: 0, y: 30, duration: 0.8, delay: 0.3, ease: 'power2.out' });
       gsap.from('.hero-desc', { opacity: 0, y: 20, duration: 0.8, delay: 0.45, ease: 'power2.out' });
-      gsap.from('.hero-ctas .btn', { opacity: 0, y: 15, duration: 0.6, delay: 0.6, stagger: 0.15, ease: 'back.out(1.5)' });
     }
 
     // Section headings clip reveal
@@ -293,7 +301,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Magnetic buttons
-    document.querySelectorAll('.btn-primary, .hero-ctas .btn').forEach(btn => {
+    // NOTE: removed '.hero-ctas .btn' from this selector. This effect
+    // only nudges the button under the cursor (harmless on its own),
+    // but keeping hero-ctas fully untouched by GSAP here too, so
+    // nothing in this file ever sets a transform/opacity on it.
+    document.querySelectorAll('.btn-primary').forEach(btn => {
+      if (btn.closest('.hero-ctas')) return;
       btn.addEventListener('mousemove', (e) => {
         const rect = btn.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
@@ -345,13 +358,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // CTA pulse
-    gsap.utils.toArray('.cta-banner').forEach(banner => {
-      gsap.from(banner.querySelectorAll('.btn'), {
-        scale: 0.8, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'back.out(1.7)',
-        scrollTrigger: { trigger: banner, start: 'top 90%' }
-      });
-    });
+    // NOTE: .cta-banner .btn is intentionally NOT animated (see note
+    // in the mobile block above).
 
     // Footer fade
     gsap.from('.site-footer', {
