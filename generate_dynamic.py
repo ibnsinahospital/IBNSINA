@@ -6,6 +6,7 @@ import datetime
 import re
 import json
 import hashlib
+import html
 from urllib.parse import quote
 
 # ========== CONFIGURATION ==========
