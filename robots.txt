@@ -1,3 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /feed/
+Disallow: /comments/
+Disallow: /search/
+Disallow: /*?s=
+
 Sitemap: https://ibnsinahospital.in/sitemap.xml
