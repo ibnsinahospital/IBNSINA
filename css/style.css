@@ -133,19 +133,15 @@ p { margin-bottom: var(--spacing-sm); overflow-wrap: break-word; }
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
 .hero-wave { position: absolute; bottom: -2px; left: 0; width: 100%; }
 
-/* ===== HERO CTA BUTTON VISIBILITY FIX =====
-   The hero photo's tone varies (dark asphalt/shadow in places), and a
-   solid-forest .btn-primary sitting on a forest-tinted overlay could
-   blend into darker regions of that photo. Switching this specific
-   instance to a white fill (like the CTA-banner fix) plus a strong
-   shadow/border guarantees visibility regardless of what part of the
-   photo sits behind it. Only scoped to .hero-ctas — no other
-   "Book Appointment" / "Call Emergency" button elsewhere is affected.
-   Also sized up per request (bigger than the default .btn-lg). */
+/* ===== HERO CTA BUTTONS =====
+   Kept small per request. Also note: js/animations.js intentionally
+   does NOT run any gsap.from(opacity:0) tween on these buttons (see
+   comments in that file) — they must always render via plain CSS only,
+   since a GSAP/CDN hiccup previously left them stuck invisible. */
 .hero-ctas .btn {
-    padding: 1.1rem 2.6rem;
-    font-size: 1.15rem;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    padding: 0.55rem 1.3rem;
+    font-size: 0.9rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
     border-width: 2px;
 }
 .hero-ctas .btn-primary {
@@ -535,8 +531,8 @@ p { margin-bottom: var(--spacing-sm); overflow-wrap: break-word; }
     .hero { min-height: auto; padding: 3rem 0; }
     .hero-title { font-size: 1.8rem; }
     .hero-subtitle { font-size: 1rem; }
-    .hero-ctas { flex-direction: column; gap: 0.75rem; }
-    .hero-ctas .btn { width: 100%; padding: 0.75rem 1rem; font-size: 0.95rem; white-space: normal; }
+    .hero-ctas { flex-direction: row; flex-wrap: wrap; gap: 0.6rem; }
+    .hero-ctas .btn { width: auto; padding: 0.5rem 1.1rem; font-size: 0.85rem; white-space: normal; }
     .hero-canopy { display: none; }
 
     .site-header { padding: 0.5rem 0; }
