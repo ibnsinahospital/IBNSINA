@@ -4,5 +4,6 @@ Disallow: /feed/
 Disallow: /comments/
 Disallow: /search/
 Disallow: /*?s=
+Disallow: /departments/
 
 Sitemap: https://ibnsinahospital.in/sitemap.xml
