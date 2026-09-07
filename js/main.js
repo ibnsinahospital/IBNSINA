@@ -627,7 +627,7 @@ function renderRelatedBlogLinks(posts, currentSlug) {
       <ul>
         ${candidates.map(p => `
           <li>
-            <a href="blog-post.html?slug=${encodeURIComponent(p.slug || '')}">
+            <a href="${getStaticBlogUrl(p.slug)}">
               ${escapeHTML(p.title || 'Health Article')}
             </a>
           </li>
@@ -2044,7 +2044,7 @@ document.addEventListener(
                 <h3>
 
                   <a
-                    href="blog-post.html?slug=${encodeURIComponent(p.slug || '')}"
+                    href="${getStaticBlogUrl(p.slug)}"
                   >
                     ${escapeHTML(p.title || 'Health Article')}
                   </a>
@@ -2126,7 +2126,7 @@ document.addEventListener(
 
               const isFeatured = index === 0;
               const readTime = calculateReadingTime(p.body);
-              const postUrl = `blog-post.html?slug=${encodeURIComponent(p.slug || '')}`;
+              const postUrl = getStaticBlogUrl(p.slug);
               const categoryLabel = p.category || 'Health & Wellness';
 
               return `
