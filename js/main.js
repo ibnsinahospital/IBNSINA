@@ -431,17 +431,11 @@ function calculateReadingTime(htmlOrText) {
 
 function formatBlogBody(raw) {
   if (!raw) return '';
-  const text = String(raw);
+  const text = String(raw).replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
 
-  // If the sheet content already contains real HTML tags, trust it as-is.
-  if (/<(p|div|ul|ol|h2|h3|br)\b/i.test(text)) {
-    return text;
-  }
+  if (/<(p|div|ul|ol|h2|h3|blockquote|table|br)\b/i.test(text)) return text;
 
-  // Plain text: split into blocks on blank lines, detect bullet/numbered
-  // lines, and convert them into proper <ul>/<ol> so points appear on
-  // their own line instead of collapsing into one paragraph.
-  const blocks = text.split(/\n\s*\n/);
+  const blocks = text.split(/\n\s*\n+/);
   let html = '';
 
   blocks.forEach(block => {
@@ -452,17 +446,61 @@ function formatBlogBody(raw) {
     const isNumbered = lines.every(l => /^\d+[.)]\s+/.test(l));
 
     if (isBulleted) {
-      html += '<ul>' + lines.map(l => `<li>${escapeHTML(l.replace(/^[-•*]\s+/, ''))}</li>`).join('') + '</ul>';
-    } else if (isNumbered) {
-      html += '<ol>' + lines.map(l => `<li>${escapeHTML(l.replace(/^\d+[.)]\s+/, ''))}</li>`).join('') + '</ol>';
-    } else {
-      html += '<p>' + lines.map(l => escapeHTML(l)).join('<br>') + '</p>';
+      html += '<ul>' + lines.map(l => '<li>' + escapeHTML(l.replace(/^[-•*]\s+/, '')) + '</li>').join('') + '</ul>';
+      return;
     }
+
+    if (isNumbered) {
+      html += '<ol>' + lines.map(l => '<li>' + escapeHTML(l.replace(/^\d+[.)]\s+/, '')) + '</li>').join('') + '</ol>';
+      return;
+    }
+
+    if (lines.length === 1) {
+      const line = lines[0];
+      const numberedHeading = line.match(/^(\d+)[.)]\s+(.+)$/);
+      if (numberedHeading) {
+        html += '<h2><span class="blog-section-number">' + escapeHTML(numberedHeading[1]) + '</span>' + escapeHTML(numberedHeading[2]) + '</h2>';
+        return;
+      }
+
+      const looksLikeHeading = line.length <= 95 && !/[.!;,]$/.test(line) && !/^(Reception|Phone|Call|Email)\s*:/i.test(line) && !/@\S+\.\S+/.test(line) && !/\b\d{7,}\b/.test(line);
+      if (looksLikeHeading) {
+        html += '<h2>' + escapeHTML(line) + '</h2>';
+        return;
+      }
+    }
+
+    html += '<p>' + lines.map(escapeHTML).join('<br>') + '</p>';
   });
 
   return html;
 }
 
+function renderBlogInternalLinks(post) {
+  const text = String((post && post.title) || '') + ' ' + String((post && post.body) || '');
+  const lower = text.toLowerCase();
+  let links = [
+    ['Services & Departments', 'services.html', 'Explore care and services available at Ibn Sina Hospital.'],
+    ['Our Doctors', 'doctors.html', 'Meet our specialists and clinical team.'],
+    ['Book an Appointment', 'appointment.html', 'Arrange a consultation with our team.']
+  ];
+
+  if (/(heart|cardio|tmt|holter|abpm|blood pressure)/.test(lower)) {
+    links[0] = ['Cardiology & Diagnostics', 'services.html', 'Explore cardiac care and diagnostic services.'];
+    links[2] = ['Book an Appointment', 'appointment.html', 'Arrange a consultation or test.'];
+  } else if (/(kidney|dialysis|renal)/.test(lower)) {
+    links[0] = ['Kidney & Dialysis Care', 'services.html', 'Explore related hospital services.'];
+  } else if (/(pcos|pregnan|fertility|gynec|women)/.test(lower)) {
+    links[0] = ["Women's Health Services", 'services.html', 'Explore women’s health and related services.'];
+  }
+
+  return '<aside class="blog-internal-links" aria-label="Related hospital resources">' +
+    '<div class="blog-internal-links-heading"><span class="blog-eyebrow">Explore More</span>' +
+    '<h2>Related Hospital Resources</h2><p>Useful pages from Ibn Sina Hospital related to this article.</p></div>' +
+    '<div class="blog-resource-grid">' +
+    links.map(([label, href, description]) => '<a class="blog-resource-link" href="' + href + '"><span><strong>' + escapeHTML(label) + '</strong><small>' + escapeHTML(description) + '</small></span><span aria-hidden="true">→</span></a>').join('') +
+    '</div></aside>';
+}
 
 function formatBlogDate(dateValue) {
 
@@ -2617,6 +2655,8 @@ document.addEventListener(
                 >
 
                   ${formatBlogBody(post.body)}
+
+                  ${renderBlogInternalLinks(post)}
 
                   ${renderRelatedBlogLinks(posts, slug)}
 
