@@ -350,6 +350,246 @@ p { margin-bottom: var(--spacing-sm); overflow-wrap: break-word; }
 .blog-body li { margin-bottom: 0.5rem; line-height: 1.7; }
 .blog-body p { margin-bottom: 1.2rem; line-height: 1.75; }
 
+/* ===================================================================
+   SINGLE BLOG POST PAGE (blog-post.html)
+   Rendered by js/main.js into #blog-post-content using the classes
+   below. None of these had any CSS at all before, so the page was
+   falling back to unstyled browser defaults — this is the actual fix
+   for "the blog posts look bad".
+   =================================================================== */
+
+.premium-blog-post {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+/* Breadcrumb */
+.blog-breadcrumb {
+  font-size: 0.85rem;
+  color: var(--sage-text);
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+.blog-breadcrumb a { color: var(--sage-text); }
+.blog-breadcrumb a:hover { color: var(--forest); }
+.blog-breadcrumb span[aria-current] {
+  color: var(--forest);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 260px;
+}
+
+/* Article hero (title block, no image yet) */
+.blog-article-hero { text-align: center; margin-bottom: 2rem; }
+.blog-article-category {
+  display: inline-block;
+  background: var(--olive);
+  color: var(--forest);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+.blog-article-title {
+  margin-bottom: 0.8rem;
+  color: var(--forest);
+}
+.blog-article-summary {
+  font-size: 1.15rem;
+  color: #4a5a55;
+  line-height: 1.6;
+  max-width: 620px;
+  margin: 0 auto 1.2rem;
+}
+.blog-article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  color: var(--sage-text);
+  font-weight: 600;
+}
+.blog-meta-item { display: inline-flex; align-items: center; gap: 0.35rem; }
+.blog-meta-divider { opacity: 0.6; }
+
+/* Hero image */
+.blog-hero-media {
+  margin: 0 0 2rem;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  background: var(--ivory);
+}
+.blog-hero-media img {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+}
+
+/* Layout: share rail + article content */
+.blog-article-layout {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+.blog-share-rail {
+  position: sticky;
+  top: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+.blog-share-rail span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--sage-text);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.2rem;
+}
+.blog-share-button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--sage);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition), box-shadow var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+.blog-share-button:hover { transform: translateY(-2px) scale(1.05); box-shadow: var(--shadow-md); }
+.blog-share-button[data-share="whatsapp"] { background: #25D366; }
+.blog-share-button[data-share="facebook"] { background: #1877F2; }
+.blog-share-button[data-share="copy"] { background: var(--forest); }
+
+.blog-article-content {
+  font-size: 1.05rem;
+  color: #2c332c;
+  line-height: 1.8;
+}
+.blog-article-content h2 {
+  color: var(--forest);
+  margin: 2rem 0 1rem;
+}
+.blog-article-content h3 {
+  color: var(--forest);
+  margin: 1.5rem 0 0.8rem;
+}
+
+/* Related articles */
+.blog-related-articles {
+  margin-top: 2.5rem;
+  padding: 1.5rem 1.8rem;
+  background: #fff;
+  border: 1px solid #e0e0d0;
+  border-radius: var(--radius);
+}
+.blog-related-articles h2 {
+  font-size: 1.1rem;
+  color: var(--forest);
+  margin-bottom: 0.8rem;
+}
+.blog-related-articles ul { list-style: none; }
+.blog-related-articles li { margin-bottom: 0.5rem; }
+.blog-related-articles a { font-weight: 600; }
+.blog-related-articles a:hover { text-decoration: underline; }
+
+/* Medical disclaimer */
+.blog-medical-disclaimer {
+  margin-top: 2.5rem;
+  padding: 1.5rem 1.8rem;
+  background: var(--ivory);
+  border-left: 4px solid var(--olive);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  color: #4a5a55;
+}
+.blog-medical-disclaimer strong {
+  display: block;
+  color: var(--forest);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.blog-medical-disclaimer p { margin-bottom: 0; }
+
+/* Bottom CTA */
+.blog-article-cta {
+  margin-top: 3rem;
+  background: var(--forest);
+  color: var(--ivory);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+.blog-cta-eyebrow {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--olive-light);
+  margin-bottom: 0.6rem;
+}
+.blog-article-cta h2 { margin-bottom: 0.8rem; }
+.blog-article-cta p {
+  max-width: 480px;
+  margin: 0 auto 1.5rem;
+  opacity: 0.9;
+}
+.blog-cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.blog-article-cta .btn-primary { background: var(--ivory); color: var(--forest); border-color: var(--ivory); }
+.blog-article-cta .btn-primary:hover { background: var(--olive); border-color: var(--olive); }
+.blog-article-cta .btn-outline { color: var(--ivory); border-color: var(--ivory); }
+.blog-article-cta .btn-outline:hover { background: var(--ivory); color: var(--forest); }
+
+/* Back link */
+.blog-back-link { margin-top: 2rem; text-align: center; }
+
+/* Error / loading states */
+.blog-error-state, .blog-loading-state {
+  text-align: center;
+  padding: 4rem 1rem;
+}
+.blog-error-icon {
+  font-size: 2.5rem;
+  color: var(--olive);
+  margin-bottom: 1rem;
+}
+.blog-error-state h1 { color: var(--forest); margin-bottom: 0.8rem; }
+.blog-error-state p { color: #555; margin-bottom: 1.5rem; }
+
+/* Mobile layout: share rail becomes a horizontal row above the content */
+@media (max-width: 700px) {
+  .blog-article-layout { grid-template-columns: 1fr; }
+  .blog-share-rail {
+    position: static;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  .blog-hero-media img { max-height: 280px; }
+  .blog-article-cta { padding: 2rem 1.2rem; }
+}
+
 /* ===== CTA BANNER ===== */
 .cta-banner { background: var(--forest); color: var(--ivory); padding: var(--spacing-lg) 0; }
 .cta-banner-content { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem; }
