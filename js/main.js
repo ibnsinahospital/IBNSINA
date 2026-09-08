@@ -431,7 +431,9 @@ function calculateReadingTime(htmlOrText) {
 
 function formatBlogBody(raw) {
   if (!raw) return '';
-  const text = String(raw);
+
+  // Strip zero-width and other invisible Unicode characters that break detection
+  const text = String(raw).replace(/[\u200B-\u200D\u2060\uFEFF]/g, '');
 
   // If the sheet content already contains real HTML tags, trust it as-is.
   if (/<(p|div|ul|ol|h2|h3|br)\b/i.test(text)) {
