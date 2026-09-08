@@ -236,17 +236,6 @@ const SERVICE_ICONS = {
 
 
 // ============================================================
-// STATIC BLOG URL HELPER
-// ============================================================
-
-function getStaticBlogURL(slug) {
-  const cleanSlug = String(slug || '').trim();
-  if (!cleanSlug) return '/blog.html';
-  return '/blog/blog-' + encodeURIComponent(cleanSlug) + '.html';
-}
-
-
-// ============================================================
 // JSON FETCH HELPER
 // ============================================================
 
@@ -566,7 +555,7 @@ function addBlogArticleSchema(post) {
   if (existing) existing.remove();
 
   const slug = String(post.slug || '').trim();
-  const articleURL = `https://ibnsinahospital.in${getStaticBlogURL(slug)}`;
+  const articleURL = `https://ibnsinahospital.in/blog-post.html?slug=${encodeURIComponent(slug)}`;
   const image = post.cover_image_url || 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp';
   const published = post.published_at || post.date || '';
   const modified = post.updated_at || post.modified_at || published;
@@ -671,7 +660,7 @@ function renderRelatedBlogLinks(posts, currentSlug) {
       <ul>
         ${candidates.map(p => `
           <li>
-            <a href="${getStaticBlogURL(p.slug)}">
+            <a href="blog-post.html?slug=${encodeURIComponent(p.slug || '')}">
               ${escapeHTML(p.title || 'Health Article')}
             </a>
           </li>
@@ -2090,7 +2079,7 @@ document.addEventListener(
                 <h3>
 
                   <a
-                    href="${getStaticBlogURL(p.slug)}"
+                    href="blog-post.html?slug=${encodeURIComponent(p.slug || '')}"
                   >
                     ${escapeHTML(p.title || 'Health Article')}
                   </a>
@@ -2172,7 +2161,7 @@ document.addEventListener(
 
               const isFeatured = index === 0;
               const readTime = calculateReadingTime(p.body);
-              const postUrl = getStaticBlogURL(p.slug);
+              const postUrl = `blog-post.html?slug=${encodeURIComponent(p.slug || '')}`;
               const categoryLabel = p.category || 'Health & Wellness';
 
               return `
@@ -2269,7 +2258,7 @@ document.addEventListener(
     // SINGLE BLOG POST
     // blog-post.html
     //
-    // Legacy compatibility: redirect old dynamic URLs to static articles.
+    // Google Sheets → blog.json → this renderer
     // ========================================================
 
     const postContainer =
@@ -2287,16 +2276,6 @@ document.addEventListener(
       const slug =
         params.get('slug');
 
-      // ----- LEGACY REDIRECT: old dynamic URL → static article -----
-      if (slug) {
-        const staticPostURL = getStaticBlogURL(slug);
-        const currentPath = window.location.pathname.replace(/\/$/, '');
-        if (currentPath.endsWith('/blog-post.html')) {
-          window.location.replace(staticPostURL);
-          return; // stop further execution
-        }
-      }
-      // -----------------------------------------------------------------
 
       if (!slug) {
 
@@ -2430,7 +2409,7 @@ document.addEventListener(
           // ==================================================
 
           const articleURL =
-            `https://ibnsinahospital.in${getStaticBlogURL(slug)}`;
+            `https://ibnsinahospital.in/blog-post.html?slug=${encodeURIComponent(slug)}`;
 
           const seoDescription =
             normalizeBlogDescription(
