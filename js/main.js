@@ -444,6 +444,9 @@ function formatBlogBody(raw) {
   const blocks = text.split(/\n\s*\n/);
   let html = '';
 
+  // Track whether the first normal paragraph has been assigned the lead class
+  let leadAssigned = false;
+
   blocks.forEach(block => {
     const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
     if (!lines.length) return;
@@ -456,7 +459,40 @@ function formatBlogBody(raw) {
     } else if (isNumbered) {
       html += '<ol>' + lines.map(l => `<li>${escapeHTML(l.replace(/^\d+[.)]\s+/, ''))}</li>`).join('') + '</ol>';
     } else {
-      html += '<p>' + lines.map(l => escapeHTML(l)).join('<br>') + '</p>';
+      // Check for single-line blocks with special formatting first
+      if (lines.length === 1) {
+        const line = lines[0];
+
+        // 1. Rhetorical question / pull-quote
+        if (line.endsWith('?') && line.split(/\s+/).filter(Boolean).length <= 20) {
+          html += `<p class="blog-pull-quote">${escapeHTML(line)}</p>`;
+        }
+        // 2. Mini sub-heading
+        else if (
+          line.split(/\s+/).filter(Boolean).length <= 8 &&
+          !/[.!?:;,]$/.test(line) &&
+          /^[A-Z]/.test(line)
+        ) {
+          html += `<h3 class="blog-subheading">${escapeHTML(line)}</h3>`;
+        }
+        // 3. Normal paragraph (single line)
+        else {
+          if (!leadAssigned) {
+            html += `<p class="blog-lead-paragraph">${escapeHTML(line)}</p>`;
+            leadAssigned = true;
+          } else {
+            html += `<p>${escapeHTML(line)}</p>`;
+          }
+        }
+      } else {
+        // Multi-line block → normal paragraph with <br> between lines
+        if (!leadAssigned) {
+          html += `<p class="blog-lead-paragraph">` + lines.map(l => escapeHTML(l)).join('<br>') + `</p>`;
+          leadAssigned = true;
+        } else {
+          html += `<p>` + lines.map(l => escapeHTML(l)).join('<br>') + `</p>`;
+        }
+      }
     }
   });
 
@@ -771,7 +807,9 @@ document.addEventListener(
           observer.observe(el)
         );
     }
-// ========================================================
+
+
+    // ========================================================
     // DOCTOR LISTING
     // doctors.html
     // ========================================================
