@@ -92,6 +92,59 @@ def save_json_data(doctors, departments, posts, gallery_items, updates):
     print(f"Wrote JSON data files: {len(doctors)} doctors, {len(departments)} departments, "
           f"{len(posts)} blog posts, {len(gallery_items)} gallery items, {len(updates)} updates.")
 
+
+# ========== UPDATE CRAWLABLE BLOG LINKS ==========
+def update_blog_index_links(posts):
+    """Keep plain-HTML static blog links synchronized with published posts."""
+    blog_index = Path('blog.html')
+    if not blog_index.exists():
+        print("blog.html not found; skipping crawlable blog links.")
+        return
+
+    published = [
+        post for post in posts
+        if (post.get('is_published') or '').strip().lower() in ['true', 'yes', '1']
+    ]
+    published.sort(
+        key=lambda post: post.get('published_at') or post.get('date') or '',
+        reverse=True
+    )
+
+    links = []
+    for post in published:
+        slug = slugify(post.get('slug') or post.get('title', ''))
+        if not slug:
+            continue
+        title = (post.get('title') or 'Health Article').strip()
+        title_html = (
+            title.replace('&', '&amp;')
+                 .replace('<', '&lt;')
+                 .replace('>', '&gt;')
+                 .replace('"', '&quot;')
+                 .replace("'", '&#39;')
+        )
+        links.append(
+            f'                    <li><a href="blog/blog-{slug}.html">{title_html}</a></li>'
+        )
+
+    if not links:
+        links.append('                    <li><a href="blog.html">Health Articles</a></li>')
+
+    start_marker = '                    <!-- STATIC_BLOG_LINKS_START -->'
+    end_marker = '                    <!-- STATIC_BLOG_LINKS_END -->'
+    pattern = re.compile(re.escape(start_marker) + r'.*?' + re.escape(end_marker), re.DOTALL)
+    replacement = start_marker + '\n' + '\n'.join(links) + '\n' + end_marker
+
+    current = blog_index.read_text(encoding='utf-8')
+    updated, count = pattern.subn(replacement, current, count=1)
+
+    if count != 1:
+        print("Static blog link markers not found; blog.html was not changed.")
+        return
+
+    blog_index.write_text(updated, encoding='utf-8')
+    print(f"Updated crawlable blog links in blog.html: {len(links)} published posts.")
+
 # ========== GENERATE DOCTOR PAGES ==========
 def generate_doctor_pages(doctors, departments_by_name):
     output_dir = Path('doctors')
@@ -520,6 +573,7 @@ if __name__ == "__main__":
     print(f"Found {len(updates)} updates.")
 
     save_json_data(doctors, departments, posts, gallery_items, updates)
+    update_blog_index_links(posts)
 
     departments_by_name = {(d.get('name') or '').strip().lower(): d for d in departments}
 
