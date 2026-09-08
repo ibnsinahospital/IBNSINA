@@ -681,7 +681,29 @@
 
         </section>
 
-    </main>
+    
+    <!-- =========================================================
+         CRAWLABLE STATIC BLOG LINKS
+         JavaScript powers the normal blog interface. These links
+         provide a plain-HTML fallback and are synchronized by
+         generate_dynamic.py whenever the blog data is rebuilt.
+    ========================================================== -->
+
+    <noscript>
+        <section class="section blog-noscript-section">
+            <div class="container">
+                <h2>Health Articles</h2>
+                <p>Explore our health articles and medical insights:</p>
+                <ul id="static-blog-links">
+                    <!-- STATIC_BLOG_LINKS_START -->
+                    <li><a href="blog/blog-emergency-symptoms-hospital-jammu-kashmir.html">Emergency Symptoms You Should Never Ignore: When to Go to a Hospital in Jammu and Kashmir</a></li>
+                    <!-- STATIC_BLOG_LINKS_END -->
+                </ul>
+            </div>
+        </section>
+    </noscript>
+
+</main>
 
 
 
