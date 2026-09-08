@@ -495,6 +495,39 @@ p { margin-bottom: var(--spacing-sm); overflow-wrap: break-word; }
   margin: 1.5rem 0 0.8rem;
 }
 
+/* ===== NEW STYLES FOR formatBlogBody GENERATED ELEMENTS ===== */
+
+/* Lead paragraph – first normal paragraph in the article */
+.blog-lead-paragraph {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--forest);
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+/* Sub-headings – short section titles */
+.blog-subheading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--forest);
+  margin: 2.5rem 0 1rem 0;
+  padding-left: 1rem;
+  border-left: 4px solid var(--forest);
+}
+
+/* Pull-quotes – rhetorical questions */
+.blog-pull-quote {
+  font-size: 1.4rem;
+  font-style: italic;
+  color: var(--black);
+  background: var(--ivory);
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+  border-radius: 8px;
+  border-left: 5px solid var(--olive);
+}
+
 /* Related articles */
 .blog-related-articles {
   margin-top: 2.5rem;
@@ -814,4 +847,4 @@ p { margin-bottom: var(--spacing-sm); overflow-wrap: break-word; }
     .main-nav.open { max-height: 80vh; overflow-y: auto; }
     .nav-list { flex-direction: column; padding: 1rem 2rem; gap: 0.5rem; }
     .nav-list a { display: block; padding: 0.8rem 0; font-size: 1.1rem; color: #fff; }
-}
+    }
