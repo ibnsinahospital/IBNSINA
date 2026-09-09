@@ -3,26 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctors & Specialists in Budgam, Jammu & Kashmir | Ibn Sina Hospital</title>
-    <meta name="description" content="Meet doctors and specialists at Ibn Sina Hospital in Budgam, serving patients across the Kashmir Valley and Jammu & Kashmir. Browse specialties and book appointments.">
+    
+    <!-- ✅ UPDATED SEO -->
+    <title>Our Doctors &amp; Specialists in Budgam &amp; Srinagar – Ibn Sina Hospital, J&amp;K</title>
+    <meta name="description" content="Meet our expert doctors and specialists at Ibn Sina Hospital in Ompora, Budgam. Serving patients from Srinagar, Ganderbal, Pulwama &amp; across J&amp;K &amp; India. Book appointments online. Call 9622552553.">
+    
     <link rel="canonical" href="https://ibnsinahospital.in/doctors.html">
     <meta name="robots" content="index,follow">
-    <meta property="og:title" content="Doctors & Specialists in Budgam | Ibn Sina Hospital">
-    <meta property="og:description" content="Browse Ibn Sina Hospital's doctors and specialists by specialty and department in Budgam, Jammu & Kashmir.">
+    
+    <meta property="og:title" content="Our Doctors &amp; Specialists in Budgam &amp; Srinagar – Ibn Sina Hospital">
+    <meta property="og:description" content="Browse Ibn Sina Hospital's doctors and specialists by specialty – serving Budgam, Srinagar, Ganderbal, Pulwama, across J&amp;K &amp; India.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ibnsinahospital.in/doctors.html">
     <meta property="og:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+    
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Doctors & Specialists in Budgam | Ibn Sina Hospital">
-    <meta name="twitter:description" content="Browse Ibn Sina Hospital's doctors and specialists by specialty and department in Budgam, Jammu & Kashmir.">
+    <meta name="twitter:title" content="Our Doctors &amp; Specialists in Budgam &amp; Srinagar – Ibn Sina Hospital">
+    <meta name="twitter:description" content="Browse Ibn Sina Hospital's doctors and specialists by specialty – serving Budgam, Srinagar, Ganderbal, Pulwama, across J&amp;K &amp; India.">
     <meta name="twitter:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+    
     <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Hospital Schema -->
+    <!-- ✅ EXPANDED Schema with areaServed -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -39,6 +45,19 @@
         "postalCode": "191111",
         "addressCountry": "IN"
       },
+      "areaServed": [
+        { "@type": "Country", "name": "India" },
+        { "@type": "AdministrativeArea", "name": "Jammu and Kashmir" },
+        { "@type": "City", "name": "Budgam" },
+        { "@type": "City", "name": "Srinagar" },
+        { "@type": "City", "name": "Ompora" },
+        { "@type": "City", "name": "Ganderbal" },
+        { "@type": "City", "name": "Pulwama" },
+        { "@type": "City", "name": "Shopian" },
+        { "@type": "City", "name": "Kulgam" },
+        { "@type": "City", "name": "Baramulla" },
+        { "@type": "City", "name": "Anantnag" }
+      ],
       "telephone": "+919622552553",
       "email": "weibnsina@gmail.com",
       "openingHoursSpecification": [
@@ -70,6 +89,7 @@
       }
     }
     </script>
+    
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -80,6 +100,8 @@
       ]
     }
     </script>
+
+    <!-- ItemList Schema (Unchanged) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -126,9 +148,492 @@
       ]
     }
     </script>
+
+    <!-- =========================================================
+         PREMIUM VISUAL STYLES (Scoped to .doctors-page)
+    ========================================================== -->
+    <style>
+        .doctors-page {
+            --doc-accent: #2d4a2b;
+            --doc-gold: #c9b99a;
+        }
+
+        /* ----- HERO / INTRO SECTION ----- */
+        .doctors-page .doc-hero-wrap {
+            position: relative;
+            background: linear-gradient(145deg, #f5f8f2, #eaf1e6);
+            border-radius: 28px;
+            padding: 40px 40px 30px;
+            margin: 0 0 30px 0;
+            border: 1px solid rgba(164, 172, 134, 0.2);
+            box-shadow: 0 10px 40px rgba(45, 74, 43, 0.04);
+            overflow: hidden;
+        }
+
+        .doctors-page .doc-hero-wrap::before {
+            content: '👨‍⚕️';
+            position: absolute;
+            right: 30px;
+            bottom: 20px;
+            font-size: 100px;
+            opacity: 0.06;
+            pointer-events: none;
+        }
+
+        .doctors-page .doc-hero-wrap h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            color: var(--doc-accent);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+
+        .doctors-page .doc-hero-wrap h1::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--doc-gold);
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .doctors-page .doc-hero-wrap p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #4e5c4a;
+            max-width: 850px;
+        }
+
+        .doctors-page .doc-hero-wrap p strong {
+            color: var(--doc-accent);
+            font-weight: 700;
+        }
+
+        .doctors-page .breadcrumb-premium {
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #71806d;
+        }
+        .doctors-page .breadcrumb-premium a {
+            color: var(--doc-accent);
+            text-decoration: none;
+        }
+        .doctors-page .breadcrumb-premium a:hover {
+            text-decoration: underline;
+        }
+        .doctors-page .breadcrumb-premium span {
+            margin: 0 6px;
+            color: #a4ac86;
+        }
+
+        /* ----- FILTER BAR (Premium) ----- */
+        .doctors-page .filter-bar-premium {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 1.5rem 0 2rem;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 20px 24px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 8px 30px rgba(45, 74, 43, 0.04);
+        }
+
+        .doctors-page .filter-bar-premium select,
+        .doctors-page .filter-bar-premium input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 18px;
+            border: 1px solid #dce4d6;
+            border-radius: 60px;
+            font-size: 0.95rem;
+            font-family: 'Nunito', sans-serif;
+            background: #ffffff;
+            color: #2d4a2b;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .doctors-page .filter-bar-premium select:focus,
+        .doctors-page .filter-bar-premium input:focus {
+            border-color: var(--doc-accent);
+            box-shadow: 0 0 0 4px rgba(45, 74, 43, 0.08);
+        }
+
+        .doctors-page .filter-bar-premium select {
+            cursor: pointer;
+        }
+
+        /* ----- DOCTOR CARDS (Glassmorphism) ----- */
+        .doctors-page .doctor-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .doctors-page .doctor-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 28px 22px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(45, 74, 43, 0.04);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+            cursor: pointer;
+        }
+
+        .doctors-page .doctor-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(45, 74, 43, 0.10);
+            border-color: var(--doc-accent);
+            background: #ffffff;
+        }
+
+        .doctors-page .doctor-card img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+            border: 3px solid #ffffff;
+            box-shadow: 0 8px 20px rgba(45, 74, 43, 0.08);
+            display: block;
+        }
+
+        .doctors-page .doctor-card .doc-placeholder {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, #eaf1e6, #d4dfcd);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            color: var(--doc-accent);
+            border: 3px solid #ffffff;
+            box-shadow: 0 8px 20px rgba(45, 74, 43, 0.08);
+        }
+
+        .doctors-page .doctor-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            color: var(--doc-accent);
+            margin-bottom: 0.2rem;
+        }
+
+        .doctors-page .doctor-card .doc-specialty {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #82907d;
+            margin-bottom: 0.4rem;
+        }
+
+        .doctors-page .doctor-card .doc-qual {
+            font-size: 0.85rem;
+            color: #5a6b4a;
+            line-height: 1.5;
+            margin-bottom: 0.8rem;
+        }
+
+        .doctors-page .doctor-card .btn-appointment {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 60px;
+            background: var(--doc-accent);
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .doctors-page .doctor-card .btn-appointment:hover {
+            background: #1d321c;
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(45, 74, 43, 0.2);
+        }
+
+        /* ----- SPECIALTY DIRECTORY (Premium Cards) ----- */
+        .doctors-page .specialty-directory {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 1rem;
+        }
+
+        .doctors-page .specialty-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            padding: 22px 24px;
+            box-shadow: 0 4px 20px rgba(45, 74, 43, 0.03);
+            transition: all 0.3s ease;
+        }
+
+        .doctors-page .specialty-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(45, 74, 43, 0.08);
+            border-color: var(--doc-gold);
+            background: #ffffff;
+        }
+
+        .doctors-page .specialty-card .specialty-icon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .doctors-page .specialty-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            color: var(--doc-accent);
+            margin-bottom: 0.3rem;
+        }
+
+        .doctors-page .specialty-card .dept-link {
+            display: inline-block;
+            margin-bottom: 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--doc-accent);
+            text-decoration: none;
+            border-bottom: 2px solid var(--doc-gold);
+            padding-bottom: 2px;
+        }
+
+        .doctors-page .specialty-card .dept-link:hover {
+            border-bottom-color: var(--doc-accent);
+        }
+
+        .doctors-page .specialty-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .doctors-page .specialty-card ul li {
+            padding: 5px 0;
+            border-bottom: 1px solid #edf3e9;
+            font-size: 0.9rem;
+        }
+
+        .doctors-page .specialty-card ul li:last-child {
+            border-bottom: none;
+        }
+
+        .doctors-page .specialty-card ul li a {
+            color: #4e5c4a;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .doctors-page .specialty-card ul li a:hover {
+            color: var(--doc-accent);
+            text-decoration: underline;
+        }
+
+        /* ----- GUIDANCE / CTA BLOCKS ----- */
+        .doctors-page .guidance-block {
+            background: linear-gradient(145deg, #ffffff, #f5f8f2);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 1px solid #e2e8df;
+            text-align: center;
+        }
+
+        .doctors-page .guidance-block h3 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--doc-accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .doctors-page .guidance-block p {
+            color: #4e5c4a;
+            max-width: 650px;
+            margin: 0 auto 1rem;
+        }
+
+        .doctors-page .guidance-block .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .doctors-page .guidance-block .btn-group a {
+            display: inline-block;
+            padding: 10px 28px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .doctors-page .guidance-block .btn-group .btn-primary-guidance {
+            background: var(--doc-accent);
+            color: #ffffff;
+        }
+
+        .doctors-page .guidance-block .btn-group .btn-primary-guidance:hover {
+            background: #1d321c;
+            transform: scale(1.02);
+        }
+
+        .doctors-page .guidance-block .btn-group .btn-secondary-guidance {
+            background: transparent;
+            color: var(--doc-accent);
+            border: 2px solid var(--doc-accent);
+        }
+
+        .doctors-page .guidance-block .btn-group .btn-secondary-guidance:hover {
+            background: var(--doc-accent);
+            color: #ffffff;
+        }
+
+        /* ----- BLOG INTEGRATION BLOCK ----- */
+        .doctors-page .blog-insights-block {
+            background: linear-gradient(145deg, #f5f8f2, #ecf2e8);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 1px solid #e2e8df;
+            text-align: center;
+        }
+
+        .doctors-page .blog-insights-block h3 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--doc-accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .doctors-page .blog-insights-block p {
+            color: #4e5c4a;
+            max-width: 650px;
+            margin: 0 auto 1rem;
+        }
+
+        .doctors-page .blog-insights-block a {
+            color: var(--doc-accent);
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 2px solid var(--doc-gold);
+            padding-bottom: 2px;
+        }
+
+        .doctors-page .blog-insights-block a:hover {
+            border-bottom-color: var(--doc-accent);
+        }
+
+        /* ----- AREAS WE SERVE ----- */
+        .doctors-page .areas-serve-premium {
+            background: linear-gradient(145deg, #f5f8f2, #ecf2e8);
+            border-radius: 24px;
+            padding: 30px 24px;
+            border: 1px solid #e2e8df;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .doctors-page .areas-serve-premium .badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .doctors-page .areas-serve-premium .badge-list span {
+            background: #ffffff;
+            padding: 8px 22px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2d4a2b;
+            border: 1px solid #dce4d6;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            transition: all 0.25s ease;
+        }
+
+        .doctors-page .areas-serve-premium .badge-list span:hover {
+            transform: scale(1.05);
+            background: #2d4a2b;
+            color: #ffffff;
+            border-color: #2d4a2b;
+            box-shadow: 0 8px 20px rgba(45, 74, 43, 0.15);
+        }
+
+        .doctors-page .areas-serve-premium .badge-list span.strong-badge {
+            background: #2d4a2b;
+            color: #ffffff;
+            border-color: #2d4a2b;
+        }
+
+        .doctors-page .areas-serve-premium .badge-list span.strong-badge:hover {
+            background: #1d321c;
+        }
+
+        .doctors-page .areas-serve-premium .badge-link {
+            margin-top: 14px;
+            font-size: 0.9rem;
+        }
+        .doctors-page .areas-serve-premium .badge-link a {
+            color: #2d4a2b;
+            text-decoration: underline;
+        }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 768px) {
+            .doctors-page .doc-hero-wrap {
+                padding: 24px 20px;
+                border-radius: 20px;
+            }
+            .doctors-page .doc-hero-wrap h1 {
+                font-size: 1.8rem;
+            }
+            .doctors-page .filter-bar-premium {
+                padding: 16px;
+                flex-direction: column;
+            }
+            .doctors-page .filter-bar-premium select,
+            .doctors-page .filter-bar-premium input {
+                min-width: 100%;
+            }
+            .doctors-page .specialty-directory {
+                grid-template-columns: 1fr;
+            }
+            .doctors-page .guidance-block .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .doctors-page .doctor-cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
 </head>
-<body>
+<body class="doctors-page">
     <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- ===== HEADER (Unchanged) ===== -->
     <header class="site-header" id="site-header">
         <div class="header-inner container">
             <a href="index.html" class="logo" aria-label="Ibn Sina Hospital Home">
@@ -164,125 +669,282 @@
     </header>
 
     <main id="main-content">
-        <section class="section">
+        
+        <!-- ===== HERO / INTRODUCTION (Enhanced Internal Links) ===== -->
+        <section class="section" style="padding-bottom: 0;">
             <div class="container">
-                <nav aria-label="Breadcrumb" style="margin-bottom:1rem;">
-                    <a href="index.html">Home</a> <span aria-hidden="true">/</span> <span>Doctors</span>
+                <nav class="breadcrumb-premium" aria-label="Breadcrumb">
+                    <a href="index.html">Home</a> <span>›</span> Our Doctors
                 </nav>
-                <h1>Our Doctors & Specialists</h1>
-                <p>Ibn Sina Hospital is based in Budgam, Jammu & Kashmir, with consultant-led care across multiple medical and surgical specialties. Browse our doctors by department or search by name and specialty.</p>
-                <p><a href="department-pages/doctor-directory.html">Browse the full doctor directory</a> or <a href="department-pages/specialties-directory.html">explore specialties and departments</a>.</p>
-                <div class="filter-bar">
-                    <select id="filter-department"><option value="">All Departments</option></select>
+                
+                <div class="doc-hero-wrap">
+                    <h1>Our Doctors &amp; Specialists</h1>
+                    <p>
+                        Ibn Sina Hospital is based in <strong>Ompora, Budgam</strong>, with consultant-led care across multiple medical and surgical specialties. Our expert team serves patients from <strong>Srinagar, Ganderbal, Pulwama, Shopian, Kulgam</strong>, across <strong>Jammu &amp; Kashmir</strong>, and patients visiting from other parts of <strong>India</strong>.
+                    </p>
+                    <p>
+                        Browse our doctors by department or search by name and specialty. 
+                        <a href="department-pages/doctor-directory.html">View the full doctor directory</a> · 
+                        <a href="department-pages/specialties-directory.html">Explore all specialties</a> · 
+                        <a href="services.html">Our hospital services</a>
+                    </p>
+                    <p style="margin-top: 0.5rem;">
+                        <strong>Need to book?</strong> <a href="appointment.html">Book an appointment online</a> or call us at <a href="tel:9622552553">9622552553</a>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== GUIDANCE BLOCK (New – Helps users convert) ===== -->
+        <section class="section" style="padding-top: 0; padding-bottom: 0;">
+            <div class="container">
+                <div class="guidance-block">
+                    <h3>🤔 Not sure which specialist to see?</h3>
+                    <p>
+                        Our team can guide you to the right doctor based on your symptoms. 
+                        <a href="contact.html">Contact our helpdesk</a> or 
+                        <a href="faq.html">visit our FAQ</a> for quick answers to common questions.
+                    </p>
+                    <div class="btn-group">
+                        <a href="contact.html" class="btn-primary-guidance">Contact Helpdesk</a>
+                        <a href="faq.html" class="btn-secondary-guidance">Read FAQs</a>
+                        <a href="appointment.html" class="btn-secondary-guidance">Book Appointment</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FILTER BAR (Premium) ===== -->
+        <section class="section" style="padding-top: 0;">
+            <div class="container">
+                <div class="filter-bar-premium">
+                    <select id="filter-department">
+                        <option value="">All Departments</option>
+                    </select>
                     <input type="text" id="search-doctor" placeholder="Search by name or specialty...">
                 </div>
+            </div>
+        </section>
+
+        <!-- ===== DYNAMIC DOCTOR GRID (Unchanged) ===== -->
+        <section class="section" style="padding-top: 0;">
+            <div class="container">
                 <div class="doctor-cards-grid" id="doctor-grid">
                     <noscript>
-                        <p>JavaScript is disabled, so the interactive doctor search is unavailable. You can still browse the <a href="department-pages/doctor-directory.html">full doctor directory</a> or call <a href="tel:9622552553">9622552553</a> for appointments.</p>
+                        <p style="text-align:center; color:#4e5c4a; padding: 2rem;">
+                            JavaScript is disabled, so the interactive doctor search is unavailable. You can still browse the <a href="department-pages/doctor-directory.html">full doctor directory</a> or call <a href="tel:9622552553">9622552553</a> for appointments.
+                        </p>
                     </noscript>
                 </div>
             </div>
         </section>
 
+        <!-- ===== SPECIALTY DIRECTORY (Enhanced Internal Links to Department Pages) ===== -->
         <section class="section" style="background:#faf9f6;">
             <div class="container">
-                <h2>Doctors by Specialty</h2>
-                <p>Use these direct links to reach individual doctor profiles without relying on JavaScript. Department pages provide additional information about each specialty and related care.</p>
+                <h2 style="font-family:'Poppins',sans-serif; color:#2d4a2b;">Doctors by Specialty</h2>
+                <p style="color:#4e5c4a; margin-bottom: 1.5rem;">
+                    Browse our specialists by department. Learn more about each department's services and conditions we treat.
+                </p>
 
-                <h3>Gynaecology & Women's Health</h3>
-                <ul>
-                    <li><a href="doctors/doctor-dr-sheikh-naiyer-furkan.html">Dr. Sheikh Naiyer Furkan — Gynaecologist</a></li>
-                    <li><a href="doctors/doctor-dr-mudasir-ahmad.html">Dr. Mudasir Ahmad — Gynaecologist</a></li>
-                    <li><a href="doctors/doctor-dr-riyaz-tantary.html">Dr. Riyaz Tantary — Gynaecologist</a></li>
-                    <li><a href="doctors/doctor-dr-snober-malik.html">Dr. Snober Malik — Gynaecologist</a></li>
-                    <li><a href="doctors/doctor-dr-farhat-tabbsum.html">Dr. Farhat Tabbsum — Gynaecologist</a></li>
-                    <li><a href="doctors/doctor-dr-madhu-sayal.html">Dr. Madhu Sayal — Gynaecologist</a></li>
-                </ul>
+                <div class="specialty-directory">
+                    <!-- Gynaecology -->
+                    <div class="specialty-card">
+                        <span class="specialty-icon">👩‍⚕️</span>
+                        <h3>Gynaecology &amp; Women's Health</h3>
+                        <a href="department-pages/gynaecology.html" class="dept-link">View Department →</a>
+                        <ul>
+                            <li><a href="doctors/doctor-dr-sheikh-naiyer-furkan.html">Dr. Sheikh Naiyer Furkan</a></li>
+                            <li><a href="doctors/doctor-dr-mudasir-ahmad.html">Dr. Mudasir Ahmad</a></li>
+                            <li><a href="doctors/doctor-dr-riyaz-tantary.html">Dr. Riyaz Tantary</a></li>
+                            <li><a href="doctors/doctor-dr-snober-malik.html">Dr. Snober Malik</a></li>
+                            <li><a href="doctors/doctor-dr-farhat-tabbsum.html">Dr. Farhat Tabbsum</a></li>
+                            <li><a href="doctors/doctor-dr-madhu-sayal.html">Dr. Madhu Sayal</a></li>
+                        </ul>
+                    </div>
 
-                <h3>Ophthalmology</h3>
-                <ul><li><a href="doctors/doctor-dr-rhimsha.html">Dr. Rhimsha — Optholomologist</a></li></ul>
+                    <!-- Orthopaedics -->
+                    <div class="specialty-card">
+                        <span class="specialty-icon">🦴</span>
+                        <h3>Orthopaedics &amp; Joint Replacement</h3>
+                        <a href="department-pages/orthopaedics.html" class="dept-link">View Department →</a>
+                        <ul>
+                            <li><a href="doctors/doctor-dr-azad-shah.html">Dr. Azad Shah</a></li>
+                            <li><a href="doctors/doctor-dr-yawar-haider.html">Dr. Yawar Haider</a></li>
+                            <li><a href="doctors/doctor-dr-sukhjeet-singh.html">Dr. Sukhjeet Singh</a></li>
+                        </ul>
+                    </div>
 
-                <h3>Orthopaedics & Joint Replacement</h3>
-                <ul>
-                    <li><a href="doctors/doctor-dr-azad-shah.html">Dr. Azad Shah — Orthopedic Surgeon</a></li>
-                    <li><a href="doctors/doctor-dr-yawar-haider.html">Dr. Yawar Haider — Orthopedic Surgeon</a></li>
-                    <li><a href="doctors/doctor-dr-sukhjeet-singh.html">Dr. Sukhjeet Singh — Orthopedic Surgeon</a></li>
-                </ul>
+                    <!-- Urology -->
+                    <div class="specialty-card">
+                        <span class="specialty-icon">🧬</span>
+                        <h3>Urology</h3>
+                        <a href="department-pages/urology.html" class="dept-link">View Department →</a>
+                        <ul>
+                            <li><a href="doctors/doctor-dr-shabir-mir.html">Dr. Shabir Mir</a></li>
+                            <li><a href="doctors/doctor-dr-shahnawaz-rasool.html">Dr. Shahnawaz Rasool</a></li>
+                            <li><a href="doctors/doctor-dr-muzzafar-bashir.html">Dr. Muzzafar Bashir</a></li>
+                        </ul>
+                    </div>
 
-                <h3>Urology</h3>
-                <ul>
-                    <li><a href="doctors/doctor-dr-shabir-mir.html">Dr. Shabir Mir — Urologist</a></li>
-                    <li><a href="doctors/doctor-dr-shahnawaz-rasool.html">Dr. Shahnawaz Rasool — Urologist</a></li>
-                    <li><a href="doctors/doctor-dr-muzzafar-bashir.html">Dr. Muzzafar Bashir — Urologist</a></li>
-                </ul>
+                    <!-- ENT -->
+                    <div class="specialty-card">
+                        <span class="specialty-icon">👂</span>
+                        <h3>ENT</h3>
+                        <a href="department-pages/ent.html" class="dept-link">View Department →</a>
+                        <ul>
+                            <li><a href="doctors/doctor-dr-mir-sajad-qadri.html">Dr. Mir Sajad Qadri</a></li>
+                            <li><a href="doctors/doctor-dr-omer-shafi.html">Dr. Omer Shafi</a></li>
+                        </ul>
+                    </div>
 
-                <h3>ENT</h3>
-                <ul>
-                    <li><a href="doctors/doctor-dr-mir-sajad-qadri.html">Dr. Mir Sajad Qadri — ENT Consultant</a></li>
-                    <li><a href="doctors/doctor-dr-omer-shafi.html">Dr. Omer Shafi — ENT Consultant</a></li>
-                </ul>
+                    <!-- General Surgery -->
+                    <div class="specialty-card">
+                        <span class="specialty-icon">🔬</span>
+                        <h3>General Surgery</h3>
+                        <a href="department-pages/general-surgery.html" class="dept-link">View Department →</a>
+                        <ul>
+                            <li><a href="doctors/doctor-dr-jaiparam-singh.html">Dr. Jaiparam Singh</a></li>
+                            <li><a href="doctors/doctor-dr-wasim-raja.html">Dr. Wasim Raja</a></li>
+                            <li><a href="doctors/doctor-dr-mohammad-yousuf-dar.html">Dr. Mohammad Yousuf Dar</a></li>
+                        </ul>
+                    </div>
 
-                <h3>General Surgery</h3>
-                <ul>
-                    <li><a href="doctors/doctor-dr-jaiparam-singh.html">Dr. Jaiparam Singh — General Surgeon</a></li>
-                    <li><a href="doctors/doctor-dr-wasim-raja.html">Dr. Wasim Raja — General Surgeon</a></li>
-                    <li><a href="doctors/doctor-dr-mohammad-yousuf-dar.html">Dr. Mohammad Yousuf Dar — General Surgeon</a></li>
-                </ul>
+                    <!-- Cardiology -->
+                    <div class="specialty-card">
+                        <span class="specialty-icon">❤️</span>
+                        <h3>Cardiology</h3>
+                        <a href="department-pages/cardiology.html" class="dept-link">View Department →</a>
+                        <ul>
+                            <li><a href="doctors/doctor-dr-shahood-kakroo.html">Dr. Shahood Kakroo</a></li>
+                            <li><a href="doctors/doctor-dr-majid.html">Dr. Majid</a></li>
+                        </ul>
+                    </div>
 
-                <h3>General Medicine</h3>
-                <ul>
-                    <li><a href="doctors/doctor-dr-aijaz-bhat.html">Dr. Aijaz Bhat — General Medicine</a></li>
-                    <li><a href="doctors/doctor-dr-saba.html">Dr. Saba — General Medicine</a></li>
-                </ul>
+                    <!-- Gastroenterology -->
+                    <div class="specialty-card">
+                        <span class="specialty-icon">🍽️</span>
+                        <h3>Gastroenterology</h3>
+                        <a href="department-pages/gastroenterology.html" class="dept-link">View Department →</a>
+                        <ul>
+                            <li><a href="doctors/doctor-dr-zaffar-ali-wani.html">Dr. Zaffar Ali Wani</a></li>
+                            <li><a href="doctors/doctor-dr-irshad-ahmad-parray.html">Dr. Irshad Ahmad Parray</a></li>
+                            <li><a href="doctors/doctor-dr-wasim.html">Dr. Wasim</a></li>
+                        </ul>
+                    </div>
 
-                <h3>Cardiology</h3>
-                <ul>
-                    <li><a href="doctors/doctor-dr-shahood-kakroo.html">Dr. Shahood Kakroo — Interventional Cardiologist</a></li>
-                    <li><a href="doctors/doctor-dr-majid.html">Dr. Majid — Cardiologist</a></li>
-                </ul>
+                    <!-- Nephrology -->
+                    <div class="specialty-card">
+                        <span class="specialty-icon">🧫</span>
+                        <h3>Nephrology</h3>
+                        <a href="department-pages/nephrology.html" class="dept-link">View Department →</a>
+                        <ul>
+                            <li><a href="doctors/doctor-dr-aijaz-arshid.html">Dr. Aijaz Arshid</a></li>
+                        </ul>
+                    </div>
 
-                <h3>Nephrology</h3>
-                <ul><li><a href="doctors/doctor-dr-aijaz-arshid.html">Dr. Aijaz Arshid — Nephrologist</a></li></ul>
+                    <!-- Other Specialties -->
+                    <div class="specialty-card">
+                        <span class="specialty-icon">🏥</span>
+                        <h3>Other Specialties</h3>
+                        <p style="font-size:0.8rem; color:#82907d; margin-bottom:0.5rem;">
+                            <a href="department-pages/ophthalmology.html">Ophthalmology</a> · 
+                            <a href="department-pages/pediatric-surgery.html">Pediatric Surgery</a> · 
+                            <a href="department-pages/radiology.html">Radiology</a> · 
+                            <a href="department-pages/dermatology.html">Dermatology</a> · 
+                            <a href="department-pages/pulmonology.html">Pulmonology</a> · 
+                            <a href="department-pages/rheumatology.html">Rheumatology</a> · 
+                            <a href="department-pages/plastic-surgery.html">Plastic Surgery</a> · 
+                            <a href="department-pages/physiotherapy.html">Physiotherapy</a> · 
+                            <a href="department-pages/dentistry.html">Dentistry</a> · 
+                            <a href="department-pages/general-medicine.html">General Medicine</a>
+                        </p>
+                        <ul>
+                            <li><a href="doctors/doctor-dr-rhimsha.html">Dr. Rhimsha — Ophthalmology</a></li>
+                            <li><a href="doctors/doctor-dr-mudasir-magray.html">Dr. Mudasir Magray — Pediatric Surgery</a></li>
+                            <li><a href="doctors/doctor-dr-ishan-shabir-wani.html">Dr. Ishan Shabir Wani — Radiology</a></li>
+                            <li><a href="doctors/doctor-dr-rayees-ah-mir.html">Dr. Rayees Ah. Mir — Dermatology</a></li>
+                            <li><a href="doctors/doctor-dr-waseem-ud-din.html">Dr. Waseem Ud Din — Pulmonology</a></li>
+                            <li><a href="doctors/doctor-dr-zubair-ahmad-magray.html">Dr. Zubair Ahmad Magray — Rheumatology</a></li>
+                            <li><a href="doctors/doctor-dr-mushtaq.html">Dr. Mushtaq — Plastic Surgery</a></li>
+                            <li><a href="doctors/doctor-dr-mohsin-ali.html">Dr. Mohsin Ali — Physiotherapy</a></li>
+                            <li><a href="doctors/doctor-dr-andleeb.html">Dr. Andleeb — Neuro Physiotherapy</a></li>
+                            <li><a href="doctors/doctor-dr-yaseen-malik.html">Dr. Yaseen Malik — Dentistry</a></li>
+                            <li><a href="doctors/doctor-dr-aijaz-bhat.html">Dr. Aijaz Bhat — General Medicine</a></li>
+                            <li><a href="doctors/doctor-dr-saba.html">Dr. Saba — General Medicine</a></li>
+                        </ul>
+                    </div>
+                </div>
 
-                <h3>Pediatric Surgery</h3>
-                <ul><li><a href="doctors/doctor-dr-mudasir-magray.html">Dr. Mudasir Magray — Pediatric Surgeon</a></li></ul>
+                <p style="margin-top: 2rem; text-align: center;">
+                    <a href="services.html">View all services and departments</a> · 
+                    <a href="appointment.html">Book an appointment</a> · 
+                    <a href="department-pages/jammu-kashmir-healthcare.html">Healthcare across Jammu &amp; Kashmir</a>
+                </p>
+            </div>
+        </section>
 
-                <h3>Gastroenterology</h3>
-                <ul>
-                    <li><a href="doctors/doctor-dr-zaffar-ali-wani.html">Dr. Zaffar Ali Wani — Gastroenterologist</a></li>
-                    <li><a href="doctors/doctor-dr-irshad-ahmad-parray.html">Dr. Irshad Ahmad Parray — Gastroenterologist</a></li>
-                    <li><a href="doctors/doctor-dr-wasim.html">Dr. Wasim — Gastroenterologist</a></li>
-                </ul>
+        <!-- ===== BLOG INSIGHTS BLOCK (New – Links to Blog) ===== -->
+        <section class="section" style="padding-top: 0; padding-bottom: 0;">
+            <div class="container">
+                <div class="blog-insights-block">
+                    <h3>📝 Expert Health Insights</h3>
+                    <p>
+                        Our doctors regularly write articles on health conditions, prevention, and wellness. 
+                        Stay informed with expert advice from Ibn Sina Hospital's medical team.
+                    </p>
+                    <p>
+                        <a href="blog.html">Read our latest health articles →</a>
+                    </p>
+                </div>
+            </div>
+        </section>
 
-                <h3>Radiology</h3>
-                <ul><li><a href="doctors/doctor-dr-ishan-shabir-wani.html">Dr. Ishan Shabir Wani — Radiologist</a></li></ul>
+        <!-- ===== AREAS WE SERVE (Premium Badge Cloud) ===== -->
+        <section class="container" style="padding: 0 20px 40px;">
+            <div class="areas-serve-premium">
+                <p style="font-weight: 700; color: #2d4a2b; margin: 0 0 12px; font-size: 1.1rem;">
+                    🌍 Serving Families Across J&amp;K &amp; India
+                </p>
+                <div class="badge-list">
+                    <span>Budgam</span>
+                    <span>Srinagar</span>
+                    <span>Ompora</span>
+                    <span>Ganderbal</span>
+                    <span>Pulwama</span>
+                    <span>Shopian</span>
+                    <span>Kulgam</span>
+                    <span class="strong-badge">Jammu &amp; Kashmir</span>
+                    <span class="strong-badge">India</span>
+                </div>
+                <div class="badge-link">
+                    <a href="service-areas.html">View all service areas</a> 
+                    <span style="margin:0 0.5rem;">|</span> 
+                    <a href="contact.html">Get directions</a>
+                </div>
+            </div>
+        </section>
 
-                <h3>Dermatology</h3>
-                <ul><li><a href="doctors/doctor-dr-rayees-ah-mir.html">Dr. Rayees Ah. Mir — Dermatologist</a></li></ul>
-
-                <h3>Pulmonology</h3>
-                <ul><li><a href="doctors/doctor-dr-waseem-ud-din.html">Dr. Waseem Ud Din — Pulmonologist</a></li></ul>
-
-                <h3>Rheumatology</h3>
-                <ul><li><a href="doctors/doctor-dr-zubair-ahmad-magray.html">Dr. Zubair Ahmad Magray — Rheumatologist</a></li></ul>
-
-                <h3>Plastic Surgery</h3>
-                <ul><li><a href="doctors/doctor-dr-mushtaq.html">Dr. Mushtaq — Plastic Surgeon</a></li></ul>
-
-                <h3>Physiotherapy</h3>
-                <ul>
-                    <li><a href="doctors/doctor-dr-mohsin-ali.html">Dr. Mohsin Ali — Orthopaedic Physiotherapist</a></li>
-                    <li><a href="doctors/doctor-dr-andleeb.html">Dr. Andleeb — Neuro Physiotherapist</a></li>
-                </ul>
-
-                <h3>Dentistry</h3>
-                <ul><li><a href="doctors/doctor-dr-yaseen-malik.html">Dr. Yaseen Malik — Dentist</a></li></ul>
-
-                <p style="margin-top:1.5rem;"><a href="services.html">View services and departments</a> · <a href="appointment.html">Book an appointment</a> · <a href="department-pages/jammu-kashmir-healthcare.html">Healthcare services across Jammu & Kashmir</a></p>
+        <!-- ===== FINAL CTA (Strong Internal Link) ===== -->
+        <section class="section" style="padding-top: 0; padding-bottom: 20px;">
+            <div class="container">
+                <div style="text-align:center; padding: 20px 0;">
+                    <h3 style="font-family:'Poppins',sans-serif; color:#2d4a2b;">Ready to consult our experts?</h3>
+                    <p style="color:#4e5c4a; margin-bottom: 1rem;">
+                        Book your appointment online or call us directly. Our team is here to help you.
+                    </p>
+                    <a href="appointment.html" class="btn btn-primary" style="padding: 12px 40px; border-radius:60px;">Book Appointment Now</a>
+                    <p style="margin-top: 0.8rem; font-size:0.9rem;">
+                        <a href="contact.html">Contact us</a> · 
+                        <a href="tel:9622552553">Call 9622552553</a> · 
+                        <a href="faq.html">FAQs</a>
+                    </p>
+                </div>
             </div>
         </section>
     </main>
 
+    <!-- ===== FOOTER (Updated with Service Areas) ===== -->
     <footer class="site-footer">
         <div class="footer-wave" aria-hidden="true">
             <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
@@ -293,6 +955,10 @@
                 <address>Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111</address>
                 <p><a href="tel:9622552553">📞 9622552553 / 9419023501</a></p>
                 <p><a href="mailto:weibnsina@gmail.com">✉ weibnsina@gmail.com</a></p>
+                <p style="margin-top:0.5rem; font-size:0.85rem; color:#71806d;">
+                    <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam – 
+                    across <strong>Jammu &amp; Kashmir</strong> &amp; <strong>India</strong>
+                </p>
             </div>
             <div class="footer-col">
                 <h4>OPD & Emergency</h4>
@@ -319,7 +985,7 @@
                     <a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon">IG</a>
                     <a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon">YT</a>
                 </div>
-</div>
+            </div>
         </div>
         <div class="footer-bottom container">
             <p>&copy; 2025 Ibn Sina Hospital. All rights reserved. | Operating since 2018</p>
@@ -327,10 +993,11 @@
         </div>
     </footer>
 
+    <!-- ===== SCRIPTS (Unchanged) ===== -->
     <script src="js/main.js" defer></script>
     <script src="js/chatbot.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <script src="js/animations.js" defer></script>
 </body>
-</html>
+    </html>
