@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Dynamic values are updated by main.js -->
+    <!-- Dynamic values are updated by main.js (fallback only) -->
     <title>Health Article | Ibn Sina Hospital</title>
 
     <meta name="description"
           content="Health information, medical insights and wellness guidance from Ibn Sina Hospital in Jammu and Kashmir.">
 
-    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="robots" content="noindex, follow">
 
-    <link rel="canonical" href="https://ibnsinahospital.in/blog-post.html">
+    <link rel="canonical" href="https://ibnsinahospital.in/blog.html">
 
     <!-- Open Graph -->
     <meta property="og:site_name" content="Ibn Sina Hospital">
@@ -693,30 +693,47 @@
         }
 
         /* ---------------------------------------------------------
-           LOADING
+           REDIRECT LOADING STATE (Enhanced)
         --------------------------------------------------------- */
 
-        .article-loading {
+        .redirect-loading {
             max-width: 850px;
             margin: 70px auto;
             text-align: center;
             color: #687464;
         }
 
-        .article-loading-spinner {
-            width: 38px;
-            height: 38px;
-            margin: 0 auto 16px;
-            border: 3px solid #dfe7dc;
+        .redirect-loading .spinner {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 20px;
+            border: 4px solid #dfe7dc;
             border-top-color: #2d4a2b;
             border-radius: 50%;
-            animation: articleSpin .8s linear infinite;
+            animation: spin .8s linear infinite;
         }
 
-        @keyframes articleSpin {
-            to {
-                transform: rotate(360deg);
-            }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .redirect-loading h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            color: #2d4a2b;
+            margin-bottom: 0.5rem;
+        }
+
+        .redirect-loading p {
+            font-size: 1.05rem;
+            color: #4e5c4a;
+            line-height: 1.7;
+        }
+
+        .redirect-loading a {
+            color: #2d4a2b;
+            font-weight: 700;
+            text-decoration: underline;
         }
 
     </style>
@@ -766,7 +783,32 @@
     }
     </script>
 
-    <!-- Article schema is inserted dynamically by main.js -->
+    <!-- =========================================================
+         LEGACY BLOG URL REDIRECT
+         Old: /blog-post.html?slug=example
+         New: /blog/blog-example.html
+    ========================================================== -->
+    <script>
+    (function () {
+        var params = new URLSearchParams(window.location.search);
+        var slug = params.get('slug');
+
+        if (!slug) {
+            // No slug – redirect to blog listing
+            window.location.replace('/blog.html');
+            return;
+        }
+
+        var cleanSlug = String(slug).trim();
+        if (!cleanSlug) {
+            window.location.replace('/blog.html');
+            return;
+        }
+
+        var target = '/blog/blog-' + encodeURIComponent(cleanSlug) + '.html';
+        window.location.replace(target);
+    })();
+    </script>
 
 </head>
 
@@ -869,7 +911,7 @@
 
 
 <!-- =========================================================
-     ARTICLE
+     ARTICLE (Fallback – rarely shown due to redirect)
 ========================================================== -->
 
 <main id="main-content">
@@ -880,24 +922,38 @@
 
             <div id="blog-post-content">
 
-                <div class="article-loading">
+                <div class="redirect-loading">
 
-                    <div class="article-loading-spinner"></div>
+                    <div class="spinner"></div>
 
-                    <p>Loading health article...</p>
+                    <h1>Redirecting to Article</h1>
+
+                    <p>
+                        Please wait while we redirect you to the article.
+                        If you are not redirected automatically,
+                        <a href="blog.html">click here to return to the blog</a>.
+                    </p>
+
+                    <p style="font-size: 0.9rem; color: #82907d; margin-top: 1.5rem;">
+                        For immediate health advice, call us at
+                        <a href="tel:9622552553">9622552553</a>.
+                    </p>
 
                 </div>
 
                 <noscript>
 
-                    <div class="article-loading">
+                    <div class="redirect-loading">
 
-                        <h1>Health Article</h1>
+                        <h1>Redirecting</h1>
 
                         <p>
-                            Please enable JavaScript to view this article.
-                            For health advice, call
-                            <a href="tel:9622552553">9622552553</a>.
+                            Please enable JavaScript to be redirected automatically.
+                        </p>
+
+                        <p>
+                            <a href="blog.html">Visit the blog</a> or call
+                            <a href="tel:9622552553">9622552553</a> for health advice.
                         </p>
 
                     </div>
@@ -914,7 +970,56 @@
 
 
 <!-- =========================================================
-     FOOTER
+     AREAS WE SERVE (Premium Badge Cloud)
+========================================================== -->
+
+<section class="areas-serve-premium" aria-label="Areas we serve" style="background:#f5f8f2; padding:30px 20px; border-top:1px solid #e2e8df; border-bottom:1px solid #e2e8df; text-align:center;">
+
+    <div class="container">
+
+        <p style="font-weight:700; color:#2d4a2b; margin:0 0 6px; font-size:1.05rem;">
+            🌍 Serving Families Across J&amp;K &amp; India
+        </p>
+
+        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
+
+            <span style="background:#fff; padding:5px 16px; border-radius:30px; font-size:0.85rem; font-weight:500; color:#2d4a2b; border:1px solid #dce4d6;">Budgam</span>
+
+            <span style="background:#fff; padding:5px 16px; border-radius:30px; font-size:0.85rem; font-weight:500; color:#2d4a2b; border:1px solid #dce4d6;">Srinagar</span>
+
+            <span style="background:#fff; padding:5px 16px; border-radius:30px; font-size:0.85rem; font-weight:500; color:#2d4a2b; border:1px solid #dce4d6;">Ompora</span>
+
+            <span style="background:#fff; padding:5px 16px; border-radius:30px; font-size:0.85rem; font-weight:500; color:#2d4a2b; border:1px solid #dce4d6;">Ganderbal</span>
+
+            <span style="background:#fff; padding:5px 16px; border-radius:30px; font-size:0.85rem; font-weight:500; color:#2d4a2b; border:1px solid #dce4d6;">Pulwama</span>
+
+            <span style="background:#fff; padding:5px 16px; border-radius:30px; font-size:0.85rem; font-weight:500; color:#2d4a2b; border:1px solid #dce4d6;">Shopian</span>
+
+            <span style="background:#fff; padding:5px 16px; border-radius:30px; font-size:0.85rem; font-weight:500; color:#2d4a2b; border:1px solid #dce4d6;">Kulgam</span>
+
+            <span style="background:#2d4a2b; padding:5px 16px; border-radius:30px; font-size:0.85rem; font-weight:500; color:#fff; border:1px solid #2d4a2b;">Jammu &amp; Kashmir</span>
+
+            <span style="background:#2d4a2b; padding:5px 16px; border-radius:30px; font-size:0.85rem; font-weight:500; color:#fff; border:1px solid #2d4a2b;">India</span>
+
+        </div>
+
+        <div style="margin-top:12px; font-size:0.9rem;">
+
+            <a href="service-areas.html" style="color:#2d4a2b; text-decoration:underline;">View all service areas</a>
+
+            <span style="margin:0 0.5rem;">|</span>
+
+            <a href="contact.html" style="color:#2d4a2b; text-decoration:underline;">Get directions</a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER (Updated with Service Areas)
 ========================================================== -->
 
 <footer class="site-footer">
@@ -958,6 +1063,11 @@
                 <a href="mailto:weibnsina@gmail.com">
                     ✉ weibnsina@gmail.com
                 </a>
+            </p>
+
+            <p style="margin-top:0.5rem; font-size:0.85rem; color:#71806d;">
+                <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam –
+                across <strong>Jammu &amp; Kashmir</strong> &amp; <strong>India</strong>
             </p>
 
         </div>
@@ -1032,7 +1142,8 @@
                 </a>
 
             </div>
-</div>
+
+        </div>
 
     </div>
 
@@ -1066,7 +1177,7 @@
 
 
 <!-- =========================================================
-     SCRIPTS
+     SCRIPTS (Unchanged – Needed for fallback functionality)
 ========================================================== -->
 
 <script src="js/main.js" defer></script>
@@ -1086,4 +1197,4 @@
 <script src="js/animations.js" defer></script>
 
 </body>
-            </html>
+</html>
