@@ -290,6 +290,7 @@ async function fetchJSON(url) {
 
 // ============================================================
 // HTML ESCAPE HELPER
+// Used for Google Sheets values that should be treated as text.
 // ============================================================
 
 function escapeHTML(value) {
@@ -909,18 +910,12 @@ document.addEventListener(
           filterDept.value =
             deptParam;
 
-          renderDoctors(true); // Force render for URL param filter
+          renderDoctors();
         }
       }
 
 
-      function renderDoctors(force = false) {
-
-        // If force is false AND there is already static content (not skeleton), skip rendering.
-        // If force is true (user filter/search), ALWAYS render.
-        if (!force && doctorGrid.children.length && !doctorGrid.querySelector('.skeleton-card')) {
-          return;
-        }
+      function renderDoctors() {
 
         let filtered =
           doctorsCache;
@@ -1063,7 +1058,7 @@ document.addEventListener(
 
         filterDept.addEventListener(
           'change',
-          () => renderDoctors(true) // Force render on filter change
+          renderDoctors
         );
       }
 
@@ -1071,7 +1066,7 @@ document.addEventListener(
 
         searchInput.addEventListener(
           'input',
-          () => renderDoctors(true) // Force render on search
+          renderDoctors
         );
       }
     }
@@ -1091,107 +1086,103 @@ document.addEventListener(
 
       (async () => {
 
-        // Only load if container is empty or has skeleton
-        if (!featContainer.children.length || featContainer.querySelector('.skeleton-card')) {
+        featContainer.innerHTML =
+          '<div class="skeleton-card">Loading...</div>';
+
+        const doctors =
+          await fetchJSON(
+            DATA_URLS.doctors
+          );
+
+        const featured =
+          doctors.slice(0, 6);
+
+        if (!featured.length) {
 
           featContainer.innerHTML =
-            '<div class="skeleton-card">Loading...</div>';
+            '<p class="text-center">Doctor list coming soon.</p>';
 
-          const doctors =
-            await fetchJSON(
-              DATA_URLS.doctors
-            );
-
-          const featured =
-            doctors.slice(0, 6);
-
-          if (!featured.length) {
-
-            featContainer.innerHTML =
-              '<p class="text-center">Doctor list coming soon.</p>';
-
-            return;
-          }
-
-          injectDoctorCardStyle();
-
-          featContainer.innerHTML =
-            featured
-              .map(d => `
-
-                <div
-                  class="doctor-card fade-in"
-                  onclick="location.href='doctor-profile.html?id=${encodeURIComponent(d.id || '')}'"
-                  style="background:#fff;border:1px solid #e0e0d0;min-height:200px;"
-                >
-
-                  ${
-                    d.photo_url
-                      ? `
-                        <img
-                          src="${escapeHTML(d.photo_url)}"
-                          alt="${escapeHTML(d.name || 'Doctor')}"
-                          style="width:80px;height:80px;object-fit:cover;border-radius:50%;margin:0 auto 1rem;display:block;"
-                          loading="lazy"
-                        >
-                      `
-                      : `
-                        <div
-                          class="doctor-card-img-placeholder"
-                          style="display:block;margin:0 auto 1rem;"
-                        >
-                          <svg
-                            width="80"
-                            height="80"
-                            viewBox="0 0 60 60"
-                          >
-                            <circle
-                              cx="30"
-                              cy="22"
-                              r="16"
-                              fill="#a4ac86"
-                              opacity="0.5"
-                            />
-                            <ellipse
-                              cx="30"
-                              cy="55"
-                              rx="22"
-                              ry="14"
-                              fill="#a4ac86"
-                              opacity="0.4"
-                            />
-                          </svg>
-                        </div>
-                      `
-                  }
-
-                  <h3>
-                    ${escapeHTML(d.name || 'Unnamed')}
-                  </h3>
-
-                  <p class="doctor-specialty">
-                    ${escapeHTML(d.specialty || '')}
-                  </p>
-
-                  <p class="doctor-qual">
-                    ${escapeHTML(d.qualifications || '')}
-                  </p>
-
-                  <a
-                    href="appointment.html?doctor=${encodeURIComponent(d.name || '')}"
-                    class="btn btn-outline btn-sm"
-                    aria-label="Book Appointment with ${escapeHTML(d.name || 'this doctor')}"
-                    onclick="event.stopPropagation();"
-                    style="margin-top:.8rem;color:#fff;background:#2d4a2b;"
-                  >
-                    Book Appointment
-                  </a>
-
-                </div>
-
-              `)
-              .join('');
+          return;
         }
+
+        injectDoctorCardStyle();
+
+        featContainer.innerHTML =
+          featured
+            .map(d => `
+
+              <div
+                class="doctor-card fade-in"
+                onclick="location.href='doctor-profile.html?id=${encodeURIComponent(d.id || '')}'"
+                style="background:#fff;border:1px solid #e0e0d0;min-height:200px;"
+              >
+
+                ${
+                  d.photo_url
+                    ? `
+                      <img
+                        src="${escapeHTML(d.photo_url)}"
+                        alt="${escapeHTML(d.name || 'Doctor')}"
+                        style="width:80px;height:80px;object-fit:cover;border-radius:50%;margin:0 auto 1rem;display:block;"
+                        loading="lazy"
+                      >
+                    `
+                    : `
+                      <div
+                        class="doctor-card-img-placeholder"
+                        style="display:block;margin:0 auto 1rem;"
+                      >
+                        <svg
+                          width="80"
+                          height="80"
+                          viewBox="0 0 60 60"
+                        >
+                          <circle
+                            cx="30"
+                            cy="22"
+                            r="16"
+                            fill="#a4ac86"
+                            opacity="0.5"
+                          />
+                          <ellipse
+                            cx="30"
+                            cy="55"
+                            rx="22"
+                            ry="14"
+                            fill="#a4ac86"
+                            opacity="0.4"
+                          />
+                        </svg>
+                      </div>
+                    `
+                }
+
+                <h3>
+                  ${escapeHTML(d.name || 'Unnamed')}
+                </h3>
+
+                <p class="doctor-specialty">
+                  ${escapeHTML(d.specialty || '')}
+                </p>
+
+                <p class="doctor-qual">
+                  ${escapeHTML(d.qualifications || '')}
+                </p>
+
+                <a
+                  href="appointment.html?doctor=${encodeURIComponent(d.name || '')}"
+                  class="btn btn-outline btn-sm"
+                  aria-label="Book Appointment with ${escapeHTML(d.name || 'this doctor')}"
+                  onclick="event.stopPropagation();"
+                  style="margin-top:.8rem;color:#fff;background:#2d4a2b;"
+                >
+                  Book Appointment
+                </a>
+
+              </div>
+
+            `)
+            .join('');
 
       })();
     }
@@ -1225,105 +1216,101 @@ document.addEventListener(
 
         (async () => {
 
-          // Only load if container is empty
-          if (!profileContainer.children.length) {
+          const doctors =
+            await fetchJSON(
+              DATA_URLS.doctors
+            );
 
-            const doctors =
-              await fetchJSON(
-                DATA_URLS.doctors
-              );
+          const doc =
+            doctors.find(
+              d =>
+                String(d.id) ===
+                String(docId)
+            );
 
-            const doc =
-              doctors.find(
-                d =>
-                  String(d.id) ===
-                  String(docId)
-              );
+          if (!doc) {
 
-            if (!doc) {
+            profileContainer.innerHTML =
+              '<p>Doctor not found.</p>';
 
-              profileContainer.innerHTML =
-                '<p>Doctor not found.</p>';
+            return;
+          }
 
-              return;
-            }
+          document.title =
+            `${doc.name || 'Doctor'} | Ibn Sina Hospital`;
 
-            document.title =
-              `${doc.name || 'Doctor'} | Ibn Sina Hospital`;
+          const metaDescription =
+            document.querySelector(
+              'meta[name="description"]'
+            );
 
-            const metaDescription =
-              document.querySelector(
-                'meta[name="description"]'
-              );
+          if (metaDescription) {
 
-            if (metaDescription) {
+            metaDescription.setAttribute(
+              'content',
+              `View the profile of ${doc.name || 'a doctor'} – ${doc.specialty || 'Doctor'} at Ibn Sina Hospital, Jammu and Kashmir.`
+            );
+          }
 
-              metaDescription.setAttribute(
-                'content',
-                `View the profile of ${doc.name || 'a doctor'} – ${doc.specialty || 'Doctor'} at Ibn Sina Hospital, Jammu and Kashmir.`
-              );
-            }
+          profileContainer.innerHTML = `
 
-            profileContainer.innerHTML = `
+            <div class="doctor-profile-card">
 
-              <div class="doctor-profile-card">
+              ${
+                doc.photo_url
+                  ? `
+                    <img
+                      src="${escapeHTML(doc.photo_url)}"
+                      alt="${escapeHTML(doc.name || 'Doctor')}"
+                      style="width:120px;height:120px;object-fit:cover;border-radius:50%;margin:0 auto 1rem;display:block;"
+                    >
+                  `
+                  : ''
+              }
 
-                ${
-                  doc.photo_url
-                    ? `
-                      <img
-                        src="${escapeHTML(doc.photo_url)}"
-                        alt="${escapeHTML(doc.name || 'Doctor')}"
-                        style="width:120px;height:120px;object-fit:cover;border-radius:50%;margin:0 auto 1rem;display:block;"
-                      >
-                    `
-                    : ''
-                }
+              <h1>
+                ${escapeHTML(doc.name || 'Unnamed')}
+              </h1>
 
-                <h1>
-                  ${escapeHTML(doc.name || 'Unnamed')}
-                </h1>
+              <p>
+                <strong>Specialty:</strong>
+                ${escapeHTML(doc.specialty || 'N/A')}
+              </p>
 
-                <p>
-                  <strong>Specialty:</strong>
-                  ${escapeHTML(doc.specialty || 'N/A')}
-                </p>
+              <p>
+                <strong>Department:</strong>
+                ${escapeHTML(doc.department || 'N/A')}
+              </p>
 
-                <p>
-                  <strong>Department:</strong>
-                  ${escapeHTML(doc.department || 'N/A')}
-                </p>
+              <p>
+                <strong>Qualifications:</strong>
+                ${escapeHTML(doc.qualifications || 'N/A')}
+              </p>
 
-                <p>
-                  <strong>Qualifications:</strong>
-                  ${escapeHTML(doc.qualifications || 'N/A')}
-                </p>
-
-                <div class="doctor-bio">
-                  <strong>About:</strong>
-                  <br>
-                  ${doc.about || 'No biography available.'}
-                </div>
-
-                <a
-                  href="appointment.html?doctor=${encodeURIComponent(doc.name || '')}"
-                  class="btn btn-primary"
-                >
-                  Book Appointment with ${escapeHTML(doc.name || 'Doctor')}
-                </a>
-
-                <a
-                  href="doctors.html"
-                  class="btn btn-outline"
-                  style="margin-top:1rem;"
-                >
-                  ← Back to All Doctors
-                </a>
-
+              <div class="doctor-bio">
+                <strong>About:</strong>
+                <br>
+                ${doc.about || 'No biography available.'}
               </div>
 
-            `;
-          }
+              <a
+                href="appointment.html?doctor=${encodeURIComponent(doc.name || '')}"
+                class="btn btn-primary"
+              >
+                Book Appointment with ${escapeHTML(doc.name || 'Doctor')}
+              </a>
+
+              <a
+                href="doctors.html"
+                class="btn btn-outline"
+                style="margin-top:1rem;"
+              >
+                ← Back to All Doctors
+              </a>
+
+            </div>
+
+          `;
 
         })();
       }
@@ -1331,7 +1318,7 @@ document.addEventListener(
 
 
     // ========================================================
-    // STATIC SERVICES (No change needed – already static)
+    // STATIC SERVICES
     // ========================================================
 
     const servicesGrid =
@@ -1341,42 +1328,39 @@ document.addEventListener(
 
     if (servicesGrid) {
 
-      // Only render if empty
-      if (!servicesGrid.children.length) {
-        servicesGrid.innerHTML =
-          STATIC_SERVICES
-            .map(s => {
+      servicesGrid.innerHTML =
+        STATIC_SERVICES
+          .map(s => {
 
-              const iconHtml =
-                SERVICE_ICONS[s.icon]
-                  ? `
-                    <div class="service-icon">
-                      ${SERVICE_ICONS[s.icon]}
-                    </div>
-                  `
-                  : '';
+            const iconHtml =
+              SERVICE_ICONS[s.icon]
+                ? `
+                  <div class="service-icon">
+                    ${SERVICE_ICONS[s.icon]}
+                  </div>
+                `
+                : '';
 
-              return `
+            return `
 
-                <div class="service-card fade-in">
+              <div class="service-card fade-in">
 
-                  ${iconHtml}
+                ${iconHtml}
 
-                  <h3>
-                    ${escapeHTML(s.title)}
-                  </h3>
+                <h3>
+                  ${escapeHTML(s.title)}
+                </h3>
 
-                  <p>
-                    ${escapeHTML(s.description)}
-                  </p>
+                <p>
+                  ${escapeHTML(s.description)}
+                </p>
 
-                </div>
+              </div>
 
-              `;
+            `;
 
-            })
-            .join('');
-      }
+          })
+          .join('');
     }
 
 
@@ -1393,234 +1377,230 @@ document.addEventListener(
 
       (async () => {
 
-        // Only load if container is empty or has skeleton
-        if (!deptGrid.children.length || deptGrid.querySelector('.skeleton-card')) {
+        deptGrid.innerHTML =
+          '<div class="skeleton-card">Loading departments...</div>';
 
-          deptGrid.innerHTML =
-            '<div class="skeleton-card">Loading departments...</div>';
-
-          const departments =
-            await fetchJSON(
-              DATA_URLS.departments
-            );
-
-          if (!departments.length) {
-
-            deptGrid.innerHTML =
-              '<p class="text-center">Departments list unavailable.</p>';
-
-            return;
-          }
-
-          const isHomePage =
-            window.location.pathname.endsWith(
-              'index.html'
-            ) ||
-            window.location.pathname === '/' ||
-            window.location.pathname === '';
-
-          const displayDepts =
-            isHomePage
-              ? departments.slice(0, 6)
-              : departments;
-
-          let html = '';
-          let styleRules = '';
-
-          displayDepts.forEach(
-            (d, index) => {
-
-              // 🔗 Link to the hand-built department-pages/ file when one
-              // exists for this department; otherwise fall back to the
-              // auto-generated departments/department-{slug}.html page.
-              // Keep this list in sync with the files actually present in
-              // department-pages/ (mirrors the fallback logic in
-              // generate_dynamic.py's resolve_department_link()).
-              const MANUAL_DEPARTMENT_SLUGS = new Set([
-                'cardiology',
-                'dentistry',
-                'dermatology',
-                'ent',
-                'gastroenterology',
-                'general-medicine',
-                'general-surgery',
-                'gynaecology',
-                'nephrology',
-                'neonatal-intensive-care-unit',
-                'ophthalmology',
-                'orthopaedics',
-                'pediatric-surgery',
-                'physiotherapy',
-                'plastic-surgery',
-                'pulmonology',
-                'radiology',
-                'rheumatology',
-                'urology'
-              ]);
-              const link =
-                MANUAL_DEPARTMENT_SLUGS.has(d.slug)
-                  ? `department-pages/${d.slug}.html`
-                  : `departments/department-${d.slug}.html`;
-
-              const iconHtml =
-                d.icon_url
-                  ? `
-                    <div class="service-icon">
-                      ${d.icon_url}
-                    </div>
-                  `
-                  : '';
-
-              const bgImage =
-                d.bg_image_url
-                  ? d.bg_image_url.trim()
-                  : '';
-
-              const cardId =
-                `dept-${d.slug || index}`;
-
-              html += `
-
-                <a
-                  href="${escapeHTML(link)}"
-                  class="service-card department-card"
-                  id="${escapeHTML(cardId)}"
-                  style="text-decoration:none;"
-                >
-
-                  ${iconHtml}
-
-                  <h3>
-                    ${escapeHTML(d.name || '')}
-                  </h3>
-
-                </a>
-
-              `;
-
-              if (bgImage) {
-
-                styleRules += `
-
-                  #${cardId}:hover,
-                  #${cardId}.touch-hover {
-
-                    background-image:
-                      url('${bgImage}') !important;
-
-                    background-size:
-                      cover !important;
-
-                    background-position:
-                      center !important;
-
-                    background-color:
-                      transparent !important;
-
-                    color:
-                      #ffffff !important;
-                  }
-
-                  #${cardId}:hover h3,
-                  #${cardId}.touch-hover h3 {
-
-                    color:
-                      #ffffff !important;
-
-                    text-shadow:
-                      0 1px 3px rgba(0,0,0,0.6);
-                  }
-
-                  #${cardId}:hover .service-icon svg,
-                  #${cardId}.touch-hover .service-icon svg {
-
-                    stroke:
-                      #ffffff !important;
-                  }
-
-                  #${cardId}:hover::before,
-                  #${cardId}.touch-hover::before {
-
-                    display:
-                      none !important;
-                  }
-
-                `;
-              }
-            }
+        const departments =
+          await fetchJSON(
+            DATA_URLS.departments
           );
 
+        if (!departments.length) {
+
           deptGrid.innerHTML =
-            html;
+            '<p class="text-center">Departments list unavailable.</p>';
 
-          if (styleRules) {
+          return;
+        }
 
-            const styleTag =
-              document.createElement(
-                'style'
-              );
+        const isHomePage =
+          window.location.pathname.endsWith(
+            'index.html'
+          ) ||
+          window.location.pathname === '/' ||
+          window.location.pathname === '';
 
-            styleTag.id =
-              'department-hover-styles';
+        const displayDepts =
+          isHomePage
+            ? departments.slice(0, 6)
+            : departments;
 
-            styleTag.textContent =
-              styleRules;
+        let html = '';
+        let styleRules = '';
 
-            document.head.appendChild(
-              styleTag
+        displayDepts.forEach(
+          (d, index) => {
+
+            // 🔗 Link to the hand-built department-pages/ file when one
+            // exists for this department; otherwise fall back to the
+            // auto-generated departments/department-{slug}.html page.
+            // Keep this list in sync with the files actually present in
+            // department-pages/ (mirrors the fallback logic in
+            // generate_dynamic.py's resolve_department_link()).
+            const MANUAL_DEPARTMENT_SLUGS = new Set([
+              'cardiology',
+              'dentistry',
+              'dermatology',
+              'ent',
+              'gastroenterology',
+              'general-medicine',
+              'general-surgery',
+              'gynaecology',
+              'nephrology',
+              'neonatal-intensive-care-unit',
+              'ophthalmology',
+              'orthopaedics',
+              'pediatric-surgery',
+              'physiotherapy',
+              'plastic-surgery',
+              'pulmonology',
+              'radiology',
+              'rheumatology',
+              'urology'
+            ]);
+            const link =
+              MANUAL_DEPARTMENT_SLUGS.has(d.slug)
+                ? `department-pages/${d.slug}.html`
+                : `departments/department-${d.slug}.html`;
+
+            const iconHtml =
+              d.icon_url
+                ? `
+                  <div class="service-icon">
+                    ${d.icon_url}
+                  </div>
+                `
+                : '';
+
+            const bgImage =
+              d.bg_image_url
+                ? d.bg_image_url.trim()
+                : '';
+
+            const cardId =
+              `dept-${d.slug || index}`;
+
+            html += `
+
+              <a
+                href="${escapeHTML(link)}"
+                class="service-card department-card"
+                id="${escapeHTML(cardId)}"
+                style="text-decoration:none;"
+              >
+
+                ${iconHtml}
+
+                <h3>
+                  ${escapeHTML(d.name || '')}
+                </h3>
+
+              </a>
+
+            `;
+
+            if (bgImage) {
+
+              styleRules += `
+
+                #${cardId}:hover,
+                #${cardId}.touch-hover {
+
+                  background-image:
+                    url('${bgImage}') !important;
+
+                  background-size:
+                    cover !important;
+
+                  background-position:
+                    center !important;
+
+                  background-color:
+                    transparent !important;
+
+                  color:
+                    #ffffff !important;
+                }
+
+                #${cardId}:hover h3,
+                #${cardId}.touch-hover h3 {
+
+                  color:
+                    #ffffff !important;
+
+                  text-shadow:
+                    0 1px 3px rgba(0,0,0,0.6);
+                }
+
+                #${cardId}:hover .service-icon svg,
+                #${cardId}.touch-hover .service-icon svg {
+
+                  stroke:
+                    #ffffff !important;
+                }
+
+                #${cardId}:hover::before,
+                #${cardId}.touch-hover::before {
+
+                  display:
+                    none !important;
+                }
+
+              `;
+            }
+          }
+        );
+
+        deptGrid.innerHTML =
+          html;
+
+        if (styleRules) {
+
+          const styleTag =
+            document.createElement(
+              'style'
+            );
+
+          styleTag.id =
+            'department-hover-styles';
+
+          styleTag.textContent =
+            styleRules;
+
+          document.head.appendChild(
+            styleTag
+          );
+        }
+
+        const cards =
+          deptGrid.querySelectorAll(
+            '.department-card'
+          );
+
+        cards.forEach(card => {
+
+          const hasBg =
+            styleRules.includes(
+              card.id
+            );
+
+          if (hasBg) {
+
+            card.addEventListener(
+              'touchstart',
+              () =>
+                card.classList.add(
+                  'touch-hover'
+                ),
+              {
+                passive: true
+              }
+            );
+
+            card.addEventListener(
+              'touchend',
+              () =>
+                card.classList.remove(
+                  'touch-hover'
+                ),
+              {
+                passive: true
+              }
+            );
+
+            card.addEventListener(
+              'touchcancel',
+              () =>
+                card.classList.remove(
+                  'touch-hover'
+                ),
+              {
+                passive: true
+              }
             );
           }
 
-          const cards =
-            deptGrid.querySelectorAll(
-              '.department-card'
-            );
-
-          cards.forEach(card => {
-
-            const hasBg =
-              styleRules.includes(
-                card.id
-              );
-
-            if (hasBg) {
-
-              card.addEventListener(
-                'touchstart',
-                () =>
-                  card.classList.add(
-                    'touch-hover'
-                  ),
-                {
-                  passive: true
-                }
-              );
-
-              card.addEventListener(
-                'touchend',
-                () =>
-                  card.classList.remove(
-                    'touch-hover'
-                  ),
-                {
-                  passive: true
-                }
-              );
-
-              card.addEventListener(
-                'touchcancel',
-                () =>
-                  card.classList.remove(
-                    'touch-hover'
-                  ),
-                {
-                  passive: true
-                }
-              );
-            }
-
-          });
-        }
+        });
 
       })();
     }
@@ -1639,393 +1619,389 @@ document.addEventListener(
 
       (async () => {
 
-        // Only load if container is empty or has skeleton
-        if (!updatesContainer.children.length || updatesContainer.querySelector('.skeleton-card')) {
+        updatesContainer.innerHTML =
+          '<div class="skeleton-card">Loading updates...</div>';
 
-          updatesContainer.innerHTML =
-            '<div class="skeleton-card">Loading updates...</div>';
-
-          let updates =
-            await fetchJSON(
-              DATA_URLS.updates
-            );
-
-          if (!updates.length) {
-
-            updates = [
-
-              {
-                title:
-                  'New Cardiology Wing Opened',
-
-                description:
-                  'We have expanded our cardiac care with a new wing.',
-
-                date:
-                  '2026-08-01',
-
-                link:
-                  'https://i.ibb.co/9kYKZsWB/181bf27c6da3.webp'
-              },
-
-              {
-                title:
-                  '24/7 Pharmacy Now Available',
-
-                description:
-                  'Our pharmacy remains open all day, every day.',
-
-                date:
-                  '2026-07-15'
-              },
-
-              {
-                title:
-                  'Dialysis Unit Upgraded',
-
-                description:
-                  'Advanced dialysis machines installed for better care.',
-
-                date:
-                  '2026-06-30'
-              }
-
-            ];
-          }
-
-          updates.sort(
-            (a, b) =>
-              new Date(b.date) -
-              new Date(a.date)
+        let updates =
+          await fetchJSON(
+            DATA_URLS.updates
           );
 
-          let currentIndex = 0;
+        if (!updates.length) {
 
-          let autoSlideInterval;
+          updates = [
+
+            {
+              title:
+                'New Cardiology Wing Opened',
+
+              description:
+                'We have expanded our cardiac care with a new wing.',
+
+              date:
+                '2026-08-01',
+
+              link:
+                'https://i.ibb.co/9kYKZsWB/181bf27c6da3.webp'
+            },
+
+            {
+              title:
+                '24/7 Pharmacy Now Available',
+
+              description:
+                'Our pharmacy remains open all day, every day.',
+
+              date:
+                '2026-07-15'
+            },
+
+            {
+              title:
+                'Dialysis Unit Upgraded',
+
+              description:
+                'Advanced dialysis machines installed for better care.',
+
+              date:
+                '2026-06-30'
+            }
+
+          ];
+        }
+
+        updates.sort(
+          (a, b) =>
+            new Date(b.date) -
+            new Date(a.date)
+        );
+
+        let currentIndex = 0;
+
+        let autoSlideInterval;
 
 
-          function isVideoURL(url) {
+        function isVideoURL(url) {
 
-            return (
-              url &&
-              (
-                url.includes(
-                  'youtube.com/embed'
-                ) ||
-                url.includes(
-                  'vimeo.com'
-                ) ||
-                url.match(
-                  /\.mp4($|\?)/
-                )
+          return (
+            url &&
+            (
+              url.includes(
+                'youtube.com/embed'
+              ) ||
+              url.includes(
+                'vimeo.com'
+              ) ||
+              url.match(
+                /\.mp4($|\?)/
               )
-            );
-          }
+            )
+          );
+        }
 
 
-          function isImageURL(url) {
+        function isImageURL(url) {
 
-            return (
-              url &&
-              /\.(jpeg|jpg|gif|png|webp|svg|bmp|ico)(\?.*)?$/i
-                .test(url)
-            );
-          }
+          return (
+            url &&
+            /\.(jpeg|jpg|gif|png|webp|svg|bmp|ico)(\?.*)?$/i
+              .test(url)
+          );
+        }
 
 
-          const slidesHTML =
-            updates
-              .map((u, i) => {
+        const slidesHTML =
+          updates
+            .map((u, i) => {
 
-                const media =
-                  u.media_url ||
-                  u.image_url ||
-                  u.link;
+              const media =
+                u.media_url ||
+                u.image_url ||
+                u.link;
 
-                let titleContent =
-                  escapeHTML(
-                    u.title || ''
-                  );
+              let titleContent =
+                escapeHTML(
+                  u.title || ''
+                );
 
-                let mediaArea = '';
+              let mediaArea = '';
 
-                if (
-                  media &&
-                  isVideoURL(media)
-                ) {
+              if (
+                media &&
+                isVideoURL(media)
+              ) {
 
-                  mediaArea = `
+                mediaArea = `
 
-                    <div class="update-media">
+                  <div class="update-media">
 
-                      <iframe
-                        src="${escapeHTML(media)}"
-                        frameborder="0"
-                        allowfullscreen
-                        style="width:100%;height:100%;border:none;"
-                        title="${escapeHTML(u.title || 'Hospital update')}"
-                      ></iframe>
-
-                    </div>
-
-                  `;
-
-                } else if (
-                  media &&
-                  isImageURL(media)
-                ) {
-
-                  mediaArea = `
-
-                    <div
-                      class="update-media"
-                      style="background-image:url('${escapeHTML(media)}');"
-                    ></div>
-
-                  `;
-
-                } else {
-
-                  mediaArea = `
-                    <div class="update-media update-media-empty"></div>
-                  `;
-                }
-
-                if (
-                  media &&
-                  !isVideoURL(media) &&
-                  !isImageURL(media)
-                ) {
-
-                  titleContent = `
-
-                    <a
-                      href="${escapeHTML(media)}"
-                      target="_blank"
-                      rel="noopener"
-                    >
-                      ${escapeHTML(u.title || '')}
-                    </a>
-
-                  `;
-                }
-
-                return `
-
-                  <div
-                    class="update-slide"
-                    data-index="${i}"
-                  >
-
-                    ${mediaArea}
-
-                    <div class="update-caption">
-
-                      <h3>
-                        ${titleContent}
-                      </h3>
-
-                      <p>
-                        ${escapeHTML(u.description || '')}
-                      </p>
-
-                      <small>
-                        ${escapeHTML(u.date || '')}
-                      </small>
-
-                    </div>
+                    <iframe
+                      src="${escapeHTML(media)}"
+                      frameborder="0"
+                      allowfullscreen
+                      style="width:100%;height:100%;border:none;"
+                      title="${escapeHTML(u.title || 'Hospital update')}"
+                    ></iframe>
 
                   </div>
 
                 `;
 
-              })
-              .join('');
+              } else if (
+                media &&
+                isImageURL(media)
+              ) {
+
+                mediaArea = `
+
+                  <div
+                    class="update-media"
+                    style="background-image:url('${escapeHTML(media)}');"
+                  ></div>
+
+                `;
+
+              } else {
+
+                mediaArea = `
+                  <div class="update-media update-media-empty"></div>
+                `;
+              }
+
+              if (
+                media &&
+                !isVideoURL(media) &&
+                !isImageURL(media)
+              ) {
+
+                titleContent = `
+
+                  <a
+                    href="${escapeHTML(media)}"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    ${escapeHTML(u.title || '')}
+                  </a>
+
+                `;
+              }
+
+              return `
+
+                <div
+                  class="update-slide"
+                  data-index="${i}"
+                >
+
+                  ${mediaArea}
+
+                  <div class="update-caption">
+
+                    <h3>
+                      ${titleContent}
+                    </h3>
+
+                    <p>
+                      ${escapeHTML(u.description || '')}
+                    </p>
+
+                    <small>
+                      ${escapeHTML(u.date || '')}
+                    </small>
+
+                  </div>
+
+                </div>
+
+              `;
+
+            })
+            .join('');
 
 
-          updatesContainer.innerHTML = `
+        updatesContainer.innerHTML = `
 
-            <div class="carousel-wrapper">
-
-              <div
-                class="carousel-slides"
-                id="carousel-slides"
-              >
-                ${slidesHTML}
-              </div>
-
-              <button
-                class="carousel-prev"
-                id="carousel-prev"
-                aria-label="Previous update"
-                type="button"
-              >
-                ❮
-              </button>
-
-              <button
-                class="carousel-next"
-                id="carousel-next"
-                aria-label="Next update"
-                type="button"
-              >
-                ❯
-              </button>
-
-            </div>
+          <div class="carousel-wrapper">
 
             <div
-              class="carousel-dots"
-              id="carousel-dots"
+              class="carousel-slides"
+              id="carousel-slides"
             >
-              ${
-                updates
-                  .map(
-                    (_, i) =>
-                      `<span class="dot" data-index="${i}"></span>`
-                  )
-                  .join('')
-              }
+              ${slidesHTML}
             </div>
 
-          `;
+            <button
+              class="carousel-prev"
+              id="carousel-prev"
+              aria-label="Previous update"
+              type="button"
+            >
+              ❮
+            </button>
 
+            <button
+              class="carousel-next"
+              id="carousel-next"
+              aria-label="Next update"
+              type="button"
+            >
+              ❯
+            </button>
 
-          const slidesEl =
-            document.getElementById(
-              'carousel-slides'
-            );
+          </div>
 
-          const dots =
-            document.querySelectorAll(
-              '#carousel-dots .dot'
-            );
-
-          const prevBtn =
-            document.getElementById(
-              'carousel-prev'
-            );
-
-          const nextBtn =
-            document.getElementById(
-              'carousel-next'
-            );
-
-
-          function goToSlide(index) {
-
-            if (index < 0) {
-              index =
-                updates.length - 1;
-            }
-
-            if (
-              index >= updates.length
-            ) {
-              index = 0;
-            }
-
-            currentIndex =
-              index;
-
-            if (slidesEl) {
-
-              slidesEl.style.transform =
-                `translateX(-${currentIndex * 100}%)`;
-            }
-
-            dots.forEach(
-              d =>
-                d.classList.remove(
-                  'active'
+          <div
+            class="carousel-dots"
+            id="carousel-dots"
+          >
+            ${
+              updates
+                .map(
+                  (_, i) =>
+                    `<span class="dot" data-index="${i}"></span>`
                 )
-            );
-
-            if (dots[currentIndex]) {
-
-              dots[currentIndex]
-                .classList.add(
-                  'active'
-                );
+                .join('')
             }
+          </div>
+
+        `;
+
+
+        const slidesEl =
+          document.getElementById(
+            'carousel-slides'
+          );
+
+        const dots =
+          document.querySelectorAll(
+            '#carousel-dots .dot'
+          );
+
+        const prevBtn =
+          document.getElementById(
+            'carousel-prev'
+          );
+
+        const nextBtn =
+          document.getElementById(
+            'carousel-next'
+          );
+
+
+        function goToSlide(index) {
+
+          if (index < 0) {
+            index =
+              updates.length - 1;
           }
 
-
-          if (prevBtn) {
-
-            prevBtn.addEventListener(
-              'click',
-              () =>
-                goToSlide(
-                  currentIndex - 1
-                )
-            );
+          if (
+            index >= updates.length
+          ) {
+            index = 0;
           }
 
+          currentIndex =
+            index;
 
-          if (nextBtn) {
+          if (slidesEl) {
 
-            nextBtn.addEventListener(
-              'click',
-              () =>
-                goToSlide(
-                  currentIndex + 1
-                )
-            );
+            slidesEl.style.transform =
+              `translateX(-${currentIndex * 100}%)`;
           }
 
-
-          dots.forEach(dot => {
-
-            dot.addEventListener(
-              'click',
-              () =>
-                goToSlide(
-                  parseInt(
-                    dot.dataset.index,
-                    10
-                  )
-                )
-            );
-
-          });
-
-
-          autoSlideInterval =
-            setInterval(
-              () =>
-                goToSlide(
-                  currentIndex + 1
-                ),
-              5000
-            );
-
-
-          updatesContainer.addEventListener(
-            'mouseenter',
-            () =>
-              clearInterval(
-                autoSlideInterval
+          dots.forEach(
+            d =>
+              d.classList.remove(
+                'active'
               )
           );
 
+          if (dots[currentIndex]) {
 
-          updatesContainer.addEventListener(
-            'mouseleave',
+            dots[currentIndex]
+              .classList.add(
+                'active'
+              );
+          }
+        }
+
+
+        if (prevBtn) {
+
+          prevBtn.addEventListener(
+            'click',
             () =>
-              autoSlideInterval =
-                setInterval(
-                  () =>
-                    goToSlide(
-                      currentIndex + 1
-                    ),
-                  5000
+              goToSlide(
+                currentIndex - 1
+              )
+          );
+        }
+
+
+        if (nextBtn) {
+
+          nextBtn.addEventListener(
+            'click',
+            () =>
+              goToSlide(
+                currentIndex + 1
+              )
+          );
+        }
+
+
+        dots.forEach(dot => {
+
+          dot.addEventListener(
+            'click',
+            () =>
+              goToSlide(
+                parseInt(
+                  dot.dataset.index,
+                  10
                 )
+              )
+          );
+
+        });
+
+
+        autoSlideInterval =
+          setInterval(
+            () =>
+              goToSlide(
+                currentIndex + 1
+              ),
+            5000
           );
 
 
-          goToSlide(0);
-        }
+        updatesContainer.addEventListener(
+          'mouseenter',
+          () =>
+            clearInterval(
+              autoSlideInterval
+            )
+        );
+
+
+        updatesContainer.addEventListener(
+          'mouseleave',
+          () =>
+            autoSlideInterval =
+              setInterval(
+                () =>
+                  goToSlide(
+                    currentIndex + 1
+                  ),
+                5000
+              )
+        );
+
+
+        goToSlide(0);
 
       })();
     }
@@ -2045,92 +2021,88 @@ document.addEventListener(
 
       (async () => {
 
-        // Only load if container is empty or has skeleton
-        if (!blogPreviewGrid.children.length || blogPreviewGrid.querySelector('.skeleton-card')) {
+        blogPreviewGrid.innerHTML =
+          '<div class="skeleton-card">Loading posts...</div>';
+
+        const posts =
+          await fetchJSON(
+            DATA_URLS.blog
+          );
+
+        const published =
+          posts
+            .filter(isPublished)
+            .sort(
+              (a, b) =>
+                new Date(
+                  b.published_at ||
+                  b.date ||
+                  0
+                ) -
+                new Date(
+                  a.published_at ||
+                  a.date ||
+                  0
+                )
+            )
+            .slice(0, 3);
+
+        if (!published.length) {
 
           blogPreviewGrid.innerHTML =
-            '<div class="skeleton-card">Loading posts...</div>';
+            '<p class="text-center">No blog posts yet.</p>';
 
-          const posts =
-            await fetchJSON(
-              DATA_URLS.blog
-            );
-
-          const published =
-            posts
-              .filter(isPublished)
-              .sort(
-                (a, b) =>
-                  new Date(
-                    b.published_at ||
-                    b.date ||
-                    0
-                  ) -
-                  new Date(
-                    a.published_at ||
-                    a.date ||
-                    0
-                  )
-              )
-              .slice(0, 3);
-
-          if (!published.length) {
-
-            blogPreviewGrid.innerHTML =
-              '<p class="text-center">No blog posts yet.</p>';
-
-            return;
-          }
-
-          blogPreviewGrid.innerHTML =
-            published
-              .map(p => `
-
-                <article
-                  class="blog-preview-card fade-in"
-                >
-
-                  ${
-                    p.cover_image_url
-                      ? `
-                        <img
-                          src="${escapeHTML(p.cover_image_url)}"
-                          alt="${escapeHTML(p.title || 'Health article')}"
-                          loading="lazy"
-                          style="width:100%;height:180px;object-fit:cover;border-radius:var(--radius);margin-bottom:0.8rem;"
-                        >
-                      `
-                      : ''
-                  }
-
-                  <h3>
-
-                    <a
-                      href="blog-post.html?slug=${encodeURIComponent(p.slug || '')}"
-                    >
-                      ${escapeHTML(p.title || 'Health Article')}
-                    </a>
-
-                  </h3>
-
-                  <time datetime="${escapeHTML(p.published_at || p.date || '')}">
-                    ${formatBlogDate(
-                      p.published_at ||
-                      p.date
-                    )}
-                  </time>
-
-                  <p>
-                    ${escapeHTML(
-                      p.short_summary || ''
-                    )}
-                  </p>
-
-                </article>
-
-              `)
-              .join('');
+          return;
         }
+
+        blogPreviewGrid.innerHTML =
+          published
+            .map(p => `
+
+              <article
+                class="blog-preview-card fade-in"
+              >
+
+                ${
+                  p.cover_image_url
+                    ? `
+                      <img
+                        src="${escapeHTML(p.cover_image_url)}"
+                        alt="${escapeHTML(p.title || 'Health article')}"
+                        loading="lazy"
+                        style="width:100%;height:180px;object-fit:cover;border-radius:var(--radius);margin-bottom:0.8rem;"
+                      >
+                    `
+                    : ''
+                }
+
+                <h3>
+
+                  <a
+                    href="blog-post.html?slug=${encodeURIComponent(p.slug || '')}"
+                  >
+                    ${escapeHTML(p.title || 'Health Article')}
+                  </a>
+
+                </h3>
+
+                <time datetime="${escapeHTML(p.published_at || p.date || '')}">
+                  ${formatBlogDate(
+                    p.published_at ||
+                    p.date
+                  )}
+                </time>
+
+                <p>
+                  ${escapeHTML(
+                    p.short_summary || ''
+                  )}
+                </p>
+
+              </article>
+
+            `)
+            .join('');
 
       })();
     }
@@ -2150,137 +2122,133 @@ document.addEventListener(
 
       (async () => {
 
-        // Only load if container is empty or has skeleton
-        if (!blogGrid.children.length || blogGrid.querySelector('.skeleton-card')) {
+        blogGrid.innerHTML =
+          '<div class="skeleton-card">Loading posts...</div>';
 
-          blogGrid.innerHTML =
-            '<div class="skeleton-card">Loading posts...</div>';
+        const posts =
+          await fetchJSON(
+            DATA_URLS.blog
+          );
 
-          const posts =
-            await fetchJSON(
-              DATA_URLS.blog
+        const published =
+          posts
+            .filter(isPublished)
+            .sort(
+              (a, b) =>
+                new Date(
+                  b.published_at ||
+                  b.date ||
+                  0
+                ) -
+                new Date(
+                  a.published_at ||
+                  a.date ||
+                  0
+                )
             );
 
-          const published =
-            posts
-              .filter(isPublished)
-              .sort(
-                (a, b) =>
-                  new Date(
-                    b.published_at ||
-                    b.date ||
-                    0
-                  ) -
-                  new Date(
-                    a.published_at ||
-                    a.date ||
-                    0
-                  )
-              );
-
-          if (!published.length) {
-
-            blogGrid.innerHTML =
-              '<p class="text-center">No blog posts yet. Please check back soon.</p>';
-
-            return;
-          }
+        if (!published.length) {
 
           blogGrid.innerHTML =
-            published
-              .map((p, index) => {
+            '<p class="text-center">No blog posts yet. Please check back soon.</p>';
 
-                const isFeatured = index === 0;
-                const readTime = calculateReadingTime(p.body);
-                const postUrl = `blog-post.html?slug=${encodeURIComponent(p.slug || '')}`;
-                const categoryLabel = p.category || 'Health & Wellness';
+          return;
+        }
 
-                return `
+        blogGrid.innerHTML =
+          published
+            .map((p, index) => {
 
-                  <article
-                    class="blog-preview-card blog-card fade-in${isFeatured ? ' blog-featured-card' : ''}"
-                    data-category="${escapeHTML(categoryLabel)}"
-                  >
+              const isFeatured = index === 0;
+              const readTime = calculateReadingTime(p.body);
+              const postUrl = `blog-post.html?slug=${encodeURIComponent(p.slug || '')}`;
+              const categoryLabel = p.category || 'Health & Wellness';
 
-                    ${
-                      p.cover_image_url
-                        ? `
-                          <a
-                            href="${postUrl}"
-                            class="blog-card-image-link"
-                            aria-label="Read ${escapeHTML(p.title || 'health article')}"
-                          >
-                            <div class="blog-card-image-wrapper">
-                              <img
-                                src="${escapeHTML(p.cover_image_url)}"
-                                alt="${escapeHTML(p.title || 'Health article')}"
-                                class="blog-card-image"
-                                loading="${isFeatured ? 'eager' : 'lazy'}"
-                                decoding="async"
-                              >
-                              <span class="blog-image-overlay">Read Article</span>
-                            </div>
-                          </a>
-                        `
-                        : ''
-                    }
+              return `
 
-                    <div class="blog-card-content">
+                <article
+                  class="blog-preview-card blog-card fade-in${isFeatured ? ' blog-featured-card' : ''}"
+                  data-category="${escapeHTML(categoryLabel)}"
+                >
 
-                      <div class="blog-card-meta">
-
-                        <span class="blog-category">
-                          ${escapeHTML(categoryLabel)}
-                        </span>
-
-                        <time
-                          datetime="${escapeHTML(p.published_at || p.date || '')}"
-                          class="blog-date"
-                        >
-                          ${formatBlogDate(
-                            p.published_at ||
-                            p.date
-                          )}
-                        </time>
-
-                      </div>
-
-                      <h2 class="blog-card-title">
-                        <a href="${postUrl}">
-                          ${escapeHTML(p.title || 'Health Article')}
-                        </a>
-                      </h2>
-
-                      <p>
-                        ${escapeHTML(
-                          p.short_summary || ''
-                        )}
-                      </p>
-
-                      <div class="blog-card-footer">
-
-                        <span class="blog-reading-time">
-                          ${readTime} min read
-                        </span>
-
+                  ${
+                    p.cover_image_url
+                      ? `
                         <a
                           href="${postUrl}"
-                          class="read-more"
-                          aria-label="Read full article: ${escapeHTML(p.title || 'health article')}"
+                          class="blog-card-image-link"
+                          aria-label="Read ${escapeHTML(p.title || 'health article')}"
                         >
-                          Read Article <span aria-hidden="true">→</span>
+                          <div class="blog-card-image-wrapper">
+                            <img
+                              src="${escapeHTML(p.cover_image_url)}"
+                              alt="${escapeHTML(p.title || 'Health article')}"
+                              class="blog-card-image"
+                              loading="${isFeatured ? 'eager' : 'lazy'}"
+                              decoding="async"
+                            >
+                            <span class="blog-image-overlay">Read Article</span>
+                          </div>
                         </a>
+                      `
+                      : ''
+                  }
 
-                      </div>
+                  <div class="blog-card-content">
+
+                    <div class="blog-card-meta">
+
+                      <span class="blog-category">
+                        ${escapeHTML(categoryLabel)}
+                      </span>
+
+                      <time
+                        datetime="${escapeHTML(p.published_at || p.date || '')}"
+                        class="blog-date"
+                      >
+                        ${formatBlogDate(
+                          p.published_at ||
+                          p.date
+                        )}
+                      </time>
 
                     </div>
 
-                  </article>
+                    <h2 class="blog-card-title">
+                      <a href="${postUrl}">
+                        ${escapeHTML(p.title || 'Health Article')}
+                      </a>
+                    </h2>
 
-                `;
-              })
-              .join('');
-        }
+                    <p>
+                      ${escapeHTML(
+                        p.short_summary || ''
+                      )}
+                    </p>
+
+                    <div class="blog-card-footer">
+
+                      <span class="blog-reading-time">
+                        ${readTime} min read
+                      </span>
+
+                      <a
+                        href="${postUrl}"
+                        class="read-more"
+                        aria-label="Read full article: ${escapeHTML(p.title || 'health article')}"
+                      >
+                        Read Article <span aria-hidden="true">→</span>
+                      </a>
+
+                    </div>
+
+                  </div>
+
+                </article>
+
+              `;
+            })
+            .join('');
 
       })();
     }
@@ -2338,636 +2306,633 @@ document.addEventListener(
 
         (async () => {
 
-          // Only load if container is empty or has skeleton
-          if (!postContainer.children.length || postContainer.querySelector('.skeleton-card')) {
+          postContainer.innerHTML = `
+
+            <div class="blog-loading-state">
+
+              <div class="skeleton-card">
+                Loading article...
+              </div>
+
+            </div>
+
+          `;
+
+
+          const posts =
+            await fetchJSON(
+              DATA_URLS.blog
+            );
+
+
+          const post =
+            posts.find(
+              p =>
+                String(p.slug) ===
+                String(slug)
+            );
+
+
+          if (!post) {
 
             postContainer.innerHTML = `
 
-              <div class="blog-loading-state">
+              <div class="blog-error-state">
 
-                <div class="skeleton-card">
-                  Loading article...
+                <div class="blog-error-icon">
+                  ✦
                 </div>
+
+                <h1>
+                  Article Not Found
+                </h1>
+
+                <p>
+                  The health article you are looking for
+                  may have been moved or is no longer available.
+                </p>
+
+                <a
+                  href="blog.html"
+                  class="btn btn-primary"
+                >
+                  ← Explore Health Insights
+                </a>
 
               </div>
 
             `;
 
-
-            const posts =
-              await fetchJSON(
-                DATA_URLS.blog
-              );
+            return;
+          }
 
 
-            const post =
-              posts.find(
-                p =>
-                  String(p.slug) ===
-                  String(slug)
-              );
+          // ==================================================
+          // BASIC INFORMATION
+          // ==================================================
+
+          const title =
+            post.title ||
+            'Health Article';
+
+          const summary =
+            post.short_summary ||
+            'Health information and medical insights from Ibn Sina Hospital.';
+
+          const publishedDate =
+            post.published_at ||
+            post.date ||
+            '';
+
+          const formattedDate =
+            formatBlogDate(
+              publishedDate
+            );
+
+          const readingTime =
+            calculateReadingTime(
+              post.body
+            );
+
+          const category =
+            post.category ||
+            post.department ||
+            'Health & Wellness';
+
+          const coverImage =
+            post.cover_image_url ||
+            'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp';
 
 
-            if (!post) {
+          // ==================================================
+          // DYNAMIC SEO
+          // ==================================================
 
-              postContainer.innerHTML = `
+          const articleURL =
+            `https://ibnsinahospital.in/blog-post.html?slug=${encodeURIComponent(slug)}`;
 
-                <div class="blog-error-state">
+          const seoDescription =
+            normalizeBlogDescription(
+              summary,
+              'Health information and medical insights from Ibn Sina Hospital, Budgam, Jammu and Kashmir.'
+            );
 
-                  <div class="blog-error-icon">
-                    ✦
-                  </div>
+          document.title =
+            `${title} | Ibn Sina Hospital, Budgam, Jammu & Kashmir`;
 
-                  <h1>
-                    Article Not Found
-                  </h1>
+          setMetaContent(
+            'meta[name="description"]',
+            seoDescription
+          );
 
-                  <p>
-                    The health article you are looking for
-                    may have been moved or is no longer available.
-                  </p>
+          upsertLinkRel('canonical', articleURL);
 
-                  <a
-                    href="blog.html"
-                    class="btn btn-primary"
+          setMetaContent('meta[property="og:title"]', title);
+          setMetaContent('meta[property="og:description"]', seoDescription);
+          setMetaContent('meta[property="og:url"]', articleURL);
+          setMetaContent('meta[property="og:image"]', coverImage);
+
+          setMetaContent('meta[name="twitter:title"]', title);
+          setMetaContent('meta[name="twitter:description"]', seoDescription);
+          setMetaContent('meta[name="twitter:image"]', coverImage);
+
+          addBlogArticleSchema(post);
+
+
+          // ==================================================
+          // RENDER ARTICLE
+          // ==================================================
+
+          postContainer.innerHTML = `
+
+            <article
+              class="premium-blog-post"
+            >
+
+              <!-- ================================
+                   BREADCRUMB
+                   ================================ -->
+
+              <nav
+                class="blog-breadcrumb"
+                aria-label="Breadcrumb"
+              >
+
+                <a href="index.html">
+                  Home
+                </a>
+
+                <span aria-hidden="true">
+                  /
+                </span>
+
+                <a href="blog.html">
+                  Health Insights
+                </a>
+
+                <span aria-hidden="true">
+                  /
+                </span>
+
+                <span aria-current="page">
+                  ${escapeHTML(title)}
+                </span>
+
+              </nav>
+
+
+              <!-- ================================
+                   ARTICLE HERO
+                   ================================ -->
+
+              <header
+                class="blog-article-hero"
+              >
+
+                <div
+                  class="blog-article-category"
+                >
+                  ${escapeHTML(category)}
+                </div>
+
+
+                <h1
+                  class="blog-article-title"
+                >
+                  ${escapeHTML(title)}
+                </h1>
+
+
+                <p
+                  class="blog-article-summary"
+                >
+                  ${escapeHTML(summary)}
+                </p>
+
+
+                <div
+                  class="blog-article-meta"
+                >
+
+                  ${
+                    formattedDate
+                      ? `
+                        <span class="blog-meta-item">
+
+                          <span
+                            aria-hidden="true"
+                          >
+                            📅
+                          </span>
+
+                          <time
+                            datetime="${escapeHTML(publishedDate)}"
+                          >
+                            ${formattedDate}
+                          </time>
+
+                        </span>
+                      `
+                      : ''
+                  }
+
+
+                  <span
+                    class="blog-meta-divider"
+                    aria-hidden="true"
                   >
-                    ← Explore Health Insights
-                  </a>
+                    •
+                  </span>
+
+
+                  <span
+                    class="blog-meta-item"
+                  >
+
+                    <span
+                      aria-hidden="true"
+                    >
+                      ⏱
+                    </span>
+
+                    ${readingTime} min read
+
+                  </span>
+
+
+                  <span
+                    class="blog-meta-divider"
+                    aria-hidden="true"
+                  >
+                    •
+                  </span>
+
+
+                  <span
+                    class="blog-meta-item"
+                  >
+
+                    Ibn Sina Hospital
+
+                  </span>
 
                 </div>
 
-              `;
-
-              return;
-            }
+              </header>
 
 
-            // ==================================================
-            // BASIC INFORMATION
-            // ==================================================
+              <!-- ================================
+                   HERO IMAGE
+                   ================================ -->
 
-            const title =
-              post.title ||
-              'Health Article';
-
-            const summary =
-              post.short_summary ||
-              'Health information and medical insights from Ibn Sina Hospital.';
-
-            const publishedDate =
-              post.published_at ||
-              post.date ||
-              '';
-
-            const formattedDate =
-              formatBlogDate(
-                publishedDate
-              );
-
-            const readingTime =
-              calculateReadingTime(
-                post.body
-              );
-
-            const category =
-              post.category ||
-              post.department ||
-              'Health & Wellness';
-
-            const coverImage =
-              post.cover_image_url ||
-              'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp';
-
-
-            // ==================================================
-            // DYNAMIC SEO
-            // ==================================================
-
-            const articleURL =
-              `https://ibnsinahospital.in/blog-post.html?slug=${encodeURIComponent(slug)}`;
-
-            const seoDescription =
-              normalizeBlogDescription(
-                summary,
-                'Health information and medical insights from Ibn Sina Hospital, Budgam, Jammu and Kashmir.'
-              );
-
-            document.title =
-              `${title} | Ibn Sina Hospital, Budgam, Jammu & Kashmir`;
-
-            setMetaContent(
-              'meta[name="description"]',
-              seoDescription
-            );
-
-            upsertLinkRel('canonical', articleURL);
-
-            setMetaContent('meta[property="og:title"]', title);
-            setMetaContent('meta[property="og:description"]', seoDescription);
-            setMetaContent('meta[property="og:url"]', articleURL);
-            setMetaContent('meta[property="og:image"]', coverImage);
-
-            setMetaContent('meta[name="twitter:title"]', title);
-            setMetaContent('meta[name="twitter:description"]', seoDescription);
-            setMetaContent('meta[name="twitter:image"]', coverImage);
-
-            addBlogArticleSchema(post);
-
-
-            // ==================================================
-            // RENDER ARTICLE
-            // ==================================================
-
-            postContainer.innerHTML = `
-
-              <article
-                class="premium-blog-post"
+              <figure
+                class="blog-hero-media"
               >
 
-                <!-- ================================
-                     BREADCRUMB
-                     ================================ -->
-
-                <nav
-                  class="blog-breadcrumb"
-                  aria-label="Breadcrumb"
+                <img
+                  src="${escapeHTML(coverImage)}"
+                  alt="${escapeHTML(title)}"
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
                 >
 
-                  <a href="index.html">
-                    Home
-                  </a>
-
-                  <span aria-hidden="true">
-                    /
-                  </span>
-
-                  <a href="blog.html">
-                    Health Insights
-                  </a>
-
-                  <span aria-hidden="true">
-                    /
-                  </span>
-
-                  <span aria-current="page">
-                    ${escapeHTML(title)}
-                  </span>
-
-                </nav>
+              </figure>
 
 
-                <!-- ================================
-                     ARTICLE HERO
-                     ================================ -->
+              <!-- ================================
+                   ARTICLE BODY
+                   ================================ -->
 
-                <header
-                  class="blog-article-hero"
+              <div
+                class="blog-article-layout"
+              >
+
+
+                <!-- SOCIAL / SHARE RAIL -->
+
+                <aside
+                  class="blog-share-rail"
+                  aria-label="Share article"
                 >
 
-                  <div
-                    class="blog-article-category"
+                  <span>
+                    Share
+                  </span>
+
+                  <button
+                    type="button"
+                    class="blog-share-button"
+                    data-share="whatsapp"
+                    aria-label="Share on WhatsApp"
                   >
-                    ${escapeHTML(category)}
-                  </div>
+                    WA
+                  </button>
 
-
-                  <h1
-                    class="blog-article-title"
+                  <button
+                    type="button"
+                    class="blog-share-button"
+                    data-share="facebook"
+                    aria-label="Share on Facebook"
                   >
-                    ${escapeHTML(title)}
-                  </h1>
+                    FB
+                  </button>
 
-
-                  <p
-                    class="blog-article-summary"
+                  <button
+                    type="button"
+                    class="blog-share-button"
+                    data-share="copy"
+                    aria-label="Copy article link"
                   >
-                    ${escapeHTML(summary)}
-                  </p>
+                    🔗
+                  </button>
+
+                </aside>
 
 
-                  <div
-                    class="blog-article-meta"
-                  >
-
-                    ${
-                      formattedDate
-                        ? `
-                          <span class="blog-meta-item">
-
-                            <span
-                              aria-hidden="true"
-                            >
-                              📅
-                            </span>
-
-                            <time
-                              datetime="${escapeHTML(publishedDate)}"
-                            >
-                              ${formattedDate}
-                            </time>
-
-                          </span>
-                        `
-                        : ''
-                    }
-
-
-                    <span
-                      class="blog-meta-divider"
-                      aria-hidden="true"
-                    >
-                      •
-                    </span>
-
-
-                    <span
-                      class="blog-meta-item"
-                    >
-
-                      <span
-                        aria-hidden="true"
-                      >
-                        ⏱
-                      </span>
-
-                      ${readingTime} min read
-
-                    </span>
-
-
-                    <span
-                      class="blog-meta-divider"
-                      aria-hidden="true"
-                    >
-                      •
-                    </span>
-
-
-                    <span
-                      class="blog-meta-item"
-                    >
-
-                      Ibn Sina Hospital
-
-                    </span>
-
-                  </div>
-
-                </header>
-
-
-                <!-- ================================
-                     HERO IMAGE
-                     ================================ -->
-
-                <figure
-                  class="blog-hero-media"
-                >
-
-                  <img
-                    src="${escapeHTML(coverImage)}"
-                    alt="${escapeHTML(title)}"
-                    loading="eager"
-                    fetchpriority="high"
-                    decoding="async"
-                  >
-
-                </figure>
-
-
-                <!-- ================================
-                     ARTICLE BODY
-                     ================================ -->
+                <!-- ARTICLE CONTENT -->
 
                 <div
-                  class="blog-article-layout"
+                  class="blog-article-content blog-body"
                 >
 
+                  ${formatBlogBody(post.body)}
 
-                  <!-- SOCIAL / SHARE RAIL -->
+                  ${renderRelatedBlogLinks(posts, slug)}
+
+
+                  <!-- ==========================
+                       MEDICAL DISCLAIMER
+                       ========================== -->
 
                   <aside
-                    class="blog-share-rail"
-                    aria-label="Share article"
+                    class="blog-medical-disclaimer"
                   >
 
-                    <span>
-                      Share
-                    </span>
+                    <strong>
+                      Medical Disclaimer
+                    </strong>
 
-                    <button
-                      type="button"
-                      class="blog-share-button"
-                      data-share="whatsapp"
-                      aria-label="Share on WhatsApp"
-                    >
-                      WA
-                    </button>
-
-                    <button
-                      type="button"
-                      class="blog-share-button"
-                      data-share="facebook"
-                      aria-label="Share on Facebook"
-                    >
-                      FB
-                    </button>
-
-                    <button
-                      type="button"
-                      class="blog-share-button"
-                      data-share="copy"
-                      aria-label="Copy article link"
-                    >
-                      🔗
-                    </button>
+                    <p>
+                      The information provided in this article
+                      is intended for general educational purposes
+                      only. It should not replace professional
+                      medical advice, diagnosis, or treatment.
+                      If you have concerns about your health,
+                      please consult a qualified healthcare professional.
+                    </p>
 
                   </aside>
 
-
-                  <!-- ARTICLE CONTENT -->
-
-                  <div
-                    class="blog-article-content blog-body"
-                  >
-
-                    ${formatBlogBody(post.body)}
-
-                    ${renderRelatedBlogLinks(posts, slug)}
-
-
-                    <!-- ==========================
-                         MEDICAL DISCLAIMER
-                         ========================== -->
-
-                    <aside
-                      class="blog-medical-disclaimer"
-                    >
-
-                      <strong>
-                        Medical Disclaimer
-                      </strong>
-
-                      <p>
-                        The information provided in this article
-                        is intended for general educational purposes
-                        only. It should not replace professional
-                        medical advice, diagnosis, or treatment.
-                        If you have concerns about your health,
-                        please consult a qualified healthcare professional.
-                      </p>
-
-                    </aside>
-
-                  </div>
-
                 </div>
 
-
-                <!-- ================================
-                     ARTICLE FOOTER CTA
-                     ================================ -->
-
-                <section
-                  class="blog-article-cta"
-                >
-
-                  <div
-                    class="blog-cta-content"
-                  >
-
-                    <span
-                      class="blog-cta-eyebrow"
-                    >
-                      Need Medical Advice?
-                    </span>
-
-                    <h2>
-                      Speak with our healthcare team
-                    </h2>
-
-                    <p>
-                      If you have questions about your health
-                      or need professional medical guidance,
-                      our team at Ibn Sina Hospital is here to help.
-                    </p>
-
-                    <div
-                      class="blog-cta-actions"
-                    >
-
-                      <a
-                        href="appointment.html"
-                        class="btn btn-primary"
-                      >
-                        Book an Appointment
-                      </a>
-
-                      <a
-                        href="tel:9622552553"
-                        class="btn btn-outline"
-                      >
-                        Call 9622552553
-                      </a>
-
-                    </div>
-
-                  </div>
-
-                </section>
+              </div>
 
 
-                <!-- ================================
-                     BACK TO BLOG
-                     ================================ -->
+              <!-- ================================
+                   ARTICLE FOOTER CTA
+                   ================================ -->
+
+              <section
+                class="blog-article-cta"
+              >
 
                 <div
-                  class="blog-back-link"
+                  class="blog-cta-content"
                 >
 
-                  <a
-                    href="blog.html"
-                    class="read-more"
+                  <span
+                    class="blog-cta-eyebrow"
                   >
-                    ← Back to Health Insights
-                  </a>
+                    Need Medical Advice?
+                  </span>
+
+                  <h2>
+                    Speak with our healthcare team
+                  </h2>
+
+                  <p>
+                    If you have questions about your health
+                    or need professional medical guidance,
+                    our team at Ibn Sina Hospital is here to help.
+                  </p>
+
+                  <div
+                    class="blog-cta-actions"
+                  >
+
+                    <a
+                      href="appointment.html"
+                      class="btn btn-primary"
+                    >
+                      Book an Appointment
+                    </a>
+
+                    <a
+                      href="tel:9622552553"
+                      class="btn btn-outline"
+                    >
+                      Call 9622552553
+                    </a>
+
+                  </div>
 
                 </div>
 
-              </article>
-
-            `;
+              </section>
 
 
-            // ==================================================
-            // SHARE BUTTONS
-            // ==================================================
+              <!-- ================================
+                   BACK TO BLOG
+                   ================================ -->
 
-            const shareButtons =
-              postContainer.querySelectorAll(
-                '.blog-share-button'
+              <div
+                class="blog-back-link"
+              >
+
+                <a
+                  href="blog.html"
+                  class="read-more"
+                >
+                  ← Back to Health Insights
+                </a>
+
+              </div>
+
+            </article>
+
+          `;
+
+
+          // ==================================================
+          // SHARE BUTTONS
+          // ==================================================
+
+          const shareButtons =
+            postContainer.querySelectorAll(
+              '.blog-share-button'
+            );
+
+
+          shareButtons.forEach(
+            button => {
+
+              button.addEventListener(
+                'click',
+                async () => {
+
+                  const type =
+                    button.dataset.share;
+
+                  const shareURL =
+                    window.location.href;
+
+                  const shareText =
+                    title;
+
+
+                  if (
+                    type === 'copy'
+                  ) {
+
+                    try {
+
+                      await navigator.clipboard.writeText(
+                        shareURL
+                      );
+
+                      const original =
+                        button.textContent;
+
+                      button.textContent =
+                        '✓';
+
+                      setTimeout(
+                        () => {
+                          button.textContent =
+                            original;
+                        },
+                        1500
+                      );
+
+                    } catch (error) {
+
+                      prompt(
+                        'Copy this article link:',
+                        shareURL
+                      );
+                    }
+
+                    return;
+                  }
+
+
+                  if (
+                    type === 'whatsapp'
+                  ) {
+
+                    const url =
+                      `https://wa.me/?text=${encodeURIComponent(
+                        `${shareText}\n\n${shareURL}`
+                      )}`;
+
+                    window.open(
+                      url,
+                      '_blank',
+                      'noopener,noreferrer'
+                    );
+
+                    return;
+                  }
+
+
+                  if (
+                    type === 'facebook'
+                  ) {
+
+                    const url =
+                      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                        shareURL
+                      )}`;
+
+                    window.open(
+                      url,
+                      '_blank',
+                      'noopener,noreferrer'
+                    );
+
+                    return;
+                  }
+
+                }
               );
 
-
-            shareButtons.forEach(
-              button => {
-
-                button.addEventListener(
-                  'click',
-                  async () => {
-
-                    const type =
-                      button.dataset.share;
-
-                    const shareURL =
-                      window.location.href;
-
-                    const shareText =
-                      title;
+            }
+          );
 
 
-                    if (
-                      type === 'copy'
-                    ) {
+          // ==================================================
+          // IMAGE ENHANCEMENT
+          // Make article images lazy loaded
+          // ==================================================
 
-                      try {
+          const articleImages =
+            postContainer.querySelectorAll(
+              '.blog-article-content img'
+            );
 
-                        await navigator.clipboard.writeText(
-                          shareURL
-                        );
+          articleImages.forEach(
+            img => {
 
-                        const original =
-                          button.textContent;
+              if (
+                !img.hasAttribute(
+                  'loading'
+                )
+              ) {
 
-                        button.textContent =
-                          '✓';
+                img.setAttribute(
+                  'loading',
+                  'lazy'
+                );
+              }
 
-                        setTimeout(
-                          () => {
-                            button.textContent =
-                              original;
-                          },
-                          1500
-                        );
+              if (
+                !img.hasAttribute(
+                  'decoding'
+                )
+              ) {
 
-                      } catch (error) {
+                img.setAttribute(
+                  'decoding',
+                  'async'
+                );
+              }
 
-                        prompt(
-                          'Copy this article link:',
-                          shareURL
-                        );
-                      }
-
-                      return;
-                    }
-
-
-                    if (
-                      type === 'whatsapp'
-                    ) {
-
-                      const url =
-                        `https://wa.me/?text=${encodeURIComponent(
-                          `${shareText}\n\n${shareURL}`
-                        )}`;
-
-                      window.open(
-                        url,
-                        '_blank',
-                        'noopener,noreferrer'
-                      );
-
-                      return;
-                    }
+            }
+          );
 
 
-                    if (
-                      type === 'facebook'
-                    ) {
+          // ==================================================
+          // REVEAL ARTICLE
+          // ==================================================
 
-                      const url =
-                        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                          shareURL
-                        )}`;
+          requestAnimationFrame(
+            () => {
 
-                      window.open(
-                        url,
-                        '_blank',
-                        'noopener,noreferrer'
-                      );
-
-                      return;
-                    }
-
-                  }
+              postContainer
+                .querySelectorAll(
+                  '.fade-in'
+                )
+                .forEach(
+                  el =>
+                    el.classList.add(
+                      'visible'
+                    )
                 );
 
-              }
-            );
+            }
+          );
 
-
-            // ==================================================
-            // IMAGE ENHANCEMENT
-            // Make article images lazy loaded
-            // ==================================================
-
-            const articleImages =
-              postContainer.querySelectorAll(
-                '.blog-article-content img'
-              );
-
-            articleImages.forEach(
-              img => {
-
-                if (
-                  !img.hasAttribute(
-                    'loading'
-                  )
-                ) {
-
-                  img.setAttribute(
-                    'loading',
-                    'lazy'
-                  );
-                }
-
-                if (
-                  !img.hasAttribute(
-                    'decoding'
-                  )
-                ) {
-
-                  img.setAttribute(
-                    'decoding',
-                    'async'
-                  );
-                }
-
-              }
-            );
-
-
-            // ==================================================
-            // REVEAL ARTICLE
-            // ==================================================
-
-            requestAnimationFrame(
-              () => {
-
-                postContainer
-                  .querySelectorAll(
-                    '.fade-in'
-                  )
-                  .forEach(
-                    el =>
-                      el.classList.add(
-                        'visible'
-                      )
-                  );
-
-              }
-            );
-          }
 
         })();
       }
@@ -2987,102 +2952,98 @@ document.addEventListener(
 
       (async () => {
 
-        // Only load if container is empty
-        if (!positionsList.children.length) {
+        const positions =
+          await fetchJSON(
+            DATA_URLS.careers
+          );
 
-          const positions =
-            await fetchJSON(
-              DATA_URLS.careers
-            );
+        const open =
+          positions.filter(
+            p => {
 
-          const open =
-            positions.filter(
-              p => {
+              const val =
+                (
+                  p.is_open ||
+                  ''
+                )
+                  .toString()
+                  .toLowerCase()
+                  .trim();
 
-                const val =
-                  (
-                    p.is_open ||
-                    ''
-                  )
-                    .toString()
-                    .toLowerCase()
-                    .trim();
+              return (
+                val === 'true' ||
+                val === 'yes' ||
+                val === '1' ||
+                val === 'y'
+              );
+            }
+          );
 
-                return (
-                  val === 'true' ||
-                  val === 'yes' ||
-                  val === '1' ||
-                  val === 'y'
-                );
-              }
-            );
-
-          if (!open.length) {
-
-            positionsList.innerHTML =
-              '<p>No open positions at the moment.</p>';
-
-            return;
-          }
+        if (!open.length) {
 
           positionsList.innerHTML =
-            open
-              .map(pos => `
+            '<p>No open positions at the moment.</p>';
 
-                <div class="position-card">
+          return;
+        }
 
-                  <h3>
-                    ${escapeHTML(
-                      pos.title || ''
-                    )}
-                  </h3>
+        positionsList.innerHTML =
+          open
+            .map(pos => `
 
-                  <p>
-                    ${
-                      pos.department
-                        ? 'Dept: ' +
-                          escapeHTML(
-                            pos.department
-                          )
-                        : ''
-                    }
+              <div class="position-card">
 
-                    |
+                <h3>
+                  ${escapeHTML(
+                    pos.title || ''
+                  )}
+                </h3>
 
-                    ${escapeHTML(
-                      pos.employment_type || ''
-                    )}
-                  </p>
-
-                  <p>
-                    ${
-                      pos.description
-                        ? escapeHTML(
-                            pos.description
-                              .substring(0, 150)
-                          ) + '...'
-                        : ''
-                    }
-                  </p>
-
+                <p>
                   ${
-                    pos.closes_at
-                      ? `
-                        <small>
-                          Closes:
-                          ${escapeHTML(
-                            pos.closes_at
-                          )}
-                        </small>
-                      `
+                    pos.department
+                      ? 'Dept: ' +
+                        escapeHTML(
+                          pos.department
+                        )
                       : ''
                   }
 
-                </div>
+                  |
 
-              `)
-              .join('');
-        }
+                  ${escapeHTML(
+                    pos.employment_type || ''
+                  )}
+                </p>
+
+                <p>
+                  ${
+                    pos.description
+                      ? escapeHTML(
+                          pos.description
+                            .substring(0, 150)
+                        ) + '...'
+                      : ''
+                  }
+                </p>
+
+                ${
+                  pos.closes_at
+                    ? `
+                      <small>
+                        Closes:
+                        ${escapeHTML(
+                          pos.closes_at
+                        )}
+                      </small>
+                    `
+                    : ''
+                }
+
+              </div>
+
+            `)
+            .join('');
 
       })();
     }
