@@ -4,22 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- ✅ UPDATED TITLE -->
+    <!-- SEO (Unchanged – Already Optimized) -->
     <title>About Ibn Sina Hospital – Trusted Healthcare in Budgam &amp; Srinagar, J&amp;K</title>
-    <!-- ✅ UPDATED DESCRIPTION -->
     <meta name="description" content="Learn about Ibn Sina Hospital in Ompora, Budgam – serving patients from Srinagar, Ganderbal, Pulwama &amp; across J&amp;K &amp; India. Consultant-led multi-specialty care since 2018. Call 9622552553.">
     
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="https://ibnsinahospital.in/about.html">
     
-    <!-- ✅ UPDATED OG TITLE & DESCRIPTION -->
     <meta property="og:title" content="About Ibn Sina Hospital – Trusted Healthcare in Budgam &amp; Srinagar, J&amp;K">
     <meta property="og:description" content="Learn about Ibn Sina Hospital in Budgam – consultant-led multi-specialty care serving Srinagar, Ganderbal, Pulwama, across J&amp;K &amp; India.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ibnsinahospital.in/about.html">
     <meta property="og:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
-    
-    <!-- ✅ UPDATED TWITTER -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="About Ibn Sina Hospital – Trusted Healthcare in Budgam &amp; Srinagar">
     <meta name="twitter:description" content="Learn about Ibn Sina Hospital in Budgam – consultant-led multi-specialty care serving Srinagar, Ganderbal, Pulwama, across J&amp;K &amp; India.">
@@ -31,7 +27,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- ✅ EXPANDED Hospital Schema with areaServed -->
+    <!-- Schema (Unchanged) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -74,7 +70,6 @@
     }
     </script>
 
-    <!-- About Page Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -95,7 +90,6 @@
     }
     </script>
 
-    <!-- Breadcrumb Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -116,11 +110,330 @@
       ]
     }
     </script>
+
+    <!-- =========================================================
+         PREMIUM VISUAL STYLES (Scoped to .about-page)
+    ========================================================== -->
+    <style>
+        .about-page {
+            --about-accent: #2d4a2b;
+            --about-gold: #c9b99a;
+            --about-bg-light: #f8faf6;
+        }
+
+        /* ----- HERO / INTRO SECTION ----- */
+        .about-page .about-hero-wrap {
+            position: relative;
+            background: linear-gradient(145deg, #f5f8f2, #eaf1e6);
+            border-radius: 28px;
+            padding: 50px 40px;
+            margin: 0 0 30px 0;
+            border: 1px solid rgba(164, 172, 134, 0.2);
+            box-shadow: 0 10px 40px rgba(45, 74, 43, 0.04);
+            overflow: hidden;
+        }
+
+        .about-page .about-hero-wrap::before {
+            content: '+';
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 120px;
+            color: var(--about-gold);
+            opacity: 0.08;
+            font-weight: 300;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .about-page .about-hero-wrap h1 {
+            position: relative;
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.2rem, 4vw, 3.2rem);
+            color: var(--about-accent);
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+
+        .about-page .about-hero-wrap h1::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--about-gold);
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .about-page .about-hero-wrap p {
+            font-size: 1.08rem;
+            line-height: 1.8;
+            color: #4e5c4a;
+            max-width: 850px;
+        }
+
+        .about-page .about-hero-wrap p strong {
+            color: var(--about-accent);
+            font-weight: 700;
+        }
+
+        .about-page .breadcrumb-premium {
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #71806d;
+        }
+        .about-page .breadcrumb-premium a {
+            color: var(--about-accent);
+            text-decoration: none;
+        }
+        .about-page .breadcrumb-premium a:hover {
+            text-decoration: underline;
+        }
+        .about-page .breadcrumb-premium span {
+            margin: 0 6px;
+            color: #a4ac86;
+        }
+
+        /* ----- WHY CHOOSE CARDS (Glassmorphism) ----- */
+        .about-page .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .about-page .why-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 28px 24px;
+            box-shadow: 0 8px 30px rgba(45, 74, 43, 0.04);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-page .why-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0%;
+            background: var(--about-accent);
+            transition: height 0.4s ease;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .about-page .why-card:hover::after {
+            height: 100%;
+        }
+
+        .about-page .why-card:hover {
+            transform: translateY(-10px) scale(1.01);
+            box-shadow: 0 25px 50px rgba(45, 74, 43, 0.10);
+            border-color: var(--about-accent);
+            background: #ffffff;
+        }
+
+        .about-page .why-card .why-icon {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 0.8rem;
+        }
+
+        .about-page .why-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.15rem;
+            color: var(--about-accent);
+            margin-bottom: 0.4rem;
+        }
+
+        .about-page .why-card p {
+            color: #5a6b4a;
+            line-height: 1.6;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /* ----- FACILITIES GRID (Sexy Chips) ----- */
+        .about-page .facility-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            margin-top: 0.5rem;
+        }
+
+        .about-page .facility-item {
+            background: #ffffff;
+            border-radius: 60px;
+            padding: 12px 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid #e2e8df;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #2d4a2b;
+        }
+
+        .about-page .facility-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(45, 74, 43, 0.08);
+            border-color: var(--about-accent);
+            background: #fafcf9;
+        }
+
+        .about-page .facility-item .check {
+            color: var(--about-accent);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* ----- LEADERSHIP CARDS (Premium Profile) ----- */
+        .about-page .leadership-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .about-page .doctor-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 24px 20px;
+            text-align: center;
+            border: 1px solid #edf3e9;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.02);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+        }
+
+        .about-page .doctor-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(45, 74, 43, 0.08);
+            border-color: var(--about-gold);
+        }
+
+        .about-page .doctor-card .doc-img {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, #eaf1e6, #d4dfcd);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            color: var(--about-accent);
+            border: 3px solid #ffffff;
+            box-shadow: 0 8px 20px rgba(45, 74, 43, 0.08);
+        }
+
+        .about-page .doctor-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            color: var(--about-accent);
+            margin-bottom: 0.2rem;
+        }
+
+        .about-page .doctor-card .doc-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #82907d;
+            margin-bottom: 0.6rem;
+        }
+
+        .about-page .doctor-card p {
+            font-size: 0.9rem;
+            color: #5a6b4a;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ----- AREAS WE SERVE (Premium Tag Cloud) ----- */
+        .about-page .areas-serve-premium {
+            background: linear-gradient(145deg, #f5f8f2, #ecf2e8);
+            border-radius: 24px;
+            padding: 30px 24px;
+            border: 1px solid #e2e8df;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .about-page .areas-serve-premium .badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .about-page .areas-serve-premium .badge-list span {
+            background: #ffffff;
+            padding: 8px 22px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2d4a2b;
+            border: 1px solid #dce4d6;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            transition: all 0.25s ease;
+        }
+
+        .about-page .areas-serve-premium .badge-list span:hover {
+            transform: scale(1.05);
+            background: #2d4a2b;
+            color: #ffffff;
+            border-color: #2d4a2b;
+            box-shadow: 0 8px 20px rgba(45, 74, 43, 0.15);
+        }
+
+        .about-page .areas-serve-premium .badge-list span.strong-badge {
+            background: #2d4a2b;
+            color: #ffffff;
+            border-color: #2d4a2b;
+        }
+
+        .about-page .areas-serve-premium .badge-list span.strong-badge:hover {
+            background: #1d321c;
+        }
+
+        /* ----- RESPONSIVE TWEAKS ----- */
+        @media (max-width: 768px) {
+            .about-page .about-hero-wrap {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+            .about-page .about-hero-wrap h1 {
+                font-size: 1.8rem;
+            }
+            .about-page .facility-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .about-page .facility-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-page .why-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-page .leadership-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+
 </head>
-<body>
+<body class="about-page">
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
-    <!-- ===== HEADER – UNCHANGED ===== -->
+    <!-- ===== HEADER (Unchanged) ===== -->
     <header class="site-header" id="site-header">
         <div class="header-inner container">
             <a href="index.html" class="logo" aria-label="Ibn Sina Hospital Home">
@@ -157,106 +470,124 @@
 
     <main id="main-content">
         
-        <!-- ===== INTRODUCTION ===== (✅ Updated H1 & Text) -->
-        <section class="section">
+        <!-- ===== HERO / INTRODUCTION (Sexy Wrapper) ===== -->
+        <section class="section" style="padding-bottom: 0;">
             <div class="container">
-                <nav aria-label="Breadcrumb" style="margin-bottom:1rem;">
-                    <small><a href="index.html">Home</a> &nbsp;›&nbsp; About Ibn Sina Hospital</small>
+                <nav class="breadcrumb-premium" aria-label="Breadcrumb">
+                    <a href="index.html">Home</a> <span>›</span> About Ibn Sina Hospital
                 </nav>
                 
-                <h1 class="section-title">About Ibn Sina Hospital – Trusted Healthcare in Budgam &amp; Srinagar</h1>
-                
-                <p>Founded in 2018, Ibn Sina Hospital has grown into Budgam's most trusted multi-specialty hospital — a place where comprehensive care meets genuine compassion. Our motto, <strong>"High Quality Facilities at Affordable Costs,"</strong> drives every decision we make.</p>
-                
-                <p>We follow a consultant-led care model: experienced specialists oversee treatment plans from diagnosis through recovery, ensuring that every patient receives expert-guided, personalized attention. From preventive check‑ups to complex surgeries, our team delivers a seamless healthcare experience under one roof.</p>
-                
-                <p>Ibn Sina Hospital is based in <strong>Ompora, Budgam</strong> and serves patients from <strong>Srinagar, Ganderbal, Pulwama, Shopian, Kulgam</strong>, across <strong>Jammu &amp; Kashmir</strong>, and patients visiting from other parts of <strong>India</strong>. Explore our <a href="department-pages/specialties-directory.html">medical specialties</a>, meet our <a href="doctors.html">doctors and specialists</a>, or learn more about our <a href="services.html">hospital services</a>.</p>
-            </div>
-        </section>
-
-        <!-- ===== WHY CHOOSE ===== (✅ Updated Card Text) -->
-        <section class="section" style="background:#faf9f6;">
-            <div class="container">
-                <h2>Why Choose Ibn Sina Hospital</h2>
-                <div class="why-grid">
-                    <div class="why-card"><h3>Consultant‑Led Care</h3><p>Senior consultants direct every case, not just on paper but actively at the bedside.</p></div>
-                    <div class="why-card"><h3>Dedicated Team</h3><p>Nurses, technicians, and support staff trained in empathy and excellence.</p></div>
-                    <div class="why-card"><h3>Same‑Day Diagnostics</h3><p>Digital X‑rays, ultrasound, and lab results often available within hours.</p></div>
-                    <div class="why-card"><h3>State‑of‑the‑Art Facilities</h3><p>Modern operation theatres, dialysis unit, endoscopy suite, and advanced imaging.</p></div>
-                    <div class="why-card"><h3>24/7 OPD, Pharmacy &amp; Lab</h3><p>We never close — OPD, emergency medications and tests anytime, any day.</p></div>
-                    <div class="why-card"><h3>Trusted Across J&amp;K &amp; India</h3><p>Patients from <strong>Srinagar, Ganderbal, Pulwama, Shopian, Kulgam</strong>, and across <strong>India</strong> trust us for quality healthcare.</p></div>
+                <div class="about-hero-wrap">
+                    <h1>About Ibn Sina Hospital – Trusted Healthcare in Budgam &amp; Srinagar</h1>
+                    <p>
+                        Founded in 2018, Ibn Sina Hospital has grown into Budgam's most trusted multi-specialty hospital — a place where comprehensive care meets genuine compassion. Our motto, <strong>"High Quality Facilities at Affordable Costs,"</strong> drives every decision we make.
+                    </p>
+                    <p>
+                        We follow a consultant-led care model: experienced specialists oversee treatment plans from diagnosis through recovery, ensuring that every patient receives expert-guided, personalized attention. From preventive check‑ups to complex surgeries, our team delivers a seamless healthcare experience under one roof.
+                    </p>
+                    <p>
+                        Ibn Sina Hospital is based in <strong>Ompora, Budgam</strong> and serves patients from <strong>Srinagar, Ganderbal, Pulwama, Shopian, Kulgam</strong>, across <strong>Jammu &amp; Kashmir</strong>, and patients visiting from other parts of <strong>India</strong>. Explore our <a href="department-pages/specialties-directory.html">medical specialties</a>, meet our <a href="doctors.html">doctors and specialists</a>, or learn more about our <a href="services.html">hospital services</a>.
+                    </p>
                 </div>
             </div>
         </section>
 
-        <!-- ===== FACILITIES ===== (✅ Updated with service area mention) -->
+        <!-- ===== WHY CHOOSE (Glassmorphism Cards with Icons) ===== -->
+        <section class="section" style="background:#faf9f6;">
+            <div class="container">
+                <h2 style="font-family:'Poppins',sans-serif; color:#2d4a2b;">Why Choose Ibn Sina Hospital</h2>
+                <div class="why-grid">
+                    <div class="why-card"><span class="why-icon">🩺</span><h3>Consultant‑Led Care</h3><p>Senior consultants direct every case, not just on paper but actively at the bedside.</p></div>
+                    <div class="why-card"><span class="why-icon">💪</span><h3>Dedicated Team</h3><p>Nurses, technicians, and support staff trained in empathy and excellence.</p></div>
+                    <div class="why-card"><span class="why-icon">⚡</span><h3>Same‑Day Diagnostics</h3><p>Digital X‑rays, ultrasound, and lab results often available within hours.</p></div>
+                    <div class="why-card"><span class="why-icon">🏥</span><h3>State‑of‑the‑Art Facilities</h3><p>Modern operation theatres, dialysis unit, endoscopy suite, and advanced imaging.</p></div>
+                    <div class="why-card"><span class="why-icon">🕒</span><h3>24/7 OPD, Pharmacy &amp; Lab</h3><p>We never close — OPD, emergency medications and tests anytime, any day.</p></div>
+                    <div class="why-card"><span class="why-icon">🤝</span><h3>Trusted Across J&amp;K &amp; India</h3><p>Patients from <strong>Srinagar, Ganderbal, Pulwama, Shopian, Kulgam</strong>, and across <strong>India</strong> trust us for quality healthcare.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FACILITIES (Sexy Chips/Grid) ===== -->
         <section class="section">
             <div class="container">
-                <h2>Our Facilities</h2>
-                <p style="margin-bottom: 1.2rem; color: #4e5c4a;">
+                <h2 style="font-family:'Poppins',sans-serif; color:#2d4a2b;">Our Facilities</h2>
+                <p style="margin-bottom: 1.5rem; color: #4e5c4a;">
                     Our facilities are designed to serve patients from <strong>Budgam, Srinagar, Ompora, Ganderbal, Pulwama</strong>, and across <strong>Jammu &amp; Kashmir</strong>.
                 </p>
-                <ul class="facilities-list" style="list-style:inside; line-height:2;">
-                    <li>24/7 In‑house Pharmacy</li>
-                    <li>24/7 Diagnostic Laboratory</li>
-                    <li>Dialysis Unit</li>
-                    <li>Ambulance Fleet</li>
-                    <li>Digital X‑Ray &amp; Ultrasonography</li>
-                    <li>Endoscopy &amp; Colonoscopy Suite</li>
-                    <li>Cardiac Stress Test (TMT) Lab</li>
-                    <li>Vaccination Centre</li>
-                </ul>
-                <p style="margin-top:1rem;">See our <a href="services.html">full range of hospital services</a> and <a href="department-pages/jammu-kashmir-healthcare.html">healthcare resources for Jammu &amp; Kashmir</a>.</p>
+                <div class="facility-grid">
+                    <div class="facility-item"><span class="check">✓</span> 24/7 In‑house Pharmacy</div>
+                    <div class="facility-item"><span class="check">✓</span> 24/7 Diagnostic Laboratory</div>
+                    <div class="facility-item"><span class="check">✓</span> Dialysis Unit</div>
+                    <div class="facility-item"><span class="check">✓</span> Ambulance Fleet</div>
+                    <div class="facility-item"><span class="check">✓</span> Digital X‑Ray &amp; Ultrasonography</div>
+                    <div class="facility-item"><span class="check">✓</span> Endoscopy &amp; Colonoscopy Suite</div>
+                    <div class="facility-item"><span class="check">✓</span> Cardiac Stress Test (TMT) Lab</div>
+                    <div class="facility-item"><span class="check">✓</span> Vaccination Centre</div>
+                </div>
+                <p style="margin-top:1.5rem;">See our <a href="services.html">full range of hospital services</a> and <a href="department-pages/jammu-kashmir-healthcare.html">healthcare resources for Jammu &amp; Kashmir</a>.</p>
             </div>
         </section>
 
-        <!-- ===== LEADERSHIP ===== (UNCHANGED) -->
+        <!-- ===== LEADERSHIP (Premium Profile Cards) ===== -->
         <section class="section" style="background:#faf9f6;">
             <div class="container">
-                <h2>Leadership</h2>
-                <div class="doctor-cards-grid">
+                <h2 style="font-family:'Poppins',sans-serif; color:#2d4a2b;">Leadership</h2>
+                <div class="leadership-grid">
                     <div class="doctor-card">
-                        <div class="doctor-card-img-placeholder"><svg width="80" height="80" viewBox="0 0 60 60"><circle cx="30" cy="22" r="16" fill="#a4ac86" opacity="0.5"/><ellipse cx="30" cy="55" rx="22" ry="14" fill="#a4ac86" opacity="0.4"/></svg></div>
+                        <div class="doc-img">👨‍⚕️</div>
                         <h3>Dr. Ibrahim Makaya</h3>
-                        <p>Medical Superintendent (MS) – ensures top patient care and hospital administration.</p>
+                        <div class="doc-title">Medical Superintendent</div>
+                        <p>Ensures top patient care and hospital administration.</p>
                     </div>
                     <div class="doctor-card">
-                        <div class="doctor-card-img-placeholder"><svg width="80" height="80" viewBox="0 0 60 60"><circle cx="30" cy="22" r="16" fill="#a4ac86" opacity="0.5"/><ellipse cx="30" cy="55" rx="22" ry="14" fill="#a4ac86" opacity="0.4"/></svg></div>
+                        <div class="doc-img">👨‍⚕️</div>
                         <h3>Dr. Rashid</h3>
-                        <p>Deputy Medical Superintendent (DMS) – oversees clinical departments, staff schedules, patient complaints, and safety.</p>
+                        <div class="doc-title">Deputy Medical Superintendent</div>
+                        <p>Oversees clinical departments, staff schedules, patient complaints, and safety.</p>
                     </div>
                     <div class="doctor-card">
-                        <div class="doctor-card-img-placeholder"><svg width="80" height="80" viewBox="0 0 60 60"><circle cx="30" cy="22" r="16" fill="#a4ac86" opacity="0.5"/><ellipse cx="30" cy="55" rx="22" ry="14" fill="#a4ac86" opacity="0.4"/></svg></div>
+                        <div class="doc-img">👨‍⚕️</div>
                         <h3>Dr. Bashir Ahmad Bhat</h3>
-                        <p>Management team head – coordinates departments and ensures smooth workflow.</p>
+                        <div class="doc-title">Management Head</div>
+                        <p>Coordinates departments and ensures smooth workflow.</p>
                     </div>
                     <div class="doctor-card">
-                        <div class="doctor-card-img-placeholder"><svg width="80" height="80" viewBox="0 0 60 60"><circle cx="30" cy="22" r="16" fill="#a4ac86" opacity="0.5"/><ellipse cx="30" cy="55" rx="22" ry="14" fill="#a4ac86" opacity="0.4"/></svg></div>
+                        <div class="doc-img">👨‍⚕️</div>
                         <h3>Dr. Ashraf Ahmad Malik</h3>
-                        <p>Administrative head – manages admissions, discharges, records, and documentation.</p>
+                        <div class="doc-title">Administrative Head</div>
+                        <p>Manages admissions, discharges, records, and documentation.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ===== AREAS WE SERVE (New – Added) ===== -->
-        <section class="service-areas-mini" aria-label="Areas we serve" style="background:#f5f8f2; padding: 30px 0; border-top: 1px solid #e2e8df; border-bottom: 1px solid #e2e8df; margin: 0;">
-            <div class="container">
-                <p style="text-align:center; color:#4e5c4a; font-weight:600; margin:0; font-size:1.05rem;">
-                    <strong>Serving families in:</strong> 
-                    Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam – 
-                    across <strong>Jammu &amp; Kashmir</strong> and patients visiting from all over <strong>India</strong>.
+        <!-- ===== AREAS WE SERVE (Premium Badge Cloud) ===== -->
+        <section class="container" style="padding: 0 20px;">
+            <div class="areas-serve-premium">
+                <p style="font-weight: 700; color: #2d4a2b; margin: 0 0 12px; font-size: 1.1rem;">
+                    🌍 Serving Families Across J&amp;K &amp; India
                 </p>
-                <p style="text-align:center; color:#647060; margin:0.5rem 0 0; font-size:0.9rem;">
+                <div class="badge-list">
+                    <span>Budgam</span>
+                    <span>Srinagar</span>
+                    <span>Ompora</span>
+                    <span>Ganderbal</span>
+                    <span>Pulwama</span>
+                    <span>Shopian</span>
+                    <span>Kulgam</span>
+                    <span class="strong-badge">Jammu &amp; Kashmir</span>
+                    <span class="strong-badge">India</span>
+                </div>
+                <div style="margin-top: 14px; font-size: 0.9rem;">
                     <a href="service-areas.html" style="color:#2d4a2b; text-decoration:underline;">View all service areas</a> 
                     <span style="margin:0 0.5rem;">|</span> 
                     <a href="contact.html" style="color:#2d4a2b; text-decoration:underline;">Get directions</a>
-                </p>
+                </div>
             </div>
         </section>
     </main>
 
-    <!-- ===== FOOTER – UPDATED WITH SERVICE AREAS ===== -->
+    <!-- ===== FOOTER (Updated with Service Areas) ===== -->
     <footer class="site-footer">
         <div class="footer-wave" aria-hidden="true">
             <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
@@ -305,7 +636,7 @@
         </div>
     </footer>
 
-    <!-- ===== SCRIPTS – UNCHANGED ===== -->
+    <!-- ===== SCRIPTS (Unchanged) ===== -->
     <script src="js/main.js" defer></script>
     <script src="js/chatbot.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
