@@ -128,9 +128,10 @@ def generate_doctor_pages(doctors, departments_by_name):
             )
             related_links = f'<div class="related-doctors"><strong>Other {dept_name.title()} Specialists:</strong><ul>{items}</ul></div>'
 
+        # ========== FIXED: Points to department-pages/ (manual pages) ==========
         dept_link_html = ""
         if dept_name:
-            dept_link_html = f'<p><a href="../departments/department-{dept_slug}.html">View {dept_name.title()} Department →</a></p>'
+            dept_link_html = f'<p><a href="../department-pages/{dept_slug}.html">View {dept_name.title()} Department →</a></p>'
 
         json_ld = {
             "@context": "https://schema.org",
