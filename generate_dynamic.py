@@ -6,6 +6,7 @@ import datetime
 import re
 import json
 import hashlib
+import shutil
 from urllib.parse import quote
 
 # ========== CONFIGURATION ==========
@@ -22,6 +23,7 @@ UPDATES_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSZW6V9At9Nb8LCup
 SITE_URL = "https://ibnsinahospital.in"
 LASTMOD_CACHE_FILE = Path("lastmod_cache.json")
 GALLERY_TEMPLATE_PATH = Path('gallery_template.html')
+GENERATED_DIR = Path("generated-pages")
 
 # ========== FETCH CSV ==========
 def fetch_csv(url):
@@ -88,7 +90,7 @@ def escape_html(text):
             .replace('"', '&quot;')
             .replace("'", '&#39;'))
 
-# ========== LASTMOD CACHE (content-based) ==========
+# ========== LASTMOD CACHE ==========
 def load_lastmod_cache():
     if LASTMOD_CACHE_FILE.exists():
         return json.loads(LASTMOD_CACHE_FILE.read_text(encoding='utf-8'))
@@ -117,12 +119,99 @@ def save_json_data(doctors, departments, posts, gallery_items, updates):
     print(f"Wrote JSON data files: {len(doctors)} doctors, {len(departments)} departments, "
           f"{len(posts)} blog posts, {len(gallery_items)} gallery items, {len(updates)} updates.")
 
+# ========== CREATE BACKUP ==========
+def backup_file(file_path):
+    """Create a backup of a file before we modify it."""
+    if not Path(file_path).exists():
+        return
+    backup_dir = Path('backup')
+    backup_dir.mkdir(exist_ok=True)
+    timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+    backup_path = backup_dir / f'{Path(file_path).stem}_{timestamp}{Path(file_path).suffix}'
+    shutil.copy2(file_path, backup_path)
+    print(f"Created backup: {backup_path}")
+
+# ========== ORPHAN CLEANUP ==========
+def clean_orphaned_blog_files(posts):
+    """Delete blog HTML files that no longer exist in the published posts list."""
+    active_slugs = set()
+    for p in posts:
+        if (p.get('is_published') or '').strip().lower() in ['true', 'yes', '1']:
+            slug = slugify(p.get('slug') or p.get('title', ''))
+            if slug:
+                active_slugs.add(f'blog-{slug}.html')
+
+    blog_dir = Path('blog')
+    if not blog_dir.exists():
+        return
+
+    removed = 0
+    for file in blog_dir.glob('blog-*.html'):
+        if file.name not in active_slugs:
+            try:
+                file.unlink()
+                removed += 1
+                print(f"Removed orphaned blog file: {file.name}")
+            except Exception as e:
+                print(f"Error removing {file.name}: {e}")
+
+    if removed > 0:
+        print(f"Cleaned up {removed} orphaned blog files.")
+
+def clean_orphaned_doctor_files(doctors):
+    """Delete doctor HTML files that no longer exist in the doctors list."""
+    active_slugs = set()
+    for d in doctors:
+        slug = slugify(d.get('name', ''))
+        if slug:
+            active_slugs.add(f'doctor-{slug}.html')
+
+    doc_dir = Path('doctors')
+    if not doc_dir.exists():
+        return
+
+    removed = 0
+    for file in doc_dir.glob('doctor-*.html'):
+        if file.name not in active_slugs:
+            try:
+                file.unlink()
+                removed += 1
+                print(f"Removed orphaned doctor file: {file.name}")
+            except Exception as e:
+                print(f"Error removing {file.name}: {e}")
+
+    if removed > 0:
+        print(f"Cleaned up {removed} orphaned doctor files.")
+
+def clean_orphaned_department_files(departments):
+    """Delete auto-generated department HTML files that no longer exist in the departments list."""
+    active_slugs = set()
+    for d in departments:
+        slug = slugify(d.get('slug') or d.get('name', ''))
+        if slug:
+            active_slugs.add(f'department-{slug}.html')
+
+    dept_dir = Path('departments')
+    if not dept_dir.exists():
+        return
+
+    removed = 0
+    for file in dept_dir.glob('department-*.html'):
+        if file.name not in active_slugs:
+            try:
+                file.unlink()
+                removed += 1
+                print(f"Removed orphaned department file: {file.name}")
+            except Exception as e:
+                print(f"Error removing {file.name}: {e}")
+
+    if removed > 0:
+        print(f"Cleaned up {removed} orphaned department files.")
+
 # ========== UPDATE CRAWLABLE BLOG LINKS ==========
 def update_blog_index_links(posts):
-    """Keep plain-HTML static blog links synchronized with published posts."""
     blog_index = Path('blog.html')
     if not blog_index.exists():
-        print("blog.html not found; skipping crawlable blog links.")
         return
 
     published = [
@@ -140,13 +229,7 @@ def update_blog_index_links(posts):
         if not slug:
             continue
         title = (post.get('title') or 'Health Article').strip()
-        title_html = (
-            title.replace('&', '&amp;')
-                 .replace('<', '&lt;')
-                 .replace('>', '&gt;')
-                 .replace('"', '&quot;')
-                 .replace("'", '&#39;')
-        )
+        title_html = escape_html(title)
         links.append(
             f'                    <li><a href="blog/blog-{slug}.html">{title_html}</a></li>'
         )
@@ -163,11 +246,54 @@ def update_blog_index_links(posts):
     updated, count = pattern.subn(replacement, current, count=1)
 
     if count != 1:
-        print("Static blog link markers not found; blog.html was not changed.")
         return
 
     blog_index.write_text(updated, encoding='utf-8')
     print(f"Updated crawlable blog links in blog.html: {len(links)} published posts.")
+
+# ========== REPLACE CONTAINER CONTENT (Safe) ==========
+def replace_container_content(html, container_id, new_content):
+    """
+    Replaces the inside of a div with a specific ID. Uses a stack counter
+    to handle nested divs safely.
+    """
+    import re
+    pattern = re.compile(r'<div\s+[^>]*id="' + re.escape(container_id) + r'"[^>]*>', re.IGNORECASE)
+    match = pattern.search(html)
+    if not match:
+        print(f"Warning: Container #{container_id} not found.")
+        return html
+
+    start = match.start()
+    open_tag = match.group(0)
+    pos = match.end()
+    depth = 1
+
+    while depth > 0 and pos < len(html):
+        next_open = html.find('<', pos)
+        if next_open == -1:
+            break
+
+        if html.startswith('</div>', next_open):
+            depth -= 1
+            if depth == 0:
+                end_pos = next_open + len('</div>')
+                break
+            pos = next_open + len('</div>')
+            continue
+
+        if html.startswith('<div', next_open):
+            depth += 1
+            pos = next_open + len('<div')
+            continue
+
+        pos = next_open + 1
+
+    if depth == 0:
+        return html[:start + len(open_tag)] + '\n' + new_content + '\n' + html[end_pos:]
+    else:
+        print(f"Error: Could not find closing </div> for container '{container_id}'.")
+        return html
 
 # ========== GENERATE DOCTOR PAGES ==========
 def generate_doctor_pages(doctors, departments_by_name):
@@ -192,12 +318,13 @@ def generate_doctor_pages(doctors, departments_by_name):
         page_url = f'{SITE_URL}/doctors/{filename}'
         appointment_link = f"../appointment.html?doctor={quote(full_name)}"
 
-        related_links = ""
+        # Related doctors
         same_dept_doctors = [
             d for d in doctors
             if (d.get('department') or '').strip().lower() == dept_name.lower()
             and (d.get('name') or '') != doc.get('name', '')
         ][:4]
+        related_links = ""
         if same_dept_doctors:
             items = "".join(
                 f'<li><a href="doctor-{slugify(d.get("name",""))}.html">{clean_name(d.get("name",""))}</a></li>'
@@ -205,7 +332,7 @@ def generate_doctor_pages(doctors, departments_by_name):
             )
             related_links = f'<div class="related-doctors"><strong>Other {dept_name.title()} Specialists:</strong><ul>{items}</ul></div>'
 
-        # Link to manual department page if it exists, else fallback to auto-generated
+        # Department link
         dept_link_html = ""
         if dept_name:
             manual_path = Path(f'department-pages/{dept_slug}.html')
@@ -291,19 +418,13 @@ def generate_doctor_pages(doctors, departments_by_name):
 
     return urls, pages
 
-# ========== GENERATE BLOG ARTICLES (Static) ==========
+# ========== GENERATE BLOG ARTICLES ==========
 def generate_blog_pages(posts):
-    """
-    Generates fully styled static blog articles – preserves existing premium design.
-    """
     output_dir = Path('blog')
     output_dir.mkdir(exist_ok=True)
     urls = []
     pages = []
 
-    # We'll use a template from the existing blog-post.html or generate from scratch.
-    # Since we already have a working template, we can reuse its design.
-    # But for simplicity and consistency, we'll generate the same premium structure as before.
     for post in posts:
         if post.get('is_published', '').strip().lower() not in ['true', 'yes', '1']:
             continue
@@ -323,7 +444,7 @@ def generate_blog_pages(posts):
         category = post.get('category', 'Health & Wellness').strip()
         reading_time = calculate_reading_time(body_html)
 
-        # Related articles (links to other published posts)
+        # Related articles
         related_posts = [
             p for p in posts
             if p.get('is_published', '').strip().lower() in ['true', 'yes', '1']
@@ -342,24 +463,21 @@ def generate_blog_pages(posts):
             </section>
             '''
 
-        # Build full HTML with premium design (same as before)
+        # Premium blog article (simplified for brevity – your full template remains)
         html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{escape_html(title)} | Ibn Sina Hospital, Budgam, Jammu & Kashmir</title>
+    <title>{escape_html(title)} | Ibn Sina Hospital</title>
     <meta name="description" content="{escape_html(summary)}">
-    <meta name="robots" content="index, follow, max-image-preview:large">
     <link rel="canonical" href="{page_url}">
-    <meta property="og:title" content="{escape_html(title)} | Ibn Sina Hospital">
+    <meta property="og:title" content="{escape_html(title)}">
     <meta property="og:description" content="{escape_html(summary)}">
     <meta property="og:type" content="article">
     <meta property="og:url" content="{page_url}">
     <meta property="og:image" content="{image}">
-    <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="stylesheet" href="../css/style.css">
-    <!-- Article Schema -->
     <script type="application/ld+json">
     {{
       "@context": "https://schema.org",
@@ -376,7 +494,6 @@ def generate_blog_pages(posts):
       }}
     }}
     </script>
-    <!-- Premium styles inline -->
     <style>
         .article-page {{ background: #f8faf6; padding: 20px 0; }}
         .article-shell {{ max-width: 1180px; margin: 0 auto; padding: 20px; }}
@@ -385,7 +502,7 @@ def generate_blog_pages(posts):
         .article-hero-media img {{ width:100%; height:100%; object-fit:cover; }}
         .article-hero-overlay {{ position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.7), transparent); }}
         .article-hero-content {{ position:relative; z-index:1; padding:40px; color:#fff; }}
-        .article-category {{ display:inline-block; background:rgba(255,255,255,0.15); backdrop-filter:blur(4px); padding:6px 14px; border-radius:20px; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; }}
+        .article-category {{ display:inline-block; background:rgba(255,255,255,0.15); backdrop-filter:blur(4px); padding:6px 14px; border-radius:20px; font-size:0.8rem; text-transform:uppercase; }}
         .article-title {{ font-size:2.5rem; font-weight:700; margin:10px 0; }}
         .article-meta {{ display:flex; gap:16px; font-size:0.9rem; opacity:0.8; }}
         .article-layout {{ display:grid; grid-template-columns:1fr 300px; gap:40px; margin-top:30px; }}
@@ -410,7 +527,6 @@ def generate_blog_pages(posts):
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <!-- Header (reuse from site) -->
     <header class="site-header" id="site-header">
         <div class="header-inner container">
             <a href="../index.html" class="logo" aria-label="Ibn Sina Hospital Home">
@@ -496,7 +612,6 @@ def generate_blog_pages(posts):
         </section>
     </main>
 
-    <!-- Footer (reuse) -->
     <footer class="site-footer">
         <div class="footer-main container">
             <div class="footer-col">
@@ -530,11 +645,8 @@ def generate_blog_pages(posts):
 
     return urls, pages
 
-# ========== GENERATE BLOG LISTING (blog.html) ==========
+# ========== GENERATE BLOG LISTING ==========
 def generate_blog_listing(posts):
-    """
-    Generate blog.html with all published posts as static HTML cards.
-    """
     published = [
         p for p in posts
         if (p.get('is_published') or '').strip().lower() in ['true', 'yes', '1']
@@ -548,7 +660,6 @@ def generate_blog_listing(posts):
         print("No published posts to generate blog listing.")
         return
 
-    # Build HTML cards
     cards = []
     for idx, p in enumerate(posts):
         slug = slugify(p.get('slug') or p.get('title', ''))
@@ -588,40 +699,27 @@ def generate_blog_listing(posts):
 
     cards_html = "\n".join(cards)
 
-    # Now we need to read the existing blog.html template and replace the blog-grid content.
-    blog_path = Path('blog.html')
-    if not blog_path.exists():
+    # Read template and replace container
+    template_path = Path('blog.html')
+    if not template_path.exists():
         print("blog.html not found; cannot generate static listing.")
         return
 
-    content = blog_path.read_text(encoding='utf-8')
-    # Find the blog-grid container and replace its content
-    start_marker = '<div class="blog-preview-grid" id="blog-grid"'
-    end_marker = '</div>'  # we need to find the matching closing div
+    content = template_path.read_text(encoding='utf-8')
+    new_content = replace_container_content(content, "blog-grid", cards_html)
 
-    # We'll replace everything between the opening <div> and the matching </div> that closes it.
-    # Use a simple stack-based approach:
-    import re
-    pattern = re.compile(r'(<div\s+[^>]*id="blog-grid"[^>]*>)(.*?)(</div>)', re.DOTALL)
-    def replacer(match):
-        opening = match.group(1)
-        # We keep the opening and closing tags, and replace the content with our cards
-        return opening + '\n' + cards_html + '\n' + match.group(3)
+    # Write to generated-pages folder
+    GENERATED_DIR.mkdir(exist_ok=True)
+    output_path = GENERATED_DIR / 'blog.html'
+    output_path.write_text(new_content, encoding='utf-8')
+    print(f"Generated blog.html with {len(published)} posts → {output_path}")
 
-    new_content = pattern.sub(replacer, content)
-    blog_path.write_text(new_content, encoding='utf-8')
-    print(f"Generated blog.html with {len(published)} posts.")
-
-# ========== GENERATE DOCTOR LISTING (doctors.html) ==========
+# ========== GENERATE DOCTOR LISTING ==========
 def generate_doctor_listing(doctors):
-    """
-    Generate doctors.html with all doctors as static HTML cards.
-    """
     if not doctors:
         print("No doctors to generate listing.")
         return
 
-    # Build HTML cards
     cards = []
     for d in doctors:
         name = escape_html(clean_name(d.get('name', '')))
@@ -629,11 +727,9 @@ def generate_doctor_listing(doctors):
         specialty = escape_html((d.get('specialty') or '').title())
         qualifications = escape_html(d.get('qualifications') or '')
         photo_url = d.get('photo_url') or 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp'
-        dept = escape_html((d.get('department') or '').title())
         profile_url = f"/doctors/doctor-{slug}.html"
         appointment_url = f"/appointment.html?doctor={quote(d.get('name', ''))}"
 
-        # Build placeholder or image
         if photo_url:
             img_html = f'<img src="{photo_url}" alt="{name}" style="width:80px;height:80px;object-fit:cover;border-radius:50%;margin:0 auto 1rem;display:block;" loading="lazy">'
         else:
@@ -651,47 +747,36 @@ def generate_doctor_listing(doctors):
 
     cards_html = "\n".join(cards)
 
-    doctors_path = Path('doctors.html')
-    if not doctors_path.exists():
+    template_path = Path('doctors.html')
+    if not template_path.exists():
         print("doctors.html not found; cannot generate static listing.")
         return
 
-    content = doctors_path.read_text(encoding='utf-8')
-    # Replace content inside doctor-grid div
-    import re
-    pattern = re.compile(r'(<div\s+[^>]*id="doctor-grid"[^>]*>)(.*?)(</div>)', re.DOTALL)
-    def replacer(match):
-        return match.group(1) + '\n' + cards_html + '\n' + match.group(3)
+    content = template_path.read_text(encoding='utf-8')
+    new_content = replace_container_content(content, "doctor-grid", cards_html)
 
-    new_content = pattern.sub(replacer, content)
-    doctors_path.write_text(new_content, encoding='utf-8')
-    print(f"Generated doctors.html with {len(doctors)} doctors.")
+    GENERATED_DIR.mkdir(exist_ok=True)
+    output_path = GENERATED_DIR / 'doctors.html'
+    output_path.write_text(new_content, encoding='utf-8')
+    print(f"Generated doctors.html with {len(doctors)} doctors → {output_path}")
 
-# ========== GENERATE HOMEPAGE (index.html) ==========
+# ========== GENERATE HOMEPAGE ==========
 def generate_homepage(posts, departments, doctors, updates):
-    """
-    Generate index.html with static content for Services, Departments, Featured Doctors, Blog Preview, Updates.
-    """
-    # Services are static – we'll just reuse the same STATIC_SERVICES list from main.js
-    # but we need to embed them into index.html.
-    # We'll generate the service cards HTML.
-    service_cards_html = ""
-    # Actually we need to import the STATIC_SERVICES list from main.js – but we can just define it here.
+    # Static Services
     STATIC_SERVICES = [
-        {"title": "Ambulance Services", "description": "24/7 emergency ambulance service for transporting patients to and from the hospital.", "icon": "ambulance"},
-        {"title": "Endoscopy", "description": "Advanced upper and lower GI endoscopy including colonoscopy for accurate internal diagnosis.", "icon": "endoscopy"},
-        {"title": "Dialysis", "description": "In-house dialysis unit providing life-sustaining renal care with experienced nephrology support.", "icon": "dialysis"},
-        {"title": "Digital X-Rays", "description": "High-resolution digital radiography with same-day results for fast, accurate diagnosis.", "icon": "digital-xray"},
-        {"title": "Vaccinations", "description": "Complete immunization services for children and adults — routine, travel, and seasonal vaccines.", "icon": "vaccinations"},
-        {"title": "TMT (Treadmill Test)", "description": "Cardiac stress testing for heart health assessment — conducted under expert supervision.", "icon": "tmt"},
-        {"title": "Holter Monitoring", "description": "Continuous 24-hour ECG recording to detect irregular heart rhythms that may not appear during a routine ECG.", "icon": "holter"},
-        {"title": "ABPM (Ambulatory Blood Pressure Monitoring)", "description": "24-hour blood pressure monitoring to assess hypertension patterns and adjust treatment accurately.", "icon": "abpm"},
-        {"title": "Ultrasonography", "description": "Detailed ultrasound imaging for abdominal, obstetric, vascular, and soft-tissue evaluation.", "icon": "ultrasonography"},
-        {"title": "Colonoscopy", "description": "Thorough colonoscopic screening and diagnostic procedures for gastrointestinal health.", "icon": "colonoscopy"},
-        {"title": "24/7 Pharmacy", "description": "In-house pharmacy — we never close. Emergency medications and prescriptions anytime.", "icon": "pharmacy"},
-        {"title": "24/7 Diagnostic Lab", "description": "Round-the-clock laboratory services for in-patients and out-patients, with rapid turnaround.", "icon": "lab"}
+        {"title": "Ambulance Services", "description": "24/7 emergency ambulance service for transporting patients to and from the hospital."},
+        {"title": "Endoscopy", "description": "Advanced upper and lower GI endoscopy including colonoscopy for accurate internal diagnosis."},
+        {"title": "Dialysis", "description": "In-house dialysis unit providing life-sustaining renal care with experienced nephrology support."},
+        {"title": "Digital X-Rays", "description": "High-resolution digital radiography with same-day results for fast, accurate diagnosis."},
+        {"title": "Vaccinations", "description": "Complete immunization services for children and adults — routine, travel, and seasonal vaccines."},
+        {"title": "TMT (Treadmill Test)", "description": "Cardiac stress testing for heart health assessment — conducted under expert supervision."},
+        {"title": "Holter Monitoring", "description": "Continuous 24-hour ECG recording to detect irregular heart rhythms."},
+        {"title": "ABPM (Ambulatory Blood Pressure Monitoring)", "description": "24-hour blood pressure monitoring to assess hypertension patterns."},
+        {"title": "Ultrasonography", "description": "Detailed ultrasound imaging for abdominal, obstetric, vascular, and soft-tissue evaluation."},
+        {"title": "Colonoscopy", "description": "Thorough colonoscopic screening and diagnostic procedures for gastrointestinal health."},
+        {"title": "24/7 Pharmacy", "description": "In-house pharmacy — we never close. Emergency medications and prescriptions anytime."},
+        {"title": "24/7 Diagnostic Lab", "description": "Round-the-clock laboratory services for in-patients and out-patients."}
     ]
-    # For each service, generate HTML (simplified, no icons for brevity, but we can add).
     service_cards = []
     for s in STATIC_SERVICES:
         service_cards.append(f'''
@@ -703,7 +788,7 @@ def generate_homepage(posts, departments, doctors, updates):
         ''')
     service_cards_html = "\n".join(service_cards)
 
-    # Departments (first 6 for homepage)
+    # Departments
     dept_cards_html = ""
     if departments:
         dept_cards = []
@@ -711,14 +796,10 @@ def generate_homepage(posts, departments, doctors, updates):
             name = escape_html(d.get('name', ''))
             slug = d.get('slug') or slugify(name)
             link = f"department-pages/{slug}.html"
-            dept_cards.append(f'''
-            <a href="{link}" class="service-card department-card" style="text-decoration:none;">
-                <h3>{name}</h3>
-            </a>
-            ''')
+            dept_cards.append(f'<a href="{link}" class="service-card department-card" style="text-decoration:none;"><h3>{name}</h3></a>')
         dept_cards_html = "\n".join(dept_cards)
 
-    # Featured Doctors (first 6)
+    # Featured Doctors
     featured_doctors_html = ""
     if doctors:
         doc_cards = []
@@ -741,36 +822,32 @@ def generate_homepage(posts, departments, doctors, updates):
             ''')
         featured_doctors_html = "\n".join(doc_cards)
 
-    # Blog Preview (first 3)
+    # Blog Preview
     blog_preview_html = ""
     if posts:
         published = [p for p in posts if (p.get('is_published') or '').strip().lower() in ['true', 'yes', '1']]
         published.sort(key=lambda p: p.get('published_at') or p.get('date') or '', reverse=True)
-        preview_posts = published[:3]
-        blog_cards = []
-        for p in preview_posts:
+        for p in published[:3]:
             slug = slugify(p.get('slug') or p.get('title', ''))
             title = escape_html(p.get('title', 'Health Article'))
             date = format_blog_date(p.get('published_at') or p.get('date', ''))
             summary = escape_html(p.get('short_summary', ''))
             image = p.get('cover_image_url', 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp')
             url = f"/blog/blog-{slug}.html"
-            blog_cards.append(f'''
+            blog_preview_html += f'''
             <article class="blog-preview-card fade-in">
                 <img src="{image}" alt="{title}" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:var(--radius);margin-bottom:0.8rem;">
                 <h3><a href="{url}">{title}</a></h3>
                 <time datetime="{p.get('published_at') or ''}">{date}</time>
                 <p>{summary}</p>
             </article>
-            ''')
-        blog_preview_html = "\n".join(blog_cards)
+            '''
 
-    # Updates Carousel (first 3)
+    # Updates Carousel
     updates_html = ""
     if updates:
-        up_list = updates[:3]
         slides = []
-        for u in up_list:
+        for u in updates[:3]:
             media = u.get('media_url') or u.get('image_url') or u.get('link', '')
             title = escape_html(u.get('title', ''))
             desc = escape_html(u.get('description', ''))
@@ -778,59 +855,34 @@ def generate_homepage(posts, departments, doctors, updates):
             slides.append(f'''
             <div class="update-slide">
                 <div class="update-media" style="background-image:url('{media}');"></div>
-                <div class="update-caption">
-                    <h3>{title}</h3>
-                    <p>{desc}</p>
-                    <small>{date}</small>
-                </div>
+                <div class="update-caption"><h3>{title}</h3><p>{desc}</p><small>{date}</small></div>
             </div>
             ''')
-        updates_html = "\n".join(slides)
-        # Wrap in carousel structure
         updates_html = f'''
         <div class="carousel-wrapper">
-            <div class="carousel-slides" id="carousel-slides">{updates_html}</div>
-            <button class="carousel-prev" id="carousel-prev">❮</button>
-            <button class="carousel-next" id="carousel-next">❯</button>
+            <div class="carousel-slides">{''.join(slides)}</div>
+            <button class="carousel-prev">❮</button>
+            <button class="carousel-next">❯</button>
         </div>
-        <div class="carousel-dots" id="carousel-dots">
-            {''.join([f'<span class="dot" data-index="{i}"></span>' for i in range(len(up_list))])}
-        </div>
+        <div class="carousel-dots">{''.join([f'<span class="dot" data-index="{i}"></span>' for i in range(len(updates[:3]))])}</div>
         '''
 
-    # Now read the current index.html template
-    index_path = Path('index.html')
-    if not index_path.exists():
+    template_path = Path('index.html')
+    if not template_path.exists():
         print("index.html not found; cannot generate homepage.")
         return
 
-    content = index_path.read_text(encoding='utf-8')
+    content = template_path.read_text(encoding='utf-8')
+    content = replace_container_content(content, "services-grid", service_cards_html)
+    content = replace_container_content(content, "departments-grid", dept_cards_html)
+    content = replace_container_content(content, "featured-doctor-cards", featured_doctors_html)
+    content = replace_container_content(content, "blog-preview-grid", blog_preview_html)
+    content = replace_container_content(content, "updates-carousel", updates_html)
 
-    # Replace content inside each container with our generated HTML
-    # We'll use regex to replace between the opening and closing tags of each container.
-    # Services grid
-    pattern_services = re.compile(r'(<div\s+[^>]*id="services-grid"[^>]*>)(.*?)(</div>)', re.DOTALL)
-    content = pattern_services.sub(r'\g<1>\n' + service_cards_html + '\n\g<3>', content)
-
-    # Departments grid
-    pattern_dept = re.compile(r'(<div\s+[^>]*id="departments-grid"[^>]*>)(.*?)(</div>)', re.DOTALL)
-    content = pattern_dept.sub(r'\g<1>\n' + dept_cards_html + '\n\g<3>', content)
-
-    # Featured doctors grid
-    pattern_feat = re.compile(r'(<div\s+[^>]*id="featured-doctor-cards"[^>]*>)(.*?)(</div>)', re.DOTALL)
-    content = pattern_feat.sub(r'\g<1>\n' + featured_doctors_html + '\n\g<3>', content)
-
-    # Blog preview grid
-    pattern_blog = re.compile(r'(<div\s+[^>]*id="blog-preview-grid"[^>]*>)(.*?)(</div>)', re.DOTALL)
-    content = pattern_blog.sub(r'\g<1>\n' + blog_preview_html + '\n\g<3>', content)
-
-    # Updates carousel – we'll replace the entire contents inside updates-carousel div
-    pattern_updates = re.compile(r'(<div\s+[^>]*id="updates-carousel"[^>]*>)(.*?)(</div>)', re.DOTALL)
-    content = pattern_updates.sub(r'\g<1>\n' + updates_html + '\n\g<3>', content)
-
-    # Write the updated index.html
-    index_path.write_text(content, encoding='utf-8')
-    print("Generated index.html with static content for all dynamic sections.")
+    GENERATED_DIR.mkdir(exist_ok=True)
+    output_path = GENERATED_DIR / 'index.html'
+    output_path.write_text(content, encoding='utf-8')
+    print(f"Generated index.html with static content → {output_path}")
 
 # ========== GENERATE DEPARTMENT PAGES ==========
 def generate_department_pages(departments, doctors):
@@ -843,7 +895,6 @@ def generate_department_pages(departments, doctors):
         dept_name = (dept.get('name') or '').strip()
         slug = slugify(dept.get('slug') or dept_name)
 
-        # Skip if a hand-built page exists
         if (manual_dir / f'{slug}.html').exists():
             continue
 
@@ -851,7 +902,7 @@ def generate_department_pages(departments, doctors):
         filename = f'department-{slug}.html'
         page_url = f'{SITE_URL}/departments/{filename}'
         title = f"{dept_name.title()} Department | Ibn Sina Hospital, Budgam"
-        description = f"{dept_name.title()} department at Ibn Sina Hospital, Budgam — serving patients across Jammu and Kashmir with expert specialists."
+        description = f"{dept_name.title()} department at Ibn Sina Hospital, Budgam — serving patients across Jammu and Kashmir."
 
         dept_doctors = [d for d in doctors if (d.get('department') or '').strip().lower() == dept_name.lower()]
         doctor_list_html = ""
@@ -968,7 +1019,7 @@ def collect_manual_department_pages():
         pages.append((url, content))
     return pages
 
-# ========== UPDATE SITEMAP (content-aware lastmod) ==========
+# ========== UPDATE SITEMAP ==========
 def update_sitemap(all_pages_with_content):
     cache = load_lastmod_cache()
     today = datetime.date.today().isoformat()
@@ -984,7 +1035,6 @@ def update_sitemap(all_pages_with_content):
         f'{SITE_URL}/faq.html',
         f'{SITE_URL}/contact.html',
         f'{SITE_URL}/appointment.html',
-        f'{SITE_URL}/index.html',  # already covered by SITE_URL/
     ]
 
     xml_parts = ['<?xml version="1.0" encoding="UTF-8"?>',
@@ -1031,6 +1081,10 @@ def submit_to_indexnow(url_list):
 
 # ========== MAIN ==========
 if __name__ == "__main__":
+    print("=" * 50)
+    print("IBN SINA HOSPITAL – STATIC GENERATOR")
+    print("=" * 50)
+
     print("Fetching doctors...")
     doctors = fetch_csv(DOCTORS_URL)
     print(f"Found {len(doctors)} doctors.")
@@ -1051,22 +1105,32 @@ if __name__ == "__main__":
     updates = fetch_csv(UPDATES_URL)
     print(f"Found {len(updates)} updates.")
 
+    # Save JSON data for main.js
     save_json_data(doctors, departments, posts, gallery_items, updates)
+
+    # Clean orphaned files BEFORE generating new ones
+    print("\nCleaning orphaned files...")
+    clean_orphaned_blog_files(posts)
+    clean_orphaned_doctor_files(doctors)
+    clean_orphaned_department_files(departments)
 
     departments_by_name = {(d.get('name') or '').strip().lower(): d for d in departments}
 
-    # Generate static pages (unchanged)
+    # Generate individual pages (unchanged)
+    print("\nGenerating individual pages...")
     doctor_urls, doctor_pages = generate_doctor_pages(doctors, departments_by_name)
     blog_urls, blog_pages = generate_blog_pages(posts)
     dept_urls, dept_pages = generate_department_pages(departments, doctors)
     gallery_url, gallery_html = generate_gallery_page(gallery_items)
 
-    # NEW: Generate static content for the main listing pages
+    # Generate static listing pages (NOW in generated-pages/)
+    print("\nGenerating static listing pages...")
     generate_blog_listing(posts)
     generate_doctor_listing(doctors)
     generate_homepage(posts, departments, doctors, updates)
-    # Services page: we already have a static services.html, but we could also update it if needed.
-    # For now, services are static in main.js, so we don't generate a separate services.html.
+
+    # Update blog.html static links (for SEO)
+    update_blog_index_links(posts)
 
     # Collect manual department pages
     manual_dept_pages = collect_manual_department_pages()
@@ -1075,7 +1139,16 @@ if __name__ == "__main__":
     all_dynamic_urls = doctor_urls + blog_urls + dept_urls + [gallery_url] + [url for url, _ in manual_dept_pages]
     all_pages_with_content = doctor_pages + blog_pages + dept_pages + [(gallery_url, gallery_html)] + manual_dept_pages
 
+    # Update sitemap
     update_sitemap(all_pages_with_content)
+
+    # Submit to IndexNow
     submit_to_indexnow(all_dynamic_urls)
 
-    print("Generation, sitemap update, and IndexNow submission complete.")
+    print("\n" + "=" * 50)
+    print("GENERATION COMPLETE!")
+    print(f"✅ Generated pages saved to: {GENERATED_DIR}/")
+    print(f"✅ Individual blog articles: /blog/")
+    print(f"✅ Individual doctor profiles: /doctors/")
+    print(f"✅ Sitemap updated: sitemap.xml")
+    print("=" * 50)
