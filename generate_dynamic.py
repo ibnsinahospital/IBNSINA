@@ -6,7 +6,6 @@ import datetime
 import re
 import json
 import hashlib
-import shutil
 from urllib.parse import quote
 
 # ========== CONFIGURATION ==========
@@ -23,7 +22,6 @@ UPDATES_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSZW6V9At9Nb8LCup
 SITE_URL = "https://ibnsinahospital.in"
 LASTMOD_CACHE_FILE = Path("lastmod_cache.json")
 GALLERY_TEMPLATE_PATH = Path('gallery_template.html')
-GENERATED_DIR = Path("generated-pages")
 
 # ========== FETCH CSV ==========
 def fetch_csv(url):
@@ -65,32 +63,7 @@ def build_about(doc, full_name):
         f"{specialty} care to patients across the Kashmir Valley."
     )
 
-def format_blog_date(date_value):
-    if not date_value:
-        return ''
-    try:
-        dt = datetime.datetime.fromisoformat(date_value.replace('Z', '+00:00'))
-        return dt.strftime('%d %B %Y')
-    except:
-        return date_value
-
-def calculate_reading_time(text):
-    if not text:
-        return 1
-    words = len(text.split())
-    return max(1, round(words / 200))
-
-def escape_html(text):
-    if text is None:
-        return ''
-    return (str(text)
-            .replace('&', '&amp;')
-            .replace('<', '&lt;')
-            .replace('>', '&gt;')
-            .replace('"', '&quot;')
-            .replace("'", '&#39;'))
-
-# ========== LASTMOD CACHE ==========
+# ========== LASTMOD CACHE (content-based) ==========
 def load_lastmod_cache():
     if LASTMOD_CACHE_FILE.exists():
         return json.loads(LASTMOD_CACHE_FILE.read_text(encoding='utf-8'))
@@ -119,183 +92,7 @@ def save_json_data(doctors, departments, posts, gallery_items, updates):
     print(f"Wrote JSON data files: {len(doctors)} doctors, {len(departments)} departments, "
           f"{len(posts)} blog posts, {len(gallery_items)} gallery items, {len(updates)} updates.")
 
-# ========== CREATE BACKUP ==========
-def backup_file(file_path):
-    """Create a backup of a file before we modify it."""
-    if not Path(file_path).exists():
-        return
-    backup_dir = Path('backup')
-    backup_dir.mkdir(exist_ok=True)
-    timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-    backup_path = backup_dir / f'{Path(file_path).stem}_{timestamp}{Path(file_path).suffix}'
-    shutil.copy2(file_path, backup_path)
-    print(f"Created backup: {backup_path}")
-
-# ========== ORPHAN CLEANUP ==========
-def clean_orphaned_blog_files(posts):
-    """Delete blog HTML files that no longer exist in the published posts list."""
-    active_slugs = set()
-    for p in posts:
-        if (p.get('is_published') or '').strip().lower() in ['true', 'yes', '1']:
-            slug = slugify(p.get('slug') or p.get('title', ''))
-            if slug:
-                active_slugs.add(f'blog-{slug}.html')
-
-    blog_dir = Path('blog')
-    if not blog_dir.exists():
-        return
-
-    removed = 0
-    for file in blog_dir.glob('blog-*.html'):
-        if file.name not in active_slugs:
-            try:
-                file.unlink()
-                removed += 1
-                print(f"Removed orphaned blog file: {file.name}")
-            except Exception as e:
-                print(f"Error removing {file.name}: {e}")
-
-    if removed > 0:
-        print(f"Cleaned up {removed} orphaned blog files.")
-
-def clean_orphaned_doctor_files(doctors):
-    """Delete doctor HTML files that no longer exist in the doctors list."""
-    active_slugs = set()
-    for d in doctors:
-        slug = slugify(d.get('name', ''))
-        if slug:
-            active_slugs.add(f'doctor-{slug}.html')
-
-    doc_dir = Path('doctors')
-    if not doc_dir.exists():
-        return
-
-    removed = 0
-    for file in doc_dir.glob('doctor-*.html'):
-        if file.name not in active_slugs:
-            try:
-                file.unlink()
-                removed += 1
-                print(f"Removed orphaned doctor file: {file.name}")
-            except Exception as e:
-                print(f"Error removing {file.name}: {e}")
-
-    if removed > 0:
-        print(f"Cleaned up {removed} orphaned doctor files.")
-
-def clean_orphaned_department_files(departments):
-    """Delete auto-generated department HTML files that no longer exist in the departments list."""
-    active_slugs = set()
-    for d in departments:
-        slug = slugify(d.get('slug') or d.get('name', ''))
-        if slug:
-            active_slugs.add(f'department-{slug}.html')
-
-    dept_dir = Path('departments')
-    if not dept_dir.exists():
-        return
-
-    removed = 0
-    for file in dept_dir.glob('department-*.html'):
-        if file.name not in active_slugs:
-            try:
-                file.unlink()
-                removed += 1
-                print(f"Removed orphaned department file: {file.name}")
-            except Exception as e:
-                print(f"Error removing {file.name}: {e}")
-
-    if removed > 0:
-        print(f"Cleaned up {removed} orphaned department files.")
-
-# ========== UPDATE CRAWLABLE BLOG LINKS ==========
-def update_blog_index_links(posts):
-    blog_index = Path('blog.html')
-    if not blog_index.exists():
-        return
-
-    published = [
-        post for post in posts
-        if (post.get('is_published') or '').strip().lower() in ['true', 'yes', '1']
-    ]
-    published.sort(
-        key=lambda post: post.get('published_at') or post.get('date') or '',
-        reverse=True
-    )
-
-    links = []
-    for post in published:
-        slug = slugify(post.get('slug') or post.get('title', ''))
-        if not slug:
-            continue
-        title = (post.get('title') or 'Health Article').strip()
-        title_html = escape_html(title)
-        links.append(
-            f'                    <li><a href="blog/blog-{slug}.html">{title_html}</a></li>'
-        )
-
-    if not links:
-        links.append('                    <li><a href="blog.html">Health Articles</a></li>')
-
-    start_marker = '                    <!-- STATIC_BLOG_LINKS_START -->'
-    end_marker = '                    <!-- STATIC_BLOG_LINKS_END -->'
-    pattern = re.compile(re.escape(start_marker) + r'.*?' + re.escape(end_marker), re.DOTALL)
-    replacement = start_marker + '\n' + '\n'.join(links) + '\n' + end_marker
-
-    current = blog_index.read_text(encoding='utf-8')
-    updated, count = pattern.subn(replacement, current, count=1)
-
-    if count != 1:
-        return
-
-    blog_index.write_text(updated, encoding='utf-8')
-    print(f"Updated crawlable blog links in blog.html: {len(links)} published posts.")
-
-# ========== REPLACE CONTAINER CONTENT (Safe) ==========
-def replace_container_content(html, container_id, new_content):
-    """
-    Replaces the inside of a div with a specific ID. Uses a stack counter
-    to handle nested divs safely.
-    """
-    import re
-    pattern = re.compile(r'<div\s+[^>]*id="' + re.escape(container_id) + r'"[^>]*>', re.IGNORECASE)
-    match = pattern.search(html)
-    if not match:
-        print(f"Warning: Container #{container_id} not found.")
-        return html
-
-    start = match.start()
-    open_tag = match.group(0)
-    pos = match.end()
-    depth = 1
-
-    while depth > 0 and pos < len(html):
-        next_open = html.find('<', pos)
-        if next_open == -1:
-            break
-
-        if html.startswith('</div>', next_open):
-            depth -= 1
-            if depth == 0:
-                end_pos = next_open + len('</div>')
-                break
-            pos = next_open + len('</div>')
-            continue
-
-        if html.startswith('<div', next_open):
-            depth += 1
-            pos = next_open + len('<div')
-            continue
-
-        pos = next_open + 1
-
-    if depth == 0:
-        return html[:start + len(open_tag)] + '\n' + new_content + '\n' + html[end_pos:]
-    else:
-        print(f"Error: Could not find closing </div> for container '{container_id}'.")
-        return html
-
-# ========== GENERATE DOCTOR PAGES ==========
+# ========== GENERATE DOCTOR PAGES (PREMIUM DESIGN) ==========
 def generate_doctor_pages(doctors, departments_by_name):
     output_dir = Path('doctors')
     output_dir.mkdir(exist_ok=True)
@@ -318,28 +115,40 @@ def generate_doctor_pages(doctors, departments_by_name):
         page_url = f'{SITE_URL}/doctors/{filename}'
         appointment_link = f"../appointment.html?doctor={quote(full_name)}"
 
-        # Related doctors
+        # Build related doctors list
         same_dept_doctors = [
             d for d in doctors
             if (d.get('department') or '').strip().lower() == dept_name.lower()
             and (d.get('name') or '') != doc.get('name', '')
         ][:4]
-        related_links = ""
+        
+        related_doctors_html = ""
         if same_dept_doctors:
             items = "".join(
-                f'<li><a href="doctor-{slugify(d.get("name",""))}.html">{clean_name(d.get("name",""))}</a></li>'
+                f'''
+                <div class="related-doctor-card">
+                    <a href="doctor-{slugify(d.get('name',''))}.html">
+                        <div class="related-avatar">👨‍⚕️</div>
+                        <div>
+                            <strong>{clean_name(d.get('name',''))}</strong>
+                            <span class="related-specialty">{(d.get('specialty') or '').title()}</span>
+                        </div>
+                    </a>
+                </div>
+                '''
                 for d in same_dept_doctors
             )
-            related_links = f'<div class="related-doctors"><strong>Other {dept_name.title()} Specialists:</strong><ul>{items}</ul></div>'
+            related_doctors_html = f'''
+            <div class="related-doctors-section">
+                <h3>Other {dept_name.title()} Specialists</h3>
+                <div class="related-doctors-grid">{items}</div>
+            </div>
+            '''
 
-        # Department link
+        # Department link (fixed to department-pages/)
         dept_link_html = ""
         if dept_name:
-            manual_path = Path(f'department-pages/{dept_slug}.html')
-            if manual_path.exists():
-                dept_link_html = f'<p><a href="../department-pages/{dept_slug}.html">View {dept_name.title()} Department →</a></p>'
-            else:
-                dept_link_html = f'<p><a href="../departments/department-{dept_slug}.html">View {dept_name.title()} Department →</a></p>'
+            dept_link_html = f'<p><a href="../department-pages/{dept_slug}.html" class="dept-link">View {dept_name.title()} Department →</a></p>'
 
         json_ld = {
             "@context": "https://schema.org",
@@ -363,6 +172,7 @@ def generate_doctor_pages(doctors, departments_by_name):
         if qualifications:
             json_ld["hasCredential"] = qualifications
 
+        # ======================= PREMIUM HTML TEMPLATE =======================
         html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -378,6 +188,642 @@ def generate_doctor_pages(doctors, departments_by_name):
     <meta property="og:image" content="{photo_url}">
     <link rel="stylesheet" href="../css/style.css">
     <script type="application/ld+json">{json.dumps(json_ld, ensure_ascii=False)}</script>
+
+    <!-- ========== PREMIUM DOCTOR PROFILE STYLES ========== -->
+    <style>
+        .doctor-profile-page {{
+            --doc-green: #2d4a2b;
+            --doc-gold: #c9b99a;
+            --doc-bg: #f8faf6;
+        }}
+
+        .doctor-profile-page .breadcrumb-premium {{
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #71806d;
+            padding: 1rem 0;
+        }}
+        .doctor-profile-page .breadcrumb-premium a {{
+            color: var(--doc-green);
+            text-decoration: none;
+        }}
+        .doctor-profile-page .breadcrumb-premium a:hover {{
+            text-decoration: underline;
+        }}
+        .doctor-profile-page .breadcrumb-premium span {{
+            margin: 0 6px;
+            color: #a4ac86;
+        }}
+
+        /* --- Hero Section --- */
+        .doctor-profile-page .profile-hero {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            background: linear-gradient(145deg, #f5f8f2, #eaf1e6);
+            border-radius: 28px;
+            padding: 40px 40px 30px;
+            margin: 0 0 30px 0;
+            border: 1px solid rgba(164, 172, 134, 0.2);
+            box-shadow: 0 10px 40px rgba(45, 74, 43, 0.04);
+            align-items: center;
+        }}
+        .doctor-profile-page .profile-hero .hero-image {{
+            flex: 0 0 180px;
+            text-align: center;
+        }}
+        .doctor-profile-page .profile-hero .hero-image img {{
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ffffff;
+            box-shadow: 0 12px 30px rgba(45, 74, 43, 0.12);
+        }}
+        .doctor-profile-page .profile-hero .hero-image .no-img {{
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #eaf1e6, #d4dfcd);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            border: 4px solid #ffffff;
+            box-shadow: 0 12px 30px rgba(45, 74, 43, 0.12);
+            margin: 0 auto;
+        }}
+        .doctor-profile-page .profile-hero .hero-text {{
+            flex: 1;
+        }}
+        .doctor-profile-page .profile-hero .hero-text h1 {{
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            color: var(--doc-green);
+            margin-bottom: 0.2rem;
+            letter-spacing: -0.02em;
+        }}
+        .doctor-profile-page .profile-hero .hero-text .hero-specialty {{
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #82907d;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.3rem;
+        }}
+        .doctor-profile-page .profile-hero .hero-text .hero-qual {{
+            font-size: 0.95rem;
+            color: #5a6b4a;
+            margin-bottom: 0.5rem;
+        }}
+        .doctor-profile-page .profile-hero .hero-text .hero-dept {{
+            font-size: 0.9rem;
+            color: #4e5c4a;
+            margin-bottom: 1rem;
+        }}
+        .doctor-profile-page .profile-hero .hero-text .hero-dept a {{
+            color: var(--doc-green);
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 2px solid var(--doc-gold);
+            padding-bottom: 2px;
+        }}
+        .doctor-profile-page .profile-hero .hero-text .hero-dept a:hover {{
+            border-bottom-color: var(--doc-green);
+        }}
+        .doctor-profile-page .profile-hero .hero-text .hero-actions {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 0.5rem;
+        }}
+        .doctor-profile-page .profile-hero .hero-text .btn-appointment-hero {{
+            display: inline-block;
+            padding: 12px 32px;
+            border-radius: 60px;
+            background: var(--doc-green);
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }}
+        .doctor-profile-page .profile-hero .hero-text .btn-appointment-hero:hover {{
+            background: #1d321c;
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(45, 74, 43, 0.2);
+        }}
+        .doctor-profile-page .profile-hero .hero-text .btn-secondary-hero {{
+            display: inline-block;
+            padding: 12px 32px;
+            border-radius: 60px;
+            background: transparent;
+            color: var(--doc-green);
+            border: 2px solid var(--doc-green);
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }}
+        .doctor-profile-page .profile-hero .hero-text .btn-secondary-hero:hover {{
+            background: var(--doc-green);
+            color: #ffffff;
+        }}
+
+        /* --- Main Layout (Content + Sidebar) --- */
+        .doctor-profile-page .profile-layout {{
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 300px;
+            gap: 40px;
+            margin: 30px 0;
+            align-items: start;
+        }}
+        .doctor-profile-page .profile-content {{
+            min-width: 0;
+        }}
+        .doctor-profile-page .profile-sidebar {{
+            position: sticky;
+            top: 100px;
+        }}
+
+        /* --- Bio Card --- */
+        .doctor-profile-page .bio-card {{
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(45, 74, 43, 0.04);
+            margin-bottom: 30px;
+        }}
+        .doctor-profile-page .bio-card h2 {{
+            font-family: 'Poppins', sans-serif;
+            color: var(--doc-green);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }}
+        .doctor-profile-page .bio-card h2::after {{
+            content: '';
+            display: block;
+            width: 40px;
+            height: 4px;
+            background: var(--doc-gold);
+            border-radius: 4px;
+            margin-top: 6px;
+        }}
+        .doctor-profile-page .bio-card p {{
+            color: #4e5c4a;
+            line-height: 1.8;
+            font-size: 1.02rem;
+        }}
+        .doctor-profile-page .bio-card .dept-link {{
+            color: var(--doc-green);
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 2px solid var(--doc-gold);
+            padding-bottom: 2px;
+        }}
+        .doctor-profile-page .bio-card .dept-link:hover {{
+            border-bottom-color: var(--doc-green);
+        }}
+
+        /* --- Related Doctors --- */
+        .doctor-profile-page .related-doctors-section {{
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(4px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #edf3e9;
+        }}
+        .doctor-profile-page .related-doctors-section h3 {{
+            font-family: 'Poppins', sans-serif;
+            color: var(--doc-green);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }}
+        .doctor-profile-page .related-doctors-grid {{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }}
+        .doctor-profile-page .related-doctor-card {{
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 12px;
+            border: 1px solid #edf3e9;
+            transition: all 0.25s ease;
+        }}
+        .doctor-profile-page .related-doctor-card:hover {{
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(45, 74, 43, 0.06);
+            border-color: var(--doc-green);
+        }}
+        .doctor-profile-page .related-doctor-card a {{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #2d4a2b;
+        }}
+        .doctor-profile-page .related-doctor-card .related-avatar {{
+            font-size: 2rem;
+            flex-shrink: 0;
+        }}
+        .doctor-profile-page .related-doctor-card strong {{
+            display: block;
+            font-size: 0.85rem;
+            line-height: 1.2;
+        }}
+        .doctor-profile-page .related-doctor-card .related-specialty {{
+            display: block;
+            font-size: 0.7rem;
+            color: #82907d;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }}
+
+        /* --- Sidebar Cards --- */
+        .doctor-profile-page .sidebar-card {{
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 30px rgba(45, 74, 43, 0.04);
+        }}
+        .doctor-profile-page .sidebar-card h3 {{
+            font-family: 'Poppins', sans-serif;
+            color: var(--doc-green);
+            font-size: 1.05rem;
+            margin-bottom: 0.8rem;
+        }}
+        .doctor-profile-page .sidebar-card .cta-btn {{
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border-radius: 60px;
+            background: var(--doc-green);
+            color: #ffffff;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }}
+        .doctor-profile-page .sidebar-card .cta-btn:hover {{
+            background: #1d321c;
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(45, 74, 43, 0.2);
+        }}
+        .doctor-profile-page .sidebar-card .emergency-phone {{
+            display: block;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--doc-green);
+            text-decoration: none;
+            margin-top: 0.5rem;
+        }}
+        .doctor-profile-page .sidebar-card .emergency-phone:hover {{
+            text-decoration: underline;
+        }}
+        .doctor-profile-page .sidebar-card .quick-links {{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }}
+        .doctor-profile-page .sidebar-card .quick-links li {{
+            padding: 8px 0;
+            border-bottom: 1px solid #edf3e9;
+        }}
+        .doctor-profile-page .sidebar-card .quick-links li:last-child {{
+            border-bottom: none;
+        }}
+        .doctor-profile-page .sidebar-card .quick-links a {{
+            color: #4e5c4a;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }}
+        .doctor-profile-page .sidebar-card .quick-links a:hover {{
+            color: var(--doc-green);
+            text-decoration: underline;
+        }}
+
+        /* --- Responsive --- */
+        @media (max-width: 900px) {{
+            .doctor-profile-page .profile-layout {{
+                grid-template-columns: 1fr;
+            }}
+            .doctor-profile-page .profile-sidebar {{
+                position: static;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }}
+            .doctor-profile-page .profile-hero {{
+                flex-direction: column;
+                text-align: center;
+                padding: 30px 20px;
+            }}
+            .doctor-profile-page .profile-hero .hero-image {{
+                flex: 0 0 auto;
+            }}
+            .doctor-profile-page .profile-hero .hero-text .hero-actions {{
+                justify-content: center;
+            }}
+            .doctor-profile-page .related-doctors-grid {{
+                grid-template-columns: 1fr;
+            }}
+        }}
+        @media (max-width: 650px) {{
+            .doctor-profile-page .profile-sidebar {{
+                grid-template-columns: 1fr;
+            }}
+            .doctor-profile-page .profile-hero .hero-image img {{
+                width: 140px;
+                height: 140px;
+            }}
+            .doctor-profile-page .bio-card {{
+                padding: 20px;
+            }}
+        }}
+    </style>
+
+</head>
+<body class="doctor-profile-page">
+
+    <!-- ===== HEADER ===== -->
+    <header class="site-header" id="site-header">
+        <div class="header-inner container">
+            <a href="../index.html" class="logo" aria-label="Ibn Sina Hospital Home">
+                <img src="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp" alt="Ibn Sina Hospital Logo" class="logo-img" style="height: 40px; width: auto;">
+                <span class="logo-text">Ibn Sina <strong>Hospital</strong></span>
+            </a>
+            <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li><a href="../index.html" class="nav-link">Home</a></li>
+                    <li><a href="../about.html" class="nav-link">About</a></li>
+                    <li><a href="../services.html" class="nav-link">Services</a></li>
+                    <li><a href="../doctors.html" class="nav-link">Doctors</a></li>
+                    <li><a href="../gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="../blog.html" class="nav-link">Blog</a></li>
+                    <li><a href="../careers.html" class="nav-link">Careers</a></li>
+                    <li><a href="../faq.html" class="nav-link">FAQ</a></li>
+                    <li><a href="../contact.html" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="tel:9622552553" class="emergency-badge" aria-label="Emergency call: 9622552553">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+                    <span>Emergency: 9622552553</span>
+                </a>
+                <a href="../appointment.html" class="btn btn-primary btn-book">Book Appointment</a>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main id="main-content" class="container" style="padding: 0 20px;">
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb-premium" aria-label="Breadcrumb">
+            <a href="../index.html">Home</a>
+            <span>›</span>
+            <a href="../doctors.html">Doctors</a>
+            <span>›</span>
+            <span>{full_name}</span>
+        </nav>
+
+        <!-- ===== PROFILE HERO ===== -->
+        <section class="profile-hero">
+            <div class="hero-image">
+                {f'<img src="{photo_url}" alt="{full_name} - {specialty} at Ibn Sina Hospital">' if photo_url and photo_url != 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp' else '<div class="no-img">👨‍⚕️</div>'}
+            </div>
+            <div class="hero-text">
+                <h1>{full_name}</h1>
+                <div class="hero-specialty">{specialty.title()}</div>
+                <div class="hero-qual">{qualifications or ''}</div>
+                <div class="hero-dept">
+                    Department: <a href="../department-pages/{dept_slug}.html">{dept_name.title()}</a>
+                </div>
+                <div class="hero-actions">
+                    <a href="{appointment_link}" class="btn-appointment-hero">📅 Book Appointment</a>
+                    <a href="tel:9622552553" class="btn-secondary-hero">📞 Call Hospital</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PROFILE LAYOUT ===== -->
+        <div class="profile-layout">
+
+            <!-- ===== CONTENT COLUMN ===== -->
+            <div class="profile-content">
+
+                <!-- Bio Card -->
+                <div class="bio-card">
+                    <h2>About Dr. {full_name.replace('Dr.', '').strip()}</h2>
+                    <p>{about_text}</p>
+                    <p style="margin-top: 1rem;">
+                        <a href="../department-pages/{dept_slug}.html" class="dept-link">View {dept_name.title()} Department →</a>
+                    </p>
+                </div>
+
+                <!-- Related Doctors -->
+                {related_doctors_html}
+
+            </div>
+
+            <!-- ===== SIDEBAR ===== -->
+            <aside class="profile-sidebar">
+
+                <!-- Appointment CTA -->
+                <div class="sidebar-card" style="background: linear-gradient(145deg, #2d4a2b, #1d321c); color: #ffffff; border: none;">
+                    <h3 style="color: #ffffff;">📋 Book an Appointment</h3>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Consult with {full_name} at Ibn Sina Hospital, Budgam.
+                    </p>
+                    <a href="{appointment_link}" class="cta-btn" style="background: #ffffff; color: #2d4a2b; display: block; text-align: center; padding: 14px; border-radius: 60px; font-weight: 700; text-decoration: none;">Book Now</a>
+                </div>
+
+                <!-- Emergency Contact -->
+                <div class="sidebar-card">
+                    <h3>🚑 Emergency</h3>
+                    <p style="color: #4e5c4a; font-size: 0.9rem; margin-bottom: 0.5rem;">
+                        For urgent medical help, call:
+                    </p>
+                    <a href="tel:9622552553" class="emergency-phone">📞 9622552553</a>
+                    <p style="font-size: 0.75rem; color: #82907d; margin-top: 0.5rem; text-align: center;">Available 24/7, 365 days</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="sidebar-card">
+                    <h3>Quick Links</h3>
+                    <ul class="quick-links">
+                        <li><a href="../doctors.html">All Doctors</a></li>
+                        <li><a href="../services.html">Our Services</a></li>
+                        <li><a href="../appointment.html">Book Appointment</a></li>
+                        <li><a href="../contact.html">Contact Us</a></li>
+                        <li><a href="../faq.html">FAQs</a></li>
+                    </ul>
+                </div>
+
+            </aside>
+
+        </div>
+
+        <!-- ===== AREAS WE SERVE (Premium Badge Cloud) ===== -->
+        <section class="areas-serve-premium" style="background: linear-gradient(145deg, #f5f8f2, #ecf2e8); border-radius: 24px; padding: 30px 24px; border: 1px solid #e2e8df; margin: 30px 0; text-align: center;">
+            <p style="font-weight: 700; color: #2d4a2b; margin: 0 0 12px; font-size: 1.1rem;">
+                🌍 Serving Families Across J&amp;K &amp; India
+            </p>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+                <span style="background: #ffffff; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #2d4a2b; border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Budgam</span>
+                <span style="background: #ffffff; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #2d4a2b; border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Srinagar</span>
+                <span style="background: #ffffff; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #2d4a2b; border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Ompora</span>
+                <span style="background: #ffffff; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #2d4a2b; border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Ganderbal</span>
+                <span style="background: #ffffff; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #2d4a2b; border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Pulwama</span>
+                <span style="background: #ffffff; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #2d4a2b; border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Shopian</span>
+                <span style="background: #ffffff; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #2d4a2b; border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Kulgam</span>
+                <span style="background: #2d4a2b; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #ffffff; border: 1px solid #2d4a2b; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Jammu &amp; Kashmir</span>
+                <span style="background: #2d4a2b; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #ffffff; border: 1px solid #2d4a2b; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">India</span>
+            </div>
+            <div style="margin-top: 14px; font-size: 0.9rem;">
+                <a href="../service-areas.html" style="color: #2d4a2b; text-decoration: underline;">View all service areas</a> 
+                <span style="margin:0 0.5rem;">|</span> 
+                <a href="../contact.html" style="color: #2d4a2b; text-decoration: underline;">Get directions</a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="site-footer">
+        <div class="footer-wave" aria-hidden="true">
+            <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
+        </div>
+        <div class="footer-main container">
+            <div class="footer-col">
+                <h3 class="footer-logo">Ibn Sina <strong>Hospital</strong></h3>
+                <address>Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111</address>
+                <p><a href="tel:9622552553">📞 9622552553 / 9419023501</a></p>
+                <p><a href="mailto:weibnsina@gmail.com">✉ weibnsina@gmail.com</a></p>
+                <p style="margin-top:0.5rem; font-size:0.85rem; color:#71806d;">
+                    <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam – 
+                    across <strong>Jammu &amp; Kashmir</strong> &amp; <strong>India</strong>
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>OPD &amp; Emergency</h4>
+                <p class="footer-note"><strong>OPD, Pharmacy, Lab &amp; Emergency:</strong> 24/7, 365 days</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../about.html">About Us</a></li>
+                    <li><a href="../services.html">Services</a></li>
+                    <li><a href="../doctors.html">Doctors</a></li>
+                    <li><a href="../gallery.html">Gallery</a></li>
+                    <li><a href="../blog.html">Blog</a></li>
+                    <li><a href="../careers.html">Careers</a></li>
+                    <li><a href="../faq.html">FAQ</a></li>
+                    <li><a href="../contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Stay Connected</h4>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/share/1HSWNC9UEy/" target="_blank" rel="noopener" aria-label="Facebook" class="social-icon">FB</a>
+                    <a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon">IG</a>
+                    <a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon">YT</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom container">
+            <p>&copy; 2025 Ibn Sina Hospital. All rights reserved. | Operating since 2018</p>
+            <p class="google-review-note">See our latest reviews on <a href="https://maps.google.com/?q=IBN+SINA+HOSPITAL+Ompora+Budgam" target="_blank" rel="noopener">Google Maps</a></p>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="../js/main.js" defer></script>
+    <script src="../js/chatbot.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <script src="../js/animations.js" defer></script>
+
+</body>
+</html>"""
+        output_path = output_dir / filename
+        output_path.write_text(html, encoding='utf-8')
+        urls.append(page_url)
+        pages.append((page_url, html))
+        print(f"Generated premium doctor profile: {filename}")
+
+    return urls, pages
+
+# ========== GENERATE BLOG PAGES ==========
+def generate_blog_pages(posts):
+    output_dir = Path('blog')
+    output_dir.mkdir(exist_ok=True)
+    urls = []
+    pages = []
+
+    for post in posts:
+        if post.get('is_published', '').strip().lower() not in ['true', 'yes', '1']:
+            continue
+        slug = slugify(post.get('slug') or post.get('title', ''))
+        filename = f'blog-{slug}.html'
+        page_url = f'{SITE_URL}/blog/{filename}'
+        title = post.get('title', 'Blog Post')
+        summary = post.get('short_summary', title)
+        image = post.get('cover_image_url', 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp')
+
+        json_ld = {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": title,
+            "description": summary,
+            "image": image,
+            "publisher": {
+                "@type": "Hospital",
+                "name": "Ibn Sina Hospital",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Budgam",
+                    "addressRegion": "Jammu and Kashmir",
+                    "addressCountry": "IN"
+                }
+            },
+            "datePublished": post.get('published_at', '')
+        }
+
+        html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title} | Ibn Sina Hospital</title>
+    <meta name="description" content="{summary}">
+    <link rel="canonical" href="{page_url}">
+    <meta property="og:title" content="{title} | Ibn Sina Hospital">
+    <meta property="og:description" content="{summary}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{page_url}">
+    <meta property="og:image" content="{image}">
+    <link rel="stylesheet" href="../css/style.css">
+    <script type="application/ld+json">{json.dumps(json_ld, ensure_ascii=False)}</script>
 </head>
 <body>
     <header class="site-header">
@@ -385,23 +831,18 @@ def generate_doctor_pages(doctors, departments_by_name):
             <a href="../index.html" class="logo">Ibn Sina <strong>Hospital</strong></a>
             <nav class="main-nav"><ul class="nav-list">
                 <li><a href="../index.html">Home</a></li>
-                <li><a href="../doctors.html">Doctors</a></li>
-                <li><a href="../services.html">Services</a></li>
+                <li><a href="../blog.html">Blog</a></li>
                 <li><a href="../contact.html">Contact</a></li>
             </ul></nav>
         </div>
     </header>
     <main class="section">
         <div class="container">
-            <img src="{photo_url}" alt="{full_name} - {specialty} at Ibn Sina Hospital" class="doctor-photo" width="200">
-            <h1>{full_name}</h1>
-            <p><strong>Specialty:</strong> {specialty.title()}</p>
-            <p><strong>Department:</strong> {dept_name.title()}</p>
-            <p><strong>Qualifications:</strong> {qualifications or 'N/A'}</p>
-            {dept_link_html}
-            <div class="doctor-bio"><strong>About:</strong><br>{about_text}</div>
-            {related_links}
-            <a href="{appointment_link}" class="btn btn-primary">Book Appointment</a>
+            <article>
+                <h1>{title}</h1>
+                <time>{post.get('published_at', '')}</time>
+                <div class="blog-body">{post.get('body', '')}</div>
+            </article>
         </div>
     </main>
     <footer class="site-footer">
@@ -418,472 +859,6 @@ def generate_doctor_pages(doctors, departments_by_name):
 
     return urls, pages
 
-# ========== GENERATE BLOG ARTICLES ==========
-def generate_blog_pages(posts):
-    output_dir = Path('blog')
-    output_dir.mkdir(exist_ok=True)
-    urls = []
-    pages = []
-
-    for post in posts:
-        if post.get('is_published', '').strip().lower() not in ['true', 'yes', '1']:
-            continue
-
-        slug = slugify(post.get('slug') or post.get('title', ''))
-        if not slug:
-            continue
-
-        filename = f'blog-{slug}.html'
-        page_url = f'{SITE_URL}/blog/{filename}'
-        title = post.get('title', 'Health Article').strip()
-        summary = post.get('short_summary', title).strip()
-        image = post.get('cover_image_url', 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp').strip()
-        body_html = post.get('body', '').strip() or '<p>No content available.</p>'
-        published_date = post.get('published_at', '')
-        formatted_date = format_blog_date(published_date)
-        category = post.get('category', 'Health & Wellness').strip()
-        reading_time = calculate_reading_time(body_html)
-
-        # Related articles
-        related_posts = [
-            p for p in posts
-            if p.get('is_published', '').strip().lower() in ['true', 'yes', '1']
-            and p.get('slug', '') != slug
-        ][:3]
-        related_html = ""
-        if related_posts:
-            items = "".join(
-                f'<li><a href="blog-{slugify(p.get("slug") or p.get("title", ""))}.html">{escape_html(p.get("title", "Health Article"))}</a></li>'
-                for p in related_posts
-            )
-            related_html = f'''
-            <section class="blog-related-articles" aria-labelledby="related-articles-heading">
-                <h2 id="related-articles-heading">Related Health Insights</h2>
-                <ul>{items}</ul>
-            </section>
-            '''
-
-        # Premium blog article (simplified for brevity – your full template remains)
-        html = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{escape_html(title)} | Ibn Sina Hospital</title>
-    <meta name="description" content="{escape_html(summary)}">
-    <link rel="canonical" href="{page_url}">
-    <meta property="og:title" content="{escape_html(title)}">
-    <meta property="og:description" content="{escape_html(summary)}">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="{page_url}">
-    <meta property="og:image" content="{image}">
-    <link rel="stylesheet" href="../css/style.css">
-    <script type="application/ld+json">
-    {{
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "{escape_html(title)}",
-      "description": "{escape_html(summary)}",
-      "image": "{image}",
-      "url": "{page_url}",
-      "datePublished": "{published_date}",
-      "publisher": {{
-        "@type": "Hospital",
-        "name": "Ibn Sina Hospital",
-        "url": "https://ibnsinahospital.in/"
-      }}
-    }}
-    </script>
-    <style>
-        .article-page {{ background: #f8faf6; padding: 20px 0; }}
-        .article-shell {{ max-width: 1180px; margin: 0 auto; padding: 20px; }}
-        .article-hero {{ position:relative; border-radius: 24px; overflow:hidden; background:#263b25; min-height:300px; display:flex; align-items:flex-end; }}
-        .article-hero-media {{ position:absolute; inset:0; }}
-        .article-hero-media img {{ width:100%; height:100%; object-fit:cover; }}
-        .article-hero-overlay {{ position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.7), transparent); }}
-        .article-hero-content {{ position:relative; z-index:1; padding:40px; color:#fff; }}
-        .article-category {{ display:inline-block; background:rgba(255,255,255,0.15); backdrop-filter:blur(4px); padding:6px 14px; border-radius:20px; font-size:0.8rem; text-transform:uppercase; }}
-        .article-title {{ font-size:2.5rem; font-weight:700; margin:10px 0; }}
-        .article-meta {{ display:flex; gap:16px; font-size:0.9rem; opacity:0.8; }}
-        .article-layout {{ display:grid; grid-template-columns:1fr 300px; gap:40px; margin-top:30px; }}
-        .blog-body {{ font-size:1.05rem; line-height:1.8; color:#333; }}
-        .blog-body h2 {{ color:#2d4a2b; margin-top:2rem; }}
-        .blog-body p {{ margin-bottom:1rem; }}
-        .blog-related-articles {{ margin-top:2rem; padding:20px; background:#f1f5ee; border-radius:12px; }}
-        .blog-related-articles ul {{ list-style:none; padding:0; }}
-        .blog-related-articles li {{ margin:8px 0; }}
-        .blog-related-articles a {{ color:#2d4a2b; font-weight:600; }}
-        .article-sidebar {{ position:sticky; top:100px; }}
-        .sidebar-card {{ background:#fff; border-radius:16px; padding:20px; margin-bottom:20px; box-shadow:0 4px 12px rgba(0,0,0,0.05); }}
-        .sidebar-card h3 {{ font-size:1.1rem; color:#2d4a2b; margin-top:0; }}
-        .article-share {{ display:flex; gap:8px; flex-wrap:wrap; }}
-        .share-btn {{ padding:8px 16px; border-radius:30px; background:#f0f3ee; color:#2d4a2b; text-decoration:none; font-weight:600; font-size:0.8rem; }}
-        .article-cta {{ display:inline-block; padding:12px 24px; background:#2d4a2b; color:#fff; border-radius:40px; text-decoration:none; font-weight:700; }}
-        .article-bottom-cta {{ margin-top:40px; padding:30px; background:#2d4a2b; color:#fff; border-radius:20px; text-align:center; }}
-        .article-bottom-cta a {{ color:#fff; background:rgba(255,255,255,0.2); padding:10px 24px; border-radius:40px; text-decoration:none; }}
-        .medical-disclaimer {{ background:#f1f5ee; padding:20px; border-radius:12px; margin-top:30px; font-size:0.9rem; }}
-        @media (max-width:768px) {{ .article-layout {{ grid-template-columns:1fr; }} .article-hero-content {{ padding:20px; }} .article-title {{ font-size:1.8rem; }} }}
-    </style>
-</head>
-<body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    <header class="site-header" id="site-header">
-        <div class="header-inner container">
-            <a href="../index.html" class="logo" aria-label="Ibn Sina Hospital Home">
-                <img src="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp" alt="Ibn Sina Hospital Logo" class="logo-img" style="height:40px;width:auto;">
-                <span class="logo-text">Ibn Sina <strong>Hospital</strong></span>
-            </a>
-            <nav class="main-nav" id="main-nav" aria-label="Main navigation">
-                <ul class="nav-list">
-                    <li><a href="../index.html" class="nav-link">Home</a></li>
-                    <li><a href="../about.html" class="nav-link">About</a></li>
-                    <li><a href="../services.html" class="nav-link">Services</a></li>
-                    <li><a href="../doctors.html" class="nav-link">Doctors</a></li>
-                    <li><a href="../gallery.html" class="nav-link">Gallery</a></li>
-                    <li><a href="../blog.html" class="nav-link active">Blog</a></li>
-                    <li><a href="../careers.html" class="nav-link">Careers</a></li>
-                    <li><a href="../faq.html" class="nav-link">FAQ</a></li>
-                    <li><a href="../contact.html" class="nav-link">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="header-actions">
-                <a href="tel:9622552553" class="emergency-badge">📞 9622552553</a>
-                <a href="../appointment.html" class="btn btn-primary">Book Appointment</a>
-                <button class="hamburger" id="hamburger">☰</button>
-            </div>
-        </div>
-    </header>
-
-    <main id="main-content">
-        <section class="article-page">
-            <div class="article-shell">
-                <nav class="article-breadcrumbs" style="margin-bottom:16px;">
-                    <a href="../index.html">Home</a> / <a href="../blog.html">Health Insights</a> / <span>{escape_html(title)}</span>
-                </nav>
-                <div class="article-hero">
-                    <div class="article-hero-media"><img src="{image}" alt="{escape_html(title)}" loading="eager"></div>
-                    <div class="article-hero-overlay"></div>
-                    <div class="article-hero-content">
-                        <div class="article-category">{escape_html(category)}</div>
-                        <h1 class="article-title">{escape_html(title)}</h1>
-                        <div class="article-meta">
-                            <span>📅 {formatted_date}</span>
-                            <span>⏱ {reading_time} min read</span>
-                            <span>Ibn Sina Hospital</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="article-layout">
-                    <div class="article-main">
-                        <div class="blog-body">
-                            {body_html}
-                            {related_html}
-                            <aside class="medical-disclaimer">
-                                <strong>Medical Disclaimer</strong>
-                                <p>The information provided is for educational purposes only. Consult a qualified healthcare professional.</p>
-                            </aside>
-                        </div>
-                    </div>
-                    <aside class="article-sidebar">
-                        <div class="sidebar-card">
-                            <h3>Share This Article</h3>
-                            <div class="article-share">
-                                <a href="https://wa.me/?text={escape_html(title)}%20-%20{page_url}" target="_blank" class="share-btn">WhatsApp</a>
-                                <a href="https://www.facebook.com/sharer/sharer.php?u={page_url}" target="_blank" class="share-btn">Facebook</a>
-                                <a href="#" onclick="navigator.clipboard?.writeText('{page_url}'); alert('Link copied!'); return false;" class="share-btn">Copy Link</a>
-                            </div>
-                        </div>
-                        <div class="sidebar-card" style="background:#2d4a2b; color:#fff;">
-                            <h3 style="color:#fff;">Need Medical Advice?</h3>
-                            <p>Book an appointment with our experts.</p>
-                            <a href="../appointment.html" class="article-cta" style="background:#fff; color:#2d4a2b;">Book Now</a>
-                        </div>
-                    </aside>
-                </div>
-                <div class="article-bottom-cta">
-                    <h2>Have a health concern?</h2>
-                    <p>Our team is here to help.</p>
-                    <a href="../appointment.html">Book Appointment</a>
-                </div>
-                <div style="text-align:center; margin-top:30px;">
-                    <a href="../blog.html">← Back to Health Insights</a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="site-footer">
-        <div class="footer-main container">
-            <div class="footer-col">
-                <h3>Ibn Sina <strong>Hospital</strong></h3>
-                <address>Near Railway Station, Ompora, Budgam, J&K 191111</address>
-                <p>📞 <a href="tel:9622552553">9622552553</a></p>
-                <p>✉ <a href="mailto:weibnsina@gmail.com">weibnsina@gmail.com</a></p>
-            </div>
-            <div class="footer-col">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="../index.html">Home</a></li>
-                    <li><a href="../about.html">About</a></li>
-                    <li><a href="../services.html">Services</a></li>
-                    <li><a href="../doctors.html">Doctors</a></li>
-                    <li><a href="../blog.html">Blog</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Ibn Sina Hospital. All rights reserved.</p>
-        </div>
-    </footer>
-</body>
-</html>"""
-        output_path = output_dir / filename
-        output_path.write_text(html, encoding='utf-8')
-        urls.append(page_url)
-        pages.append((page_url, html))
-        print(f"Generated blog article: {filename}")
-
-    return urls, pages
-
-# ========== GENERATE BLOG LISTING ==========
-def generate_blog_listing(posts):
-    published = [
-        p for p in posts
-        if (p.get('is_published') or '').strip().lower() in ['true', 'yes', '1']
-    ]
-    published.sort(
-        key=lambda p: p.get('published_at') or p.get('date') or '',
-        reverse=True
-    )
-
-    if not published:
-        print("No published posts to generate blog listing.")
-        return
-
-    cards = []
-    for idx, p in enumerate(posts):
-        slug = slugify(p.get('slug') or p.get('title', ''))
-        if not slug:
-            continue
-        title = escape_html(p.get('title', 'Health Article'))
-        summary = escape_html(p.get('short_summary', ''))
-        image = p.get('cover_image_url', 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp')
-        date = format_blog_date(p.get('published_at') or p.get('date', ''))
-        category = escape_html(p.get('category', 'Health & Wellness'))
-        url = f"/blog/blog-{slug}.html"
-        read_time = calculate_reading_time(p.get('body', ''))
-        is_featured = idx == 0
-
-        cards.append(f'''
-        <article class="blog-preview-card blog-card fade-in{' blog-featured-card' if is_featured else ''}" data-category="{category}">
-            <a href="{url}" class="blog-card-image-link" aria-label="Read {title}">
-                <div class="blog-card-image-wrapper">
-                    <img src="{image}" alt="{title}" class="blog-card-image" loading="{ 'eager' if is_featured else 'lazy' }" decoding="async">
-                    <span class="blog-image-overlay">Read Article</span>
-                </div>
-            </a>
-            <div class="blog-card-content">
-                <div class="blog-card-meta">
-                    <span class="blog-category">{category}</span>
-                    <time datetime="{p.get('published_at') or ''}" class="blog-date">{date}</time>
-                </div>
-                <h2 class="blog-card-title"><a href="{url}">{title}</a></h2>
-                <p>{summary}</p>
-                <div class="blog-card-footer">
-                    <span class="blog-reading-time">{read_time} min read</span>
-                    <a href="{url}" class="read-more" aria-label="Read full article: {title}">Read Article →</a>
-                </div>
-            </div>
-        </article>
-        ''')
-
-    cards_html = "\n".join(cards)
-
-    # Read template and replace container
-    template_path = Path('blog.html')
-    if not template_path.exists():
-        print("blog.html not found; cannot generate static listing.")
-        return
-
-    content = template_path.read_text(encoding='utf-8')
-    new_content = replace_container_content(content, "blog-grid", cards_html)
-
-    # Write to generated-pages folder
-    GENERATED_DIR.mkdir(exist_ok=True)
-    output_path = GENERATED_DIR / 'blog.html'
-    output_path.write_text(new_content, encoding='utf-8')
-    print(f"Generated blog.html with {len(published)} posts → {output_path}")
-
-# ========== GENERATE DOCTOR LISTING ==========
-def generate_doctor_listing(doctors):
-    if not doctors:
-        print("No doctors to generate listing.")
-        return
-
-    cards = []
-    for d in doctors:
-        name = escape_html(clean_name(d.get('name', '')))
-        slug = slugify(d.get('name', ''))
-        specialty = escape_html((d.get('specialty') or '').title())
-        qualifications = escape_html(d.get('qualifications') or '')
-        photo_url = d.get('photo_url') or 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp'
-        profile_url = f"/doctors/doctor-{slug}.html"
-        appointment_url = f"/appointment.html?doctor={quote(d.get('name', ''))}"
-
-        if photo_url:
-            img_html = f'<img src="{photo_url}" alt="{name}" style="width:80px;height:80px;object-fit:cover;border-radius:50%;margin:0 auto 1rem;display:block;" loading="lazy">'
-        else:
-            img_html = '<div class="doctor-card-img-placeholder" style="display:block;margin:0 auto 1rem;"><svg width="80" height="80" viewBox="0 0 60 60"><circle cx="30" cy="22" r="16" fill="#a4ac86" opacity="0.5"/><ellipse cx="30" cy="55" rx="22" ry="14" fill="#a4ac86" opacity="0.4"/></svg></div>'
-
-        cards.append(f'''
-        <div class="doctor-card fade-in" onclick="location.href='{profile_url}'" style="background:#fff;border:1px solid #e0e0d0;min-height:200px;">
-            {img_html}
-            <h3>{name}</h3>
-            <p class="doctor-specialty">{specialty}</p>
-            <p class="doctor-qual">{qualifications}</p>
-            <a href="{appointment_url}" class="btn btn-outline btn-sm" aria-label="Book Appointment with {name}" onclick="event.stopPropagation();" style="margin-top:.8rem;color:#fff;background:#2d4a2b;">Book Appointment</a>
-        </div>
-        ''')
-
-    cards_html = "\n".join(cards)
-
-    template_path = Path('doctors.html')
-    if not template_path.exists():
-        print("doctors.html not found; cannot generate static listing.")
-        return
-
-    content = template_path.read_text(encoding='utf-8')
-    new_content = replace_container_content(content, "doctor-grid", cards_html)
-
-    GENERATED_DIR.mkdir(exist_ok=True)
-    output_path = GENERATED_DIR / 'doctors.html'
-    output_path.write_text(new_content, encoding='utf-8')
-    print(f"Generated doctors.html with {len(doctors)} doctors → {output_path}")
-
-# ========== GENERATE HOMEPAGE ==========
-def generate_homepage(posts, departments, doctors, updates):
-    # Static Services
-    STATIC_SERVICES = [
-        {"title": "Ambulance Services", "description": "24/7 emergency ambulance service for transporting patients to and from the hospital."},
-        {"title": "Endoscopy", "description": "Advanced upper and lower GI endoscopy including colonoscopy for accurate internal diagnosis."},
-        {"title": "Dialysis", "description": "In-house dialysis unit providing life-sustaining renal care with experienced nephrology support."},
-        {"title": "Digital X-Rays", "description": "High-resolution digital radiography with same-day results for fast, accurate diagnosis."},
-        {"title": "Vaccinations", "description": "Complete immunization services for children and adults — routine, travel, and seasonal vaccines."},
-        {"title": "TMT (Treadmill Test)", "description": "Cardiac stress testing for heart health assessment — conducted under expert supervision."},
-        {"title": "Holter Monitoring", "description": "Continuous 24-hour ECG recording to detect irregular heart rhythms."},
-        {"title": "ABPM (Ambulatory Blood Pressure Monitoring)", "description": "24-hour blood pressure monitoring to assess hypertension patterns."},
-        {"title": "Ultrasonography", "description": "Detailed ultrasound imaging for abdominal, obstetric, vascular, and soft-tissue evaluation."},
-        {"title": "Colonoscopy", "description": "Thorough colonoscopic screening and diagnostic procedures for gastrointestinal health."},
-        {"title": "24/7 Pharmacy", "description": "In-house pharmacy — we never close. Emergency medications and prescriptions anytime."},
-        {"title": "24/7 Diagnostic Lab", "description": "Round-the-clock laboratory services for in-patients and out-patients."}
-    ]
-    service_cards = []
-    for s in STATIC_SERVICES:
-        service_cards.append(f'''
-        <div class="service-card fade-in">
-            <div class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
-            <h3>{escape_html(s['title'])}</h3>
-            <p>{escape_html(s['description'])}</p>
-        </div>
-        ''')
-    service_cards_html = "\n".join(service_cards)
-
-    # Departments
-    dept_cards_html = ""
-    if departments:
-        dept_cards = []
-        for d in departments[:6]:
-            name = escape_html(d.get('name', ''))
-            slug = d.get('slug') or slugify(name)
-            link = f"department-pages/{slug}.html"
-            dept_cards.append(f'<a href="{link}" class="service-card department-card" style="text-decoration:none;"><h3>{name}</h3></a>')
-        dept_cards_html = "\n".join(dept_cards)
-
-    # Featured Doctors
-    featured_doctors_html = ""
-    if doctors:
-        doc_cards = []
-        for d in doctors[:6]:
-            name = escape_html(clean_name(d.get('name', '')))
-            slug = slugify(d.get('name', ''))
-            specialty = escape_html((d.get('specialty') or '').title())
-            qual = escape_html(d.get('qualifications') or '')
-            photo = d.get('photo_url') or ''
-            img_html = f'<img src="{photo}" alt="{name}" style="width:80px;height:80px;object-fit:cover;border-radius:50%;margin:0 auto 1rem;display:block;" loading="lazy">' if photo else '<div class="doctor-card-img-placeholder"><svg width="80" height="80" viewBox="0 0 60 60"><circle cx="30" cy="22" r="16" fill="#a4ac86" opacity="0.5"/><ellipse cx="30" cy="55" rx="22" ry="14" fill="#a4ac86" opacity="0.4"/></svg></div>'
-            profile_url = f"/doctors/doctor-{slug}.html"
-            doc_cards.append(f'''
-            <div class="doctor-card fade-in" onclick="location.href='{profile_url}'" style="background:#fff;border:1px solid #e0e0d0;min-height:200px;">
-                {img_html}
-                <h3>{name}</h3>
-                <p class="doctor-specialty">{specialty}</p>
-                <p class="doctor-qual">{qual}</p>
-                <a href="/appointment.html?doctor={quote(d.get('name', ''))}" class="btn btn-outline btn-sm" onclick="event.stopPropagation();" style="margin-top:.8rem;color:#fff;background:#2d4a2b;">Book Appointment</a>
-            </div>
-            ''')
-        featured_doctors_html = "\n".join(doc_cards)
-
-    # Blog Preview
-    blog_preview_html = ""
-    if posts:
-        published = [p for p in posts if (p.get('is_published') or '').strip().lower() in ['true', 'yes', '1']]
-        published.sort(key=lambda p: p.get('published_at') or p.get('date') or '', reverse=True)
-        for p in published[:3]:
-            slug = slugify(p.get('slug') or p.get('title', ''))
-            title = escape_html(p.get('title', 'Health Article'))
-            date = format_blog_date(p.get('published_at') or p.get('date', ''))
-            summary = escape_html(p.get('short_summary', ''))
-            image = p.get('cover_image_url', 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp')
-            url = f"/blog/blog-{slug}.html"
-            blog_preview_html += f'''
-            <article class="blog-preview-card fade-in">
-                <img src="{image}" alt="{title}" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:var(--radius);margin-bottom:0.8rem;">
-                <h3><a href="{url}">{title}</a></h3>
-                <time datetime="{p.get('published_at') or ''}">{date}</time>
-                <p>{summary}</p>
-            </article>
-            '''
-
-    # Updates Carousel
-    updates_html = ""
-    if updates:
-        slides = []
-        for u in updates[:3]:
-            media = u.get('media_url') or u.get('image_url') or u.get('link', '')
-            title = escape_html(u.get('title', ''))
-            desc = escape_html(u.get('description', ''))
-            date = u.get('date', '')
-            slides.append(f'''
-            <div class="update-slide">
-                <div class="update-media" style="background-image:url('{media}');"></div>
-                <div class="update-caption"><h3>{title}</h3><p>{desc}</p><small>{date}</small></div>
-            </div>
-            ''')
-        updates_html = f'''
-        <div class="carousel-wrapper">
-            <div class="carousel-slides">{''.join(slides)}</div>
-            <button class="carousel-prev">❮</button>
-            <button class="carousel-next">❯</button>
-        </div>
-        <div class="carousel-dots">{''.join([f'<span class="dot" data-index="{i}"></span>' for i in range(len(updates[:3]))])}</div>
-        '''
-
-    template_path = Path('index.html')
-    if not template_path.exists():
-        print("index.html not found; cannot generate homepage.")
-        return
-
-    content = template_path.read_text(encoding='utf-8')
-    content = replace_container_content(content, "services-grid", service_cards_html)
-    content = replace_container_content(content, "departments-grid", dept_cards_html)
-    content = replace_container_content(content, "featured-doctor-cards", featured_doctors_html)
-    content = replace_container_content(content, "blog-preview-grid", blog_preview_html)
-    content = replace_container_content(content, "updates-carousel", updates_html)
-
-    GENERATED_DIR.mkdir(exist_ok=True)
-    output_path = GENERATED_DIR / 'index.html'
-    output_path.write_text(content, encoding='utf-8')
-    print(f"Generated index.html with static content → {output_path}")
-
 # ========== GENERATE DEPARTMENT PAGES ==========
 def generate_department_pages(departments, doctors):
     output_dir = Path('departments')
@@ -895,6 +870,8 @@ def generate_department_pages(departments, doctors):
         dept_name = (dept.get('name') or '').strip()
         slug = slugify(dept.get('slug') or dept_name)
 
+        # Skip the thin auto-generated page entirely when a hand-built,
+        # fuller page already exists in department-pages/ for this slug.
         if (manual_dir / f'{slug}.html').exists():
             continue
 
@@ -902,7 +879,7 @@ def generate_department_pages(departments, doctors):
         filename = f'department-{slug}.html'
         page_url = f'{SITE_URL}/departments/{filename}'
         title = f"{dept_name.title()} Department | Ibn Sina Hospital, Budgam"
-        description = f"{dept_name.title()} department at Ibn Sina Hospital, Budgam — serving patients across Jammu and Kashmir."
+        description = f"{dept_name.title()} department at Ibn Sina Hospital, Budgam — serving patients across Jammu and Kashmir with expert specialists."
 
         dept_doctors = [d for d in doctors if (d.get('department') or '').strip().lower() == dept_name.lower()]
         doctor_list_html = ""
@@ -1006,7 +983,7 @@ def generate_gallery_page(gallery_items):
     Path('gallery.html').write_text(output_html, encoding='utf-8')
     return f'{SITE_URL}/gallery.html', output_html
 
-# ========== COLLECT MANUAL DEPARTMENT PAGES ==========
+# ========== NEW: COLLECT MANUAL DEPARTMENT PAGES ==========
 def collect_manual_department_pages():
     pages = []
     dept_dir = Path('department-pages')
@@ -1019,7 +996,7 @@ def collect_manual_department_pages():
         pages.append((url, content))
     return pages
 
-# ========== UPDATE SITEMAP ==========
+# ========== UPDATE SITEMAP (content-aware lastmod) ==========
 def update_sitemap(all_pages_with_content):
     cache = load_lastmod_cache()
     today = datetime.date.today().isoformat()
@@ -1081,10 +1058,6 @@ def submit_to_indexnow(url_list):
 
 # ========== MAIN ==========
 if __name__ == "__main__":
-    print("=" * 50)
-    print("IBN SINA HOSPITAL – STATIC GENERATOR")
-    print("=" * 50)
-
     print("Fetching doctors...")
     doctors = fetch_csv(DOCTORS_URL)
     print(f"Found {len(doctors)} doctors.")
@@ -1105,50 +1078,23 @@ if __name__ == "__main__":
     updates = fetch_csv(UPDATES_URL)
     print(f"Found {len(updates)} updates.")
 
-    # Save JSON data for main.js
     save_json_data(doctors, departments, posts, gallery_items, updates)
-
-    # Clean orphaned files BEFORE generating new ones
-    print("\nCleaning orphaned files...")
-    clean_orphaned_blog_files(posts)
-    clean_orphaned_doctor_files(doctors)
-    clean_orphaned_department_files(departments)
 
     departments_by_name = {(d.get('name') or '').strip().lower(): d for d in departments}
 
-    # Generate individual pages (unchanged)
-    print("\nGenerating individual pages...")
     doctor_urls, doctor_pages = generate_doctor_pages(doctors, departments_by_name)
     blog_urls, blog_pages = generate_blog_pages(posts)
     dept_urls, dept_pages = generate_department_pages(departments, doctors)
     gallery_url, gallery_html = generate_gallery_page(gallery_items)
 
-    # Generate static listing pages (NOW in generated-pages/)
-    print("\nGenerating static listing pages...")
-    generate_blog_listing(posts)
-    generate_doctor_listing(doctors)
-    generate_homepage(posts, departments, doctors, updates)
-
-    # Update blog.html static links (for SEO)
-    update_blog_index_links(posts)
-
-    # Collect manual department pages
+    # Collect manually created department pages (e.g., department-pages/*.html)
     manual_dept_pages = collect_manual_department_pages()
     print(f"Found {len(manual_dept_pages)} manual department pages.")
 
     all_dynamic_urls = doctor_urls + blog_urls + dept_urls + [gallery_url] + [url for url, _ in manual_dept_pages]
     all_pages_with_content = doctor_pages + blog_pages + dept_pages + [(gallery_url, gallery_html)] + manual_dept_pages
 
-    # Update sitemap
     update_sitemap(all_pages_with_content)
-
-    # Submit to IndexNow
     submit_to_indexnow(all_dynamic_urls)
 
-    print("\n" + "=" * 50)
-    print("GENERATION COMPLETE!")
-    print(f"✅ Generated pages saved to: {GENERATED_DIR}/")
-    print(f"✅ Individual blog articles: /blog/")
-    print(f"✅ Individual doctor profiles: /doctors/")
-    print(f"✅ Sitemap updated: sitemap.xml")
-    print("=" * 50)
+    print("Generation, sitemap update, and IndexNow submission complete.")
