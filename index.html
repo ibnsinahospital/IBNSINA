@@ -88,12 +88,14 @@
     }
     </script>
 
-    <!-- FAQPage Schema – updated to mention J&K and India -->
+    <!-- FAQPage Schema – updated to include PM-JAY and health checkups -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
       "mainEntity": [
+        {"@type":"Question","name":"Is Ibn Sina Hospital a PM-JAY / Ayushman Bharat empanelled hospital?","acceptedAnswer":{"@type":"Answer","text":"Yes, Ibn Sina Hospital is a PM-JAY (Ayushman Bharat) empanelled hospital. We offer cashless treatment to eligible families under the scheme."}},
+        {"@type":"Question","name":"What health checkup packages are available at Ibn Sina Hospital?","acceptedAnswer":{"@type":"Answer","text":"We offer Basic, Master, Cardiac, Diabetes, Women's Health, Senior Citizen, Pre-Employment, and Winter Health checkup packages. Visit our health checkup packages page for details."}},
         {"@type":"Question","name":"Where is Ibn Sina Hospital located?","acceptedAnswer":{"@type":"Answer","text":"Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111."}},
         {"@type":"Question","name":"Does Ibn Sina Hospital serve patients outside Budgam?","acceptedAnswer":{"@type":"Answer","text":"Yes, we welcome patients from across Jammu and Kashmir, including Srinagar, Baramulla, Pulwama, Ganderbal, Shopian, Anantnag, and also treat patients visiting from other parts of India."}},
         {"@type":"Question","name":"Is the pharmacy open 24/7?","acceptedAnswer":{"@type":"Answer","text":"Yes, Ibn Sina Pharmacy is open 24 hours, 365 days a year."}},
@@ -114,7 +116,7 @@
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
-    <!-- ===== HEADER ===== (unchanged) -->
+    <!-- ===== HEADER ===== -->
     <header class="site-header" id="site-header">
         <div class="header-inner container">
             <a href="index.html" class="logo" aria-label="Ibn Sina Hospital Home">
@@ -128,6 +130,8 @@
                     <li><a href="services.html" class="nav-link">Services</a></li>
                     <li><a href="doctors.html" class="nav-link">Doctors</a></li>
                     <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html" class="nav-link">PM-JAY / Insurance</a></li>
+                    <li><a href="health-checkup-packages.html" class="nav-link">Health Checkups</a></li>
                     <li><a href="blog.html" class="nav-link">Blog</a></li>
                     <li><a href="careers.html" class="nav-link">Careers</a></li>
                     <li><a href="faq.html" class="nav-link">FAQ</a></li>
@@ -171,12 +175,14 @@
                 </svg>
             </div>
             <div class="hero-content container">
+                <div style="display:inline-block; background:#2d4a2b; color:#fff; padding:4px 14px; border-radius:30px; font-size:0.7rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; margin-bottom:10px;">✅ PM-JAY Empanelled • Cashless Treatment</div>
                 <h1 class="hero-title">Best Multi‑Specialty Hospital in Budgam &amp; Srinagar, J&amp;K</h1>
                 <p class="hero-subtitle">Trusted Care for Budgam, Srinagar, Ompora &amp; the Kashmir Valley – Serving Patients Across India</p>
                 <p class="hero-desc">Dialysis, endoscopy, TMT, Holter monitoring, ABPM, digital X‑ray, and expert consultants – all under one roof. Serving families from <strong>Ganderbal, Pulwama, Shopian, Kulgam</strong>, across Jammu &amp; Kashmir, and patients visiting from all over India.</p>
                 <div class="hero-ctas">
                     <a href="appointment.html" class="btn btn-primary btn-lg">Book an Appointment</a>
                     <a href="tel:9622552553" class="btn btn-emergency btn-lg">Call Emergency: 9622552553</a>
+                    <a href="insurance-pmjay.html" class="btn btn-outline-light btn-lg">PM-JAY / Insurance</a>
                 </div>
             </div>
             <div class="hero-wave" aria-hidden="true">
@@ -184,7 +190,7 @@
             </div>
         </section>
 
-        <!-- ===== QUICK INFO ===== (unchanged) -->
+        <!-- ===== QUICK INFO ===== -->
         <section class="quick-info" aria-label="Quick information">
             <div class="container quick-info-grid">
                 <div class="quick-info-card">
@@ -198,6 +204,10 @@
                 <div class="quick-info-card">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d4a2b" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
                     <span>Near Railway Station, Ompora, Budgam, J&K 191111</span>
+                </div>
+                <div class="quick-info-card">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d4a2b" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span><strong>PM-JAY / Insurance Accepted</strong> — <a href="insurance-pmjay.html" style="color:#2d4a2b; font-weight:700;">Learn more →</a></span>
                 </div>
             </div>
         </section>
@@ -226,7 +236,7 @@
             <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 30 C360 0 720 60 1080 30 C1260 15 1380 40 1440 30 L1440 60 L0 60 Z" fill="#faf9f6"/><path d="M0 45 C360 20 720 65 1080 40 C1260 28 1380 48 1440 40 L1440 60 L0 60 Z" fill="#a4ac86" opacity="0.15"/></svg>
         </div>
 
-        <!-- ===== LATEST UPDATES ===== (unchanged) -->
+        <!-- ===== LATEST UPDATES ===== -->
         <section class="section updates-section" style="background:#faf9f6;">
             <div class="container">
                 <h2 class="section-title text-center">Latest Updates</h2>
@@ -246,6 +256,8 @@
                     <div class="why-card"><h3>Consultant‑Led Care</h3><p>Every patient is guided by senior consultants.</p></div>
                     <div class="why-card"><h3>24/7 OPD, Emergency & Pharmacy</h3><p>We never close – OPD, emergency, lab, pharmacy all work round the clock.</p></div>
                     <div class="why-card"><h3>Advanced Diagnostics</h3><p>Dialysis, endoscopy, TMT, Holter, ABPM, digital X‑ray – all on‑site.</p></div>
+                    <div class="why-card"><h3>PM-JAY & Insurance Accepted</h3><p>Get cashless treatment under Ayushman Bharat and other health insurance plans. <a href="insurance-pmjay.html" style="color:#2d4a2b; font-weight:700;">Learn more →</a></p></div>
+                    <div class="why-card"><h3>Affordable Health Checkups</h3><p>Choose from Basic, Master, Cardiac, Diabetes, Women's Health, and Senior Citizen packages. <a href="health-checkup-packages.html" style="color:#2d4a2b; font-weight:700;">View packages →</a></p></div>
                     <div class="why-card"><h3>Trusted Across J&amp;K &amp; India</h3><p>From orthopedics to nephrology, our experts serve patients across <strong>Srinagar, Ganderbal, Pulwama, Shopian, Kulgam</strong>, the entire <strong>Jammu &amp; Kashmir</strong> UT, and patients visiting from across <strong>India</strong>.</p></div>
                 </div>
             </div>
@@ -256,7 +268,9 @@
             <div class="container">
                 <h2 class="section-title text-center">Frequently Asked Questions</h2>
                 <div class="faq-list">
-                    <details open><summary>Where is Ibn Sina Hospital located?</summary><p>Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111.</p></details>
+                    <details open><summary>Is Ibn Sina Hospital a PM-JAY / Ayushman Bharat empanelled hospital?</summary><p>Yes, Ibn Sina Hospital is a PM-JAY empanelled hospital. We offer cashless treatment to eligible families under the Ayushman Bharat scheme. Visit our <a href="insurance-pmjay.html">PM-JAY / Insurance page</a> for details.</p></details>
+                    <details><summary>What health checkup packages are available?</summary><p>We offer comprehensive health checkup packages including Basic, Master, Cardiac, Diabetes, Women's Health, Senior Citizen, Pre-Employment, and Winter Health checkups. <a href="health-checkup-packages.html">View all packages →</a></p></details>
+                    <details><summary>Where is Ibn Sina Hospital located?</summary><p>Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111.</p></details>
                     <details><summary>Does Ibn Sina Hospital serve patients outside Budgam?</summary><p>Yes, we welcome patients from across Jammu and Kashmir, including <strong>Srinagar, Baramulla, Pulwama, Ganderbal, Shopian, and Anantnag</strong>. We also treat patients visiting from other parts of <strong>India</strong>.</p></details>
                     <details><summary>Is the pharmacy open 24/7?</summary><p>Yes, Ibn Sina Pharmacy is open 24 hours, 365 days a year.</p></details>
                     <details><summary>Does the hospital provide dialysis?</summary><p>Yes, dialysis services are available.</p></details>
@@ -276,7 +290,7 @@
                     <a href="services.html" class="btn btn-outline">View All Services & Departments</a>
                 </div>
                 <p class="text-center" style="margin-top:1rem;">
-                    <small>Explore our <a href="department-pages/specialties-directory.html">medical specialties</a> and <a href="department-pages/jammu-kashmir-healthcare.html">healthcare services across Jammu & Kashmir</a>.</small>
+                    <small>Explore our <a href="department-pages/specialties-directory.html">medical specialties</a> and <a href="health-checkup-packages.html">affordable health checkup packages</a>.</small>
                 </p>
             </div>
         </section>
@@ -346,7 +360,7 @@
             </div>
         </section>
 
-        <!-- ===== CTA BANNER ===== (unchanged) -->
+        <!-- ===== CTA BANNER ===== -->
         <section class="cta-banner">
             <div class="container cta-banner-content">
                 <div class="cta-banner-text">
@@ -355,6 +369,7 @@
                     <div class="cta-banner-buttons">
                         <a href="appointment.html" class="btn btn-primary btn-lg">Book an Appointment</a>
                         <a href="contact.html" class="btn btn-outline-light btn-lg">Find Us on Map</a>
+                        <a href="insurance-pmjay.html" class="btn btn-outline-light btn-lg">PM-JAY / Insurance</a>
                     </div>
                 </div>
                 <div class="cta-banner-emergency">
@@ -367,7 +382,7 @@
             </div>
         </section>
 
-        <!-- ===== AREAS WE SERVE ===== (updated to include J&K and India) -->
+        <!-- ===== AREAS WE SERVE ===== -->
         <section class="service-areas-mini" aria-label="Areas we serve" style="background:#f5f8f2; padding: 30px 0; border-top: 1px solid #e2e8df; border-bottom: 1px solid #e2e8df;">
             <div class="container">
                 <p style="text-align:center; color:#4e5c4a; font-weight:600; margin:0; font-size:1.05rem;">
@@ -379,12 +394,14 @@
                     <a href="service-areas.html" style="color:#2d4a2b; text-decoration:underline;">View all service areas</a> 
                     <span style="margin:0 0.5rem;">|</span> 
                     <a href="contact.html" style="color:#2d4a2b; text-decoration:underline;">Get directions</a>
+                    <span style="margin:0 0.5rem;">|</span> 
+                    <a href="health-checkup-packages.html" style="color:#2d4a2b; text-decoration:underline;">Health checkup packages</a>
                 </p>
             </div>
         </section>
     </main>
 
-    <!-- ===== FOOTER ===== (updated to include J&K and India) -->
+    <!-- ===== FOOTER ===== -->
     <footer class="site-footer">
         <div class="footer-wave" aria-hidden="true">
             <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
@@ -412,6 +429,8 @@
                     <li><a href="services.html">Services</a></li>
                     <li><a href="doctors.html">Doctors</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html">PM-JAY / Insurance</a></li>
+                    <li><a href="health-checkup-packages.html">Health Checkups</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="careers.html">Careers</a></li>
                     <li><a href="faq.html">FAQ</a></li>
@@ -433,4 +452,4 @@
         </div>
     </footer>
 </body>
-</html>
+                                                                                                                                                                                                 </html>
