@@ -6,20 +6,34 @@
     <title>Health Checkup Packages in Budgam – Ibn Sina Hospital, J&amp;K</title>
     <meta name="description" content="Book affordable health checkup packages at Ibn Sina Hospital, Budgam. Full body checkup, cardiac, diabetes, women's health &amp; senior citizen packages. Call 9622552553.">
     <link rel="canonical" href="https://ibnsinahospital.in/health-checkup-packages.html">
+    <meta name="robots" content="index,follow">
     <meta property="og:title" content="Health Checkup Packages in Budgam – Ibn Sina Hospital">
     <meta property="og:description" content="Book affordable health checkup packages in Budgam. Full body, cardiac, diabetes, women's &amp; senior citizen packages available. Call 9622552553.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ibnsinahospital.in/health-checkup-packages.html">
     <meta property="og:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Health Checkup Packages – Ibn Sina Hospital Budgam">
+    <meta name="twitter:description" content="Book affordable health checkup packages in Budgam. Full body, cardiac, diabetes &amp; senior citizen packages.">
+    <meta name="twitter:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+    <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-fix.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Schema -->
+    <!-- Hospital Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Hospital",
       "name": "Ibn Sina Hospital",
       "url": "https://ibnsinahospital.in/",
+      "logo": "https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp",
+      "image": "https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Near Railway Station, Ompora Railway Station Road, Ompora",
@@ -28,6 +42,19 @@
         "postalCode": "191111",
         "addressCountry": "IN"
       },
+      "areaServed": [
+        { "@type": "Country", "name": "India" },
+        { "@type": "AdministrativeArea", "name": "Jammu and Kashmir" },
+        { "@type": "City", "name": "Budgam" },
+        { "@type": "City", "name": "Srinagar" },
+        { "@type": "City", "name": "Ompora" },
+        { "@type": "City", "name": "Ganderbal" },
+        { "@type": "City", "name": "Pulwama" },
+        { "@type": "City", "name": "Shopian" },
+        { "@type": "City", "name": "Kulgam" },
+        { "@type": "City", "name": "Baramulla" },
+        { "@type": "City", "name": "Anantnag" }
+      ],
       "telephone": "+919622552553",
       "email": "weibnsina@gmail.com",
       "openingHoursSpecification": [
@@ -41,8 +68,31 @@
     }
     </script>
 
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://ibnsinahospital.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Health Checkup Packages",
+          "item": "https://ibnsinahospital.in/health-checkup-packages.html"
+        }
+      ]
+    }
+    </script>
+
     <style>
         .health-packages-page { --hp-accent: #2d4a2b; --hp-gold: #c9b99a; }
+
         .health-packages-page .breadcrumb-premium {
             font-size: 0.85rem; font-weight: 500; color: #71806d; margin-bottom: 1.5rem;
         }
@@ -80,6 +130,7 @@
             border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 20px;
             padding: 24px 22px; box-shadow: 0 8px 30px rgba(45, 74, 43, 0.04);
             transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+            display: flex; flex-direction: column;
         }
         .health-packages-page .package-card:hover {
             transform: translateY(-8px); box-shadow: 0 20px 45px rgba(45, 74, 43, 0.08);
@@ -90,10 +141,10 @@
             font-family: 'Poppins', sans-serif; font-size: 1.15rem; color: var(--hp-accent); margin-bottom: 0.2rem;
         }
         .health-packages-page .package-card .package-price {
-            font-size: 1.3rem; font-weight: 700; color: var(--hp-accent); margin-bottom: 0.3rem;
+            font-size: 1.4rem; font-weight: 700; color: var(--hp-accent); margin-bottom: 0.3rem;
         }
         .health-packages-page .package-card .package-price small {
-            font-size: 0.8rem; font-weight: 400; color: #82907d; text-decoration: line-through;
+            font-size: 0.75rem; font-weight: 500; color: #82907d;
         }
         .health-packages-page .package-card p {
             color: #4e5c4a; line-height: 1.7; font-size: 0.9rem; margin-bottom: 0.5rem;
@@ -106,7 +157,7 @@
             font-weight: 600; color: var(--hp-accent); border: 1px solid #dce4d6;
         }
         .health-packages-page .package-card .package-actions {
-            display: flex; flex-wrap: wrap; gap: 10px; margin-top: 0.5rem;
+            display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto;
         }
         .health-packages-page .package-card .package-actions a {
             display: inline-block; padding: 8px 18px; border-radius: 60px; font-weight: 700;
@@ -132,7 +183,14 @@
         .health-packages-page .hp-cta-wrap h3 {
             font-family: 'Poppins', sans-serif; color: var(--hp-accent); font-size: 1.3rem; margin-bottom: 0.5rem;
         }
-        .health-packages-page .hp-cta-wrap p { color: #4e5c4a; max-width: 600px; margin: 0 auto 1rem; }
+        .health-packages-page .hp-cta-wrap p { color: #4e5c4a; max-width: 650px; margin: 0 auto 1rem; }
+        .health-packages-page .hp-cta-wrap ul {
+            text-align: left; max-width: 500px; margin: 0 auto 1rem; color: #4e5c4a;
+            list-style: none; padding: 0; line-height: 2;
+        }
+        .health-packages-page .hp-cta-wrap ul li {
+            padding-left: 0;
+        }
         .health-packages-page .hp-cta-wrap .btn-group {
             display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
         }
@@ -171,6 +229,68 @@
             background: #2d4a2b; color: #ffffff; border-color: #2d4a2b;
         }
 
+        /* Internal linking */
+        .health-packages-page .explore-section {
+            padding: 40px 0 10px;
+        }
+        .health-packages-page .explore-section h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #2d4a2b;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .health-packages-page .explore-section .section-subtitle {
+            text-align: center;
+            color: #4e5c4a;
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+        }
+        .health-packages-page .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+        .health-packages-page .explore-card {
+            background: #fff;
+            border: 1px solid #e2e8df;
+            border-radius: 14px;
+            padding: 20px 22px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 4px 12px rgba(45, 74, 43, 0.03);
+        }
+        .health-packages-page .explore-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(45, 74, 43, 0.08);
+            border-color: #a4ac86;
+        }
+        .health-packages-page .explore-card h3 {
+            color: #2d4a2b; font-size: 1.05rem; margin-bottom: 0.4rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        .health-packages-page .explore-card p {
+            color: #5a6b4a; font-size: 0.88rem; line-height: 1.55; margin-bottom: 0;
+        }
+        .health-packages-page .explore-card .explore-icon {
+            font-size: 1.6rem; margin-bottom: 0.5rem; display: block;
+        }
+
+        /* Dept pill grid */
+        .health-packages-page .dept-pill-grid {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+            max-width: 900px; margin: 0 auto;
+        }
+        .health-packages-page .dept-pill-grid a {
+            display: inline-block; padding: 8px 18px; background: #fff;
+            border: 1px solid #dce4d6; border-radius: 60px; color: #2d4a2b;
+            font-size: 0.88rem; font-weight: 600; text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .health-packages-page .dept-pill-grid a:hover {
+            background: #2d4a2b; color: #fff; border-color: #2d4a2b;
+        }
+
         @media (max-width: 768px) {
             .health-packages-page .hp-hero-wrap { padding: 24px 20px; border-radius: 20px; }
             .health-packages-page .hp-hero-wrap h1 { font-size: 1.8rem; }
@@ -186,19 +306,22 @@
 <body class="health-packages-page">
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
+    <!-- ===== HEADER (Updated: 11 nav items + SVG hamburger + SVG emergency) ===== -->
     <header class="site-header" id="site-header">
         <div class="header-inner container">
             <a href="index.html" class="logo" aria-label="Ibn Sina Hospital Home">
                 <img src="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp" alt="Ibn Sina Hospital Logo" class="logo-img" style="height: 40px; width: auto;">
                 <span class="logo-text">Ibn Sina <strong>Hospital</strong></span>
             </a>
-            <nav class="main-nav" id="main-nav">
+            <nav class="main-nav" id="main-nav" aria-label="Main navigation">
                 <ul class="nav-list">
                     <li><a href="index.html" class="nav-link">Home</a></li>
                     <li><a href="about.html" class="nav-link">About</a></li>
                     <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="health-checkup-packages.html" class="nav-link active">Health Checkups</a></li>
                     <li><a href="doctors.html" class="nav-link">Doctors</a></li>
                     <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html" class="nav-link">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html" class="nav-link">Blog</a></li>
                     <li><a href="careers.html" class="nav-link">Careers</a></li>
                     <li><a href="faq.html" class="nav-link">FAQ</a></li>
@@ -206,15 +329,22 @@
                 </ul>
             </nav>
             <div class="header-actions">
-                <a href="tel:9622552553" class="emergency-badge">📞 9622552553</a>
+                <a href="tel:9622552553" class="emergency-badge" aria-label="Emergency call: 9622552553">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+                    <span>Emergency: 9622552553</span>
+                </a>
                 <a href="appointment.html" class="btn btn-primary btn-book">Book Appointment</a>
-                <button class="hamburger" id="hamburger">☰</button>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
             </div>
         </div>
     </header>
 
     <main id="main-content" class="container">
-        <nav class="breadcrumb-premium">
+        <nav class="breadcrumb-premium" aria-label="Breadcrumb">
             <a href="index.html">Home</a> <span>›</span> Health Checkup Packages
         </nav>
 
@@ -243,7 +373,7 @@
             <div class="package-card">
                 <span class="package-icon">🩺</span>
                 <h3>Basic Health Checkup</h3>
-                <div class="package-price">₹999</div>
+                <div class="package-price">₹1,299</div>
                 <p>Essential screening for general health assessment. Perfect for routine checkups.</p>
                 <div class="package-tests">
                     <span>CBC</span>
@@ -262,7 +392,7 @@
             <div class="package-card">
                 <span class="package-icon">🏥</span>
                 <h3>Master Health Checkup</h3>
-                <div class="package-price">₹1,999</div>
+                <div class="package-price">₹2,499</div>
                 <p>Comprehensive screening for adults 30+. Includes ECG, chest X‑ray, and more.</p>
                 <div class="package-tests">
                     <span>CBC</span>
@@ -283,7 +413,7 @@
             <div class="package-card">
                 <span class="package-icon">❤️</span>
                 <h3>Cardiac Checkup</h3>
-                <div class="package-price">₹1,499</div>
+                <div class="package-price">₹1,899</div>
                 <p>Focused heart health screening for early detection of cardiovascular issues.</p>
                 <div class="package-tests">
                     <span>ECG</span>
@@ -302,7 +432,7 @@
             <div class="package-card">
                 <span class="package-icon">🩸</span>
                 <h3>Diabetes Checkup</h3>
-                <div class="package-price">₹1,199</div>
+                <div class="package-price">₹1,499</div>
                 <p>Comprehensive diabetes screening for early detection and management.</p>
                 <div class="package-tests">
                     <span>Fasting Sugar</span>
@@ -321,7 +451,7 @@
             <div class="package-card">
                 <span class="package-icon">👩‍⚕️</span>
                 <h3>Women's Health Package</h3>
-                <div class="package-price">₹1,499</div>
+                <div class="package-price">₹1,899</div>
                 <p>Complete health screening for women of all ages. Includes gynaecological assessment.</p>
                 <div class="package-tests">
                     <span>CBC</span>
@@ -340,7 +470,7 @@
             <div class="package-card">
                 <span class="package-icon">👴</span>
                 <h3>Senior Citizen Package</h3>
-                <div class="package-price">₹2,499</div>
+                <div class="package-price">₹2,999</div>
                 <p>Comprehensive health screening for adults 60+. Includes heart, bone, and eye screening.</p>
                 <div class="package-tests">
                     <span>Complete Blood</span>
@@ -360,7 +490,7 @@
             <div class="package-card">
                 <span class="package-icon">💼</span>
                 <h3>Pre‑Employment Package</h3>
-                <div class="package-price">₹899</div>
+                <div class="package-price">₹1,199</div>
                 <p>Essential health screening for job seekers. Fast turnaround time.</p>
                 <div class="package-tests">
                     <span>CBC</span>
@@ -379,7 +509,7 @@
             <div class="package-card">
                 <span class="package-icon">💍</span>
                 <h3>Pre‑Marriage Package</h3>
-                <div class="package-price">₹1,299</div>
+                <div class="package-price">₹1,599</div>
                 <p>Health screening for couples before marriage. Includes genetic counselling.</p>
                 <div class="package-tests">
                     <span>Blood Group</span>
@@ -398,7 +528,7 @@
             <div class="package-card">
                 <span class="package-icon">❄️</span>
                 <h3>Winter Health Checkup</h3>
-                <div class="package-price">₹999</div>
+                <div class="package-price">₹1,299</div>
                 <p>Seasonal screening for winter‑related health concerns. Stay healthy this winter.</p>
                 <div class="package-tests">
                     <span>CBC</span>
@@ -422,12 +552,12 @@
                 <strong>modern diagnostics</strong> – all conveniently located in Budgam, serving patients 
                 from <strong>Srinagar, Ganderbal, Pulwama</strong> and across <strong>Jammu &amp; Kashmir</strong>.
             </p>
-            <ul style="text-align: left; max-width: 500px; margin: 0 auto 1rem; color: #4e5c4a; list-style: none; padding: 0;">
-                <li>✅ <strong>24/7 Pharmacy &amp; Lab</strong> – No waiting</li>
-                <li>✅ <strong>Experienced Consultants</strong> – Specialist doctors</li>
-                <li>✅ <strong>Cashless Options</strong> – PM‑JAY &amp; Insurance accepted</li>
-                <li>✅ <strong>Free Consultation</strong> – With every package</li>
-                <li>✅ <strong>Same‑Day Reports</strong> – Fast turnaround</li>
+            <ul>
+                <li>✅ <strong>24/7 Pharmacy &amp; Lab</strong></li>
+                <li>✅ <strong>Experienced Consultants</strong> – specialist doctors</li>
+                <li>✅ <strong>Cashless Options</strong> – PM‑JAY &amp; insurance accepted</li>
+                <li>✅ <strong>Same‑Day Reports</strong> for most tests</li>
+                <li>✅ <strong>Accessible Location</strong> – near Ompora Railway Station</li>
             </ul>
             <div class="btn-group">
                 <a href="appointment.html" class="btn-primary-faq">📅 Book a Package</a>
@@ -436,6 +566,78 @@
             </div>
         </div>
 
+        <!-- ================= EXPLORE ================= -->
+        <section class="explore-section">
+            <h2>Explore Ibn Sina Hospital</h2>
+            <p class="section-subtitle">
+                Learn more about our doctors, departments, and patient resources.
+            </p>
+            <div class="explore-grid">
+                <a href="doctors.html" class="explore-card">
+                    <span class="explore-icon">👨‍⚕️</span>
+                    <h3>Doctors &amp; Specialists</h3>
+                    <p>Browse our consultant-led team across 20+ specialties.</p>
+                </a>
+                <a href="services.html" class="explore-card">
+                    <span class="explore-icon">🩺</span>
+                    <h3>Hospital Services</h3>
+                    <p>Learn about our diagnostics, emergency care, dialysis, and inpatient facilities.</p>
+                </a>
+                <a href="insurance-pmjay.html" class="explore-card">
+                    <span class="explore-icon">📄</span>
+                    <h3>PM-JAY / Insurance</h3>
+                    <p>Cashless treatment under Ayushman Bharat PM-JAY and other insurance schemes.</p>
+                </a>
+                <a href="service-areas.html" class="explore-card">
+                    <span class="explore-icon">🌍</span>
+                    <h3>Areas We Serve</h3>
+                    <p>Learn about the regions and districts we serve across Jammu &amp; Kashmir.</p>
+                </a>
+                <a href="blog.html" class="explore-card">
+                    <span class="explore-icon">📰</span>
+                    <h3>Health Blog</h3>
+                    <p>Trusted health articles from our team for J&amp;K families.</p>
+                </a>
+                <a href="appointment.html" class="explore-card">
+                    <span class="explore-icon">📅</span>
+                    <h3>Book an Appointment</h3>
+                    <p>Book a consultation with one of our specialists.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- ================= DEPARTMENTS PILL GRID ================= -->
+        <section style="margin: 40px 0 20px;">
+            <h2 style="font-family: 'Poppins', sans-serif; color: #2d4a2b; text-align: center;">Explore Our Departments</h2>
+            <p style="text-align:center; color:#4e5c4a; max-width:700px; margin: 0 auto 1.5rem;">
+                Browse our clinical, surgical, and diagnostic specialties.
+            </p>
+            <div class="dept-pill-grid">
+                <a href="department-pages/general-medicine.html">General Medicine</a>
+                <a href="department-pages/general-surgery.html">General Surgery</a>
+                <a href="department-pages/orthopaedics.html">Orthopaedics</a>
+                <a href="department-pages/cardiology.html">Cardiology</a>
+                <a href="department-pages/nephrology.html">Nephrology</a>
+                <a href="department-pages/gastroenterology.html">Gastroenterology</a>
+                <a href="department-pages/gynaecology.html">Gynaecology</a>
+                <a href="department-pages/urology.html">Urology</a>
+                <a href="department-pages/ent.html">ENT</a>
+                <a href="department-pages/ophthalmology.html">Ophthalmology</a>
+                <a href="department-pages/dermatology.html">Dermatology</a>
+                <a href="department-pages/physiotherapy.html">Physiotherapy</a>
+                <a href="department-pages/dentistry.html">Dentistry</a>
+                <a href="department-pages/pulmonology.html">Pulmonology</a>
+                <a href="department-pages/rheumatology.html">Rheumatology</a>
+                <a href="department-pages/plastic-surgery.html">Plastic Surgery</a>
+                <a href="department-pages/pediatric-surgery.html">Pediatric Surgery</a>
+                <a href="department-pages/radiology.html">Radiology</a>
+                <a href="department-pages/neonatal-intensive-care-unit.html">NICU</a>
+                <a href="department-pages/specialties-directory.html">All Specialties</a>
+                <a href="department-pages/doctor-directory.html">Doctor Directory</a>
+            </div>
+        </section>
+
+        <!-- ================= AREAS SERVED ================= -->
         <div class="areas-serve-premium">
             <p style="font-weight: 700; color: #2d4a2b; margin: 0 0 12px; font-size: 1.1rem;">
                 🌍 Serving Families Across Jammu &amp; Kashmir
@@ -459,6 +661,7 @@
         </div>
     </main>
 
+    <!-- ===== FOOTER (Updated: 11 quick links + service areas) ===== -->
     <footer class="site-footer">
         <div class="footer-wave" aria-hidden="true">
             <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
@@ -467,8 +670,12 @@
             <div class="footer-col">
                 <h3 class="footer-logo">Ibn Sina <strong>Hospital</strong></h3>
                 <address>Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111</address>
-                <p>📞 <a href="tel:9622552553">9622552553 / 9419023501</a></p>
-                <p>✉ <a href="mailto:weibnsina@gmail.com">weibnsina@gmail.com</a></p>
+                <p><a href="tel:9622552553">📞 9622552553 / 9419023501</a></p>
+                <p><a href="mailto:weibnsina@gmail.com">✉ weibnsina@gmail.com</a></p>
+                <p style="margin-top:0.5rem; font-size:0.85rem; color:#71806d;">
+                    <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam –
+                    across <strong>Jammu &amp; Kashmir</strong> &amp; <strong>India</strong>
+                </p>
             </div>
             <div class="footer-col">
                 <h4>OPD &amp; Emergency</h4>
@@ -480,8 +687,10 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="services.html">Services</a></li>
+                    <li><a href="health-checkup-packages.html">Health Checkup Packages</a></li>
                     <li><a href="doctors.html">Doctors</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="careers.html">Careers</a></li>
                     <li><a href="faq.html">FAQ</a></li>
@@ -491,9 +700,9 @@
             <div class="footer-col">
                 <h4>Stay Connected</h4>
                 <div class="social-icons">
-                    <a href="https://www.facebook.com/share/1HSWNC9UEy/" target="_blank" rel="noopener">FB</a>
-                    <a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" target="_blank" rel="noopener">IG</a>
-                    <a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" target="_blank" rel="noopener">YT</a>
+                    <a href="https://www.facebook.com/share/1HSWNC9UEy/" target="_blank" rel="noopener" aria-label="Facebook" class="social-icon">FB</a>
+                    <a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon">IG</a>
+                    <a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon">YT</a>
                 </div>
             </div>
         </div>
@@ -509,4 +718,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <script src="js/animations.js" defer></script>
 </body>
-  </html>
+</html>
