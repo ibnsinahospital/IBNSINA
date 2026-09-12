@@ -4,23 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- ✅ UPDATED SEO TITLE -->
     <title>Careers at Ibn Sina Hospital – Join Our Team in Budgam &amp; Srinagar, J&amp;K</title>
     
-    <!-- ✅ UPDATED SEO DESCRIPTION -->
     <meta name="description" content="Join the team at Ibn Sina Hospital in Ompora, Budgam. Current openings for medical &amp; administrative staff. Serving patients from Srinagar, Ganderbal &amp; across J&amp;K. Apply now.">
     
     <link rel="canonical" href="https://ibnsinahospital.in/careers.html">
     <meta name="robots" content="index,follow">
     
-    <!-- ✅ UPDATED OPEN GRAPH -->
     <meta property="og:title" content="Careers at Ibn Sina Hospital – Join Our Team in Budgam &amp; Srinagar">
     <meta property="og:description" content="Current openings for medical and administrative staff at Ibn Sina Hospital in Ompora, Budgam. Serving Srinagar, Ganderbal, Pulwama &amp; across J&amp;K.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ibnsinahospital.in/careers.html">
     <meta property="og:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     
-    <!-- ✅ UPDATED TWITTER -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Careers at Ibn Sina Hospital – Join Our Team">
     <meta name="twitter:description" content="Current openings for medical and administrative staff at Ibn Sina Hospital, Budgam. Serving Srinagar, Ganderbal &amp; across J&amp;K.">
@@ -28,11 +26,12 @@
     
     <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-fix.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- ✅ UPDATED HOSPITAL SCHEMA WITH AREASERVED -->
+    <!-- Hospital Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -118,16 +117,12 @@
     }
     </script>
 
-    <!-- =========================================================
-         PREMIUM CAREERS PAGE STYLES (Scoped to .careers-page)
-    ========================================================== -->
     <style>
         .careers-page {
             --careers-accent: #2d4a2b;
             --careers-gold: #c9b99a;
         }
 
-        /* ----- Breadcrumb ----- */
         .careers-page .breadcrumb-premium {
             font-size: 0.85rem;
             font-weight: 500;
@@ -146,7 +141,6 @@
             color: #a4ac86;
         }
 
-        /* ----- Hero Section ----- */
         .careers-page .careers-hero-wrap {
             position: relative;
             background: linear-gradient(145deg, #f5f8f2, #eaf1e6);
@@ -199,7 +193,6 @@
             font-weight: 700;
         }
 
-        /* ----- Benefits / Why Work With Us ----- */
         .careers-page .benefits-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -240,7 +233,6 @@
             color: #5a6b4a;
         }
 
-        /* ----- Culture Section ----- */
         .careers-page .culture-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -280,7 +272,6 @@
             color: #5a6b4a;
         }
 
-        /* ----- Job Listings (Glassmorphism) ----- */
         .careers-page .job-listings-container {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(8px);
@@ -309,7 +300,6 @@
             margin-top: 4px;
         }
 
-        /* ----- Application Form (Glassmorphism) ----- */
         .careers-page .application-form-wrapper {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(8px);
@@ -412,7 +402,6 @@
             box-shadow: 0 8px 20px rgba(45, 74, 43, 0.2);
         }
 
-        /* ----- Areas We Serve (Premium Badge Cloud) ----- */
         .careers-page .areas-serve-premium {
             background: linear-gradient(145deg, #f5f8f2, #ecf2e8);
             border-radius: 24px;
@@ -468,7 +457,6 @@
             text-decoration: underline;
         }
 
-        /* ----- Section Divider ----- */
         .careers-page .section-divider {
             display: flex;
             align-items: center;
@@ -496,7 +484,71 @@
             opacity: 0.5;
         }
 
-        /* ----- Responsive ----- */
+        /* Explore cards */
+        .careers-page .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+        .careers-page .explore-card {
+            background: #fff;
+            border: 1px solid #e2e8df;
+            border-radius: 14px;
+            padding: 20px 22px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+        .careers-page .explore-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(45, 74, 43, 0.08);
+            border-color: #a4ac86;
+        }
+        .careers-page .explore-card h3 {
+            color: #2d4a2b;
+            font-size: 1.05rem;
+            margin-bottom: 0.4rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        .careers-page .explore-card p {
+            color: #5a6b4a;
+            font-size: 0.88rem;
+            line-height: 1.55;
+            margin-bottom: 0;
+        }
+        .careers-page .explore-card .explore-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        /* Pill grid */
+        .careers-page .pill-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .careers-page .pill-grid a {
+            display: inline-block;
+            padding: 8px 18px;
+            background: #fff;
+            border: 1px solid #dce4d6;
+            border-radius: 60px;
+            color: #2d4a2b;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .careers-page .pill-grid a:hover {
+            background: #2d4a2b;
+            color: #fff;
+            border-color: #2d4a2b;
+        }
+
         @media (max-width: 768px) {
             .careers-page .careers-hero-wrap {
                 padding: 24px 20px;
@@ -528,7 +580,7 @@
 <body class="careers-page">
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
-    <!-- ===== HEADER (Unchanged) ===== -->
+    <!-- ===== HEADER (Updated: 11 nav items) ===== -->
     <header class="site-header" id="site-header">
         <div class="header-inner container">
             <a href="index.html" class="logo" aria-label="Ibn Sina Hospital Home">
@@ -540,8 +592,10 @@
                     <li><a href="index.html" class="nav-link">Home</a></li>
                     <li><a href="about.html" class="nav-link">About</a></li>
                     <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="health-checkup-packages.html" class="nav-link">Health Checkups</a></li>
                     <li><a href="doctors.html" class="nav-link">Doctors</a></li>
                     <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html" class="nav-link">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html" class="nav-link">Blog</a></li>
                     <li><a href="careers.html" class="nav-link active">Careers</a></li>
                     <li><a href="faq.html" class="nav-link">FAQ</a></li>
@@ -567,12 +621,10 @@
         <section class="section" style="padding-bottom: 0;">
             <div class="container">
                 
-                <!-- ===== Breadcrumb ===== -->
                 <nav class="breadcrumb-premium" aria-label="Breadcrumb">
                     <a href="index.html">Home</a> <span>›</span> Careers
                 </nav>
 
-                <!-- ===== Hero Section ===== -->
                 <div class="careers-hero-wrap">
                     <h1>Join Our Team at Ibn Sina Hospital</h1>
                     <p>
@@ -589,7 +641,6 @@
                     </p>
                 </div>
 
-                <!-- ===== Why Work With Us (New Content) ===== -->
                 <h2 style="font-family: 'Poppins', sans-serif; color: #2d4a2b;">💼 Why Work With Us</h2>
                 <p style="color: #4e5c4a; margin-bottom: 0.5rem;">
                     At Ibn Sina Hospital, we offer a supportive and growth-oriented environment for healthcare professionals.
@@ -627,7 +678,6 @@
                     </div>
                 </div>
 
-                <!-- ===== Our Culture (New Content) ===== -->
                 <h2 style="font-family: 'Poppins', sans-serif; color: #2d4a2b;">🌟 Our Culture</h2>
                 <p style="color: #4e5c4a; margin-bottom: 0.5rem;">
                     Ibn Sina Hospital is built on values of compassion, excellence, and community service.
@@ -655,14 +705,13 @@
                     </div>
                 </div>
 
-                <!-- ===== Section Divider ===== -->
                 <div class="section-divider">
                     <span class="line"></span>
                     <span class="diamond"></span>
                     <span class="line"></span>
                 </div>
 
-                <!-- ===== OPEN POSITIONS (Dynamic) ===== -->
+                <!-- ===== OPEN POSITIONS (Dynamic — IDs preserved) ===== -->
                 <div id="open-positions" class="job-listings-container">
                     <h2>Open Positions</h2>
                     <p style="color: #4e5c4a; margin-bottom: 1rem;">
@@ -675,7 +724,7 @@
                     </div>
                 </div>
 
-                <!-- ===== APPLICATION FORM ===== -->
+                <!-- ===== APPLICATION FORM (IDs preserved) ===== -->
                 <div id="apply-now" class="application-form-wrapper">
                     <h2>📋 Apply Now</h2>
                     <p style="color: #4e5c4a; margin-bottom: 1rem;">
@@ -715,7 +764,7 @@
                     </form>
                 </div>
 
-                <!-- ===== CTA Section (New – Converts Visitors) ===== -->
+                <!-- ===== CTA (Converts Visitors) ===== -->
                 <div style="margin-top: 1rem; padding: 30px; background: linear-gradient(145deg, #f5f8f2, #ecf2e8); border-radius: 20px; border: 1px solid #e2e8df; text-align: center;">
                     <h3 style="font-family: 'Poppins', sans-serif; color: #2d4a2b; margin-bottom: 0.5rem;">📍 Can't Find a Position?</h3>
                     <p style="color: #4e5c4a; max-width: 600px; margin: 0 auto 1rem;">
@@ -728,7 +777,78 @@
                     </div>
                 </div>
 
-                <!-- ===== AREAS WE SERVE (Premium Badge Cloud) ===== -->
+                <!-- ================= EXPLORE IBN SINA (Internal Linking) ================= -->
+                <section style="margin: 40px 0 20px;">
+                    <h2 style="font-family: 'Poppins', sans-serif; color: #2d4a2b; text-align: center;">Explore Ibn Sina Hospital</h2>
+                    <p style="color: #4e5c4a; text-align: center; margin-bottom: 1.2rem;">
+                        Learn more about our hospital, doctors, and services.
+                    </p>
+                    <div class="explore-grid">
+                        <a href="about.html" class="explore-card">
+                            <span class="explore-icon">🏥</span>
+                            <h3>About Our Hospital</h3>
+                            <p>Discover our history, leadership, and our mission to provide affordable quality healthcare.</p>
+                        </a>
+                        <a href="doctors.html" class="explore-card">
+                            <span class="explore-icon">👨‍⚕️</span>
+                            <h3>Meet Our Doctors</h3>
+                            <p>Browse our consultant-led team across 20+ specialties.</p>
+                        </a>
+                        <a href="department-pages/specialties-directory.html" class="explore-card">
+                            <span class="explore-icon">📋</span>
+                            <h3>Our Departments</h3>
+                            <p>Explore our clinical, surgical, and diagnostic specialties.</p>
+                        </a>
+                        <a href="services.html" class="explore-card">
+                            <span class="explore-icon">🩺</span>
+                            <h3>Hospital Services</h3>
+                            <p>Learn about our diagnostics, emergency care, dialysis, and more.</p>
+                        </a>
+                        <a href="contact.html" class="explore-card">
+                            <span class="explore-icon">📍</span>
+                            <h3>Contact &amp; Directions</h3>
+                            <p>Find our location near Ompora Railway Station, Budgam.</p>
+                        </a>
+                        <a href="blog.html" class="explore-card">
+                            <span class="explore-icon">📰</span>
+                            <h3>Health Blog</h3>
+                            <p>Trusted health articles from our team for J&amp;K families.</p>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- ================= DEPARTMENTS PILL GRID ================= -->
+                <section style="margin: 30px 0;">
+                    <h2 style="font-family: 'Poppins', sans-serif; color: #2d4a2b; text-align: center;">Explore Our Departments</h2>
+                    <p style="text-align:center; color:#4e5c4a; max-width:700px; margin: 0 auto 1.5rem;">
+                        Browse our clinical, surgical, and diagnostic specialties.
+                    </p>
+                    <div class="pill-grid">
+                        <a href="department-pages/general-medicine.html">General Medicine</a>
+                        <a href="department-pages/general-surgery.html">General Surgery</a>
+                        <a href="department-pages/orthopaedics.html">Orthopaedics</a>
+                        <a href="department-pages/cardiology.html">Cardiology</a>
+                        <a href="department-pages/nephrology.html">Nephrology</a>
+                        <a href="department-pages/gastroenterology.html">Gastroenterology</a>
+                        <a href="department-pages/gynaecology.html">Gynaecology</a>
+                        <a href="department-pages/urology.html">Urology</a>
+                        <a href="department-pages/ent.html">ENT</a>
+                        <a href="department-pages/ophthalmology.html">Ophthalmology</a>
+                        <a href="department-pages/dermatology.html">Dermatology</a>
+                        <a href="department-pages/physiotherapy.html">Physiotherapy</a>
+                        <a href="department-pages/dentistry.html">Dentistry</a>
+                        <a href="department-pages/pulmonology.html">Pulmonology</a>
+                        <a href="department-pages/rheumatology.html">Rheumatology</a>
+                        <a href="department-pages/plastic-surgery.html">Plastic Surgery</a>
+                        <a href="department-pages/pediatric-surgery.html">Pediatric Surgery</a>
+                        <a href="department-pages/radiology.html">Radiology</a>
+                        <a href="department-pages/neonatal-intensive-care-unit.html">NICU</a>
+                        <a href="department-pages/specialties-directory.html">All Specialties</a>
+                        <a href="department-pages/doctor-directory.html">Doctor Directory</a>
+                    </div>
+                </section>
+
+                <!-- ===== AREAS WE SERVE ===== -->
                 <div class="areas-serve-premium">
                     <p style="font-weight: 700; color: #2d4a2b; margin: 0 0 12px; font-size: 1.1rem;">
                         🌍 Serving Families Across J&amp;K &amp; India
@@ -755,7 +875,7 @@
         </section>
     </main>
 
-    <!-- ===== FOOTER (Updated with Service Areas) ===== -->
+    <!-- ===== FOOTER (Updated) ===== -->
     <footer class="site-footer">
         <div class="footer-wave" aria-hidden="true">
             <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
@@ -781,8 +901,10 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="services.html">Services</a></li>
+                    <li><a href="health-checkup-packages.html">Health Checkup Packages</a></li>
                     <li><a href="doctors.html">Doctors</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="careers.html">Careers</a></li>
                     <li><a href="faq.html">FAQ</a></li>
@@ -804,11 +926,10 @@
         </div>
     </footer>
 
-    <!-- ===== SCRIPTS (Unchanged – Form submission handled by main.js) ===== -->
     <script src="js/main.js" defer></script>
     <script src="js/chatbot.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <script src="js/animations.js" defer></script>
 </body>
-                            </html>
+</html>
