@@ -13,5 +13,8 @@ button,input[type="submit"],input[type="button"],input[type="reset"],.btn,.hambu
 .hero-ctas .btn{max-width:100%;white-space:normal}
 .appointment-form-section form,.contact-form,form{max-width:100%}
 table{max-width:100%}
+.btn{white-space:normal;overflow-wrap:break-word}
+video,canvas{height:auto}
+table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 }
 @media (max-width: 480px){h1{font-size:clamp(1.65rem,8vw,2.2rem)}h2{font-size:clamp(1.35rem,7vw,1.8rem)}.container{padding-left:1rem;padding-right:1rem}}
