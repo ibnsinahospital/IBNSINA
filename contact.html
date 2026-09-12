@@ -3,36 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- ✅ UPDATED: Richer SEO Title -->
+
     <title>Contact Ibn Sina Hospital – Budgam &amp; Srinagar, J&amp;K | Address, Phone &amp; Timings</title>
-    
-    <!-- ✅ UPDATED: Expanded Meta Description -->
+
     <meta name="description" content="Contact Ibn Sina Hospital in Ompora, Budgam. Serving patients from Srinagar, Ganderbal, Pulwama &amp; across J&amp;K &amp; India. Call 9622552553 for appointments, OPD, emergency &amp; diagnostics.">
-    
+
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="https://ibnsinahospital.in/contact.html">
-    
-    <!-- ✅ UPDATED: Open Graph -->
+
     <meta property="og:title" content="Contact Ibn Sina Hospital – Budgam &amp; Srinagar, J&amp;K | Address &amp; Phone">
     <meta property="og:description" content="Find Ibn Sina Hospital's address in Ompora, Budgam. Serving Srinagar, Ganderbal, Pulwama &amp; across J&amp;K &amp; India. Call 9622552553 for appointments.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ibnsinahospital.in/contact.html">
     <meta property="og:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
-    
-    <!-- ✅ UPDATED: Twitter -->
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Contact Ibn Sina Hospital – Budgam &amp; Srinagar, J&amp;K">
     <meta name="twitter:description" content="Contact Ibn Sina Hospital in Ompora, Budgam. Serving Srinagar, Ganderbal, Pulwama &amp; across J&amp;K &amp; India. Call 9622552553.">
     <meta name="twitter:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
-    
+
     <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-fix.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- ✅ UPDATED: Hospital Schema with Expanded areaServed -->
+    <!-- Hospital Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -122,9 +121,6 @@
     }
     </script>
 
-    <!-- =========================================================
-         PREMIUM CONTACT PAGE STYLES (Scoped to .contact-page)
-    ========================================================== -->
     <style>
         .contact-page {
             --contact-accent: #2d4a2b;
@@ -153,9 +149,11 @@
         /* ----- Hero Section ----- */
         .contact-page .contact-hero-wrap {
             position: relative;
-            background: linear-gradient(145deg, #f5f8f2, #eaf1e6);
+            background:
+                radial-gradient(circle at 90% 10%, rgba(201, 185, 154, 0.15), transparent 35%),
+                linear-gradient(145deg, #f5f8f2, #eaf1e6);
             border-radius: 28px;
-            padding: 40px 40px 30px;
+            padding: 45px 40px 40px;
             margin: 0 0 30px 0;
             border: 1px solid rgba(164, 172, 134, 0.2);
             box-shadow: 0 10px 40px rgba(45, 74, 43, 0.04);
@@ -203,74 +201,126 @@
             font-weight: 700;
         }
 
-        /* ----- Contact Grid (Glassmorphism) ----- */
+        .contact-page .contact-hero-wrap a {
+            color: var(--contact-accent);
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        /* ----- Contact Grid ----- */
         .contact-page .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            gap: 30px;
             margin: 30px 0;
         }
 
         .contact-page .contact-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            background: #ffffff;
+            border: 1px solid #e2e8df;
             border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 30px rgba(45, 74, 43, 0.04);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 32px 30px;
+            box-shadow: 0 8px 30px rgba(45, 74, 43, 0.05);
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
         }
 
         .contact-page .contact-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 16px 40px rgba(45, 74, 43, 0.08);
+            box-shadow: 0 20px 45px rgba(45, 74, 43, 0.08);
+            border-color: var(--contact-accent);
         }
 
         .contact-page .contact-card h2 {
             font-family: 'Poppins', sans-serif;
             color: var(--contact-accent);
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
             position: relative;
         }
 
         .contact-page .contact-card h2::after {
             content: '';
             display: block;
-            width: 30px;
+            width: 40px;
             height: 3px;
             background: var(--contact-gold);
             border-radius: 4px;
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
         .contact-page .contact-card address {
             font-style: normal;
             color: #4e5c4a;
-            line-height: 1.8;
-            font-size: 0.95rem;
+            line-height: 1.9;
+            font-size: 0.98rem;
+            margin-bottom: 1.2rem;
         }
 
         .contact-page .contact-card address strong {
             color: var(--contact-accent);
+            font-size: 1.05rem;
         }
 
-        .contact-page .contact-card .contact-item {
+        .contact-page .contact-item {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            padding: 12px 14px;
             margin: 8px 0;
+            background: #f9fbf7;
+            border-radius: 12px;
+            border-left: 3px solid var(--contact-gold);
+            transition: all 0.25s ease;
+            font-size: 0.95rem;
         }
 
-        .contact-page .contact-card .contact-item a {
+        .contact-page .contact-item:hover {
+            border-left-color: var(--contact-accent);
+            background: #f0f6ec;
+            transform: translateX(4px);
+        }
+
+        .contact-page .contact-item .icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .contact-page .contact-item a {
             color: #2d4a2b;
             text-decoration: none;
             font-weight: 600;
         }
 
-        .contact-page .contact-card .contact-item a:hover {
+        .contact-page .contact-item a:hover {
             text-decoration: underline;
+        }
+
+        /* ----- Hours Badge ----- */
+        .contact-page .hours-badge {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #2d4a2b, #3f5e3c);
+            border-radius: 14px;
+            color: #ffffff;
+            margin-top: 1rem;
+        }
+
+        .contact-page .hours-badge .hours-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .contact-page .hours-badge .hours-text strong {
+            display: block;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .contact-page .hours-badge .hours-text span {
+            font-size: 0.9rem;
+            opacity: 0.9;
         }
 
         /* ----- Form Styling ----- */
@@ -283,18 +333,18 @@
             font-weight: 600;
             font-size: 0.9rem;
             color: #4e5c4a;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .contact-page .form-group input,
         .contact-page .form-group textarea {
             width: 100%;
-            padding: 12px 16px;
+            padding: 13px 16px;
             border: 1px solid #dce4d6;
             border-radius: 12px;
             font-size: 0.95rem;
             font-family: 'Nunito', sans-serif;
-            background: rgba(255, 255, 255, 0.6);
+            background: #f9fbf7;
             transition: all 0.3s ease;
             outline: none;
             box-sizing: border-box;
@@ -318,6 +368,7 @@
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            width: 100%;
         }
 
         .contact-page .btn-submit:hover {
@@ -331,51 +382,52 @@
             border-radius: 20px;
             overflow: hidden;
             border: 1px solid #edf3e9;
-            box-shadow: 0 8px 30px rgba(45, 74, 43, 0.04);
+            box-shadow: 0 8px 30px rgba(45, 74, 43, 0.05);
             margin: 30px 0;
         }
 
         .contact-page .map-wrapper iframe {
             width: 100%;
-            height: 320px;
+            height: 340px;
             border: none;
             display: block;
         }
 
-        /* ----- Directions / How to Reach ----- */
+        /* ----- Directions Grid ----- */
         .contact-page .directions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
             margin: 20px 0;
         }
 
         .contact-page .directions-grid .dir-item {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(4px);
+            background: #ffffff;
             border-radius: 14px;
-            padding: 16px 20px;
+            padding: 18px 20px;
             border: 1px solid #edf3e9;
             text-align: center;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(45, 74, 43, 0.03);
         }
 
         .contact-page .directions-grid .dir-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(45, 74, 43, 0.06);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(45, 74, 43, 0.08);
             border-color: var(--contact-accent);
         }
 
         .contact-page .directions-grid .dir-item .dir-icon {
             font-size: 1.8rem;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .contact-page .directions-grid .dir-item strong {
             display: block;
             color: var(--contact-accent);
             font-size: 0.95rem;
+            margin-bottom: 2px;
         }
 
         .contact-page .directions-grid .dir-item span {
@@ -383,18 +435,18 @@
             color: #5a6b4a;
         }
 
-        /* ----- Service Highlights ----- */
+        /* ----- Services Highlights ----- */
         .contact-page .service-highlights {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 12px;
             margin: 20px 0;
         }
 
         .contact-page .service-highlights .hl-item {
-            background: rgba(255, 255, 255, 0.5);
+            background: #f9fbf7;
             border-radius: 12px;
-            padding: 12px 16px;
+            padding: 14px 16px;
             text-align: center;
             border: 1px solid #edf3e9;
             font-size: 0.9rem;
@@ -407,10 +459,10 @@
             background: var(--contact-accent);
             color: #ffffff;
             border-color: var(--contact-accent);
-            transform: scale(1.02);
+            transform: scale(1.03);
         }
 
-        /* ----- Areas We Serve (Premium Badge Cloud) ----- */
+        /* ----- Areas We Serve ----- */
         .contact-page .areas-serve-premium {
             background: linear-gradient(145deg, #f5f8f2, #ecf2e8);
             border-radius: 24px;
@@ -466,13 +518,102 @@
             text-decoration: underline;
         }
 
+        /* ----- Explore Cards ----- */
+        .contact-page .explore-section {
+            padding: 40px 0 10px;
+        }
+        .contact-page .explore-section h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #2d4a2b;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .contact-page .explore-section .section-subtitle {
+            text-align: center;
+            color: #4e5c4a;
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+        }
+        .contact-page .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+        .contact-page .explore-card {
+            background: #fff;
+            border: 1px solid #e2e8df;
+            border-radius: 14px;
+            padding: 20px 22px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 4px 12px rgba(45, 74, 43, 0.03);
+        }
+        .contact-page .explore-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(45, 74, 43, 0.08);
+            border-color: #a4ac86;
+        }
+        .contact-page .explore-card h3 {
+            color: #2d4a2b; font-size: 1.05rem; margin-bottom: 0.4rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        .contact-page .explore-card p {
+            color: #5a6b4a; font-size: 0.88rem; line-height: 1.55; margin-bottom: 0;
+        }
+        .contact-page .explore-card .explore-icon {
+            font-size: 1.6rem; margin-bottom: 0.5rem; display: block;
+        }
+
+        /* ----- Department Pill Grid ----- */
+        .contact-page .dept-pill-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .contact-page .dept-pill-grid a {
+            display: inline-block;
+            padding: 8px 18px;
+            background: #fff;
+            border: 1px solid #dce4d6;
+            border-radius: 60px;
+            color: #2d4a2b;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .contact-page .dept-pill-grid a:hover {
+            background: #2d4a2b;
+            color: #fff;
+            border-color: #2d4a2b;
+        }
+
+        /* ----- Section headings ----- */
+        .contact-page .section-heading-block {
+            margin: 40px 0 20px;
+        }
+        .contact-page .section-heading-block h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #2d4a2b;
+            margin-bottom: 0.5rem;
+        }
+        .contact-page .section-heading-block p {
+            color: #4e5c4a;
+            max-width: 750px;
+        }
+
         /* ----- Responsive ----- */
         @media (max-width: 768px) {
             .contact-page .contact-grid {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
             .contact-page .contact-hero-wrap {
-                padding: 24px 20px;
+                padding: 28px 22px;
                 border-radius: 20px;
             }
             .contact-page .contact-hero-wrap h1 {
@@ -485,7 +626,7 @@
 
         @media (max-width: 480px) {
             .contact-page .contact-card {
-                padding: 20px;
+                padding: 22px 20px;
             }
             .contact-page .directions-grid {
                 grid-template-columns: 1fr;
@@ -499,8 +640,8 @@
 </head>
 <body class="contact-page">
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    
-    <!-- ===== HEADER (Unchanged) ===== -->
+
+    <!-- ===== HEADER (Updated: 11 nav items) ===== -->
     <header class="site-header" id="site-header">
         <div class="header-inner container">
             <a href="index.html" class="logo" aria-label="Ibn Sina Hospital Home">
@@ -512,8 +653,10 @@
                     <li><a href="index.html" class="nav-link">Home</a></li>
                     <li><a href="about.html" class="nav-link">About</a></li>
                     <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="health-checkup-packages.html" class="nav-link">Health Checkups</a></li>
                     <li><a href="doctors.html" class="nav-link">Doctors</a></li>
                     <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html" class="nav-link">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html" class="nav-link">Blog</a></li>
                     <li><a href="careers.html" class="nav-link">Careers</a></li>
                     <li><a href="faq.html" class="nav-link">FAQ</a></li>
@@ -538,28 +681,29 @@
     <main id="main-content">
         <section class="section" style="padding-bottom: 0;">
             <div class="container">
-                <!-- ===== Breadcrumb ===== -->
+
+                <!-- Breadcrumb -->
                 <nav class="breadcrumb-premium" aria-label="Breadcrumb">
                     <a href="index.html">Home</a> <span>›</span> Contact Us
                 </nav>
 
-                <!-- ===== Hero Section ===== -->
+                <!-- Hero -->
                 <div class="contact-hero-wrap">
                     <h1>Contact Ibn Sina Hospital in Budgam &amp; Srinagar</h1>
                     <p>
-                        Reach out to <strong>Ibn Sina Hospital</strong> in <strong>Ompora, Budgam</strong> for 
-                        appointments, emergency care, OPD, pharmacy, and diagnostic services. We serve patients from 
-                        <strong>Srinagar, Ganderbal, Pulwama, Shopian, Kulgam</strong>, across 
-                        <strong>Jammu &amp; Kashmir</strong>, and patients visiting from other parts of 
+                        Reach out to <strong>Ibn Sina Hospital</strong> in <strong>Ompora, Budgam</strong> for
+                        appointments, emergency care, OPD, pharmacy, and diagnostic services. We serve patients from
+                        <strong>Srinagar, Ganderbal, Pulwama, Shopian, Kulgam</strong>, across
+                        <strong>Jammu &amp; Kashmir</strong>, and patients visiting from other parts of
                         <strong>India</strong>.
                     </p>
                     <p style="margin-top: 0.5rem;">
-                        <a href="appointment.html">Book an appointment online</a> or call us directly at 
+                        <a href="appointment.html">Book an appointment online</a> or call us directly at
                         <a href="tel:9622552553">9622552553</a>.
                     </p>
                 </div>
 
-                <!-- ===== Contact Grid ===== -->
+                <!-- Contact Grid -->
                 <div class="contact-grid">
 
                     <!-- LEFT: Address & Contact Info -->
@@ -572,31 +716,34 @@
                         </address>
 
                         <div class="contact-item">
-                            📞 <a href="tel:9622552553"><strong>9622552553</strong></a> (Primary)
+                            <span class="icon">📞</span>
+                            <a href="tel:9622552553">9622552553 (Primary)</a>
                         </div>
                         <div class="contact-item">
-                            📞 <a href="tel:+917006272634">+91 7006272634</a> (Front Desk)
+                            <span class="icon">📞</span>
+                            <a href="tel:+917006272634">+91 7006272634 (Front Desk)</a>
                         </div>
                         <div class="contact-item">
-                            ✉ <a href="mailto:weibnsina@gmail.com">weibnsina@gmail.com</a>
+                            <span class="icon">✉</span>
+                            <a href="mailto:weibnsina@gmail.com">weibnsina@gmail.com</a>
                         </div>
 
-                        <h2 style="margin-top: 1.5rem;">🕒 OPD &amp; Emergency</h2>
-                        <p style="color: #4e5c4a; font-weight: 600; margin-bottom: 0.3rem;">
-                            <strong>OPD, Pharmacy, Lab &amp; Emergency:</strong>
-                        </p>
-                        <p style="color: #4e5c4a; font-size: 1.1rem; font-weight: 700; color: var(--contact-accent);">
-                            24/7, 365 days
-                        </p>
+                        <div class="hours-badge">
+                            <span class="hours-icon">🕒</span>
+                            <span class="hours-text">
+                                <strong>Open 24/7, 365 days</strong>
+                                <span>OPD · Emergency · Pharmacy · Lab</span>
+                            </span>
+                        </div>
 
-                        <p style="margin-top: 1rem; font-size: 0.9rem; color: #647060;">
-                            <a href="services.html">Medical services</a> · 
-                            <a href="doctors.html">Doctors &amp; specialists</a> · 
-                            <a href="appointment.html">Book appointment</a>
+                        <p style="margin-top: 1.2rem; font-size: 0.9rem; color: #647060;">
+                            <a href="services.html" style="color:#2d4a2b;">Medical services</a> ·
+                            <a href="doctors.html" style="color:#2d4a2b;">Doctors &amp; specialists</a> ·
+                            <a href="appointment.html" style="color:#2d4a2b;">Book appointment</a>
                         </p>
                     </div>
 
-                    <!-- RIGHT: Contact Form -->
+                    <!-- RIGHT: Contact Form (untouched IDs) -->
                     <div class="contact-card">
                         <h2>✉ Send a Message</h2>
                         <p style="color: #4e5c4a; font-size: 0.9rem; margin-bottom: 1rem;">
@@ -629,90 +776,147 @@
 
                 </div>
 
-                <!-- ===== HOW TO REACH US (New Content) ===== -->
-                <div style="margin: 30px 0;">
-                    <h2 style="font-family: 'Poppins', sans-serif; color: #2d4a2b; margin-bottom: 0.5rem;">🚗 How to Reach Us</h2>
-                    <p style="color: #4e5c4a; margin-bottom: 1rem;">
-                        Ibn Sina Hospital is conveniently located near major towns and cities across Jammu &amp; Kashmir.
-                    </p>
-                    <div class="directions-grid">
-                        <div class="dir-item">
-                            <span class="dir-icon">🏥</span>
-                            <strong>From Budgam Town</strong>
-                            <span>10 mins via Ompora Road</span>
-                        </div>
-                        <div class="dir-item">
-                            <span class="dir-icon">🚗</span>
-                            <strong>From Srinagar</strong>
-                            <span>25 mins via NH 44</span>
-                        </div>
-                        <div class="dir-item">
-                            <span class="dir-icon">🚕</span>
-                            <strong>From Ganderbal</strong>
-                            <span>35 mins via Srinagar - Ganderbal Road</span>
-                        </div>
-                        <div class="dir-item">
-                            <span class="dir-icon">🛣️</span>
-                            <strong>From Pulwama</strong>
-                            <span>45 mins via Budgam - Pulwama Road</span>
-                        </div>
-                        <div class="dir-item">
-                            <span class="dir-icon">🅿️</span>
-                            <strong>Parking Available</strong>
-                            <span>Ample parking space on premises</span>
-                        </div>
-                        <div class="dir-item">
-                            <span class="dir-icon">🚌</span>
-                            <strong>Public Transport</strong>
-                            <span>Near Ompora Railway Station</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ===== SERVICES HIGHLIGHTS (New Content) ===== -->
-                <div style="margin: 20px 0;">
-                    <h2 style="font-family: 'Poppins', sans-serif; color: #2d4a2b; margin-bottom: 0.5rem;">🩺 Services Available 24/7</h2>
-                    <p style="color: #4e5c4a; margin-bottom: 1rem;">
-                        We provide a wide range of medical services for patients from <strong>Budgam, Srinagar, Ganderbal, Pulwama</strong> and across <strong>Jammu &amp; Kashmir</strong>.
-                    </p>
-                    <div class="service-highlights">
-                        <div class="hl-item">🚑 Emergency Care</div>
-                        <div class="hl-item">💊 24/7 Pharmacy</div>
-                        <div class="hl-item">🧪 Diagnostic Lab</div>
-                        <div class="hl-item">❤️ Cardiology</div>
-                        <div class="hl-item">🩺 Nephrology</div>
-                        <div class="hl-item">🦴 Orthopaedics</div>
-                        <div class="hl-item">👶 Paediatrics</div>
-                        <div class="hl-item">👩‍⚕️ Gynaecology</div>
-                        <div class="hl-item">🫁 Pulmonology</div>
-                        <div class="hl-item">🧠 Neurology</div>
-                    </div>
-                    <p style="margin-top: 1rem;">
-                        <a href="services.html">View all services →</a>
+                <!-- How to Reach Us (verified, generic) -->
+                <div class="section-heading-block">
+                    <h2>🚗 How to Reach Us</h2>
+                    <p>
+                        Ibn Sina Hospital is located in Ompora, Budgam — near the Ompora Railway Station. 
+                        The hospital is accessible by road and rail.
                     </p>
                 </div>
 
-                <!-- ===== Google Maps ===== -->
+                <div class="directions-grid">
+                    <div class="dir-item">
+                        <span class="dir-icon">🚆</span>
+                        <strong>By Train</strong>
+                        <span>Adjacent to Ompora Railway Station</span>
+                    </div>
+                    <div class="dir-item">
+                        <span class="dir-icon">🚗</span>
+                        <strong>By Road</strong>
+                        <span>On Ompora Railway Station Road</span>
+                    </div>
+                    <div class="dir-item">
+                        <span class="dir-icon">🛣️</span>
+                        <strong>From Srinagar</strong>
+                        <span>Via NH 44 / Budgam Road</span>
+                    </div>
+                    <div class="dir-item">
+                        <span class="dir-icon">🚌</span>
+                        <strong>Public Transport</strong>
+                        <span>Local buses and shared cabs available</span>
+                    </div>
+                </div>
+
+                <!-- Services Highlights (Neurology removed) -->
+                <div class="section-heading-block">
+                    <h2>🩺 Services Available 24/7</h2>
+                    <p>
+                        We provide a wide range of medical services for patients from
+                        <strong>Budgam, Srinagar, Ganderbal, Pulwama</strong> and across
+                        <strong>Jammu &amp; Kashmir</strong>.
+                    </p>
+                </div>
+
+                <div class="service-highlights">
+                    <div class="hl-item">🚑 Emergency Care</div>
+                    <div class="hl-item">💊 24/7 Pharmacy</div>
+                    <div class="hl-item">🧪 Diagnostic Lab</div>
+                    <div class="hl-item">❤️ Cardiology</div>
+                    <div class="hl-item">🩺 Nephrology</div>
+                    <div class="hl-item">🦴 Orthopaedics</div>
+                    <div class="hl-item">👶 Paediatric Surgery</div>
+                    <div class="hl-item">👩‍⚕️ Gynaecology</div>
+                    <div class="hl-item">🫁 Pulmonology</div>
+                    <div class="hl-item">🍽️ Gastroenterology</div>
+                </div>
+
+                <p style="margin-top: 1rem;">
+                    <a href="services.html" style="color:#2d4a2b; font-weight:600;">View all services →</a>
+                </p>
+
+                <!-- Google Map -->
                 <div class="map-wrapper" id="map">
-                    <iframe 
-                        src="https://www.google.com/maps?q=IBN+SINA+HOSPITAL,+Ompora,+Budgam,+Jammu+and+Kashmir&output=embed" 
-                        allowfullscreen="" 
-                        loading="lazy" 
+                    <iframe
+                        src="https://www.google.com/maps?q=IBN+SINA+HOSPITAL,+Ompora,+Budgam,+Jammu+and+Kashmir&output=embed"
+                        allowfullscreen=""
+                        loading="lazy"
                         title="Ibn Sina Hospital location in Ompora, Budgam, Jammu & Kashmir">
                     </iframe>
                 </div>
 
-                <!-- ===== Explore Links ===== -->
-                <div style="text-align: center; padding: 20px 0; border-top: 1px solid #edf3e9; margin-bottom: 20px;">
-                    <p style="color: #4e5c4a;">
-                        <a href="about.html">About our hospital</a> · 
-                        <a href="department-pages/specialties-directory.html">Medical specialties</a> · 
-                        <a href="department-pages/doctor-directory.html">Doctor directory</a> · 
-                        <a href="department-pages/jammu-kashmir-healthcare.html">Healthcare across J&amp;K</a>
+                <!-- Explore More (Internal Linking) -->
+                <section class="explore-section">
+                    <h2>Explore Ibn Sina Hospital</h2>
+                    <p class="section-subtitle">
+                        Learn more about our doctors, departments, and patient resources.
                     </p>
-                </div>
+                    <div class="explore-grid">
+                        <a href="about.html" class="explore-card">
+                            <span class="explore-icon">🏥</span>
+                            <h3>About Our Hospital</h3>
+                            <p>Discover our history, leadership, and our mission to provide affordable quality healthcare.</p>
+                        </a>
+                        <a href="doctors.html" class="explore-card">
+                            <span class="explore-icon">👨‍⚕️</span>
+                            <h3>Doctors &amp; Specialists</h3>
+                            <p>Browse our consultant-led team across 20+ specialties.</p>
+                        </a>
+                        <a href="department-pages/specialties-directory.html" class="explore-card">
+                            <span class="explore-icon">📋</span>
+                            <h3>Our Departments</h3>
+                            <p>Explore our clinical, surgical, and diagnostic specialties.</p>
+                        </a>
+                        <a href="services.html" class="explore-card">
+                            <span class="explore-icon">🩺</span>
+                            <h3>Hospital Services</h3>
+                            <p>Learn about our diagnostics, emergency care, dialysis, and inpatient facilities.</p>
+                        </a>
+                        <a href="insurance-pmjay.html" class="explore-card">
+                            <span class="explore-icon">📄</span>
+                            <h3>PM-JAY / Insurance</h3>
+                            <p>Cashless treatment under Ayushman Bharat PM-JAY and other insurance schemes.</p>
+                        </a>
+                        <a href="blog.html" class="explore-card">
+                            <span class="explore-icon">📰</span>
+                            <h3>Health Blog</h3>
+                            <p>Trusted health articles from our team for J&amp;K families.</p>
+                        </a>
+                    </div>
+                </section>
 
-                <!-- ===== AREAS WE SERVE (Premium Badge Cloud) ===== -->
+                <!-- Departments Pill Grid -->
+                <section style="margin: 40px 0 20px;">
+                    <h2 style="font-family: 'Poppins', sans-serif; color: #2d4a2b; text-align: center;">Explore Our Departments</h2>
+                    <p style="text-align:center; color:#4e5c4a; max-width:700px; margin: 0 auto 1.5rem;">
+                        Browse our clinical, surgical, and diagnostic specialties.
+                    </p>
+                    <div class="dept-pill-grid">
+                        <a href="department-pages/general-medicine.html">General Medicine</a>
+                        <a href="department-pages/general-surgery.html">General Surgery</a>
+                        <a href="department-pages/orthopaedics.html">Orthopaedics</a>
+                        <a href="department-pages/cardiology.html">Cardiology</a>
+                        <a href="department-pages/nephrology.html">Nephrology</a>
+                        <a href="department-pages/gastroenterology.html">Gastroenterology</a>
+                        <a href="department-pages/gynaecology.html">Gynaecology</a>
+                        <a href="department-pages/urology.html">Urology</a>
+                        <a href="department-pages/ent.html">ENT</a>
+                        <a href="department-pages/ophthalmology.html">Ophthalmology</a>
+                        <a href="department-pages/dermatology.html">Dermatology</a>
+                        <a href="department-pages/physiotherapy.html">Physiotherapy</a>
+                        <a href="department-pages/dentistry.html">Dentistry</a>
+                        <a href="department-pages/pulmonology.html">Pulmonology</a>
+                        <a href="department-pages/rheumatology.html">Rheumatology</a>
+                        <a href="department-pages/plastic-surgery.html">Plastic Surgery</a>
+                        <a href="department-pages/pediatric-surgery.html">Pediatric Surgery</a>
+                        <a href="department-pages/radiology.html">Radiology</a>
+                        <a href="department-pages/neonatal-intensive-care-unit.html">NICU</a>
+                        <a href="department-pages/specialties-directory.html">All Specialties</a>
+                        <a href="department-pages/doctor-directory.html">Doctor Directory</a>
+                    </div>
+                </section>
+
+                <!-- Areas We Serve -->
                 <div class="areas-serve-premium">
                     <p style="font-weight: 700; color: #2d4a2b; margin: 0 0 12px; font-size: 1.1rem;">
                         🌍 Serving Families Across J&amp;K &amp; India
@@ -729,8 +933,8 @@
                         <span class="strong-badge">India</span>
                     </div>
                     <div class="badge-link">
-                        <a href="service-areas.html">View all service areas</a> 
-                        <span style="margin:0 0.5rem;">|</span> 
+                        <a href="service-areas.html">View all service areas</a>
+                        <span style="margin:0 0.5rem;">|</span>
                         <a href="#map">Get directions</a>
                     </div>
                 </div>
@@ -739,7 +943,7 @@
         </section>
     </main>
 
-    <!-- ===== FOOTER (Updated with Service Areas) ===== -->
+    <!-- ===== FOOTER (Updated: 11 quick links + service areas) ===== -->
     <footer class="site-footer">
         <div class="footer-wave" aria-hidden="true">
             <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
@@ -751,7 +955,7 @@
                 <p><a href="tel:9622552553">📞 9622552553 / 9419023501</a></p>
                 <p><a href="mailto:weibnsina@gmail.com">✉ weibnsina@gmail.com</a></p>
                 <p style="margin-top:0.5rem; font-size:0.85rem; color:#71806d;">
-                    <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam – 
+                    <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam –
                     across <strong>Jammu &amp; Kashmir</strong> &amp; <strong>India</strong>
                 </p>
             </div>
@@ -765,8 +969,10 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="services.html">Services</a></li>
+                    <li><a href="health-checkup-packages.html">Health Checkup Packages</a></li>
                     <li><a href="doctors.html">Doctors</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="careers.html">Careers</a></li>
                     <li><a href="faq.html">FAQ</a></li>
@@ -788,11 +994,10 @@
         </div>
     </footer>
 
-    <!-- ===== SCRIPTS (Unchanged) ===== -->
     <script src="js/main.js" defer></script>
     <script src="js/chatbot.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <script src="js/animations.js" defer></script>
 </body>
-                </html>
+</html>
