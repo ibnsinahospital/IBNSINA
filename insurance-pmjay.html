@@ -6,12 +6,24 @@
     <title>PM-JAY / Ayushman Bharat – Cashless Treatment at Ibn Sina Hospital, Budgam</title>
     <meta name="description" content="Ibn Sina Hospital is a PM-JAY (Ayushman Bharat) empanelled hospital in Budgam. Get cashless treatment, ₹5 lakh cover per family. Call 9622552553 to check eligibility.">
     <link rel="canonical" href="https://ibnsinahospital.in/insurance-pmjay.html">
+    <meta name="robots" content="index,follow">
     <meta property="og:title" content="PM-JAY / Ayushman Bharat – Cashless Treatment at Ibn Sina Hospital">
     <meta property="og:description" content="Ibn Sina Hospital is a PM-JAY empanelled hospital in Budgam. Get cashless treatment for you and your family. Call 9622552553.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ibnsinahospital.in/insurance-pmjay.html">
     <meta property="og:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PM-JAY / Ayushman Bharat – Ibn Sina Hospital Budgam">
+    <meta name="twitter:description" content="Cashless treatment under Ayushman Bharat PM-JAY at Ibn Sina Hospital, Budgam. ₹5 lakh cover per family.">
+    <meta name="twitter:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+    <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-fix.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Hospital Schema -->
     <script type="application/ld+json">
@@ -20,6 +32,8 @@
       "@type": "Hospital",
       "name": "Ibn Sina Hospital",
       "url": "https://ibnsinahospital.in/",
+      "logo": "https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp",
+      "image": "https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Near Railway Station, Ompora Railway Station Road, Ompora",
@@ -28,6 +42,19 @@
         "postalCode": "191111",
         "addressCountry": "IN"
       },
+      "areaServed": [
+        { "@type": "Country", "name": "India" },
+        { "@type": "AdministrativeArea", "name": "Jammu and Kashmir" },
+        { "@type": "City", "name": "Budgam" },
+        { "@type": "City", "name": "Srinagar" },
+        { "@type": "City", "name": "Ompora" },
+        { "@type": "City", "name": "Ganderbal" },
+        { "@type": "City", "name": "Pulwama" },
+        { "@type": "City", "name": "Shopian" },
+        { "@type": "City", "name": "Kulgam" },
+        { "@type": "City", "name": "Baramulla" },
+        { "@type": "City", "name": "Anantnag" }
+      ],
       "telephone": "+919622552553",
       "email": "weibnsina@gmail.com",
       "openingHoursSpecification": [
@@ -37,22 +64,64 @@
           "opens": "00:00",
           "closes": "23:59"
         }
+      ],
+      "paymentAccepted": ["Cash", "Credit Card", "Debit Card", "Insurance", "UPI"]
+    }
+    </script>
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://ibnsinahospital.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "PM-JAY / Insurance",
+          "item": "https://ibnsinahospital.in/insurance-pmjay.html"
+        }
       ]
     }
     </script>
 
-    <!-- Insurance / Payment Accepted Schema -->
+    <!-- FAQ Schema for PM-JAY -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Hospital",
-      "name": "Ibn Sina Hospital",
-      "paymentAccepted": ["Cash", "Credit Card", "Debit Card", "Insurance", "UPI"],
-      "servicesAccepted": {
-        "@type": "MedicalWebPage",
-        "name": "PM-JAY / Ayushman Bharat",
-        "description": "We accept PM-JAY (Ayushman Bharat) insurance for cashless treatment."
-      }
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Ibn Sina Hospital empanelled under PM-JAY?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Ibn Sina Hospital in Ompora, Budgam is an empanelled hospital under Ayushman Bharat PM-JAY. Eligible families can avail cashless treatment."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the coverage amount under PM-JAY?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PM-JAY provides a health cover of ₹5 lakh per family per year for secondary and tertiary care hospitalisation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I check my PM-JAY eligibility?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can check your eligibility at the PM-JAY portal or visit the Ayushman Mitra desk at Ibn Sina Hospital. Call 9622552553 for assistance."
+          }
+        }
+      ]
     }
     </script>
 
@@ -66,8 +135,11 @@
         .insurance-page .breadcrumb-premium span { margin: 0 6px; color: #a4ac86; }
 
         .insurance-page .ins-hero-wrap {
-            position: relative; background: linear-gradient(145deg, #f5f8f2, #eaf1e6);
-            border-radius: 28px; padding: 40px 40px 30px; margin: 0 0 30px 0;
+            position: relative;
+            background:
+                radial-gradient(circle at 90% 10%, rgba(201, 185, 154, 0.15), transparent 35%),
+                linear-gradient(145deg, #f5f8f2, #eaf1e6);
+            border-radius: 28px; padding: 45px 40px 40px; margin: 0 0 30px 0;
             border: 1px solid rgba(164, 172, 134, 0.2);
             box-shadow: 0 10px 40px rgba(45, 74, 43, 0.04); overflow: hidden;
         }
@@ -87,45 +159,66 @@
             font-size: 1.05rem; line-height: 1.8; color: #4e5c4a; max-width: 850px;
         }
         .insurance-page .ins-hero-wrap p strong { color: var(--ins-accent); font-weight: 700; }
+        .insurance-page .ins-hero-wrap p a { color: var(--ins-accent); font-weight: 600; text-decoration: underline; }
 
         .insurance-page .benefit-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 20px 0 30px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px; margin: 20px 0 30px;
         }
         .insurance-page .benefit-grid .benefit-item {
-            background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(4px);
-            border-radius: 14px; padding: 16px 20px; border: 1px solid #edf3e9;
-            text-align: center; transition: all 0.3s ease;
+            background: #fff; border-radius: 14px; padding: 20px;
+            border: 1px solid #edf3e9; text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(45, 74, 43, 0.03);
         }
         .insurance-page .benefit-grid .benefit-item:hover {
-            transform: translateY(-3px); box-shadow: 0 8px 20px rgba(45, 74, 43, 0.06);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(45, 74, 43, 0.08);
             border-color: var(--ins-accent);
         }
-        .insurance-page .benefit-grid .benefit-item .b-icon { font-size: 1.8rem; display: block; margin-bottom: 4px; }
-        .insurance-page .benefit-grid .benefit-item strong { display: block; color: var(--ins-accent); font-size: 0.95rem; }
+        .insurance-page .benefit-grid .benefit-item .b-icon { font-size: 2rem; display: block; margin-bottom: 6px; }
+        .insurance-page .benefit-grid .benefit-item strong { display: block; color: var(--ins-accent); font-size: 1rem; margin-bottom: 2px; }
         .insurance-page .benefit-grid .benefit-item span { font-size: 0.85rem; color: #5a6b4a; }
 
         .insurance-page .ins-content-card {
-            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 20px;
-            padding: 30px; margin: 30px 0; box-shadow: 0 8px 30px rgba(45, 74, 43, 0.04);
+            background: #ffffff; border: 1px solid #e2e8df;
+            border-radius: 20px; padding: 32px 30px; margin: 24px 0;
+            box-shadow: 0 8px 30px rgba(45, 74, 43, 0.04);
+            transition: all 0.3s ease;
+        }
+        .insurance-page .ins-content-card:hover {
+            box-shadow: 0 12px 40px rgba(45, 74, 43, 0.06);
         }
         .insurance-page .ins-content-card h2 {
-            font-family: 'Poppins', sans-serif; color: var(--ins-accent); font-size: 1.3rem;
-            margin-bottom: 0.5rem;
+            font-family: 'Poppins', sans-serif; color: var(--ins-accent); font-size: 1.35rem;
+            margin-bottom: 0.8rem;
         }
         .insurance-page .ins-content-card h2::after {
             content: ''; display: block; width: 40px; height: 3px;
-            background: var(--ins-gold); border-radius: 4px; margin-top: 4px;
+            background: var(--ins-gold); border-radius: 4px; margin-top: 6px;
         }
-        .insurance-page .ins-content-card ul { padding-left: 1.5rem; }
-        .insurance-page .ins-content-card li { padding: 6px 0; color: #4e5c4a; line-height: 1.7; }
+        .insurance-page .ins-content-card p {
+            color: #4e5c4a; line-height: 1.8; font-size: 0.98rem;
+        }
+        .insurance-page .ins-content-card ul,
+        .insurance-page .ins-content-card ol {
+            padding-left: 1.5rem; color: #4e5c4a; line-height: 1.85;
+        }
+        .insurance-page .ins-content-card li {
+            padding: 6px 0; font-size: 0.98rem;
+        }
+        .insurance-page .ins-content-card li strong {
+            color: var(--ins-accent);
+        }
         .insurance-page .ins-content-card .cta-btn {
-            display: inline-block; padding: 14px 40px; border-radius: 60px;
+            display: inline-block; padding: 13px 34px; border-radius: 60px;
             background: var(--ins-accent); color: #ffffff; border: none;
-            font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s ease;
+            font-weight: 700; font-size: 0.95rem; cursor: pointer;
+            transition: all 0.3s ease; text-decoration: none;
         }
         .insurance-page .ins-content-card .cta-btn:hover {
-            background: #1d321c; transform: scale(1.02); box-shadow: 0 8px 20px rgba(45, 74, 43, 0.2);
+            background: #1d321c; transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(45, 74, 43, 0.2);
         }
         .insurance-page .ins-content-card .btn-secondary {
             background: transparent; color: var(--ins-accent); border: 2px solid var(--ins-accent);
@@ -134,31 +227,80 @@
             background: var(--ins-accent); color: #ffffff;
         }
 
+        /* Explore */
+        .insurance-page .explore-section { padding: 30px 0 10px; }
+        .insurance-page .explore-section h2 {
+            font-family: 'Poppins', sans-serif; color: var(--ins-accent);
+            text-align: center; margin-bottom: 0.5rem;
+        }
+        .insurance-page .explore-section .section-subtitle {
+            text-align: center; color: #4e5c4a; max-width: 700px; margin: 0 auto 1.5rem;
+        }
+        .insurance-page .explore-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px;
+        }
+        .insurance-page .explore-card {
+            background: #fff; border: 1px solid #e2e8df;
+            border-radius: 14px; padding: 20px 22px;
+            transition: all 0.3s ease; text-decoration: none; display: block;
+            box-shadow: 0 4px 12px rgba(45, 74, 43, 0.03);
+        }
+        .insurance-page .explore-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(45, 74, 43, 0.08);
+            border-color: #a4ac86;
+        }
+        .insurance-page .explore-card h3 {
+            color: #2d4a2b; font-size: 1.05rem; margin-bottom: 0.4rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        .insurance-page .explore-card p {
+            color: #5a6b4a; font-size: 0.88rem; line-height: 1.55; margin-bottom: 0;
+        }
+        .insurance-page .explore-card .explore-icon {
+            font-size: 1.6rem; margin-bottom: 0.5rem; display: block;
+        }
+
+        .insurance-page .dept-pill-grid {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+            max-width: 900px; margin: 0 auto;
+        }
+        .insurance-page .dept-pill-grid a {
+            display: inline-block; padding: 8px 18px;
+            background: #fff; border: 1px solid #dce4d6;
+            border-radius: 60px; color: #2d4a2b;
+            font-size: 0.88rem; font-weight: 600; text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .insurance-page .dept-pill-grid a:hover {
+            background: #2d4a2b; color: #fff; border-color: #2d4a2b;
+        }
+
         .insurance-page .areas-serve-premium {
             background: linear-gradient(145deg, #f5f8f2, #ecf2e8);
             border-radius: 24px; padding: 30px 24px; border: 1px solid #e2e8df;
-            margin: 30px 0; text-align: center;
+            margin: 40px 0 20px; text-align: center;
         }
         .insurance-page .areas-serve-premium .badge-list {
             display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
-            max-width: 900px; margin: 0 auto;
         }
         .insurance-page .areas-serve-premium .badge-list span {
-            background: #ffffff; padding: 6px 16px; border-radius: 30px;
-            font-size: 0.8rem; font-weight: 500; color: #2d4a2b;
+            background: #ffffff; padding: 8px 20px; border-radius: 60px;
+            font-size: 0.85rem; font-weight: 600; color: #2d4a2b;
             border: 1px solid #dce4d6; transition: all 0.25s ease;
         }
         .insurance-page .areas-serve-premium .badge-list span:hover {
-            transform: scale(1.05); background: #2d4a2b; color: #ffffff; border-color: #2d4a2b;
+            transform: scale(1.05); background: #2d4a2b; color: #fff; border-color: #2d4a2b;
         }
         .insurance-page .areas-serve-premium .badge-list span.strong-badge {
-            background: #2d4a2b; color: #ffffff; border-color: #2d4a2b;
+            background: #2d4a2b; color: #fff; border-color: #2d4a2b;
         }
 
         @media (max-width: 768px) {
-            .insurance-page .ins-hero-wrap { padding: 24px 20px; border-radius: 20px; }
+            .insurance-page .ins-hero-wrap { padding: 28px 22px; border-radius: 20px; }
             .insurance-page .ins-hero-wrap h1 { font-size: 1.8rem; }
             .insurance-page .benefit-grid { grid-template-columns: 1fr 1fr; }
+            .insurance-page .ins-content-card { padding: 22px 20px; }
         }
         @media (max-width: 480px) {
             .insurance-page .benefit-grid { grid-template-columns: 1fr; }
@@ -168,19 +310,22 @@
 <body class="insurance-page">
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
+    <!-- ===== HEADER (Updated: 11 nav items + SVG hamburger) ===== -->
     <header class="site-header" id="site-header">
         <div class="header-inner container">
             <a href="index.html" class="logo" aria-label="Ibn Sina Hospital Home">
                 <img src="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp" alt="Ibn Sina Hospital Logo" class="logo-img" style="height: 40px; width: auto;">
                 <span class="logo-text">Ibn Sina <strong>Hospital</strong></span>
             </a>
-            <nav class="main-nav" id="main-nav">
+            <nav class="main-nav" id="main-nav" aria-label="Main navigation">
                 <ul class="nav-list">
                     <li><a href="index.html" class="nav-link">Home</a></li>
                     <li><a href="about.html" class="nav-link">About</a></li>
                     <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="health-checkup-packages.html" class="nav-link">Health Checkups</a></li>
                     <li><a href="doctors.html" class="nav-link">Doctors</a></li>
                     <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html" class="nav-link active">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html" class="nav-link">Blog</a></li>
                     <li><a href="careers.html" class="nav-link">Careers</a></li>
                     <li><a href="faq.html" class="nav-link">FAQ</a></li>
@@ -188,30 +333,38 @@
                 </ul>
             </nav>
             <div class="header-actions">
-                <a href="tel:9622552553" class="emergency-badge">📞 9622552553</a>
+                <a href="tel:9622552553" class="emergency-badge" aria-label="Emergency call: 9622552553">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+                    <span>Emergency: 9622552553</span>
+                </a>
                 <a href="appointment.html" class="btn btn-primary btn-book">Book Appointment</a>
-                <button class="hamburger" id="hamburger">☰</button>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
             </div>
         </div>
     </header>
 
     <main id="main-content" class="container">
-        <nav class="breadcrumb-premium">
-            <a href="index.html">Home</a> <span>›</span> Insurance &amp; PM‑JAY
+
+        <nav class="breadcrumb-premium" aria-label="Breadcrumb">
+            <a href="index.html">Home</a> <span>›</span> PM-JAY / Insurance
         </nav>
 
         <div class="ins-hero-wrap">
-            <h1>PM‑JAY / Ayushman Bharat – Cashless Treatment at Ibn Sina Hospital</h1>
+            <h1>PM-JAY / Ayushman Bharat – Cashless Treatment at Ibn Sina Hospital</h1>
             <p>
-                <strong>Ibn Sina Hospital, Budgam</strong> is an <strong>empanelled hospital</strong> under the 
-                <strong>Ayushman Bharat – Pradhan Mantri Jan Arogya Yojana (PM‑JAY)</strong>, India’s largest 
-                government‑sponsored health insurance scheme. We provide <strong>cashless treatment</strong> to 
+                <strong>Ibn Sina Hospital, Budgam</strong> is an <strong>empanelled hospital</strong> under the
+                <strong>Ayushman Bharat – Pradhan Mantri Jan Arogya Yojana (PM-JAY)</strong>, India's largest
+                government-sponsored health insurance scheme. We provide <strong>cashless treatment</strong> to
                 eligible families across <strong>Jammu &amp; Kashmir</strong>.
             </p>
             <p style="margin-top: 0.5rem;">
-                <a href="#what-is-pmjay">What is PM‑JAY?</a> · 
-                <a href="#eligibility">Eligibility</a> · 
-                <a href="#how-to-avail">How to avail</a> · 
+                <a href="#what-is-pmjay">What is PM-JAY?</a> ·
+                <a href="#eligibility">Eligibility</a> ·
+                <a href="#how-to-avail">How to avail</a> ·
                 <a href="appointment.html">Book Appointment</a>
             </p>
         </div>
@@ -230,11 +383,11 @@
             <div class="benefit-item">
                 <span class="b-icon">🏠</span>
                 <strong>Domiciliary Care</strong>
-                <span>Home‑based care covered</span>
+                <span>Home-based care covered</span>
             </div>
             <div class="benefit-item">
                 <span class="b-icon">👨‍⚕️</span>
-                <strong>Pre‑existing Conditions</strong>
+                <strong>Pre-existing Conditions</strong>
                 <span>Covered from day 1</span>
             </div>
             <div class="benefit-item">
@@ -245,19 +398,19 @@
         </div>
 
         <div class="ins-content-card" id="what-is-pmjay">
-            <h2>What is PM‑JAY / Ayushman Bharat?</h2>
-            <p>The <strong>Pradhan Mantri Jan Arogya Yojana (PM‑JAY)</strong> is India’s national health protection scheme. It provides a health cover of <strong>₹5 lakh per family per year</strong> for secondary and tertiary care hospitalisation. The scheme covers over <strong>10.74 crore families</strong> across India, making it one of the largest healthcare programmes in the world.</p>
+            <h2>What is PM-JAY / Ayushman Bharat?</h2>
+            <p>The <strong>Pradhan Mantri Jan Arogya Yojana (PM-JAY)</strong> is India's national health protection scheme. It provides a health cover of <strong>₹5 lakh per family per year</strong> for secondary and tertiary care hospitalisation. The scheme covers over <strong>10.74 crore families</strong> across India, making it one of the largest healthcare programmes in the world.</p>
             <ul>
-                <li><strong>Cashless treatment</strong> – No out‑of‑pocket expenses at the hospital</li>
-                <li><strong>Pre‑existing conditions</strong> – Covered from the first day</li>
-                <li><strong>Domiciliary care</strong> – Home‑based care for chronic conditions</li>
+                <li><strong>Cashless treatment</strong> – No out-of-pocket expenses at the hospital</li>
+                <li><strong>Pre-existing conditions</strong> – Covered from the first day</li>
+                <li><strong>Domiciliary care</strong> – Home-based care for chronic conditions</li>
                 <li><strong>Wide network</strong> – Available at empanelled hospitals across India</li>
             </ul>
         </div>
 
         <div class="ins-content-card" id="eligibility">
-            <h2>Eligibility – Who Can Avail PM‑JAY?</h2>
-            <p>PM‑JAY is available to families identified through the <strong>SECC (Socio‑Economic Caste Census) 2011</strong> database. In Jammu &amp; Kashmir, eligibility is based on:</p>
+            <h2>Eligibility – Who Can Avail PM-JAY?</h2>
+            <p>PM-JAY is available to families identified through the <strong>SECC (Socio-Economic Caste Census) 2011</strong> database. In Jammu &amp; Kashmir, eligibility is based on:</p>
             <ul>
                 <li>Families classified as <strong>deprived</strong> or <strong>automatically included</strong> in rural areas</li>
                 <li>Families with <strong>specific occupational categories</strong> in urban areas</li>
@@ -270,11 +423,11 @@
             <h2>How to Avail Cashless Treatment at Ibn Sina Hospital</h2>
             <ol>
                 <li><strong>Visit Ibn Sina Hospital</strong> – Walk in or book an appointment.</li>
-                <li><strong>Verify your PM‑JAY card</strong> – Show your e‑card or Aadhaar at the Ayushman Mitra desk.</li>
-                <li><strong>Get treatment</strong> – Receive cashless treatment without any out‑of‑pocket payment.</li>
+                <li><strong>Verify your PM-JAY card</strong> – Show your e-card or Aadhaar at the Ayushman Mitra desk.</li>
+                <li><strong>Get treatment</strong> – Receive cashless treatment without any out-of-pocket payment.</li>
                 <li><strong>Hospital settles the claim</strong> – We handle the paperwork.</li>
             </ol>
-            <p><strong>Important:</strong> Always carry your <strong>PM‑JAY card / e‑card</strong> and <strong>Aadhaar</strong> when you visit.</p>
+            <p><strong>Important:</strong> Always carry your <strong>PM-JAY card / e-card</strong> and <strong>Aadhaar</strong> when you visit.</p>
         </div>
 
         <div class="ins-content-card">
@@ -287,9 +440,81 @@
             </div>
         </div>
 
+        <!-- Explore Section -->
+        <section class="explore-section">
+            <h2>Explore Ibn Sina Hospital</h2>
+            <p class="section-subtitle">
+                Learn more about our doctors, departments, and patient resources.
+            </p>
+            <div class="explore-grid">
+                <a href="about.html" class="explore-card">
+                    <span class="explore-icon">🏥</span>
+                    <h3>About Our Hospital</h3>
+                    <p>Discover our history, leadership, and our mission to provide affordable quality healthcare.</p>
+                </a>
+                <a href="doctors.html" class="explore-card">
+                    <span class="explore-icon">👨‍⚕️</span>
+                    <h3>Doctors &amp; Specialists</h3>
+                    <p>Browse our consultant-led team across 20+ specialties.</p>
+                </a>
+                <a href="department-pages/specialties-directory.html" class="explore-card">
+                    <span class="explore-icon">📋</span>
+                    <h3>Our Departments</h3>
+                    <p>Explore our clinical, surgical, and diagnostic specialties.</p>
+                </a>
+                <a href="services.html" class="explore-card">
+                    <span class="explore-icon">🩺</span>
+                    <h3>Hospital Services</h3>
+                    <p>Learn about our diagnostics, emergency care, dialysis, and inpatient facilities.</p>
+                </a>
+                <a href="health-checkup-packages.html" class="explore-card">
+                    <span class="explore-icon">💊</span>
+                    <h3>Health Checkup Packages</h3>
+                    <p>Preventive health packages to detect and manage health risks early.</p>
+                </a>
+                <a href="faq.html" class="explore-card">
+                    <span class="explore-icon">❓</span>
+                    <h3>Frequently Asked Questions</h3>
+                    <p>Find answers to common questions about our hospital, services, and facilities.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Dept Pill Grid -->
+        <section style="margin: 40px 0 20px;">
+            <h2 style="font-family: 'Poppins', sans-serif; color: #2d4a2b; text-align: center;">Explore Our Departments</h2>
+            <p style="text-align:center; color:#4e5c4a; max-width:700px; margin: 0 auto 1.5rem;">
+                Browse our clinical, surgical, and diagnostic specialties.
+            </p>
+            <div class="dept-pill-grid">
+                <a href="department-pages/general-medicine.html">General Medicine</a>
+                <a href="department-pages/general-surgery.html">General Surgery</a>
+                <a href="department-pages/orthopaedics.html">Orthopaedics</a>
+                <a href="department-pages/cardiology.html">Cardiology</a>
+                <a href="department-pages/nephrology.html">Nephrology</a>
+                <a href="department-pages/gastroenterology.html">Gastroenterology</a>
+                <a href="department-pages/gynaecology.html">Gynaecology</a>
+                <a href="department-pages/urology.html">Urology</a>
+                <a href="department-pages/ent.html">ENT</a>
+                <a href="department-pages/ophthalmology.html">Ophthalmology</a>
+                <a href="department-pages/dermatology.html">Dermatology</a>
+                <a href="department-pages/physiotherapy.html">Physiotherapy</a>
+                <a href="department-pages/dentistry.html">Dentistry</a>
+                <a href="department-pages/pulmonology.html">Pulmonology</a>
+                <a href="department-pages/rheumatology.html">Rheumatology</a>
+                <a href="department-pages/plastic-surgery.html">Plastic Surgery</a>
+                <a href="department-pages/pediatric-surgery.html">Pediatric Surgery</a>
+                <a href="department-pages/radiology.html">Radiology</a>
+                <a href="department-pages/neonatal-intensive-care-unit.html">NICU</a>
+                <a href="department-pages/specialties-directory.html">All Specialties</a>
+                <a href="department-pages/doctor-directory.html">Doctor Directory</a>
+            </div>
+        </section>
+
+        <!-- Areas We Serve -->
         <div class="areas-serve-premium">
             <p style="font-weight: 700; color: #2d4a2b; margin: 0 0 12px; font-size: 1.1rem;">
-                🌍 Serving Families Across Jammu &amp; Kashmir
+                🌍 Serving Families Across J&amp;K &amp; India
             </p>
             <div class="badge-list">
                 <span>Budgam</span>
@@ -310,6 +535,7 @@
         </div>
     </main>
 
+    <!-- ===== FOOTER (Updated: 11 quick links + service areas) ===== -->
     <footer class="site-footer">
         <div class="footer-wave" aria-hidden="true">
             <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
@@ -318,8 +544,12 @@
             <div class="footer-col">
                 <h3 class="footer-logo">Ibn Sina <strong>Hospital</strong></h3>
                 <address>Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111</address>
-                <p>📞 <a href="tel:9622552553">9622552553 / 9419023501</a></p>
-                <p>✉ <a href="mailto:weibnsina@gmail.com">weibnsina@gmail.com</a></p>
+                <p><a href="tel:9622552553">📞 9622552553 / 9419023501</a></p>
+                <p><a href="mailto:weibnsina@gmail.com">✉ weibnsina@gmail.com</a></p>
+                <p style="margin-top:0.5rem; font-size:0.85rem; color:#71806d;">
+                    <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam –
+                    across <strong>Jammu &amp; Kashmir</strong> &amp; <strong>India</strong>
+                </p>
             </div>
             <div class="footer-col">
                 <h4>OPD &amp; Emergency</h4>
@@ -331,8 +561,10 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="services.html">Services</a></li>
+                    <li><a href="health-checkup-packages.html">Health Checkup Packages</a></li>
                     <li><a href="doctors.html">Doctors</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="careers.html">Careers</a></li>
                     <li><a href="faq.html">FAQ</a></li>
@@ -342,9 +574,9 @@
             <div class="footer-col">
                 <h4>Stay Connected</h4>
                 <div class="social-icons">
-                    <a href="https://www.facebook.com/share/1HSWNC9UEy/" target="_blank" rel="noopener">FB</a>
-                    <a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" target="_blank" rel="noopener">IG</a>
-                    <a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" target="_blank" rel="noopener">YT</a>
+                    <a href="https://www.facebook.com/share/1HSWNC9UEy/" target="_blank" rel="noopener" aria-label="Facebook" class="social-icon">FB</a>
+                    <a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon">IG</a>
+                    <a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon">YT</a>
                 </div>
             </div>
         </div>
@@ -360,4 +592,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <script src="js/animations.js" defer></script>
 </body>
-  </html>
+</html>
