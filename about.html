@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO (Unchanged – Already Optimized) -->
+    <!-- SEO -->
     <title>About Ibn Sina Hospital – Trusted Healthcare in Budgam &amp; Srinagar, J&amp;K</title>
     <meta name="description" content="Learn about Ibn Sina Hospital in Ompora, Budgam – serving patients from Srinagar, Ganderbal, Pulwama &amp; across J&amp;K &amp; India. Consultant-led multi-specialty care since 2018. Call 9622552553.">
     
@@ -16,6 +16,8 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ibnsinahospital.in/about.html">
     <meta property="og:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="About Ibn Sina Hospital – Trusted Healthcare in Budgam &amp; Srinagar">
     <meta name="twitter:description" content="Learn about Ibn Sina Hospital in Budgam – consultant-led multi-specialty care serving Srinagar, Ganderbal, Pulwama, across J&amp;K &amp; India.">
@@ -23,11 +25,12 @@
     
     <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-fix.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Schema (Unchanged) -->
+    <!-- Schema: Hospital -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -70,6 +73,7 @@
     }
     </script>
 
+    <!-- Schema: WebPage -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -90,6 +94,7 @@
     }
     </script>
 
+    <!-- Schema: BreadcrumbList -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -196,7 +201,7 @@
             color: #a4ac86;
         }
 
-        /* ----- WHY CHOOSE CARDS (Glassmorphism) ----- */
+        /* ----- WHY CHOOSE CARDS ----- */
         .about-page .why-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -259,7 +264,7 @@
             font-size: 0.95rem;
         }
 
-        /* ----- FACILITIES GRID (Sexy Chips) ----- */
+        /* ----- FACILITIES GRID ----- */
         .about-page .facility-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -294,7 +299,7 @@
             font-size: 1.2rem;
         }
 
-        /* ----- LEADERSHIP CARDS (Premium Profile) ----- */
+        /* ----- LEADERSHIP CARDS ----- */
         .about-page .leadership-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -355,7 +360,7 @@
             margin: 0;
         }
 
-        /* ----- AREAS WE SERVE (Premium Tag Cloud) ----- */
+        /* ----- AREAS WE SERVE ----- */
         .about-page .areas-serve-premium {
             background: linear-gradient(145deg, #f5f8f2, #ecf2e8);
             border-radius: 24px;
@@ -402,6 +407,71 @@
             background: #1d321c;
         }
 
+        /* ----- Internal linking blocks ----- */
+        .about-page .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .about-page .explore-card {
+            background: #fff;
+            border: 1px solid #e2e8df;
+            border-radius: 14px;
+            padding: 22px 24px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+        .about-page .explore-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(45, 74, 43, 0.08);
+            border-color: #a4ac86;
+        }
+        .about-page .explore-card h3 {
+            color: #2d4a2b;
+            font-size: 1.1rem;
+            margin-bottom: 0.4rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        .about-page .explore-card p {
+            color: #5a6b4a;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+        .about-page .explore-card .explore-icon {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: #2d4a2b;
+        }
+
+        .about-page .pill-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .about-page .pill-grid a {
+            display: inline-block;
+            padding: 8px 18px;
+            background: #fff;
+            border: 1px solid #dce4d6;
+            border-radius: 60px;
+            color: #2d4a2b;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .about-page .pill-grid a:hover {
+            background: #2d4a2b;
+            color: #fff;
+            border-color: #2d4a2b;
+        }
+
         /* ----- RESPONSIVE TWEAKS ----- */
         @media (max-width: 768px) {
             .about-page .about-hero-wrap {
@@ -433,7 +503,7 @@
 <body class="about-page">
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
-    <!-- ===== HEADER (Unchanged) ===== -->
+    <!-- ===== HEADER (Updated nav: 11 items) ===== -->
     <header class="site-header" id="site-header">
         <div class="header-inner container">
             <a href="index.html" class="logo" aria-label="Ibn Sina Hospital Home">
@@ -445,8 +515,10 @@
                     <li><a href="index.html" class="nav-link">Home</a></li>
                     <li><a href="about.html" class="nav-link active">About</a></li>
                     <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="health-checkup-packages.html" class="nav-link">Health Checkups</a></li>
                     <li><a href="doctors.html" class="nav-link">Doctors</a></li>
                     <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html" class="nav-link">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html" class="nav-link">Blog</a></li>
                     <li><a href="careers.html" class="nav-link">Careers</a></li>
                     <li><a href="faq.html" class="nav-link">FAQ</a></li>
@@ -470,7 +542,7 @@
 
     <main id="main-content">
         
-        <!-- ===== HERO / INTRODUCTION (Sexy Wrapper) ===== -->
+        <!-- ===== HERO / INTRODUCTION ===== -->
         <section class="section" style="padding-bottom: 0;">
             <div class="container">
                 <nav class="breadcrumb-premium" aria-label="Breadcrumb">
@@ -492,7 +564,7 @@
             </div>
         </section>
 
-        <!-- ===== WHY CHOOSE (Glassmorphism Cards with Icons) ===== -->
+        <!-- ===== WHY CHOOSE ===== -->
         <section class="section" style="background:#faf9f6;">
             <div class="container">
                 <h2 style="font-family:'Poppins',sans-serif; color:#2d4a2b;">Why Choose Ibn Sina Hospital</h2>
@@ -507,7 +579,7 @@
             </div>
         </section>
 
-        <!-- ===== FACILITIES (Sexy Chips/Grid) ===== -->
+        <!-- ===== FACILITIES ===== -->
         <section class="section">
             <div class="container">
                 <h2 style="font-family:'Poppins',sans-serif; color:#2d4a2b;">Our Facilities</h2>
@@ -528,7 +600,7 @@
             </div>
         </section>
 
-        <!-- ===== LEADERSHIP (Premium Profile Cards) ===== -->
+        <!-- ===== LEADERSHIP ===== -->
         <section class="section" style="background:#faf9f6;">
             <div class="container">
                 <h2 style="font-family:'Poppins',sans-serif; color:#2d4a2b;">Leadership</h2>
@@ -561,8 +633,50 @@
             </div>
         </section>
 
-        <!-- ===== AREAS WE SERVE (Premium Badge Cloud) ===== -->
-        <section class="container" style="padding: 0 20px;">
+        <!-- ===== EXPLORE MORE (Internal Linking) ===== -->
+        <section class="section">
+            <div class="container">
+                <h2 style="font-family:'Poppins',sans-serif; color:#2d4a2b; text-align:center;">Explore Ibn Sina Hospital</h2>
+                <p style="text-align:center; color:#4e5c4a; max-width:700px; margin: 0 auto 2rem;">
+                    Learn more about our departments, doctors, and services across Budgam, Srinagar, and Jammu &amp; Kashmir.
+                </p>
+                <div class="explore-grid">
+                    <a href="doctors.html" class="explore-card">
+                        <span class="explore-icon"><i class="fas fa-user-md"></i></span>
+                        <h3>Doctors &amp; Specialists</h3>
+                        <p>Browse our consultant-led team across 20+ specialties including cardiology, nephrology, orthopaedics, and more.</p>
+                    </a>
+                    <a href="department-pages/specialties-directory.html" class="explore-card">
+                        <span class="explore-icon"><i class="fas fa-hospital"></i></span>
+                        <h3>Medical Departments</h3>
+                        <p>Explore our clinical and surgical specialties with details on conditions treated and consultants available.</p>
+                    </a>
+                    <a href="services.html" class="explore-card">
+                        <span class="explore-icon"><i class="fas fa-stethoscope"></i></span>
+                        <h3>Hospital Services</h3>
+                        <p>Learn about our diagnostic services, emergency care, dialysis, endoscopy, and inpatient facilities.</p>
+                    </a>
+                    <a href="health-checkup-packages.html" class="explore-card">
+                        <span class="explore-icon"><i class="fas fa-heartbeat"></i></span>
+                        <h3>Health Checkup Packages</h3>
+                        <p>Preventive health packages to detect and manage health risks early. Ideal for adults and families.</p>
+                    </a>
+                    <a href="insurance-pmjay.html" class="explore-card">
+                        <span class="explore-icon"><i class="fas fa-file-invoice"></i></span>
+                        <h3>PM-JAY / Insurance</h3>
+                        <p>Cashless treatment under Ayushman Bharat PM-JAY and other insurance schemes. Learn how to avail.</p>
+                    </a>
+                    <a href="blog.html" class="explore-card">
+                        <span class="explore-icon"><i class="fas fa-newspaper"></i></span>
+                        <h3>Health Blog</h3>
+                        <p>Trusted health articles from our team on conditions, prevention, and wellness for J&amp;K families.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== AREAS WE SERVE ===== -->
+        <section class="container" style="padding: 0 20px 40px;">
             <div class="areas-serve-premium">
                 <p style="font-weight: 700; color: #2d4a2b; margin: 0 0 12px; font-size: 1.1rem;">
                     🌍 Serving Families Across J&amp;K &amp; India
@@ -585,9 +699,42 @@
                 </div>
             </div>
         </section>
+
+        <!-- ===== EXPLORE DEPARTMENTS (pill grid) ===== -->
+        <section class="section" style="background:#f5f8f2; padding-top: 40px;">
+            <div class="container">
+                <h2 style="font-family:'Poppins',sans-serif; color:#2d4a2b; text-align:center;">Explore Our Departments</h2>
+                <p style="text-align:center; color:#4e5c4a; max-width:700px; margin: 0 auto 1.5rem;">
+                    Browse our clinical, surgical, and diagnostic specialties.
+                </p>
+                <div class="pill-grid">
+                    <a href="department-pages/general-medicine.html">General Medicine</a>
+                    <a href="department-pages/general-surgery.html">General Surgery</a>
+                    <a href="department-pages/orthopaedics.html">Orthopaedics</a>
+                    <a href="department-pages/cardiology.html">Cardiology</a>
+                    <a href="department-pages/nephrology.html">Nephrology</a>
+                    <a href="department-pages/gastroenterology.html">Gastroenterology</a>
+                    <a href="department-pages/gynaecology.html">Gynaecology</a>
+                    <a href="department-pages/urology.html">Urology</a>
+                    <a href="department-pages/ent.html">ENT</a>
+                    <a href="department-pages/ophthalmology.html">Ophthalmology</a>
+                    <a href="department-pages/dermatology.html">Dermatology</a>
+                    <a href="department-pages/physiotherapy.html">Physiotherapy</a>
+                    <a href="department-pages/dentistry.html">Dentistry</a>
+                    <a href="department-pages/pulmonology.html">Pulmonology</a>
+                    <a href="department-pages/rheumatology.html">Rheumatology</a>
+                    <a href="department-pages/plastic-surgery.html">Plastic Surgery</a>
+                    <a href="department-pages/pediatric-surgery.html">Pediatric Surgery</a>
+                    <a href="department-pages/radiology.html">Radiology</a>
+                    <a href="department-pages/neonatal-intensive-care-unit.html">NICU</a>
+                    <a href="department-pages/specialties-directory.html">All Specialties</a>
+                    <a href="department-pages/doctor-directory.html">Doctor Directory</a>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- ===== FOOTER (Updated with Service Areas) ===== -->
+    <!-- ===== FOOTER (Updated) ===== -->
     <footer class="site-footer">
         <div class="footer-wave" aria-hidden="true">
             <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
@@ -613,8 +760,10 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="services.html">Services</a></li>
+                    <li><a href="health-checkup-packages.html">Health Checkup Packages</a></li>
                     <li><a href="doctors.html">Doctors</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="careers.html">Careers</a></li>
                     <li><a href="faq.html">FAQ</a></li>
@@ -636,11 +785,11 @@
         </div>
     </footer>
 
-    <!-- ===== SCRIPTS (Unchanged) ===== -->
+    <!-- ===== SCRIPTS ===== -->
     <script src="js/main.js" defer></script>
     <script src="js/chatbot.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <script src="js/animations.js" defer></script>
 </body>
-    </html>
+</html>
