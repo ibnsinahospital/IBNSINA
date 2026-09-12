@@ -6,17 +6,21 @@
     <title>Doctor Profile – Ibn Sina Hospital Budgam</title>
     <meta name="description" content="View doctor profile at Ibn Sina Hospital, Budgam. Consultant-led care across 20+ specialties. 24/7 OPD, emergency, and pharmacy.">
     <link rel="canonical" href="https://ibnsinahospital.in/doctor-profile.html">
+    <meta name="robots" content="index,follow">
     <meta property="og:title" content="Doctor Profile – Ibn Sina Hospital">
     <meta property="og:description" content="View doctor profile at Ibn Sina Hospital, Budgam.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ibnsinahospital.in/doctor-profile.html">
     <meta property="og:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Doctor Profile – Ibn Sina Hospital">
     <meta name="twitter:description" content="View doctor profile at Ibn Sina Hospital, Budgam.">
     <meta name="twitter:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-fix.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -38,6 +42,13 @@
         "postalCode": "191111",
         "addressCountry": "IN"
       },
+      "areaServed": [
+        { "@type": "Country", "name": "India" },
+        { "@type": "AdministrativeArea", "name": "Jammu and Kashmir" },
+        { "@type": "City", "name": "Budgam" },
+        { "@type": "City", "name": "Srinagar" },
+        { "@type": "City", "name": "Ompora" }
+      ],
       "telephone": "+919622552553",
       "email": "weibnsina@gmail.com",
       "openingHoursSpecification": [
@@ -50,8 +61,170 @@
       ]
     }
     </script>
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://ibnsinahospital.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Doctors",
+          "item": "https://ibnsinahospital.in/doctors.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Doctor Profile",
+          "item": "https://ibnsinahospital.in/doctor-profile.html"
+        }
+      ]
+    }
+    </script>
+
+    <!-- WebPage Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Doctor Profile – Ibn Sina Hospital Budgam",
+      "url": "https://ibnsinahospital.in/doctor-profile.html",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Ibn Sina Hospital",
+        "url": "https://ibnsinahospital.in/"
+      },
+      "about": {
+        "@type": "Hospital",
+        "name": "Ibn Sina Hospital"
+      }
+    }
+    </script>
+
+    <style>
+        .doctor-profile-page .breadcrumb-premium {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #71806d;
+            margin-bottom: 1.5rem;
+        }
+        .doctor-profile-page .breadcrumb-premium a {
+            color: #2d4a2b;
+            text-decoration: none;
+        }
+        .doctor-profile-page .breadcrumb-premium a:hover {
+            text-decoration: underline;
+        }
+        .doctor-profile-page .breadcrumb-premium span {
+            margin: 0 6px;
+            color: #a4ac86;
+        }
+
+        .doctor-profile-page .profile-fallback {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(145deg, #f5f8f2, #eaf1e6);
+            border-radius: 20px;
+            border: 1px solid #e2e8df;
+        }
+
+        .doctor-profile-page .profile-fallback h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #2d4a2b;
+            margin-bottom: 0.5rem;
+        }
+
+        .doctor-profile-page .profile-fallback p {
+            color: #4e5c4a;
+            margin-bottom: 1rem;
+        }
+
+        /* Static helper section — visible even before JS renders the profile */
+        .doctor-profile-page .static-helpers {
+            margin-top: 40px;
+            padding: 30px 24px;
+            background: #faf9f6;
+            border-radius: 20px;
+            border: 1px solid #e2e8df;
+        }
+
+        .doctor-profile-page .static-helpers h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #2d4a2b;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .doctor-profile-page .static-helpers p.subtitle {
+            text-align: center;
+            color: #4e5c4a;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+
+        .doctor-profile-page .static-helpers .link-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .doctor-profile-page .static-helpers .link-grid a {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #fff;
+            border: 1px solid #dce4d6;
+            border-radius: 60px;
+            color: #2d4a2b;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .doctor-profile-page .static-helpers .link-grid a:hover {
+            background: #2d4a2b;
+            color: #fff;
+            border-color: #2d4a2b;
+        }
+
+        .doctor-profile-page .static-helpers .dept-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 0.5rem;
+        }
+
+        .doctor-profile-page .static-helpers .dept-grid a {
+            display: inline-block;
+            padding: 7px 16px;
+            background: #edf3e9;
+            border-radius: 60px;
+            color: #2d4a2b;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .doctor-profile-page .static-helpers .dept-grid a:hover {
+            background: #2d4a2b;
+            color: #fff;
+        }
+    </style>
+
 </head>
-<body>
+<body class="doctor-profile-page">
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <header class="site-header" id="site-header">
         <div class="header-inner container">
@@ -64,8 +237,10 @@
                     <li><a href="index.html" class="nav-link">Home</a></li>
                     <li><a href="about.html" class="nav-link">About</a></li>
                     <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="health-checkup-packages.html" class="nav-link">Health Checkups</a></li>
                     <li><a href="doctors.html" class="nav-link active">Doctors</a></li>
                     <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html" class="nav-link">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html" class="nav-link">Blog</a></li>
                     <li><a href="careers.html" class="nav-link">Careers</a></li>
                     <li><a href="faq.html" class="nav-link">FAQ</a></li>
@@ -88,16 +263,72 @@
     </header>
 
     <main id="main-content">
-        <section class="section">
-            <div class="container" id="doctor-profile-content" style="max-width:700px; margin:0 auto;">
-                <noscript>
-                    <h1>Doctor Profile</h1>
-                    <p>Please enable JavaScript to view doctor details. For appointments, call <a href="tel:9622552553">9622552553</a>.</p>
-                </noscript>
+        <section class="section" style="padding-bottom: 0;">
+            <div class="container" style="max-width: 820px; margin: 0 auto;">
+
+                <!-- Breadcrumb -->
+                <nav class="breadcrumb-premium" aria-label="Breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span>›</span>
+                    <a href="doctors.html">Doctors</a>
+                    <span>›</span>
+                    <span>Profile</span>
+                </nav>
+
+                <!-- ===== JS-RENDERED DOCTOR PROFILE (hook preserved) ===== -->
+                <div id="doctor-profile-content">
+                    <noscript>
+                        <div class="profile-fallback">
+                            <h1>Doctor Profile</h1>
+                            <p>Please enable JavaScript to view doctor details. For appointments, call <a href="tel:9622552553">9622552553</a>.</p>
+                            <p><a href="doctors.html" class="btn btn-primary">View All Doctors</a></p>
+                        </div>
+                    </noscript>
+                </div>
+
+                <!-- ===== STATIC HELPERS (visible to users and crawlers) ===== -->
+                <div class="static-helpers">
+                    <h2>Looking for a Doctor?</h2>
+                    <p class="subtitle">
+                        Browse our full doctor directory by specialty, or book an appointment directly.
+                    </p>
+                    <div class="link-grid">
+                        <a href="doctors.html">All Doctors</a>
+                        <a href="department-pages/doctor-directory.html">Doctor Directory</a>
+                        <a href="department-pages/specialties-directory.html">All Specialties</a>
+                        <a href="appointment.html">Book Appointment</a>
+                        <a href="services.html">Our Services</a>
+                        <a href="contact.html">Contact Us</a>
+                    </div>
+
+                    <p style="text-align:center; margin-top:2rem; color:#4e5c4a; font-weight:600;">Browse Doctors by Specialty</p>
+                    <div class="dept-grid">
+                        <a href="department-pages/cardiology.html">Cardiology</a>
+                        <a href="department-pages/nephrology.html">Nephrology</a>
+                        <a href="department-pages/orthopaedics.html">Orthopaedics</a>
+                        <a href="department-pages/gynaecology.html">Gynaecology</a>
+                        <a href="department-pages/general-medicine.html">General Medicine</a>
+                        <a href="department-pages/general-surgery.html">General Surgery</a>
+                        <a href="department-pages/gastroenterology.html">Gastroenterology</a>
+                        <a href="department-pages/urology.html">Urology</a>
+                        <a href="department-pages/ent.html">ENT</a>
+                        <a href="department-pages/ophthalmology.html">Ophthalmology</a>
+                        <a href="department-pages/dermatology.html">Dermatology</a>
+                        <a href="department-pages/pulmonology.html">Pulmonology</a>
+                        <a href="department-pages/physiotherapy.html">Physiotherapy</a>
+                        <a href="department-pages/dentistry.html">Dentistry</a>
+                        <a href="department-pages/rheumatology.html">Rheumatology</a>
+                        <a href="department-pages/plastic-surgery.html">Plastic Surgery</a>
+                        <a href="department-pages/pediatric-surgery.html">Pediatric Surgery</a>
+                        <a href="department-pages/radiology.html">Radiology</a>
+                    </div>
+                </div>
+
             </div>
         </section>
     </main>
 
+    <!-- ===== FOOTER (Updated: 11 quick links + service areas) ===== -->
     <footer class="site-footer">
         <div class="footer-wave" aria-hidden="true">
             <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
@@ -108,6 +339,10 @@
                 <address>Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111</address>
                 <p><a href="tel:9622552553">📞 9622552553 / 9419023501</a></p>
                 <p><a href="mailto:weibnsina@gmail.com">✉ weibnsina@gmail.com</a></p>
+                <p style="margin-top:0.5rem; font-size:0.85rem; color:#71806d;">
+                    <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam –
+                    across <strong>Jammu &amp; Kashmir</strong> &amp; <strong>India</strong>
+                </p>
             </div>
             <div class="footer-col">
                 <h4>OPD & Emergency</h4>
@@ -119,8 +354,10 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="services.html">Services</a></li>
+                    <li><a href="health-checkup-packages.html">Health Checkup Packages</a></li>
                     <li><a href="doctors.html">Doctors</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="careers.html">Careers</a></li>
                     <li><a href="faq.html">FAQ</a></li>
@@ -134,7 +371,7 @@
                     <a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon">IG</a>
                     <a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon">YT</a>
                 </div>
-</div>
+            </div>
         </div>
         <div class="footer-bottom container">
             <p>&copy; 2025 Ibn Sina Hospital. All rights reserved. | Operating since 2018</p>
