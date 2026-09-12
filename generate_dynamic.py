@@ -6,6 +6,7 @@ import datetime
 import re
 import json
 import hashlib
+import html as html_mod
 from urllib.parse import quote
 
 # ========== CONFIGURATION ==========
@@ -23,6 +24,36 @@ SITE_URL = "https://ibnsinahospital.in"
 LASTMOD_CACHE_FILE = Path("lastmod_cache.json")
 GALLERY_TEMPLATE_PATH = Path('gallery_template.html')
 
+# Department name (from Google Sheet) -> actual department-pages/*.html slug
+# Fixes common data-source typos so doctor pages don't link to 404 pages.
+DEPT_SLUG_OVERRIDES = {
+    'optholmology': 'ophthalmology',
+    'ophthalmology': 'ophthalmology',
+    'orthropedics & joint replacement': 'orthopaedics',
+    'orthropedics-joint-replacement': 'orthopaedics',
+    'orthopedics & joint replacement': 'orthopaedics',
+    'orthopedics': 'orthopaedics',
+    'orthopaedics': 'orthopaedics',
+    'gynecology': 'gynaecology',
+    'gynaecology': 'gynaecology',
+    'pediatric surgery': 'pediatric-surgery',
+    'pediatrics': 'pediatric-surgery',
+    'general surgery': 'general-surgery',
+    'general medicine': 'general-medicine',
+    'plastic surgery': 'plastic-surgery',
+    'ent': 'ent',
+    'urology': 'urology',
+    'gastroenterology': 'gastroenterology',
+    'cardiology': 'cardiology',
+    'nephrology': 'nephrology',
+    'radiology': 'radiology',
+    'dermatology': 'dermatology',
+    'pulmonology': 'pulmonology',
+    'rheumatology': 'rheumatology',
+    'physiotherapy': 'physiotherapy',
+    'dentistry': 'dentistry',
+}
+
 # ========== FETCH CSV ==========
 def fetch_csv(url):
     with urllib.request.urlopen(url) as response:
@@ -34,6 +65,13 @@ def slugify(text):
     text = text.lower()
     text = re.sub(r'[^a-z0-9]+', '-', text).strip('-')
     return text
+
+def resolve_dept_slug(dept_name):
+    """Map data-source department spellings to actual department page slug."""
+    key = (dept_name or '').strip().lower()
+    if key in DEPT_SLUG_OVERRIDES:
+        return DEPT_SLUG_OVERRIDES[key]
+    return slugify(dept_name)
 
 def clean_name(raw_name):
     name = (raw_name or '').strip().rstrip('.')
@@ -92,10 +130,11 @@ def save_json_data(doctors, departments, posts, gallery_items, updates):
     print(f"Wrote JSON data files: {len(doctors)} doctors, {len(departments)} departments, "
           f"{len(posts)} blog posts, {len(gallery_items)} gallery items, {len(updates)} updates.")
 
-# ========== GENERATE DOCTOR PAGES (PREMIUM DESIGN) ==========
+# ========== GENERATE DOCTOR PAGES (PREMIUM, SEO-COMPLETE) ==========
 def generate_doctor_pages(doctors, departments_by_name):
     output_dir = Path('doctors')
     output_dir.mkdir(exist_ok=True)
+    dept_dir = Path('department-pages')
     urls = []
     pages = []
 
@@ -104,24 +143,60 @@ def generate_doctor_pages(doctors, departments_by_name):
         slug = slugify(doc.get('name', ''))
         filename = f'doctor-{slug}.html'
         dept_name = (doc.get('department') or '').strip()
-        dept_slug = slugify(dept_name)
+        dept_slug = resolve_dept_slug(dept_name)
         specialty = (doc.get('specialty') or 'Doctor').strip()
         qualifications = (doc.get('qualifications') or '').strip()
         photo_url = (doc.get('photo_url') or 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp').strip()
         about_text = build_about(doc, full_name)
 
+        # ---- HTML-escape every value inserted into visible HTML ----
+        full_name_e = html_mod.escape(full_name)
+        specialty_e = html_mod.escape(specialty)
+        specialty_title_e = html_mod.escape(specialty.title())
+        qualifications_e = html_mod.escape(qualifications)
+        dept_name_title_e = html_mod.escape(dept_name.title())
+        about_text_e = html_mod.escape(about_text)
+        photo_url_e = html_mod.escape(photo_url, quote=True)
+
         title = f"{full_name} | {specialty.title()} | Ibn Sina Hospital, Budgam"
-        description = f"{full_name} is a {specialty} at Ibn Sina Hospital, Budgam. View qualifications, department and book an appointment."
+        description = (
+            f"{full_name} is a {specialty} at Ibn Sina Hospital, Budgam. "
+            f"View qualifications, department and book an appointment."
+        )
         page_url = f'{SITE_URL}/doctors/{filename}'
         appointment_link = f"../appointment.html?doctor={quote(full_name)}"
 
-        # Build related doctors list
+        # ---- Photo block (precomputed to avoid nested f-strings) ----
+        has_photo = bool(photo_url) and photo_url != 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp'
+        if has_photo:
+            photo_block = (
+                f'<img src="{photo_url_e}" '
+                f'alt="{full_name_e} - {specialty_e} at Ibn Sina Hospital" '
+                f'width="180" height="180" loading="eager">'
+            )
+        else:
+            photo_block = '<div class="no-img">👨‍⚕️</div>'
+
+        # ---- Department link (only render if the page actually exists) ----
+        dept_link_html = ""
+        dept_page_file = dept_dir / f'{dept_slug}.html'
+        if dept_name and dept_page_file.exists():
+            dept_link_html = (
+                f'<div class="hero-dept">Department: '
+                f'<a href="../department-pages/{dept_slug}.html">{dept_name_title_e}</a>'
+                f'</div>'
+            )
+        elif dept_name:
+            # Fallback — no link if the page doesn't exist yet
+            dept_link_html = f'<div class="hero-dept">Department: {dept_name_title_e}</div>'
+
+        # ---- Related doctors in same department ----
         same_dept_doctors = [
             d for d in doctors
             if (d.get('department') or '').strip().lower() == dept_name.lower()
             and (d.get('name') or '') != doc.get('name', '')
         ][:4]
-        
+
         related_doctors_html = ""
         if same_dept_doctors:
             items = "".join(
@@ -130,8 +205,8 @@ def generate_doctor_pages(doctors, departments_by_name):
                     <a href="doctor-{slugify(d.get('name',''))}.html">
                         <div class="related-avatar">👨‍⚕️</div>
                         <div>
-                            <strong>{clean_name(d.get('name',''))}</strong>
-                            <span class="related-specialty">{(d.get('specialty') or '').title()}</span>
+                            <strong>{html_mod.escape(clean_name(d.get('name','')))}</strong>
+                            <span class="related-specialty">{html_mod.escape((d.get('specialty') or '').title())}</span>
                         </div>
                     </a>
                 </div>
@@ -140,17 +215,13 @@ def generate_doctor_pages(doctors, departments_by_name):
             )
             related_doctors_html = f'''
             <div class="related-doctors-section">
-                <h3>Other {dept_name.title()} Specialists</h3>
+                <h3>Other {dept_name_title_e} Specialists</h3>
                 <div class="related-doctors-grid">{items}</div>
             </div>
             '''
 
-        # Department link (fixed to department-pages/)
-        dept_link_html = ""
-        if dept_name:
-            dept_link_html = f'<p><a href="../department-pages/{dept_slug}.html" class="dept-link">View {dept_name.title()} Department →</a></p>'
-
-        json_ld = {
+        # ---- JSON-LD: Physician ----
+        json_ld_physician = {
             "@context": "https://schema.org",
             "@type": "Physician",
             "name": full_name,
@@ -158,19 +229,45 @@ def generate_doctor_pages(doctors, departments_by_name):
             "worksFor": {
                 "@type": "Hospital",
                 "name": "Ibn Sina Hospital",
+                "url": SITE_URL,
                 "address": {
                     "@type": "PostalAddress",
+                    "streetAddress": "Near Railway Station, Ompora Railway Station Road, Ompora",
                     "addressLocality": "Budgam",
                     "addressRegion": "Jammu and Kashmir",
+                    "postalCode": "191111",
                     "addressCountry": "IN"
-                }
+                },
+                "telephone": "+919622552553",
+                "areaServed": [
+                    {"@type": "City", "name": "Budgam"},
+                    {"@type": "City", "name": "Srinagar"},
+                    {"@type": "City", "name": "Ompora"},
+                    {"@type": "City", "name": "Ganderbal"},
+                    {"@type": "City", "name": "Pulwama"},
+                    {"@type": "City", "name": "Shopian"},
+                    {"@type": "City", "name": "Kulgam"},
+                    {"@type": "City", "name": "Baramulla"},
+                    {"@type": "City", "name": "Anantnag"}
+                ]
             },
             "url": page_url,
             "image": photo_url,
             "description": about_text[:160]
         }
         if qualifications:
-            json_ld["hasCredential"] = qualifications
+            json_ld_physician["hasCredential"] = qualifications
+
+        # ---- JSON-LD: BreadcrumbList ----
+        json_ld_breadcrumb = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Home", "item": f"{SITE_URL}/"},
+                {"@type": "ListItem", "position": 2, "name": "Doctors", "item": f"{SITE_URL}/doctors.html"},
+                {"@type": "ListItem", "position": 3, "name": full_name, "item": page_url}
+            ]
+        }
 
         # ======================= PREMIUM HTML TEMPLATE =======================
         html = f"""<!DOCTYPE html>
@@ -180,14 +277,27 @@ def generate_doctor_pages(doctors, departments_by_name):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
     <meta name="description" content="{description}">
+    <meta name="robots" content="index,follow">
     <link rel="canonical" href="{page_url}">
     <meta property="og:title" content="{title}">
     <meta property="og:description" content="{description}">
     <meta property="og:type" content="profile">
     <meta property="og:url" content="{page_url}">
-    <meta property="og:image" content="{photo_url}">
+    <meta property="og:image" content="{photo_url_e}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{title}">
+    <meta name="twitter:description" content="{description}">
+    <meta name="twitter:image" content="{photo_url_e}">
+    <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="stylesheet" href="../css/style.css">
-    <script type="application/ld+json">{json.dumps(json_ld, ensure_ascii=False)}</script>
+    <link rel="stylesheet" href="../css/mobile-fix.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="application/ld+json">{json.dumps(json_ld_physician, ensure_ascii=False)}</script>
+    <script type="application/ld+json">{json.dumps(json_ld_breadcrumb, ensure_ascii=False)}</script>
 
     <!-- ========== PREMIUM DOCTOR PROFILE STYLES ========== -->
     <style>
@@ -215,7 +325,6 @@ def generate_doctor_pages(doctors, departments_by_name):
             color: #a4ac86;
         }}
 
-        /* --- Hero Section --- */
         .doctor-profile-page .profile-hero {{
             display: flex;
             flex-wrap: wrap;
@@ -330,7 +439,6 @@ def generate_doctor_pages(doctors, departments_by_name):
             color: #ffffff;
         }}
 
-        /* --- Main Layout (Content + Sidebar) --- */
         .doctor-profile-page .profile-layout {{
             display: grid;
             grid-template-columns: minmax(0, 1fr) 300px;
@@ -346,7 +454,6 @@ def generate_doctor_pages(doctors, departments_by_name):
             top: 100px;
         }}
 
-        /* --- Bio Card --- */
         .doctor-profile-page .bio-card {{
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(8px);
@@ -389,7 +496,6 @@ def generate_doctor_pages(doctors, departments_by_name):
             border-bottom-color: var(--doc-green);
         }}
 
-        /* --- Related Doctors --- */
         .doctor-profile-page .related-doctors-section {{
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(4px);
@@ -445,7 +551,6 @@ def generate_doctor_pages(doctors, departments_by_name):
             letter-spacing: 0.03em;
         }}
 
-        /* --- Sidebar Cards --- */
         .doctor-profile-page .sidebar-card {{
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(8px);
@@ -515,7 +620,91 @@ def generate_doctor_pages(doctors, departments_by_name):
             text-decoration: underline;
         }}
 
-        /* --- Responsive --- */
+        /* --- Explore Section --- */
+        .doctor-profile-page .explore-section {{
+            padding: 30px 0 10px;
+        }}
+        .doctor-profile-page .explore-section h2 {{
+            font-family: 'Poppins', sans-serif;
+            color: var(--doc-green);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }}
+        .doctor-profile-page .explore-section .section-subtitle {{
+            text-align: center;
+            color: #4e5c4a;
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+        }}
+        .doctor-profile-page .explore-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }}
+        .doctor-profile-page .explore-card {{
+            background: #fff;
+            border: 1px solid #e2e8df;
+            border-radius: 14px;
+            padding: 18px 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 4px 12px rgba(45, 74, 43, 0.03);
+        }}
+        .doctor-profile-page .explore-card:hover {{
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(45, 74, 43, 0.08);
+            border-color: #a4ac86;
+        }}
+        .doctor-profile-page .explore-card h3 {{
+            color: #2d4a2b;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+            font-family: 'Poppins', sans-serif;
+        }}
+        .doctor-profile-page .explore-card p {{
+            color: #5a6b4a;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }}
+        .doctor-profile-page .explore-card .explore-icon {{
+            font-size: 1.4rem;
+            margin-bottom: 0.4rem;
+            display: block;
+        }}
+
+        /* --- Areas We Serve --- */
+        .doctor-profile-page .areas-serve-premium {{
+            background: linear-gradient(145deg, #f5f8f2, #ecf2e8);
+            border-radius: 24px;
+            padding: 30px 24px;
+            border: 1px solid #e2e8df;
+            margin: 30px 0;
+            text-align: center;
+        }}
+        .doctor-profile-page .areas-serve-premium .badge-list {{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }}
+        .doctor-profile-page .areas-serve-premium .badge-list span {{
+            background: #ffffff;
+            padding: 8px 22px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2d4a2b;
+            border: 1px solid #dce4d6;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }}
+        .doctor-profile-page .areas-serve-premium .badge-list span.strong-badge {{
+            background: #2d4a2b;
+            color: #ffffff;
+            border-color: #2d4a2b;
+        }}
+
         @media (max-width: 900px) {{
             .doctor-profile-page .profile-layout {{
                 grid-template-columns: 1fr;
@@ -570,8 +759,10 @@ def generate_doctor_pages(doctors, departments_by_name):
                     <li><a href="../index.html" class="nav-link">Home</a></li>
                     <li><a href="../about.html" class="nav-link">About</a></li>
                     <li><a href="../services.html" class="nav-link">Services</a></li>
-                    <li><a href="../doctors.html" class="nav-link">Doctors</a></li>
+                    <li><a href="../health-checkup-packages.html" class="nav-link">Health Checkups</a></li>
+                    <li><a href="../doctors.html" class="nav-link active">Doctors</a></li>
                     <li><a href="../gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="../insurance-pmjay.html" class="nav-link">PM-JAY / Insurance</a></li>
                     <li><a href="../blog.html" class="nav-link">Blog</a></li>
                     <li><a href="../careers.html" class="nav-link">Careers</a></li>
                     <li><a href="../faq.html" class="nav-link">FAQ</a></li>
@@ -602,21 +793,19 @@ def generate_doctor_pages(doctors, departments_by_name):
             <span>›</span>
             <a href="../doctors.html">Doctors</a>
             <span>›</span>
-            <span>{full_name}</span>
+            <span>{full_name_e}</span>
         </nav>
 
         <!-- ===== PROFILE HERO ===== -->
         <section class="profile-hero">
             <div class="hero-image">
-                {f'<img src="{photo_url}" alt="{full_name} - {specialty} at Ibn Sina Hospital">' if photo_url and photo_url != 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp' else '<div class="no-img">👨‍⚕️</div>'}
+                {photo_block}
             </div>
             <div class="hero-text">
-                <h1>{full_name}</h1>
-                <div class="hero-specialty">{specialty.title()}</div>
-                <div class="hero-qual">{qualifications or ''}</div>
-                <div class="hero-dept">
-                    Department: <a href="../department-pages/{dept_slug}.html">{dept_name.title()}</a>
-                </div>
+                <h1>{full_name_e}</h1>
+                <div class="hero-specialty">{specialty_title_e}</div>
+                <div class="hero-qual">{qualifications_e}</div>
+                {dept_link_html}
                 <div class="hero-actions">
                     <a href="{appointment_link}" class="btn-appointment-hero">📅 Book Appointment</a>
                     <a href="tel:9622552553" class="btn-secondary-hero">📞 Call Hospital</a>
@@ -627,36 +816,30 @@ def generate_doctor_pages(doctors, departments_by_name):
         <!-- ===== PROFILE LAYOUT ===== -->
         <div class="profile-layout">
 
-            <!-- ===== CONTENT COLUMN ===== -->
+            <!-- CONTENT COLUMN -->
             <div class="profile-content">
 
-                <!-- Bio Card -->
                 <div class="bio-card">
-                    <h2>About Dr. {full_name.replace('Dr.', '').strip()}</h2>
-                    <p>{about_text}</p>
-                    <p style="margin-top: 1rem;">
-                        <a href="../department-pages/{dept_slug}.html" class="dept-link">View {dept_name.title()} Department →</a>
-                    </p>
+                    <h2>About {full_name_e}</h2>
+                    <p>{about_text_e}</p>
+                    {f'<p style="margin-top: 1rem;"><a href="../department-pages/{dept_slug}.html" class="dept-link">View {dept_name_title_e} Department →</a></p>' if (dept_name and dept_page_file.exists()) else ''}
                 </div>
 
-                <!-- Related Doctors -->
                 {related_doctors_html}
 
             </div>
 
-            <!-- ===== SIDEBAR ===== -->
+            <!-- SIDEBAR -->
             <aside class="profile-sidebar">
 
-                <!-- Appointment CTA -->
                 <div class="sidebar-card" style="background: linear-gradient(145deg, #2d4a2b, #1d321c); color: #ffffff; border: none;">
                     <h3 style="color: #ffffff;">📋 Book an Appointment</h3>
                     <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
-                        Consult with {full_name} at Ibn Sina Hospital, Budgam.
+                        Consult with {full_name_e} at Ibn Sina Hospital, Budgam.
                     </p>
                     <a href="{appointment_link}" class="cta-btn" style="background: #ffffff; color: #2d4a2b; display: block; text-align: center; padding: 14px; border-radius: 60px; font-weight: 700; text-decoration: none;">Book Now</a>
                 </div>
 
-                <!-- Emergency Contact -->
                 <div class="sidebar-card">
                     <h3>🚑 Emergency</h3>
                     <p style="color: #4e5c4a; font-size: 0.9rem; margin-bottom: 0.5rem;">
@@ -666,12 +849,14 @@ def generate_doctor_pages(doctors, departments_by_name):
                     <p style="font-size: 0.75rem; color: #82907d; margin-top: 0.5rem; text-align: center;">Available 24/7, 365 days</p>
                 </div>
 
-                <!-- Quick Links -->
                 <div class="sidebar-card">
                     <h3>Quick Links</h3>
                     <ul class="quick-links">
                         <li><a href="../doctors.html">All Doctors</a></li>
+                        <li><a href="../department-pages/specialties-directory.html">All Specialties</a></li>
                         <li><a href="../services.html">Our Services</a></li>
+                        <li><a href="../health-checkup-packages.html">Health Checkups</a></li>
+                        <li><a href="../insurance-pmjay.html">PM-JAY / Insurance</a></li>
                         <li><a href="../appointment.html">Book Appointment</a></li>
                         <li><a href="../contact.html">Contact Us</a></li>
                         <li><a href="../faq.html">FAQs</a></li>
@@ -682,25 +867,65 @@ def generate_doctor_pages(doctors, departments_by_name):
 
         </div>
 
-        <!-- ===== AREAS WE SERVE (Premium Badge Cloud) ===== -->
-        <section class="areas-serve-premium" style="background: linear-gradient(145deg, #f5f8f2, #ecf2e8); border-radius: 24px; padding: 30px 24px; border: 1px solid #e2e8df; margin: 30px 0; text-align: center;">
+        <!-- ===== EXPLORE IBN SINA HOSPITAL (Internal Linking) ===== -->
+        <section class="explore-section">
+            <h2>Explore Ibn Sina Hospital</h2>
+            <p class="section-subtitle">
+                Learn more about our doctors, departments, and patient resources.
+            </p>
+            <div class="explore-grid">
+                <a href="../doctors.html" class="explore-card">
+                    <span class="explore-icon">👨‍⚕️</span>
+                    <h3>All Doctors</h3>
+                    <p>Browse our consultant-led team across 20+ specialties.</p>
+                </a>
+                <a href="../department-pages/specialties-directory.html" class="explore-card">
+                    <span class="explore-icon">📋</span>
+                    <h3>All Departments</h3>
+                    <p>Explore clinical, surgical, and diagnostic specialties.</p>
+                </a>
+                <a href="../services.html" class="explore-card">
+                    <span class="explore-icon">🩺</span>
+                    <h3>Hospital Services</h3>
+                    <p>Diagnostics, emergency care, dialysis, and inpatient facilities.</p>
+                </a>
+                <a href="../health-checkup-packages.html" class="explore-card">
+                    <span class="explore-icon">💊</span>
+                    <h3>Health Checkups</h3>
+                    <p>Preventive packages to detect health risks early.</p>
+                </a>
+                <a href="../insurance-pmjay.html" class="explore-card">
+                    <span class="explore-icon">📄</span>
+                    <h3>PM-JAY / Insurance</h3>
+                    <p>Cashless treatment under Ayushman Bharat PM-JAY.</p>
+                </a>
+                <a href="../blog.html" class="explore-card">
+                    <span class="explore-icon">📰</span>
+                    <h3>Health Blog</h3>
+                    <p>Trusted health articles from our medical team.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- ===== AREAS WE SERVE ===== -->
+        <section class="areas-serve-premium">
             <p style="font-weight: 700; color: #2d4a2b; margin: 0 0 12px; font-size: 1.1rem;">
                 🌍 Serving Families Across J&amp;K &amp; India
             </p>
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-                <span style="background: #ffffff; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #2d4a2b; border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Budgam</span>
-                <span style="background: #ffffff; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #2d4a2b; border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Srinagar</span>
-                <span style="background: #ffffff; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #2d4a2b; border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Ompora</span>
-                <span style="background: #ffffff; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #2d4a2b; border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Ganderbal</span>
-                <span style="background: #ffffff; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #2d4a2b; border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Pulwama</span>
-                <span style="background: #ffffff; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #2d4a2b; border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Shopian</span>
-                <span style="background: #ffffff; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #2d4a2b; border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Kulgam</span>
-                <span style="background: #2d4a2b; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #ffffff; border: 1px solid #2d4a2b; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">Jammu &amp; Kashmir</span>
-                <span style="background: #2d4a2b; padding: 8px 22px; border-radius: 60px; font-size: 0.85rem; font-weight: 600; color: #ffffff; border: 1px solid #2d4a2b; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">India</span>
+            <div class="badge-list">
+                <span>Budgam</span>
+                <span>Srinagar</span>
+                <span>Ompora</span>
+                <span>Ganderbal</span>
+                <span>Pulwama</span>
+                <span>Shopian</span>
+                <span>Kulgam</span>
+                <span class="strong-badge">Jammu &amp; Kashmir</span>
+                <span class="strong-badge">India</span>
             </div>
             <div style="margin-top: 14px; font-size: 0.9rem;">
-                <a href="../service-areas.html" style="color: #2d4a2b; text-decoration: underline;">View all service areas</a> 
-                <span style="margin:0 0.5rem;">|</span> 
+                <a href="../service-areas.html" style="color: #2d4a2b; text-decoration: underline;">View all service areas</a>
+                <span style="margin:0 0.5rem;">|</span>
                 <a href="../contact.html" style="color: #2d4a2b; text-decoration: underline;">Get directions</a>
             </div>
         </section>
@@ -719,7 +944,7 @@ def generate_doctor_pages(doctors, departments_by_name):
                 <p><a href="tel:9622552553">📞 9622552553 / 9419023501</a></p>
                 <p><a href="mailto:weibnsina@gmail.com">✉ weibnsina@gmail.com</a></p>
                 <p style="margin-top:0.5rem; font-size:0.85rem; color:#71806d;">
-                    <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam – 
+                    <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam –
                     across <strong>Jammu &amp; Kashmir</strong> &amp; <strong>India</strong>
                 </p>
             </div>
@@ -733,8 +958,10 @@ def generate_doctor_pages(doctors, departments_by_name):
                     <li><a href="../index.html">Home</a></li>
                     <li><a href="../about.html">About Us</a></li>
                     <li><a href="../services.html">Services</a></li>
+                    <li><a href="../health-checkup-packages.html">Health Checkup Packages</a></li>
                     <li><a href="../doctors.html">Doctors</a></li>
                     <li><a href="../gallery.html">Gallery</a></li>
+                    <li><a href="../insurance-pmjay.html">PM-JAY / Insurance</a></li>
                     <li><a href="../blog.html">Blog</a></li>
                     <li><a href="../careers.html">Careers</a></li>
                     <li><a href="../faq.html">FAQ</a></li>
@@ -756,7 +983,6 @@ def generate_doctor_pages(doctors, departments_by_name):
         </div>
     </footer>
 
-    <!-- ===== SCRIPTS ===== -->
     <script src="../js/main.js" defer></script>
     <script src="../js/chatbot.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
@@ -790,6 +1016,11 @@ def generate_blog_pages(posts):
         summary = post.get('short_summary', title)
         image = post.get('cover_image_url', 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp')
 
+        title_e = html_mod.escape(title)
+        summary_e = html_mod.escape(summary)
+        image_e = html_mod.escape(image, quote=True)
+        body = post.get('body', '')
+
         json_ld = {
             "@context": "https://schema.org",
             "@type": "Article",
@@ -814,14 +1045,14 @@ def generate_blog_pages(posts):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} | Ibn Sina Hospital</title>
-    <meta name="description" content="{summary}">
+    <title>{title_e} | Ibn Sina Hospital</title>
+    <meta name="description" content="{summary_e}">
     <link rel="canonical" href="{page_url}">
-    <meta property="og:title" content="{title} | Ibn Sina Hospital">
-    <meta property="og:description" content="{summary}">
+    <meta property="og:title" content="{title_e} | Ibn Sina Hospital">
+    <meta property="og:description" content="{summary_e}">
     <meta property="og:type" content="article">
     <meta property="og:url" content="{page_url}">
-    <meta property="og:image" content="{image}">
+    <meta property="og:image" content="{image_e}">
     <link rel="stylesheet" href="../css/style.css">
     <script type="application/ld+json">{json.dumps(json_ld, ensure_ascii=False)}</script>
 </head>
@@ -839,9 +1070,9 @@ def generate_blog_pages(posts):
     <main class="section">
         <div class="container">
             <article>
-                <h1>{title}</h1>
+                <h1>{title_e}</h1>
                 <time>{post.get('published_at', '')}</time>
-                <div class="blog-body">{post.get('body', '')}</div>
+                <div class="blog-body">{body}</div>
             </article>
         </div>
     </main>
@@ -868,7 +1099,7 @@ def generate_department_pages(departments, doctors):
 
     for dept in departments:
         dept_name = (dept.get('name') or '').strip()
-        slug = slugify(dept.get('slug') or dept_name)
+        slug = resolve_dept_slug(dept.get('slug') or dept_name)
 
         # Skip the thin auto-generated page entirely when a hand-built,
         # fuller page already exists in department-pages/ for this slug.
@@ -961,8 +1192,8 @@ def build_photo_items(items):
         alt_text = (item.get('alt_text') or '').strip() or title or "Ibn Sina Hospital, Budgam"
         html_items.append(
             f'<div class="photo-item">\n'
-            f'    <img src="{img_url}" alt="{alt_text}" loading="lazy">\n'
-            f'    <div class="photo-caption">{title}</div>\n'
+            f'    <img src="{html_mod.escape(img_url, quote=True)}" alt="{html_mod.escape(alt_text, quote=True)}" loading="lazy" width="400" height="300">\n'
+            f'    <div class="photo-caption">{html_mod.escape(title)}</div>\n'
             f'</div>'
         )
     return '\n'.join(html_items)
@@ -983,7 +1214,7 @@ def generate_gallery_page(gallery_items):
     Path('gallery.html').write_text(output_html, encoding='utf-8')
     return f'{SITE_URL}/gallery.html', output_html
 
-# ========== NEW: COLLECT MANUAL DEPARTMENT PAGES ==========
+# ========== COLLECT MANUAL DEPARTMENT PAGES ==========
 def collect_manual_department_pages():
     pages = []
     dept_dir = Path('department-pages')
@@ -1087,7 +1318,6 @@ if __name__ == "__main__":
     dept_urls, dept_pages = generate_department_pages(departments, doctors)
     gallery_url, gallery_html = generate_gallery_page(gallery_items)
 
-    # Collect manually created department pages (e.g., department-pages/*.html)
     manual_dept_pages = collect_manual_department_pages()
     print(f"Found {len(manual_dept_pages)} manual department pages.")
 
