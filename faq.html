@@ -3,36 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- ✅ UPDATED SEO TITLE -->
+
     <title>FAQ – Frequently Asked Questions | Ibn Sina Hospital Budgam &amp; Srinagar, J&amp;K</title>
-    
-    <!-- ✅ UPDATED SEO DESCRIPTION -->
+
     <meta name="description" content="Find answers to frequently asked questions about Ibn Sina Hospital in Ompora, Budgam. 24/7 OPD, pharmacy, dialysis, ambulance, appointments, and more. Serving Srinagar, Ganderbal &amp; across J&amp;K.">
-    
+
     <link rel="canonical" href="https://ibnsinahospital.in/faq.html">
     <meta name="robots" content="index,follow">
-    
-    <!-- ✅ UPDATED OPEN GRAPH -->
+
     <meta property="og:title" content="FAQ – Frequently Asked Questions | Ibn Sina Hospital Budgam &amp; Srinagar">
     <meta property="og:description" content="Find answers to FAQs about Ibn Sina Hospital – location, 24/7 OPD, pharmacy, dialysis, ambulance, appointments, and more. Serving Srinagar, Ganderbal &amp; across J&amp;K.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ibnsinahospital.in/faq.html">
     <meta property="og:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
-    
-    <!-- ✅ UPDATED TWITTER -->
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="FAQ – Frequently Asked Questions | Ibn Sina Hospital">
     <meta name="twitter:description" content="Find answers to FAQs about Ibn Sina Hospital – location, 24/7 OPD, pharmacy, dialysis, ambulance, appointments, and more.">
     <meta name="twitter:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
-    
+
     <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-fix.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- ✅ UPDATED HOSPITAL SCHEMA WITH AREASERVED -->
+    <!-- Hospital Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -86,12 +85,42 @@
         "Cardiology",
         "Nephrology",
         "Orthopedics",
-        "Gynaecology"
+        "Gynaecology",
+        "Gastroenterology",
+        "Urology",
+        "Dermatology",
+        "Pulmonology",
+        "Rheumatology",
+        "Dentistry",
+        "Pediatric Surgery",
+        "Radiology"
       ]
     }
     </script>
 
-    <!-- ✅ UPDATED FAQ PAGE SCHEMA (All 20+ Questions) -->
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://ibnsinahospital.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "FAQ",
+          "item": "https://ibnsinahospital.in/faq.html"
+        }
+      ]
+    }
+    </script>
+
+    <!-- FAQ Page Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -262,7 +291,7 @@
           "name": "Is parking available at the hospital?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, we have ample parking space available on the hospital premises for patients and visitors."
+            "text": "Yes, parking is available on the hospital premises for patients and visitors."
           }
         },
         {
@@ -301,16 +330,12 @@
     }
     </script>
 
-    <!-- =========================================================
-         PREMIUM FAQ PAGE STYLES (Scoped to .faq-page)
-    ========================================================== -->
     <style>
         .faq-page {
             --faq-accent: #2d4a2b;
             --faq-gold: #c9b99a;
         }
 
-        /* ----- Breadcrumb ----- */
         .faq-page .breadcrumb-premium {
             font-size: 0.85rem;
             font-weight: 500;
@@ -329,12 +354,13 @@
             color: #a4ac86;
         }
 
-        /* ----- Hero Section ----- */
         .faq-page .faq-hero-wrap {
             position: relative;
-            background: linear-gradient(145deg, #f5f8f2, #eaf1e6);
+            background:
+                radial-gradient(circle at 90% 10%, rgba(201, 185, 154, 0.15), transparent 35%),
+                linear-gradient(145deg, #f5f8f2, #eaf1e6);
             border-radius: 28px;
-            padding: 40px 40px 30px;
+            padding: 45px 40px 40px;
             margin: 0 0 30px 0;
             border: 1px solid rgba(164, 172, 134, 0.2);
             box-shadow: 0 10px 40px rgba(45, 74, 43, 0.04);
@@ -374,7 +400,7 @@
             font-size: 1.05rem;
             line-height: 1.8;
             color: #4e5c4a;
-            max-width: 800px;
+            max-width: 850px;
         }
 
         .faq-page .faq-hero-wrap p strong {
@@ -382,7 +408,13 @@
             font-weight: 700;
         }
 
-        /* ----- FAQ Category Badges ----- */
+        .faq-page .faq-hero-wrap p a {
+            color: var(--faq-accent);
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        /* ----- Quick Jump Chips ----- */
         .faq-page .faq-categories {
             display: flex;
             flex-wrap: wrap;
@@ -394,23 +426,44 @@
         .faq-page .faq-categories a {
             padding: 8px 20px;
             border-radius: 60px;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid #dce4d6;
+            background: #ffffff;
+            border: 1.5px solid #dce4d6;
             color: #2d4a2b;
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             font-weight: 600;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
 
         .faq-page .faq-categories a:hover {
             background: var(--faq-accent);
             color: #ffffff;
             border-color: var(--faq-accent);
-            transform: scale(1.02);
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(45, 74, 43, 0.15);
         }
 
-        /* ----- FAQ List (Premium Styling) ----- */
+        /* ----- Section headings ----- */
+        .faq-page .faq-category-heading {
+            font-family: 'Poppins', sans-serif;
+            color: #2d4a2b;
+            font-size: 1.35rem;
+            margin-top: 2rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .faq-page .faq-category-heading::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, #dce4d6, transparent);
+            margin-left: 10px;
+        }
+
+        /* ----- FAQ List ----- */
         .faq-page .faq-list {
             display: flex;
             flex-direction: column;
@@ -419,23 +472,23 @@
         }
 
         .faq-page .faq-list details {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            background: #ffffff;
+            border: 1px solid #e2e8df;
             border-radius: 16px;
             padding: 0;
             box-shadow: 0 4px 20px rgba(45, 74, 43, 0.03);
             transition: all 0.3s ease;
+            overflow: hidden;
         }
 
         .faq-page .faq-list details:hover {
             border-color: var(--faq-gold);
+            box-shadow: 0 8px 24px rgba(45, 74, 43, 0.05);
         }
 
         .faq-page .faq-list details[open] {
             border-color: var(--faq-accent);
-            box-shadow: 0 8px 30px rgba(45, 74, 43, 0.06);
+            box-shadow: 0 12px 32px rgba(45, 74, 43, 0.08);
         }
 
         .faq-page .faq-list summary {
@@ -451,6 +504,7 @@
             font-size: 1rem;
             transition: background 0.2s ease;
             border-radius: 16px;
+            line-height: 1.5;
         }
 
         .faq-page .faq-list summary::-webkit-details-marker {
@@ -459,15 +513,26 @@
 
         .faq-page .faq-list summary::after {
             content: '+';
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 300;
             color: var(--faq-accent);
-            transition: transform 0.2s ease;
+            transition: transform 0.3s ease;
             flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
         }
 
         .faq-page .faq-list details[open] summary::after {
             content: '−';
+            transform: rotate(180deg);
+        }
+
+        .faq-page .faq-list details[open] summary {
+            background: #f9fbf7;
         }
 
         .faq-page .faq-list details p {
@@ -484,12 +549,16 @@
             text-decoration: underline;
         }
 
-        /* ----- Still Have Questions? CTA ----- */
+        .faq-page .faq-list details p a:hover {
+            text-decoration: none;
+        }
+
+        /* ----- Still Have Questions CTA ----- */
         .faq-page .cta-still-questions {
             background: linear-gradient(145deg, #f5f8f2, #ecf2e8);
             border-radius: 20px;
-            padding: 30px;
-            margin: 30px 0;
+            padding: 32px 28px;
+            margin: 40px 0;
             border: 1px solid #e2e8df;
             text-align: center;
         }
@@ -497,14 +566,15 @@
         .faq-page .cta-still-questions h3 {
             font-family: 'Poppins', sans-serif;
             color: var(--faq-accent);
-            font-size: 1.3rem;
+            font-size: 1.35rem;
             margin-bottom: 0.5rem;
         }
 
         .faq-page .cta-still-questions p {
             color: #4e5c4a;
             max-width: 600px;
-            margin: 0 auto 1rem;
+            margin: 0 auto 1.2rem;
+            line-height: 1.7;
         }
 
         .faq-page .cta-still-questions .btn-group {
@@ -520,6 +590,7 @@
             text-decoration: none;
             font-weight: 700;
             transition: all 0.3s ease;
+            font-size: 0.95rem;
         }
 
         .faq-page .cta-still-questions .btn-primary-faq {
@@ -544,13 +615,87 @@
             color: #ffffff;
         }
 
-        /* ----- Areas We Serve (Premium Badge Cloud) ----- */
+        /* ----- Explore Section ----- */
+        .faq-page .explore-section {
+            padding: 20px 0 10px;
+        }
+        .faq-page .explore-section h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #2d4a2b;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .faq-page .explore-section .section-subtitle {
+            text-align: center;
+            color: #4e5c4a;
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+        }
+        .faq-page .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+        .faq-page .explore-card {
+            background: #fff;
+            border: 1px solid #e2e8df;
+            border-radius: 14px;
+            padding: 20px 22px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 4px 12px rgba(45, 74, 43, 0.03);
+        }
+        .faq-page .explore-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(45, 74, 43, 0.08);
+            border-color: #a4ac86;
+        }
+        .faq-page .explore-card h3 {
+            color: #2d4a2b; font-size: 1.05rem; margin-bottom: 0.4rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        .faq-page .explore-card p {
+            color: #5a6b4a; font-size: 0.88rem; line-height: 1.55; margin-bottom: 0;
+        }
+        .faq-page .explore-card .explore-icon {
+            font-size: 1.6rem; margin-bottom: 0.5rem; display: block;
+        }
+
+        /* ----- Dept Pill Grid ----- */
+        .faq-page .dept-pill-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .faq-page .dept-pill-grid a {
+            display: inline-block;
+            padding: 8px 18px;
+            background: #fff;
+            border: 1px solid #dce4d6;
+            border-radius: 60px;
+            color: #2d4a2b;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .faq-page .dept-pill-grid a:hover {
+            background: #2d4a2b;
+            color: #fff;
+            border-color: #2d4a2b;
+        }
+
+        /* ----- Areas We Serve ----- */
         .faq-page .areas-serve-premium {
             background: linear-gradient(145deg, #f5f8f2, #ecf2e8);
             border-radius: 24px;
             padding: 30px 24px;
             border: 1px solid #e2e8df;
-            margin: 30px 0;
+            margin: 40px 0 20px;
             text-align: center;
         }
 
@@ -603,7 +748,7 @@
         /* ----- Responsive ----- */
         @media (max-width: 768px) {
             .faq-page .faq-hero-wrap {
-                padding: 24px 20px;
+                padding: 28px 22px;
                 border-radius: 20px;
             }
             .faq-page .faq-hero-wrap h1 {
@@ -613,7 +758,7 @@
                 gap: 8px;
             }
             .faq-page .faq-categories a {
-                font-size: 0.75rem;
+                font-size: 0.78rem;
                 padding: 6px 14px;
             }
             .faq-page .cta-still-questions .btn-group {
@@ -624,12 +769,15 @@
 
         @media (max-width: 480px) {
             .faq-page .faq-list summary {
-                font-size: 0.9rem;
+                font-size: 0.92rem;
                 padding: 14px 18px;
             }
             .faq-page .faq-list details p {
                 padding: 0 18px 16px;
                 font-size: 0.9rem;
+            }
+            .faq-page .faq-category-heading {
+                font-size: 1.15rem;
             }
         }
     </style>
@@ -637,8 +785,8 @@
 </head>
 <body class="faq-page">
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    
-    <!-- ===== HEADER (Unchanged) ===== -->
+
+    <!-- ===== HEADER (Updated: 11 nav items) ===== -->
     <header class="site-header" id="site-header">
         <div class="header-inner container">
             <a href="index.html" class="logo" aria-label="Ibn Sina Hospital Home">
@@ -650,8 +798,10 @@
                     <li><a href="index.html" class="nav-link">Home</a></li>
                     <li><a href="about.html" class="nav-link">About</a></li>
                     <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="health-checkup-packages.html" class="nav-link">Health Checkups</a></li>
                     <li><a href="doctors.html" class="nav-link">Doctors</a></li>
                     <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html" class="nav-link">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html" class="nav-link">Blog</a></li>
                     <li><a href="careers.html" class="nav-link">Careers</a></li>
                     <li><a href="faq.html" class="nav-link active">FAQ</a></li>
@@ -676,30 +826,29 @@
     <main id="main-content">
         <section class="section" style="padding-bottom: 0;">
             <div class="container">
-                
-                <!-- ===== Breadcrumb ===== -->
+
                 <nav class="breadcrumb-premium" aria-label="Breadcrumb">
                     <a href="index.html">Home</a> <span>›</span> FAQ
                 </nav>
 
-                <!-- ===== Hero Section ===== -->
+                <!-- Hero -->
                 <div class="faq-hero-wrap">
                     <h1>Frequently Asked Questions</h1>
                     <p>
-                        Find answers to the most common questions about <strong>Ibn Sina Hospital</strong> in 
-                        <strong>Ompora, Budgam</strong>. We've compiled answers about our services, facilities, 
-                        appointments, and more. Serving patients from <strong>Srinagar, Ganderbal, Pulwama, 
-                        Shopian, Kulgam</strong>, across <strong>Jammu &amp; Kashmir</strong>, and patients 
+                        Find answers to the most common questions about <strong>Ibn Sina Hospital</strong> in
+                        <strong>Ompora, Budgam</strong>. We've compiled answers about our services, facilities,
+                        appointments, and more. Serving patients from <strong>Srinagar, Ganderbal, Pulwama,
+                        Shopian, Kulgam</strong>, across <strong>Jammu &amp; Kashmir</strong>, and patients
                         visiting from other parts of <strong>India</strong>.
                     </p>
                     <p style="margin-top: 0.5rem;">
-                        <a href="#faq-list">View all FAQs</a> · 
-                        <a href="#still-have-questions">Still have questions?</a> · 
+                        <a href="#faq-list">View all FAQs</a> ·
+                        <a href="#still-have-questions">Still have questions?</a> ·
                         <a href="contact.html">Contact us</a>
                     </p>
                 </div>
 
-                <!-- ===== FAQ Categories (Quick Jump) ===== -->
+                <!-- Quick Jump Chips -->
                 <div class="faq-categories">
                     <a href="#general">🏥 General</a>
                     <a href="#services">🩺 Services</a>
@@ -708,11 +857,11 @@
                     <a href="#emergency">🚑 Emergency</a>
                 </div>
 
-                <!-- ===== FAQ LIST ===== -->
+                <!-- FAQ LIST -->
                 <div id="faq-list" class="faq-list">
 
-                    <!-- ===== GENERAL ===== -->
-                    <h2 id="general" style="font-family: 'Poppins', sans-serif; color: #2d4a2b; margin-top: 1.5rem;">🏥 General Questions</h2>
+                    <!-- GENERAL -->
+                    <h2 id="general" class="faq-category-heading">🏥 General Questions</h2>
 
                     <details open>
                         <summary>Where is Ibn Sina Hospital located?</summary>
@@ -726,7 +875,7 @@
 
                     <details>
                         <summary>Does Ibn Sina Hospital treat patients from outside Budgam?</summary>
-                        <p>Yes, we welcome patients from across Jammu and Kashmir, including <strong>Srinagar, Baramulla, Pulwama, Ganderbal, Shopian, Anantnag</strong>, and also treat patients visiting from other parts of <strong>India</strong>.</p>
+                        <p>Yes, we welcome patients from across Jammu and Kashmir, including <strong>Srinagar, Baramulla, Pulwama, Ganderbal, Shopian, Anantnag</strong>, and also treat patients visiting from other parts of <strong>India</strong>. <a href="service-areas.html">View our service areas →</a></p>
                     </details>
 
                     <details>
@@ -739,8 +888,8 @@
                         <p>Ibn Sina Hospital combines a <strong>24/7 in-house pharmacy</strong>, <strong>round-the-clock lab services</strong>, and multiple specialties (cardiology, nephrology, orthopedics, gynaecology, physiotherapy, dialysis, ambulance, diagnostics) all under one roof – with experienced consultants and affordable care.</p>
                     </details>
 
-                    <!-- ===== SERVICES ===== -->
-                    <h2 id="services" style="font-family: 'Poppins', sans-serif; color: #2d4a2b; margin-top: 1.5rem;">🩺 Services</h2>
+                    <!-- SERVICES -->
+                    <h2 id="services" class="faq-category-heading">🩺 Services</h2>
 
                     <details>
                         <summary>What medical specialties are available at Ibn Sina Hospital?</summary>
@@ -749,32 +898,32 @@
 
                     <details>
                         <summary>Does the hospital provide dialysis treatment?</summary>
-                        <p>Yes, dialysis services are available for patients with kidney failure. Patients should call <a href="tel:9622552553">9622552553</a> to check availability and scheduling.</p>
+                        <p>Yes, dialysis services are available for patients with kidney failure. Patients should call <a href="tel:9622552553">9622552553</a> to check availability and scheduling. <a href="department-pages/nephrology.html">Learn more about Nephrology →</a></p>
                     </details>
 
                     <details>
                         <summary>Does the hospital provide physiotherapy?</summary>
-                        <p>Yes. We offer physiotherapy services covering <strong>injury prevention, rehabilitation, and management of acute and chronic conditions</strong>.</p>
+                        <p>Yes. We offer physiotherapy services covering <strong>injury prevention, rehabilitation, and management of acute and chronic conditions</strong>. <a href="department-pages/physiotherapy.html">Learn more →</a></p>
                     </details>
 
                     <details>
                         <summary>Does Ibn Sina Hospital provide endoscopy services?</summary>
-                        <p>Yes, we offer advanced upper and lower GI endoscopy including colonoscopy for accurate internal diagnosis.</p>
+                        <p>Yes, we offer advanced upper and lower GI endoscopy including colonoscopy for accurate internal diagnosis. <a href="department-pages/gastroenterology.html">Learn more about Gastroenterology →</a></p>
                     </details>
 
                     <details>
                         <summary>Does the hospital perform TMT (Treadmill Test)?</summary>
-                        <p>Yes, we have a <strong>Cardiac Stress Testing (TMT) lab</strong> for heart health assessment under expert supervision.</p>
+                        <p>Yes, we have a <strong>Cardiac Stress Testing (TMT) lab</strong> for heart health assessment under expert supervision. <a href="department-pages/cardiology.html">Learn more about Cardiology →</a></p>
                     </details>
 
                     <details>
                         <summary>Does Ibn Sina Hospital offer Holter Monitoring and ABPM?</summary>
-                        <p>Yes, we provide <strong>24-hour Holter Monitoring</strong> for ECG recording and <strong>Ambulatory Blood Pressure Monitoring (ABPM)</strong> to assess hypertension patterns.</p>
+                        <p>Yes, we provide <strong>24-hour Holter Monitoring</strong> for ECG recording and <strong>Ambulatory Blood Pressure Monitoring (ABPM)</strong> to assess hypertension patterns. <a href="department-pages/cardiology.html">Learn more →</a></p>
                     </details>
 
                     <details>
                         <summary>Can I get a digital X-ray at Ibn Sina Hospital?</summary>
-                        <p>Yes, we have <strong>high-resolution digital radiography</strong> with same-day results for fast, accurate diagnosis.</p>
+                        <p>Yes, we have <strong>high-resolution digital radiography</strong> with same-day results for fast, accurate diagnosis. <a href="department-pages/radiology.html">Learn more about Radiology →</a></p>
                     </details>
 
                     <details>
@@ -784,11 +933,11 @@
 
                     <details>
                         <summary>Does Ibn Sina Hospital have pediatric services?</summary>
-                        <p>Yes, we have pediatric services including <strong>pediatric surgery and general pediatric care</strong> for children of all ages.</p>
+                        <p>Yes, we have pediatric services including <strong>pediatric surgery and general pediatric care</strong> for children of all ages. <a href="department-pages/pediatric-surgery.html">Learn more →</a></p>
                     </details>
 
-                    <!-- ===== APPOINTMENTS ===== -->
-                    <h2 id="appointments" style="font-family: 'Poppins', sans-serif; color: #2d4a2b; margin-top: 1.5rem;">📅 Appointments &amp; Contact</h2>
+                    <!-- APPOINTMENTS -->
+                    <h2 id="appointments" class="faq-category-heading">📅 Appointments &amp; Contact</h2>
 
                     <details>
                         <summary>How do I book an appointment?</summary>
@@ -809,11 +958,11 @@
 
                     <details>
                         <summary>Does the hospital accept health insurance?</summary>
-                        <p>Yes, we accept various health insurance plans. Please contact our reception with your insurance details for verification and approval before treatment.</p>
+                        <p>Yes, we accept various health insurance plans, including PM-JAY (Ayushman Bharat). Please contact our reception with your insurance details for verification and approval before treatment. <a href="insurance-pmjay.html">Learn more about PM-JAY / Insurance →</a></p>
                     </details>
 
-                    <!-- ===== FACILITIES ===== -->
-                    <h2 id="facilities" style="font-family: 'Poppins', sans-serif; color: #2d4a2b; margin-top: 1.5rem;">🏗️ Facilities</h2>
+                    <!-- FACILITIES -->
+                    <h2 id="facilities" class="faq-category-heading">🏗️ Facilities</h2>
 
                     <details>
                         <summary>Is the pharmacy open 24/7?</summary>
@@ -832,7 +981,7 @@
 
                     <details>
                         <summary>Is parking available at the hospital?</summary>
-                        <p>Yes, we have <strong>ample parking space</strong> available on the hospital premises for patients and visitors.</p>
+                        <p>Yes, parking is available on the hospital premises for patients and visitors.</p>
                     </details>
 
                     <details>
@@ -840,8 +989,8 @@
                         <p>Visiting hours are from <strong>10:00 AM to 6:00 PM</strong>. However, for ICU and critical care patients, visiting is limited and requires prior approval from the attending doctor.</p>
                     </details>
 
-                    <!-- ===== EMERGENCY ===== -->
-                    <h2 id="emergency" style="font-family: 'Poppins', sans-serif; color: #2d4a2b; margin-top: 1.5rem;">🚑 Emergency</h2>
+                    <!-- EMERGENCY -->
+                    <h2 id="emergency" class="faq-category-heading">🚑 Emergency</h2>
 
                     <details>
                         <summary>Is ambulance service available in an emergency?</summary>
@@ -860,7 +1009,7 @@
 
                 </div>
 
-                <!-- ===== STILL HAVE QUESTIONS? (CTA) ===== -->
+                <!-- Still Have Questions? -->
                 <div id="still-have-questions" class="cta-still-questions">
                     <h3>❓ Still Have Questions?</h3>
                     <p>
@@ -873,7 +1022,78 @@
                     </div>
                 </div>
 
-                <!-- ===== AREAS WE SERVE (Premium Badge Cloud) ===== -->
+                <!-- Explore Section -->
+                <section class="explore-section">
+                    <h2>Explore Ibn Sina Hospital</h2>
+                    <p class="section-subtitle">
+                        Learn more about our doctors, departments, and patient resources.
+                    </p>
+                    <div class="explore-grid">
+                        <a href="about.html" class="explore-card">
+                            <span class="explore-icon">🏥</span>
+                            <h3>About Our Hospital</h3>
+                            <p>Discover our history, leadership, and our mission to provide affordable quality healthcare.</p>
+                        </a>
+                        <a href="doctors.html" class="explore-card">
+                            <span class="explore-icon">👨‍⚕️</span>
+                            <h3>Doctors &amp; Specialists</h3>
+                            <p>Browse our consultant-led team across 20+ specialties.</p>
+                        </a>
+                        <a href="department-pages/specialties-directory.html" class="explore-card">
+                            <span class="explore-icon">📋</span>
+                            <h3>Our Departments</h3>
+                            <p>Explore our clinical, surgical, and diagnostic specialties.</p>
+                        </a>
+                        <a href="services.html" class="explore-card">
+                            <span class="explore-icon">🩺</span>
+                            <h3>Hospital Services</h3>
+                            <p>Learn about our diagnostics, emergency care, dialysis, and inpatient facilities.</p>
+                        </a>
+                        <a href="health-checkup-packages.html" class="explore-card">
+                            <span class="explore-icon">💊</span>
+                            <h3>Health Checkup Packages</h3>
+                            <p>Preventive health packages to detect and manage health risks early.</p>
+                        </a>
+                        <a href="insurance-pmjay.html" class="explore-card">
+                            <span class="explore-icon">📄</span>
+                            <h3>PM-JAY / Insurance</h3>
+                            <p>Cashless treatment under Ayushman Bharat PM-JAY and other insurance schemes.</p>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Departments Pill Grid -->
+                <section style="margin: 40px 0 20px;">
+                    <h2 style="font-family: 'Poppins', sans-serif; color: #2d4a2b; text-align: center;">Explore Our Departments</h2>
+                    <p style="text-align:center; color:#4e5c4a; max-width:700px; margin: 0 auto 1.5rem;">
+                        Browse our clinical, surgical, and diagnostic specialties.
+                    </p>
+                    <div class="dept-pill-grid">
+                        <a href="department-pages/general-medicine.html">General Medicine</a>
+                        <a href="department-pages/general-surgery.html">General Surgery</a>
+                        <a href="department-pages/orthopaedics.html">Orthopaedics</a>
+                        <a href="department-pages/cardiology.html">Cardiology</a>
+                        <a href="department-pages/nephrology.html">Nephrology</a>
+                        <a href="department-pages/gastroenterology.html">Gastroenterology</a>
+                        <a href="department-pages/gynaecology.html">Gynaecology</a>
+                        <a href="department-pages/urology.html">Urology</a>
+                        <a href="department-pages/ent.html">ENT</a>
+                        <a href="department-pages/ophthalmology.html">Ophthalmology</a>
+                        <a href="department-pages/dermatology.html">Dermatology</a>
+                        <a href="department-pages/physiotherapy.html">Physiotherapy</a>
+                        <a href="department-pages/dentistry.html">Dentistry</a>
+                        <a href="department-pages/pulmonology.html">Pulmonology</a>
+                        <a href="department-pages/rheumatology.html">Rheumatology</a>
+                        <a href="department-pages/plastic-surgery.html">Plastic Surgery</a>
+                        <a href="department-pages/pediatric-surgery.html">Pediatric Surgery</a>
+                        <a href="department-pages/radiology.html">Radiology</a>
+                        <a href="department-pages/neonatal-intensive-care-unit.html">NICU</a>
+                        <a href="department-pages/specialties-directory.html">All Specialties</a>
+                        <a href="department-pages/doctor-directory.html">Doctor Directory</a>
+                    </div>
+                </section>
+
+                <!-- Areas We Serve -->
                 <div class="areas-serve-premium">
                     <p style="font-weight: 700; color: #2d4a2b; margin: 0 0 12px; font-size: 1.1rem;">
                         🌍 Serving Families Across J&amp;K &amp; India
@@ -890,8 +1110,8 @@
                         <span class="strong-badge">India</span>
                     </div>
                     <div class="badge-link">
-                        <a href="service-areas.html">View all service areas</a> 
-                        <span style="margin:0 0.5rem;">|</span> 
+                        <a href="service-areas.html">View all service areas</a>
+                        <span style="margin:0 0.5rem;">|</span>
                         <a href="contact.html">Get directions</a>
                     </div>
                 </div>
@@ -900,7 +1120,7 @@
         </section>
     </main>
 
-    <!-- ===== FOOTER (Updated with Service Areas) ===== -->
+    <!-- ===== FOOTER (Updated: 11 quick links + service areas) ===== -->
     <footer class="site-footer">
         <div class="footer-wave" aria-hidden="true">
             <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
@@ -912,7 +1132,7 @@
                 <p><a href="tel:9622552553">📞 9622552553 / 9419023501</a></p>
                 <p><a href="mailto:weibnsina@gmail.com">✉ weibnsina@gmail.com</a></p>
                 <p style="margin-top:0.5rem; font-size:0.85rem; color:#71806d;">
-                    <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam – 
+                    <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam –
                     across <strong>Jammu &amp; Kashmir</strong> &amp; <strong>India</strong>
                 </p>
             </div>
@@ -926,8 +1146,10 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="services.html">Services</a></li>
+                    <li><a href="health-checkup-packages.html">Health Checkup Packages</a></li>
                     <li><a href="doctors.html">Doctors</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="careers.html">Careers</a></li>
                     <li><a href="faq.html">FAQ</a></li>
@@ -949,11 +1171,10 @@
         </div>
     </footer>
 
-    <!-- ===== SCRIPTS (Unchanged) ===== -->
     <script src="js/main.js" defer></script>
     <script src="js/chatbot.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <script src="js/animations.js" defer></script>
 </body>
-    </html>
+</html>
