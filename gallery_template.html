@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery – Ibn Sina Hospital Budgam | Photos & Videos</title>
-    <meta name="description" content="View photos and videos of Ibn Sina Hospital – the best multi-specialty hospital in Budgam, J&K. Explore our facilities, wards, dialysis unit, pharmacy, and more.">
+    <title>Gallery – Ibn Sina Hospital Budgam | Photos &amp; Videos</title>
+    <meta name="description" content="View photos and videos of Ibn Sina Hospital – a multi-specialty hospital in Budgam, J&K. Explore our facilities, wards, dialysis unit, pharmacy, and more.">
     <link rel="canonical" href="https://ibnsinahospital.in/gallery.html">
+    <meta name="robots" content="index,follow">
     <meta property="og:title" content="Gallery – Ibn Sina Hospital Budgam">
     <meta property="og:description" content="View photos and videos of Ibn Sina Hospital – facilities, wards, dialysis unit, pharmacy, and more.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ibnsinahospital.in/gallery.html">
     <meta property="og:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Gallery – Ibn Sina Hospital Budgam">
     <meta name="twitter:description" content="View photos and videos of Ibn Sina Hospital – facilities, wards, dialysis unit, pharmacy, and more.">
     <meta name="twitter:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-fix.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -38,6 +42,19 @@
         "postalCode": "191111",
         "addressCountry": "IN"
       },
+      "areaServed": [
+        { "@type": "Country", "name": "India" },
+        { "@type": "AdministrativeArea", "name": "Jammu and Kashmir" },
+        { "@type": "City", "name": "Budgam" },
+        { "@type": "City", "name": "Srinagar" },
+        { "@type": "City", "name": "Ompora" },
+        { "@type": "City", "name": "Ganderbal" },
+        { "@type": "City", "name": "Pulwama" },
+        { "@type": "City", "name": "Shopian" },
+        { "@type": "City", "name": "Kulgam" },
+        { "@type": "City", "name": "Baramulla" },
+        { "@type": "City", "name": "Anantnag" }
+      ],
       "telephone": "+919622552553",
       "email": "weibnsina@gmail.com",
       "openingHoursSpecification": [
@@ -51,15 +68,66 @@
     }
     </script>
 
-    <style>
-        /* ===== GALLERY SPECIFIC ENHANCEMENTS ===== */
-        .gallery-section {
-            padding: 2rem 0;
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://ibnsinahospital.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Gallery",
+          "item": "https://ibnsinahospital.in/gallery.html"
         }
+      ]
+    }
+    </script>
+
+    <style>
+        .gallery-page .breadcrumb-premium {
+            font-size: 0.85rem; font-weight: 500; color: #71806d; margin-bottom: 1.5rem;
+        }
+        .gallery-page .breadcrumb-premium a { color: #2d4a2b; text-decoration: none; }
+        .gallery-page .breadcrumb-premium a:hover { text-decoration: underline; }
+        .gallery-page .breadcrumb-premium span { margin: 0 6px; color: #a4ac86; }
+
+        .gallery-page .gallery-hero-wrap {
+            position: relative; background: linear-gradient(145deg, #f5f8f2, #eaf1e6);
+            border-radius: 28px; padding: 40px 40px 30px; margin: 0 0 30px 0;
+            border: 1px solid rgba(164, 172, 134, 0.2);
+            box-shadow: 0 10px 40px rgba(45, 74, 43, 0.04); overflow: hidden;
+        }
+        .gallery-page .gallery-hero-wrap::before {
+            content: '📸'; position: absolute; right: 30px; bottom: 20px;
+            font-size: 100px; opacity: 0.06; pointer-events: none;
+        }
+        .gallery-page .gallery-hero-wrap h1 {
+            font-family: 'Poppins', sans-serif; font-size: clamp(2rem, 3.5vw, 2.8rem);
+            color: #2d4a2b; margin-bottom: 0.5rem; letter-spacing: -0.02em; line-height: 1.15;
+        }
+        .gallery-page .gallery-hero-wrap h1::after {
+            content: ''; display: block; width: 60px; height: 4px;
+            background: #c9b99a; border-radius: 4px; margin-top: 10px;
+        }
+        .gallery-page .gallery-hero-wrap p {
+            font-size: 1.05rem; line-height: 1.8; color: #4e5c4a; max-width: 800px;
+        }
+        .gallery-page .gallery-hero-wrap p a {
+            color: #2d4a2b; font-weight: 600; text-decoration: underline;
+        }
+
+        .gallery-section { padding: 2rem 0; }
         .gallery-section h2 {
-            font-family: var(--font-heading);
-            color: var(--forest);
-            border-bottom: 2px solid var(--olive);
+            font-family: 'Poppins', sans-serif;
+            color: #2d4a2b;
+            border-bottom: 2px solid #c9b99a;
             display: inline-block;
             margin-bottom: 1.5rem;
             padding-bottom: 0.3rem;
@@ -74,9 +142,9 @@
             position: relative;
             margin-bottom: 1rem;
             break-inside: avoid;
-            border-radius: var(--radius);
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
         }
@@ -90,7 +158,7 @@
             transform: scale(1.05);
         }
         .photo-item:hover {
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
             transform: translateY(-4px);
         }
         .photo-caption {
@@ -117,9 +185,9 @@
             gap: 1.2rem;
         }
         .video-item {
-            border-radius: var(--radius);
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             background: #fff;
             transition: transform 0.3s ease;
         }
@@ -130,12 +198,12 @@
         }
         .video-item:hover {
             transform: scale(1.02);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
         }
         .video-title {
             padding: 0.8rem;
             font-weight: 600;
-            color: var(--forest);
+            color: #2d4a2b;
         }
 
         /* Lightbox */
@@ -191,22 +259,95 @@
         .lightbox-prev { left: 20px; }
         .lightbox-next { right: 20px; }
 
-        /* Mobile adjustments for gallery */
+        /* Explore section */
+        .gallery-page .explore-section {
+            padding: 40px 0 10px;
+        }
+        .gallery-page .explore-section h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #2d4a2b;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            border: none;
+            display: block;
+        }
+        .gallery-page .explore-section .section-subtitle {
+            text-align: center; color: #4e5c4a; max-width: 700px; margin: 0 auto 1.5rem;
+        }
+        .gallery-page .explore-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px;
+        }
+        .gallery-page .explore-card {
+            background: #fff; border: 1px solid #e2e8df;
+            border-radius: 14px; padding: 20px 22px;
+            transition: all 0.3s ease; text-decoration: none; display: block;
+            box-shadow: 0 4px 12px rgba(45, 74, 43, 0.03);
+        }
+        .gallery-page .explore-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(45, 74, 43, 0.08);
+            border-color: #a4ac86;
+        }
+        .gallery-page .explore-card h3 {
+            color: #2d4a2b; font-size: 1.05rem; margin-bottom: 0.4rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        .gallery-page .explore-card p {
+            color: #5a6b4a; font-size: 0.88rem; line-height: 1.55; margin-bottom: 0;
+        }
+        .gallery-page .explore-card .explore-icon {
+            font-size: 1.6rem; margin-bottom: 0.5rem; display: block;
+        }
+
+        .gallery-page .dept-pill-grid {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+            max-width: 900px; margin: 0 auto;
+        }
+        .gallery-page .dept-pill-grid a {
+            display: inline-block; padding: 8px 18px;
+            background: #fff; border: 1px solid #dce4d6;
+            border-radius: 60px; color: #2d4a2b;
+            font-size: 0.88rem; font-weight: 600; text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .gallery-page .dept-pill-grid a:hover {
+            background: #2d4a2b; color: #fff; border-color: #2d4a2b;
+        }
+
+        .gallery-page .areas-serve-premium {
+            background: linear-gradient(145deg, #f5f8f2, #ecf2e8);
+            border-radius: 24px; padding: 30px 24px;
+            border: 1px solid #e2e8df; margin: 40px 0 20px; text-align: center;
+        }
+        .gallery-page .areas-serve-premium .badge-list {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+        }
+        .gallery-page .areas-serve-premium .badge-list span {
+            background: #ffffff; padding: 8px 20px; border-radius: 60px;
+            font-size: 0.85rem; font-weight: 600; color: #2d4a2b;
+            border: 1px solid #dce4d6; transition: all 0.25s ease;
+        }
+        .gallery-page .areas-serve-premium .badge-list span:hover {
+            transform: scale(1.05); background: #2d4a2b; color: #fff; border-color: #2d4a2b;
+        }
+        .gallery-page .areas-serve-premium .badge-list span.strong-badge {
+            background: #2d4a2b; color: #fff; border-color: #2d4a2b;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-page .gallery-hero-wrap { padding: 24px 20px; border-radius: 20px; }
+            .gallery-page .gallery-hero-wrap h1 { font-size: 1.8rem; }
+        }
         @media (max-width: 480px) {
-            .lightbox-prev, .lightbox-next {
-                font-size: 1.8rem;
-                padding: 0.4rem 0.8rem;
-            }
-            .lightbox-close {
-                font-size: 1.8rem;
-                top: 10px;
-                right: 15px;
-            }
+            .lightbox-prev, .lightbox-next { font-size: 1.8rem; padding: 0.4rem 0.8rem; }
+            .lightbox-close { font-size: 1.8rem; top: 10px; right: 15px; }
         }
     </style>
 </head>
-<body>
+<body class="gallery-page">
     <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- ===== HEADER (Updated: 11 nav items) ===== -->
     <header class="site-header" id="site-header">
         <div class="header-inner container">
             <a href="index.html" class="logo" aria-label="Ibn Sina Hospital Home">
@@ -218,8 +359,10 @@
                     <li><a href="index.html" class="nav-link">Home</a></li>
                     <li><a href="about.html" class="nav-link">About</a></li>
                     <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="health-checkup-packages.html" class="nav-link">Health Checkups</a></li>
                     <li><a href="doctors.html" class="nav-link">Doctors</a></li>
                     <li><a href="gallery.html" class="nav-link active">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html" class="nav-link">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html" class="nav-link">Blog</a></li>
                     <li><a href="careers.html" class="nav-link">Careers</a></li>
                     <li><a href="faq.html" class="nav-link">FAQ</a></li>
@@ -244,10 +387,28 @@
     <main id="main-content">
         <section class="section gallery-section">
             <div class="container">
-                <h1 class="section-title">Gallery</h1>
+
+                <nav class="breadcrumb-premium" aria-label="Breadcrumb">
+                    <a href="index.html">Home</a> <span>›</span> Gallery
+                </nav>
+
+                <div class="gallery-hero-wrap">
+                    <h1>Gallery – Ibn Sina Hospital Budgam</h1>
+                    <p>
+                        Explore photos and videos of <strong>Ibn Sina Hospital</strong> in <strong>Ompora, Budgam</strong>. 
+                        See our hospital exterior, facilities, wards, dialysis unit, pharmacy, and more. 
+                        Serving patients from <strong>Srinagar, Ganderbal, Pulwama</strong>, across 
+                        <strong>Jammu &amp; Kashmir</strong>.
+                    </p>
+                    <p style="margin-top: 0.5rem;">
+                        <a href="appointment.html">📅 Book an appointment</a> · 
+                        <a href="contact.html">📍 Visit us</a> · 
+                        <a href="about.html">🏥 About our hospital</a>
+                    </p>
+                </div>
 
                 <!-- PHOTO GALLERY -->
-                <h2>Photos</h2>
+                <h2>📷 Photos</h2>
                 <div class="photo-masonry" id="photo-masonry">
                     <noscript>
                         <p>Please enable JavaScript to view photos. For enquiries, call <a href="tel:9622552553">9622552553</a>.</p>
@@ -256,16 +417,112 @@
                 </div>
 
                 <!-- VIDEO GALLERY -->
-                <h2 style="margin-top:2.5rem;">Videos</h2>
+                <h2 style="margin-top:2.5rem;">🎬 Videos</h2>
                 <div class="video-grid" id="video-grid">
                     <noscript>
                         <p>Please enable JavaScript to view videos. For enquiries, call <a href="tel:9622552553">9622552553</a>.</p>
                     </noscript>
                 </div>
+
+                <!-- Explore Section -->
+                <section class="explore-section">
+                    <h2>Explore Ibn Sina Hospital</h2>
+                    <p class="section-subtitle">
+                        Learn more about our doctors, departments, and patient resources.
+                    </p>
+                    <div class="explore-grid">
+                        <a href="about.html" class="explore-card">
+                            <span class="explore-icon">🏥</span>
+                            <h3>About Our Hospital</h3>
+                            <p>Discover our history, leadership, and our mission to provide affordable quality healthcare.</p>
+                        </a>
+                        <a href="doctors.html" class="explore-card">
+                            <span class="explore-icon">👨‍⚕️</span>
+                            <h3>Doctors &amp; Specialists</h3>
+                            <p>Browse our consultant-led team across 20+ specialties.</p>
+                        </a>
+                        <a href="department-pages/specialties-directory.html" class="explore-card">
+                            <span class="explore-icon">📋</span>
+                            <h3>Our Departments</h3>
+                            <p>Explore our clinical, surgical, and diagnostic specialties.</p>
+                        </a>
+                        <a href="services.html" class="explore-card">
+                            <span class="explore-icon">🩺</span>
+                            <h3>Hospital Services</h3>
+                            <p>Learn about our diagnostics, emergency care, dialysis, and inpatient facilities.</p>
+                        </a>
+                        <a href="health-checkup-packages.html" class="explore-card">
+                            <span class="explore-icon">💊</span>
+                            <h3>Health Checkup Packages</h3>
+                            <p>Preventive health packages to detect and manage health risks early.</p>
+                        </a>
+                        <a href="insurance-pmjay.html" class="explore-card">
+                            <span class="explore-icon">📄</span>
+                            <h3>PM-JAY / Insurance</h3>
+                            <p>Cashless treatment under Ayushman Bharat PM-JAY and other insurance schemes.</p>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Dept Pill Grid -->
+                <section style="margin: 40px 0 20px;">
+                    <h2 style="font-family: 'Poppins', sans-serif; color: #2d4a2b; text-align: center; border: none; display: block;">Explore Our Departments</h2>
+                    <p style="text-align:center; color:#4e5c4a; max-width:700px; margin: 0 auto 1.5rem;">
+                        Browse our clinical, surgical, and diagnostic specialties.
+                    </p>
+                    <div class="dept-pill-grid">
+                        <a href="department-pages/general-medicine.html">General Medicine</a>
+                        <a href="department-pages/general-surgery.html">General Surgery</a>
+                        <a href="department-pages/orthopaedics.html">Orthopaedics</a>
+                        <a href="department-pages/cardiology.html">Cardiology</a>
+                        <a href="department-pages/nephrology.html">Nephrology</a>
+                        <a href="department-pages/gastroenterology.html">Gastroenterology</a>
+                        <a href="department-pages/gynaecology.html">Gynaecology</a>
+                        <a href="department-pages/urology.html">Urology</a>
+                        <a href="department-pages/ent.html">ENT</a>
+                        <a href="department-pages/ophthalmology.html">Ophthalmology</a>
+                        <a href="department-pages/dermatology.html">Dermatology</a>
+                        <a href="department-pages/physiotherapy.html">Physiotherapy</a>
+                        <a href="department-pages/dentistry.html">Dentistry</a>
+                        <a href="department-pages/pulmonology.html">Pulmonology</a>
+                        <a href="department-pages/rheumatology.html">Rheumatology</a>
+                        <a href="department-pages/plastic-surgery.html">Plastic Surgery</a>
+                        <a href="department-pages/pediatric-surgery.html">Pediatric Surgery</a>
+                        <a href="department-pages/radiology.html">Radiology</a>
+                        <a href="department-pages/neonatal-intensive-care-unit.html">NICU</a>
+                        <a href="department-pages/specialties-directory.html">All Specialties</a>
+                        <a href="department-pages/doctor-directory.html">Doctor Directory</a>
+                    </div>
+                </section>
+
+                <!-- Areas We Serve -->
+                <div class="areas-serve-premium">
+                    <p style="font-weight: 700; color: #2d4a2b; margin: 0 0 12px; font-size: 1.1rem;">
+                        🌍 Serving Families Across J&amp;K &amp; India
+                    </p>
+                    <div class="badge-list">
+                        <span>Budgam</span>
+                        <span>Srinagar</span>
+                        <span>Ompora</span>
+                        <span>Ganderbal</span>
+                        <span>Pulwama</span>
+                        <span>Shopian</span>
+                        <span>Kulgam</span>
+                        <span class="strong-badge">Jammu &amp; Kashmir</span>
+                        <span class="strong-badge">India</span>
+                    </div>
+                    <div style="margin-top: 14px; font-size: 0.9rem;">
+                        <a href="service-areas.html" style="color: #2d4a2b; text-decoration: underline;">View all service areas</a>
+                        <span style="margin:0 0.5rem;">|</span>
+                        <a href="contact.html" style="color: #2d4a2b; text-decoration: underline;">Get directions</a>
+                    </div>
+                </div>
+
             </div>
         </section>
     </main>
 
+    <!-- ===== FOOTER (Updated: 11 quick links + service areas) ===== -->
     <footer class="site-footer">
         <div class="footer-wave" aria-hidden="true">
             <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
@@ -276,10 +533,14 @@
                 <address>Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111</address>
                 <p><a href="tel:9622552553">📞 9622552553 / 9419023501</a></p>
                 <p><a href="mailto:weibnsina@gmail.com">✉ weibnsina@gmail.com</a></p>
+                <p style="margin-top:0.5rem; font-size:0.85rem; color:#71806d;">
+                    <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam –
+                    across <strong>Jammu &amp; Kashmir</strong> &amp; <strong>India</strong>
+                </p>
             </div>
             <div class="footer-col">
-                <h4>OPD & Emergency</h4>
-                <p class="footer-note"><strong>OPD, Pharmacy, Lab & Emergency:</strong> 24/7, 365 days</p>
+                <h4>OPD &amp; Emergency</h4>
+                <p class="footer-note"><strong>OPD, Pharmacy, Lab &amp; Emergency:</strong> 24/7, 365 days</p>
             </div>
             <div class="footer-col">
                 <h4>Quick Links</h4>
@@ -287,8 +548,10 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="services.html">Services</a></li>
+                    <li><a href="health-checkup-packages.html">Health Checkup Packages</a></li>
                     <li><a href="doctors.html">Doctors</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="careers.html">Careers</a></li>
                     <li><a href="faq.html">FAQ</a></li>
@@ -302,7 +565,7 @@
                     <a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon">IG</a>
                     <a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon">YT</a>
                 </div>
-</div>
+            </div>
         </div>
         <div class="footer-bottom container">
             <p>&copy; 2025 Ibn Sina Hospital. All rights reserved. | Operating since 2018</p>
