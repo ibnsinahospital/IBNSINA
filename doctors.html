@@ -24,6 +24,7 @@
     
     <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-fix.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -101,7 +102,7 @@
     }
     </script>
 
-    <!-- ItemList Schema (Unchanged) -->
+    <!-- ItemList Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -368,7 +369,7 @@
         /* ----- SPECIALTY DIRECTORY (Premium Cards) ----- */
         .doctors-page .specialty-directory {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 24px;
             margin-top: 1rem;
         }
@@ -442,6 +443,30 @@
         }
 
         .doctors-page .specialty-card ul li a:hover {
+            color: var(--doc-accent);
+            text-decoration: underline;
+        }
+
+        .doctors-page .specialty-card .related-links {
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px dashed #dce4d6;
+            font-size: 0.82rem;
+            line-height: 1.6;
+        }
+        .doctors-page .specialty-card .related-links strong {
+            color: var(--doc-accent);
+            display: block;
+            margin-bottom: 0.3rem;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .doctors-page .specialty-card .related-links a {
+            color: #5a6b4a;
+            text-decoration: none;
+        }
+        .doctors-page .specialty-card .related-links a:hover {
             color: var(--doc-accent);
             text-decoration: underline;
         }
@@ -540,6 +565,96 @@
             border-bottom-color: var(--doc-accent);
         }
 
+        /* ----- POPULAR ARTICLES ----- */
+        .doctors-page .popular-articles {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 1px solid #e2e8df;
+        }
+        .doctors-page .popular-articles h3 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--doc-accent);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .doctors-page .popular-articles ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+        .doctors-page .popular-articles ul li {
+            padding: 10px 14px;
+            background: #f9fbf7;
+            border-radius: 10px;
+            border-left: 3px solid var(--doc-gold);
+            transition: all 0.25s ease;
+        }
+        .doctors-page .popular-articles ul li:hover {
+            border-left-color: var(--doc-accent);
+            background: #f0f6ec;
+            transform: translateX(4px);
+        }
+        .doctors-page .popular-articles ul li a {
+            color: #2d4a2b;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.92rem;
+        }
+        .doctors-page .popular-articles ul li a:hover {
+            color: var(--doc-accent);
+            text-decoration: underline;
+        }
+
+        /* ----- DEPARTMENT QUICK LINKS ----- */
+        .doctors-page .dept-quicklinks {
+            background: linear-gradient(145deg, #ffffff, #f5f8f2);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 1px solid #e2e8df;
+        }
+        .doctors-page .dept-quicklinks h3 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--doc-accent);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        .doctors-page .dept-quicklinks p.subtitle {
+            text-align: center;
+            color: #4e5c4a;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+        .doctors-page .dept-quicklinks .dept-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .doctors-page .dept-quicklinks .dept-grid a {
+            display: inline-block;
+            padding: 8px 18px;
+            background: #ffffff;
+            border: 1px solid #dce4d6;
+            border-radius: 60px;
+            color: #2d4a2b;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .doctors-page .dept-quicklinks .dept-grid a:hover {
+            background: var(--doc-accent);
+            color: #ffffff;
+            border-color: var(--doc-accent);
+            transform: scale(1.04);
+        }
+
         /* ----- AREAS WE SERVE ----- */
         .doctors-page .areas-serve-premium {
             background: linear-gradient(145deg, #f5f8f2, #ecf2e8);
@@ -633,7 +748,7 @@
 <body class="doctors-page">
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
-    <!-- ===== HEADER (Unchanged) ===== -->
+    <!-- ===== HEADER (Updated nav to match index.html) ===== -->
     <header class="site-header" id="site-header">
         <div class="header-inner container">
             <a href="index.html" class="logo" aria-label="Ibn Sina Hospital Home">
@@ -645,8 +760,10 @@
                     <li><a href="index.html" class="nav-link">Home</a></li>
                     <li><a href="about.html" class="nav-link">About</a></li>
                     <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="health-checkup-packages.html" class="nav-link">Health Checkups</a></li>
                     <li><a href="doctors.html" class="nav-link active">Doctors</a></li>
                     <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html" class="nav-link">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html" class="nav-link">Blog</a></li>
                     <li><a href="careers.html" class="nav-link">Careers</a></li>
                     <li><a href="faq.html" class="nav-link">FAQ</a></li>
@@ -686,16 +803,19 @@
                         Browse our doctors by department or search by name and specialty. 
                         <a href="department-pages/doctor-directory.html">View the full doctor directory</a> · 
                         <a href="department-pages/specialties-directory.html">Explore all specialties</a> · 
-                        <a href="services.html">Our hospital services</a>
+                        <a href="services.html">Our hospital services</a> · 
+                        <a href="health-checkup-packages.html">Health checkup packages</a>
                     </p>
                     <p style="margin-top: 0.5rem;">
-                        <strong>Need to book?</strong> <a href="appointment.html">Book an appointment online</a> or call us at <a href="tel:9622552553">9622552553</a>.
+                        <strong>Need to book?</strong> <a href="appointment.html">Book an appointment online</a> · 
+                        <a href="insurance-pmjay.html">PM-JAY / Insurance accepted</a> · 
+                        call us at <a href="tel:9622552553">9622552553</a>.
                     </p>
                 </div>
             </div>
         </section>
 
-        <!-- ===== GUIDANCE BLOCK (New – Helps users convert) ===== -->
+        <!-- ===== GUIDANCE BLOCK ===== -->
         <section class="section" style="padding-top: 0; padding-bottom: 0;">
             <div class="container">
                 <div class="guidance-block">
@@ -703,7 +823,8 @@
                     <p>
                         Our team can guide you to the right doctor based on your symptoms. 
                         <a href="contact.html">Contact our helpdesk</a> or 
-                        <a href="faq.html">visit our FAQ</a> for quick answers to common questions.
+                        <a href="faq.html">visit our FAQ</a> for quick answers to common questions. 
+                        You can also read our <a href="blog.html">health articles</a> for more information.
                     </p>
                     <div class="btn-group">
                         <a href="contact.html" class="btn-primary-guidance">Contact Helpdesk</a>
@@ -726,7 +847,7 @@
             </div>
         </section>
 
-        <!-- ===== DYNAMIC DOCTOR GRID (Unchanged) ===== -->
+        <!-- ===== DYNAMIC DOCTOR GRID (JS) ===== -->
         <section class="section" style="padding-top: 0;">
             <div class="container">
                 <div class="doctor-cards-grid" id="doctor-grid">
@@ -739,12 +860,12 @@
             </div>
         </section>
 
-        <!-- ===== SPECIALTY DIRECTORY (Enhanced Internal Links to Department Pages) ===== -->
+        <!-- ===== SPECIALTY DIRECTORY (Enhanced with Related Articles) ===== -->
         <section class="section" style="background:#faf9f6;">
             <div class="container">
                 <h2 style="font-family:'Poppins',sans-serif; color:#2d4a2b;">Doctors by Specialty</h2>
                 <p style="color:#4e5c4a; margin-bottom: 1.5rem;">
-                    Browse our specialists by department. Learn more about each department's services and conditions we treat.
+                    Browse our specialists by department. Each specialty links to its department page, individual doctor profiles, and related health articles.
                 </p>
 
                 <div class="specialty-directory">
@@ -761,6 +882,11 @@
                             <li><a href="doctors/doctor-dr-farhat-tabbsum.html">Dr. Farhat Tabbsum</a></li>
                             <li><a href="doctors/doctor-dr-madhu-sayal.html">Dr. Madhu Sayal</a></li>
                         </ul>
+                        <div class="related-links">
+                            <strong>Related Articles</strong>
+                            <a href="blog/blog-kashmir-winter-health-tips.html">Winter Health Tips for Families</a> · 
+                            <a href="blog/blog-lifestyle-diseases-diabetes-hypertension-jammu-kashmir.html">Lifestyle Diseases Guide</a>
+                        </div>
                     </div>
 
                     <!-- Orthopaedics -->
@@ -773,6 +899,11 @@
                             <li><a href="doctors/doctor-dr-yawar-haider.html">Dr. Yawar Haider</a></li>
                             <li><a href="doctors/doctor-dr-sukhjeet-singh.html">Dr. Sukhjeet Singh</a></li>
                         </ul>
+                        <div class="related-links">
+                            <strong>Related Articles</strong>
+                            <a href="blog/blog-emergency-symptoms-hospital-jammu-kashmir.html">When to Visit Emergency</a> · 
+                            <a href="blog/blog-kashmir-winter-health-tips.html">Winter Joint Health Tips</a>
+                        </div>
                     </div>
 
                     <!-- Urology -->
@@ -785,17 +916,27 @@
                             <li><a href="doctors/doctor-dr-shahnawaz-rasool.html">Dr. Shahnawaz Rasool</a></li>
                             <li><a href="doctors/doctor-dr-muzzafar-bashir.html">Dr. Muzzafar Bashir</a></li>
                         </ul>
+                        <div class="related-links">
+                            <strong>Related Articles</strong>
+                            <a href="blog/blog-kidney-warning-signs-jk.html">Kidney Warning Signs</a> · 
+                            <a href="blog/blog-understanding-dialysis-guide.html">Understanding Dialysis</a>
+                        </div>
                     </div>
 
                     <!-- ENT -->
                     <div class="specialty-card">
                         <span class="specialty-icon">👂</span>
-                        <h3>ENT</h3>
+                        <h3>ENT (Ear, Nose &amp; Throat)</h3>
                         <a href="department-pages/ent.html" class="dept-link">View Department →</a>
                         <ul>
                             <li><a href="doctors/doctor-dr-mir-sajad-qadri.html">Dr. Mir Sajad Qadri</a></li>
                             <li><a href="doctors/doctor-dr-omer-shafi.html">Dr. Omer Shafi</a></li>
                         </ul>
+                        <div class="related-links">
+                            <strong>Related Articles</strong>
+                            <a href="blog/blog-kashmir-winter-health-tips.html">Winter ENT Care Tips</a> · 
+                            <a href="blog/blog-emergency-vs-opd.html">Emergency vs OPD</a>
+                        </div>
                     </div>
 
                     <!-- General Surgery -->
@@ -808,6 +949,11 @@
                             <li><a href="doctors/doctor-dr-wasim-raja.html">Dr. Wasim Raja</a></li>
                             <li><a href="doctors/doctor-dr-mohammad-yousuf-dar.html">Dr. Mohammad Yousuf Dar</a></li>
                         </ul>
+                        <div class="related-links">
+                            <strong>Related Articles</strong>
+                            <a href="blog/blog-emergency-vs-opd.html">Emergency vs OPD</a> · 
+                            <a href="blog/blog-emergency-symptoms-hospital-jammu-kashmir.html">Emergency Symptoms Guide</a>
+                        </div>
                     </div>
 
                     <!-- Cardiology -->
@@ -819,6 +965,12 @@
                             <li><a href="doctors/doctor-dr-shahood-kakroo.html">Dr. Shahood Kakroo</a></li>
                             <li><a href="doctors/doctor-dr-majid.html">Dr. Majid</a></li>
                         </ul>
+                        <div class="related-links">
+                            <strong>Related Articles</strong>
+                            <a href="blog/blog-high-blood-pressure-jk-guide.html">High Blood Pressure Guide</a> · 
+                            <a href="blog/blog-understanding-tmt-holter-abpm.html">TMT, Holter &amp; ABPM Tests</a> · 
+                            <a href="blog/blog-emergency-symptoms-hospital-jammu-kashmir.html">Heart Emergency Signs</a>
+                        </div>
                     </div>
 
                     <!-- Gastroenterology -->
@@ -831,6 +983,11 @@
                             <li><a href="doctors/doctor-dr-irshad-ahmad-parray.html">Dr. Irshad Ahmad Parray</a></li>
                             <li><a href="doctors/doctor-dr-wasim.html">Dr. Wasim</a></li>
                         </ul>
+                        <div class="related-links">
+                            <strong>Related Articles</strong>
+                            <a href="blog/blog-lifestyle-diseases-diabetes-hypertension-jammu-kashmir.html">Lifestyle Diseases</a> · 
+                            <a href="blog/blog-kashmir-disappearing-water-bodies-water-pollution-public-health.html">Water Pollution &amp; Health</a>
+                        </div>
                     </div>
 
                     <!-- Nephrology -->
@@ -841,6 +998,29 @@
                         <ul>
                             <li><a href="doctors/doctor-dr-aijaz-arshid.html">Dr. Aijaz Arshid</a></li>
                         </ul>
+                        <div class="related-links">
+                            <strong>Related Articles</strong>
+                            <a href="blog/blog-dialysis-in-budgam-complete-guide-patients-families.html">Dialysis in Budgam: Complete Guide</a> · 
+                            <a href="blog/blog-kidney-warning-signs-jk.html">Kidney Warning Signs</a> · 
+                            <a href="blog/blog-understanding-dialysis-guide.html">Understanding Dialysis</a>
+                        </div>
+                    </div>
+
+                    <!-- General Medicine -->
+                    <div class="specialty-card">
+                        <span class="specialty-icon">💊</span>
+                        <h3>General Medicine</h3>
+                        <a href="department-pages/general-medicine.html" class="dept-link">View Department →</a>
+                        <ul>
+                            <li><a href="doctors/doctor-dr-aijaz-bhat.html">Dr. Aijaz Bhat</a></li>
+                            <li><a href="doctors/doctor-dr-saba.html">Dr. Saba</a></li>
+                        </ul>
+                        <div class="related-links">
+                            <strong>Related Articles</strong>
+                            <a href="blog/blog-diabetes-symptoms-in-kashmir-what-every-kashmiri-family-should-know.html">Diabetes Symptoms Guide</a> · 
+                            <a href="blog/blog-high-blood-pressure-jk-guide.html">High Blood Pressure</a> · 
+                            <a href="blog/blog-lifestyle-diseases-diabetes-hypertension-jammu-kashmir.html">Lifestyle Diseases</a>
+                        </div>
                     </div>
 
                     <!-- Other Specialties -->
@@ -856,8 +1036,7 @@
                             <a href="department-pages/rheumatology.html">Rheumatology</a> · 
                             <a href="department-pages/plastic-surgery.html">Plastic Surgery</a> · 
                             <a href="department-pages/physiotherapy.html">Physiotherapy</a> · 
-                            <a href="department-pages/dentistry.html">Dentistry</a> · 
-                            <a href="department-pages/general-medicine.html">General Medicine</a>
+                            <a href="department-pages/dentistry.html">Dentistry</a>
                         </p>
                         <ul>
                             <li><a href="doctors/doctor-dr-rhimsha.html">Dr. Rhimsha — Ophthalmology</a></li>
@@ -870,21 +1049,50 @@
                             <li><a href="doctors/doctor-dr-mohsin-ali.html">Dr. Mohsin Ali — Physiotherapy</a></li>
                             <li><a href="doctors/doctor-dr-andleeb.html">Dr. Andleeb — Neuro Physiotherapy</a></li>
                             <li><a href="doctors/doctor-dr-yaseen-malik.html">Dr. Yaseen Malik — Dentistry</a></li>
-                            <li><a href="doctors/doctor-dr-aijaz-bhat.html">Dr. Aijaz Bhat — General Medicine</a></li>
-                            <li><a href="doctors/doctor-dr-saba.html">Dr. Saba — General Medicine</a></li>
                         </ul>
+                        <div class="related-links">
+                            <strong>Related Articles</strong>
+                            <a href="blog/blog-kashmir-winter-health-tips.html">Winter Health Tips</a> · 
+                            <a href="blog/blog-addiction-support-jk-families.html">Addiction Support for Families</a>
+                        </div>
                     </div>
                 </div>
-
-                <p style="margin-top: 2rem; text-align: center;">
-                    <a href="services.html">View all services and departments</a> · 
-                    <a href="appointment.html">Book an appointment</a> · 
-                    <a href="department-pages/jammu-kashmir-healthcare.html">Healthcare across Jammu &amp; Kashmir</a>
-                </p>
             </div>
         </section>
 
-        <!-- ===== BLOG INSIGHTS BLOCK (New – Links to Blog) ===== -->
+        <!-- ===== BROWSE BY DEPARTMENT (Quick Links) ===== -->
+        <section class="section" style="padding-top: 0; padding-bottom: 0;">
+            <div class="container">
+                <div class="dept-quicklinks">
+                    <h3>🔎 Browse All Departments</h3>
+                    <p class="subtitle">Explore services, conditions treated, and consultants in each department.</p>
+                    <div class="dept-grid">
+                        <a href="department-pages/general-medicine.html">General Medicine</a>
+                        <a href="department-pages/general-surgery.html">General Surgery</a>
+                        <a href="department-pages/orthopaedics.html">Orthopaedics</a>
+                        <a href="department-pages/cardiology.html">Cardiology</a>
+                        <a href="department-pages/nephrology.html">Nephrology</a>
+                        <a href="department-pages/gastroenterology.html">Gastroenterology</a>
+                        <a href="department-pages/gynaecology.html">Gynaecology</a>
+                        <a href="department-pages/urology.html">Urology</a>
+                        <a href="department-pages/ent.html">ENT</a>
+                        <a href="department-pages/ophthalmology.html">Ophthalmology</a>
+                        <a href="department-pages/dermatology.html">Dermatology</a>
+                        <a href="department-pages/physiotherapy.html">Physiotherapy</a>
+                        <a href="department-pages/dentistry.html">Dentistry</a>
+                        <a href="department-pages/pulmonology.html">Pulmonology</a>
+                        <a href="department-pages/rheumatology.html">Rheumatology</a>
+                        <a href="department-pages/plastic-surgery.html">Plastic Surgery</a>
+                        <a href="department-pages/pediatric-surgery.html">Pediatric Surgery</a>
+                        <a href="department-pages/radiology.html">Radiology</a>
+                        <a href="department-pages/neonatal-intensive-care-unit.html">NICU</a>
+                        <a href="department-pages/specialties-directory.html">All Specialties</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== BLOG INSIGHTS BLOCK ===== -->
         <section class="section" style="padding-top: 0; padding-bottom: 0;">
             <div class="container">
                 <div class="blog-insights-block">
@@ -894,13 +1102,37 @@
                         Stay informed with expert advice from Ibn Sina Hospital's medical team.
                     </p>
                     <p>
-                        <a href="blog.html">Read our latest health articles →</a>
+                        <a href="blog.html">Read all health articles →</a>
                     </p>
                 </div>
             </div>
         </section>
 
-        <!-- ===== AREAS WE SERVE (Premium Badge Cloud) ===== -->
+        <!-- ===== POPULAR HEALTH ARTICLES ===== -->
+        <section class="section" style="padding-top: 0; padding-bottom: 0;">
+            <div class="container">
+                <div class="popular-articles">
+                    <h3>📚 Popular Health Articles</h3>
+                    <ul>
+                        <li><a href="blog/blog-dialysis-in-budgam-complete-guide-patients-families.html">Dialysis in Budgam: Complete Guide for Patients &amp; Families</a></li>
+                        <li><a href="blog/blog-understanding-dialysis-guide.html">Understanding Dialysis: What Patients Should Know</a></li>
+                        <li><a href="blog/blog-kidney-warning-signs-jk.html">Kidney Warning Signs Everyone Should Know</a></li>
+                        <li><a href="blog/blog-understanding-tmt-holter-abpm.html">TMT, Holter &amp; ABPM: Heart Tests Explained</a></li>
+                        <li><a href="blog/blog-high-blood-pressure-jk-guide.html">High Blood Pressure: A Guide for J&amp;K Families</a></li>
+                        <li><a href="blog/blog-diabetes-symptoms-in-kashmir-what-every-kashmiri-family-should-know.html">Diabetes Symptoms Every Kashmiri Family Should Know</a></li>
+                        <li><a href="blog/blog-lifestyle-diseases-diabetes-hypertension-jammu-kashmir.html">Lifestyle Diseases in Jammu &amp; Kashmir</a></li>
+                        <li><a href="blog/blog-emergency-vs-opd.html">Emergency vs OPD: When to Visit Which</a></li>
+                        <li><a href="blog/blog-emergency-symptoms-hospital-jammu-kashmir.html">Emergency Symptoms: When to Rush to Hospital</a></li>
+                        <li><a href="blog/blog-kashmir-winter-health-tips.html">Kashmir Winter Health Tips</a></li>
+                        <li><a href="blog/blog-addiction-support-jk-families.html">Addiction Support for J&amp;K Families</a></li>
+                        <li><a href="blog/blog-kashmir-disappearing-water-bodies-water-pollution-public-health.html">Water Pollution &amp; Public Health in Kashmir</a></li>
+                        <li><a href="blog/blog-why-families-across-jk-choose-ibn-sina.html">Why Families Across J&amp;K Choose Ibn Sina Hospital</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== AREAS WE SERVE ===== -->
         <section class="container" style="padding: 0 20px 40px;">
             <div class="areas-serve-premium">
                 <p style="font-weight: 700; color: #2d4a2b; margin: 0 0 12px; font-size: 1.1rem;">
@@ -920,12 +1152,14 @@
                 <div class="badge-link">
                     <a href="service-areas.html">View all service areas</a> 
                     <span style="margin:0 0.5rem;">|</span> 
-                    <a href="contact.html">Get directions</a>
+                    <a href="contact.html">Get directions</a> 
+                    <span style="margin:0 0.5rem;">|</span> 
+                    <a href="department-pages/jammu-kashmir-healthcare.html">Healthcare across J&amp;K</a>
                 </div>
             </div>
         </section>
 
-        <!-- ===== FINAL CTA (Strong Internal Link) ===== -->
+        <!-- ===== FINAL CTA ===== -->
         <section class="section" style="padding-top: 0; padding-bottom: 20px;">
             <div class="container">
                 <div style="text-align:center; padding: 20px 0;">
@@ -937,14 +1171,16 @@
                     <p style="margin-top: 0.8rem; font-size:0.9rem;">
                         <a href="contact.html">Contact us</a> · 
                         <a href="tel:9622552553">Call 9622552553</a> · 
-                        <a href="faq.html">FAQs</a>
+                        <a href="faq.html">FAQs</a> · 
+                        <a href="health-checkup-packages.html">Health Checkups</a> · 
+                        <a href="insurance-pmjay.html">PM-JAY / Insurance</a>
                     </p>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- ===== FOOTER (Updated with Service Areas) ===== -->
+    <!-- ===== FOOTER (Updated) ===== -->
     <footer class="site-footer">
         <div class="footer-wave" aria-hidden="true">
             <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
@@ -970,8 +1206,10 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="services.html">Services</a></li>
+                    <li><a href="health-checkup-packages.html">Health Checkup Packages</a></li>
                     <li><a href="doctors.html">Doctors</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="careers.html">Careers</a></li>
                     <li><a href="faq.html">FAQ</a></li>
@@ -993,11 +1231,11 @@
         </div>
     </footer>
 
-    <!-- ===== SCRIPTS (Unchanged) ===== -->
+    <!-- ===== SCRIPTS ===== -->
     <script src="js/main.js" defer></script>
     <script src="js/chatbot.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <script src="js/animations.js" defer></script>
 </body>
-    </html>
+</html>
