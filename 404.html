@@ -6,6 +6,7 @@
     <title>Page Not Found – Ibn Sina Hospital</title>
     <meta name="description" content="Page not found – Ibn Sina Hospital, Budgam. 24/7 OPD, emergency, pharmacy, and lab. Call 9622552553.">
     <link rel="canonical" href="https://ibnsinahospital.in/404.html">
+    <meta name="robots" content="noindex, follow">
     <meta property="og:title" content="Page Not Found – Ibn Sina Hospital">
     <meta property="og:description" content="Page not found – Ibn Sina Hospital, Budgam.">
     <meta property="og:type" content="website">
@@ -17,6 +18,7 @@
     <meta name="twitter:image" content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="icon" type="image/webp" href="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-fix.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -38,6 +40,13 @@
         "postalCode": "191111",
         "addressCountry": "IN"
       },
+      "areaServed": [
+        { "@type": "Country", "name": "India" },
+        { "@type": "AdministrativeArea", "name": "Jammu and Kashmir" },
+        { "@type": "City", "name": "Budgam" },
+        { "@type": "City", "name": "Srinagar" },
+        { "@type": "City", "name": "Ompora" }
+      ],
       "telephone": "+919622552553",
       "email": "weibnsina@gmail.com",
       "openingHoursSpecification": [
@@ -50,6 +59,43 @@
       ]
     }
     </script>
+
+    <style>
+        .not-found-links {
+            max-width: 800px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+        .not-found-links h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #2d4a2b;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        .not-found-links .link-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .not-found-links .link-grid a {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #fff;
+            border: 1px solid #dce4d6;
+            border-radius: 60px;
+            color: #2d4a2b;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .not-found-links .link-grid a:hover {
+            background: #2d4a2b;
+            color: #fff;
+            border-color: #2d4a2b;
+        }
+    </style>
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -64,8 +110,10 @@
                     <li><a href="index.html" class="nav-link">Home</a></li>
                     <li><a href="about.html" class="nav-link">About</a></li>
                     <li><a href="services.html" class="nav-link">Services</a></li>
+                    <li><a href="health-checkup-packages.html" class="nav-link">Health Checkups</a></li>
                     <li><a href="doctors.html" class="nav-link">Doctors</a></li>
                     <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html" class="nav-link">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html" class="nav-link">Blog</a></li>
                     <li><a href="careers.html" class="nav-link">Careers</a></li>
                     <li><a href="faq.html" class="nav-link">FAQ</a></li>
@@ -94,6 +142,21 @@
             <a href="index.html" class="btn btn-primary">Go Home</a>
             <a href="appointment.html" class="btn btn-outline">Book Appointment</a>
         </div>
+
+        <!-- Helpful links for users who land here -->
+        <div class="not-found-links">
+            <h2>Looking for something?</h2>
+            <div class="link-grid">
+                <a href="doctors.html">Find a Doctor</a>
+                <a href="services.html">Our Departments</a>
+                <a href="health-checkup-packages.html">Health Checkups</a>
+                <a href="insurance-pmjay.html">PM-JAY / Insurance</a>
+                <a href="blog.html">Health Blog</a>
+                <a href="faq.html">FAQs</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="about.html">About Us</a>
+            </div>
+        </div>
     </main>
 
     <footer class="site-footer">
@@ -106,6 +169,10 @@
                 <address>Near Railway Station, Ompora Railway Station Road, Ompora, Budgam, J&K 191111</address>
                 <p><a href="tel:9622552553">📞 9622552553 / 9419023501</a></p>
                 <p><a href="mailto:weibnsina@gmail.com">✉ weibnsina@gmail.com</a></p>
+                <p style="margin-top:0.5rem; font-size:0.85rem; color:#71806d;">
+                    <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam –
+                    across <strong>Jammu &amp; Kashmir</strong> &amp; <strong>India</strong>
+                </p>
             </div>
             <div class="footer-col">
                 <h4>OPD & Emergency</h4>
@@ -117,8 +184,10 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="services.html">Services</a></li>
+                    <li><a href="health-checkup-packages.html">Health Checkup Packages</a></li>
                     <li><a href="doctors.html">Doctors</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="insurance-pmjay.html">PM-JAY / Insurance</a></li>
                     <li><a href="blog.html">Blog</a></li>
                     <li><a href="careers.html">Careers</a></li>
                     <li><a href="faq.html">FAQ</a></li>
@@ -132,7 +201,7 @@
                     <a href="https://www.instagram.com/ibn_sinahospital?igsi=MWhmaXljcWFyOXV4eQ==" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon">IG</a>
                     <a href="https://youtube.com/@ibnsinahospitalkashmir?si=PYC_n1XvWVmxhS8r" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon">YT</a>
                 </div>
-</div>
+            </div>
         </div>
         <div class="footer-bottom container">
             <p>&copy; 2025 Ibn Sina Hospital. All rights reserved. | Operating since 2018</p>
