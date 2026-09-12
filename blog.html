@@ -49,6 +49,9 @@
         content="https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp"
     >
 
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
     <meta property="og:site_name" content="Ibn Sina Hospital">
 
     <meta property="og:locale" content="en_IN">
@@ -90,6 +93,7 @@
 
     <!-- Main CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-fix.css">
 
     <!-- =========================================================
          HOSPITAL SCHEMA
@@ -212,10 +216,255 @@
     }
     </script>
 
+    <!-- =========================================================
+         PAGE-SCOPED STYLES
+    ========================================================== -->
+    <style>
+        /* Static blog list styles (fallback + crawlable content) */
+        .blog-page .static-blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 1.5rem;
+        }
+        .blog-page .static-blog-card {
+            background: #ffffff;
+            border: 1px solid #e2e8df;
+            border-radius: 16px;
+            padding: 22px 22px 20px;
+            box-shadow: 0 4px 16px rgba(45, 74, 43, 0.04);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+        .blog-page .static-blog-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(45, 74, 43, 0.08);
+            border-color: #a4ac86;
+        }
+        .blog-page .static-blog-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 0.7rem;
+            flex-wrap: wrap;
+        }
+        .blog-page .static-blog-category {
+            display: inline-block;
+            background: #a4ac86;
+            color: #2d4a2b;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+        }
+        .blog-page .static-blog-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.15rem;
+            line-height: 1.35;
+            color: #2d4a2b;
+            margin: 0 0 0.6rem;
+        }
+        .blog-page .static-blog-title a {
+            color: #2d4a2b;
+            text-decoration: none;
+        }
+        .blog-page .static-blog-title a:hover {
+            color: #7d8471;
+            text-decoration: underline;
+        }
+        .blog-page .static-blog-excerpt {
+            font-size: 0.92rem;
+            color: #556;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+        .blog-page .static-blog-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 0.9rem;
+            border-top: 1px solid #eef2ea;
+            font-size: 0.85rem;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .blog-page .static-blog-footer a {
+            color: #2d4a2b;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .blog-page .static-blog-footer a:hover {
+            color: #7d8471;
+        }
+        .blog-page .static-blog-footer .dept-tag {
+            color: #71806d;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        .blog-page .static-blog-footer .dept-tag a {
+            color: #71806d;
+            font-weight: 600;
+        }
+        .blog-page .static-blog-footer .dept-tag a:hover {
+            color: #2d4a2b;
+        }
+
+        /* Browse by topic */
+        .blog-page .browse-topics {
+            background: linear-gradient(145deg, #f5f8f2, #eaf1e6);
+            border-radius: 20px;
+            padding: 30px 24px;
+            margin: 40px 0;
+            border: 1px solid #e2e8df;
+            text-align: center;
+        }
+        .blog-page .browse-topics h3 {
+            font-family: 'Poppins', sans-serif;
+            color: #2d4a2b;
+            margin-bottom: 0.5rem;
+        }
+        .blog-page .browse-topics p {
+            color: #4e5c4a;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+        .blog-page .browse-topics .topic-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .blog-page .browse-topics .topic-tags a {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #ffffff;
+            border: 1px solid #dce4d6;
+            border-radius: 60px;
+            color: #2d4a2b;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .blog-page .browse-topics .topic-tags a:hover {
+            background: #2d4a2b;
+            color: #ffffff;
+            border-color: #2d4a2b;
+            transform: scale(1.04);
+        }
+
+        /* Related departments */
+        .blog-page .related-departments {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 30px 24px;
+            margin: 30px 0;
+            border: 1px solid #e2e8df;
+        }
+        .blog-page .related-departments h3 {
+            font-family: 'Poppins', sans-serif;
+            color: #2d4a2b;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        .blog-page .related-departments p {
+            color: #4e5c4a;
+            text-align: center;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+        .blog-page .related-departments .dept-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .blog-page .related-departments .dept-grid a {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #f9fbf7;
+            border: 1px solid #dce4d6;
+            border-radius: 60px;
+            color: #2d4a2b;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .blog-page .related-departments .dept-grid a:hover {
+            background: #2d4a2b;
+            color: #ffffff;
+            border-color: #2d4a2b;
+            transform: scale(1.04);
+        }
+
+        /* Doctor/blog cross link */
+        .blog-page .blog-doctors-link {
+            background: linear-gradient(145deg, #ffffff, #f5f8f2);
+            border-radius: 20px;
+            padding: 30px 24px;
+            margin: 30px 0;
+            border: 1px solid #e2e8df;
+            text-align: center;
+        }
+        .blog-page .blog-doctors-link h3 {
+            font-family: 'Poppins', sans-serif;
+            color: #2d4a2b;
+            margin-bottom: 0.5rem;
+        }
+        .blog-page .blog-doctors-link p {
+            color: #4e5c4a;
+            margin-bottom: 1rem;
+        }
+        .blog-page .blog-doctors-link .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+        .blog-page .blog-doctors-link .btn-group a {
+            display: inline-block;
+            padding: 10px 28px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .blog-page .blog-doctors-link .btn-group .btn-solid {
+            background: #2d4a2b;
+            color: #ffffff;
+        }
+        .blog-page .blog-doctors-link .btn-group .btn-solid:hover {
+            background: #1d321c;
+            transform: scale(1.02);
+        }
+        .blog-page .blog-doctors-link .btn-group .btn-outline-olive {
+            background: transparent;
+            color: #2d4a2b;
+            border: 2px solid #2d4a2b;
+        }
+        .blog-page .blog-doctors-link .btn-group .btn-outline-olive:hover {
+            background: #2d4a2b;
+            color: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .blog-page .static-blog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
 </head>
 
 
-<body>
+<body class="blog-page">
 
     <!-- Accessibility -->
     <a
@@ -298,6 +547,15 @@
 
                     <li>
                         <a
+                            href="health-checkup-packages.html"
+                            class="nav-link"
+                        >
+                            Health Checkups
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
                             href="doctors.html"
                             class="nav-link"
                         >
@@ -311,6 +569,15 @@
                             class="nav-link"
                         >
                             Gallery
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                            href="insurance-pmjay.html"
+                            class="nav-link"
+                        >
+                            PM-JAY / Insurance
                         </a>
                     </li>
 
@@ -543,11 +810,14 @@
                      BLOG GRID
 
                      IMPORTANT:
-                     main.js populates this dynamically from:
+                     main.js populates this dynamically from /data/blog.json
 
-                     /data/blog.json
+                     The static HTML articles below serve as:
+                     - Crawlable content for search engines
+                     - Fallback for users without JavaScript
+                     - Initial render before JS loads
 
-                     Google Sheets → Build Script → blog.json
+                     When JS runs, it will replace this content.
                      ================================================== -->
 
                 <div
@@ -557,48 +827,284 @@
                     aria-busy="true"
                 >
 
-                    <!-- Loading state -->
+                    <!-- ============= STATIC ARTICLE CARDS ============= -->
 
-                    <div class="blog-loading-state">
-
-                        <div
-                            class="skeleton-card"
-                            aria-hidden="true"
-                        >
+                    <!-- 1. Dialysis in Budgam -->
+                    <article class="static-blog-card">
+                        <div class="static-blog-meta">
+                            <span class="static-blog-category">Nephrology</span>
                         </div>
-
-                        <p>
-                            Loading health articles...
+                        <h3 class="static-blog-title">
+                            <a href="blog/blog-dialysis-in-budgam-complete-guide-patients-families.html">
+                                Dialysis in Budgam: A Complete Guide for Patients &amp; Families
+                            </a>
+                        </h3>
+                        <p class="static-blog-excerpt">
+                            A complete guide for patients and families about dialysis services available in Budgam, including what to expect, how treatment works, and how to prepare for sessions.
                         </p>
-
-                    </div>
-
-
-                    <!-- No JavaScript fallback -->
-
-                    <noscript>
-
-                        <div class="blog-noscript">
-
-                            <h2>
-                                Health Articles
-                            </h2>
-
-                            <p>
-                                Please enable JavaScript to view our latest
-                                health articles and medical insights.
-                            </p>
-
-                            <p>
-                                For healthcare assistance, call
-                                <a href="tel:9622552553">
-                                    9622552553
-                                </a>.
-                            </p>
-
+                        <div class="static-blog-footer">
+                            <a href="blog/blog-dialysis-in-budgam-complete-guide-patients-families.html">Read article →</a>
+                            <span class="dept-tag">
+                                <a href="department-pages/nephrology.html">Nephrology</a>
+                            </span>
                         </div>
+                    </article>
 
-                    </noscript>
+                    <!-- 2. Understanding Dialysis -->
+                    <article class="static-blog-card">
+                        <div class="static-blog-meta">
+                            <span class="static-blog-category">Nephrology</span>
+                        </div>
+                        <h3 class="static-blog-title">
+                            <a href="blog/blog-understanding-dialysis-guide.html">
+                                Understanding Dialysis: What Patients Should Know
+                            </a>
+                        </h3>
+                        <p class="static-blog-excerpt">
+                            A plain-language overview of dialysis for patients — how it works, why it is used, and what to expect during treatment.
+                        </p>
+                        <div class="static-blog-footer">
+                            <a href="blog/blog-understanding-dialysis-guide.html">Read article →</a>
+                            <span class="dept-tag">
+                                <a href="department-pages/nephrology.html">Nephrology</a>
+                            </span>
+                        </div>
+                    </article>
+
+                    <!-- 3. Kidney Warning Signs -->
+                    <article class="static-blog-card">
+                        <div class="static-blog-meta">
+                            <span class="static-blog-category">Nephrology</span>
+                        </div>
+                        <h3 class="static-blog-title">
+                            <a href="blog/blog-kidney-warning-signs-jk.html">
+                                Kidney Warning Signs Everyone Should Know
+                            </a>
+                        </h3>
+                        <p class="static-blog-excerpt">
+                            Recognizing early warning signs of kidney problems and knowing when to seek medical help.
+                        </p>
+                        <div class="static-blog-footer">
+                            <a href="blog/blog-kidney-warning-signs-jk.html">Read article →</a>
+                            <span class="dept-tag">
+                                <a href="department-pages/nephrology.html">Nephrology</a> ·
+                                <a href="doctors/doctor-dr-aijaz-arshid.html">Dr. Aijaz Arshid</a>
+                            </span>
+                        </div>
+                    </article>
+
+                    <!-- 4. TMT / Holter / ABPM -->
+                    <article class="static-blog-card">
+                        <div class="static-blog-meta">
+                            <span class="static-blog-category">Cardiology</span>
+                        </div>
+                        <h3 class="static-blog-title">
+                            <a href="blog/blog-understanding-tmt-holter-abpm.html">
+                                TMT, Holter &amp; ABPM: Heart Tests Explained
+                            </a>
+                        </h3>
+                        <p class="static-blog-excerpt">
+                            Understanding three common heart tests — Treadmill Test (TMT), Holter monitoring, and Ambulatory Blood Pressure Monitoring (ABPM) — and what they can reveal about your heart health.
+                        </p>
+                        <div class="static-blog-footer">
+                            <a href="blog/blog-understanding-tmt-holter-abpm.html">Read article →</a>
+                            <span class="dept-tag">
+                                <a href="department-pages/cardiology.html">Cardiology</a>
+                            </span>
+                        </div>
+                    </article>
+
+                    <!-- 5. High Blood Pressure -->
+                    <article class="static-blog-card">
+                        <div class="static-blog-meta">
+                            <span class="static-blog-category">Cardiology</span>
+                        </div>
+                        <h3 class="static-blog-title">
+                            <a href="blog/blog-high-blood-pressure-jk-guide.html">
+                                High Blood Pressure: A Guide for J&amp;K Families
+                            </a>
+                        </h3>
+                        <p class="static-blog-excerpt">
+                            A practical guide to understanding and managing high blood pressure for families in Jammu &amp; Kashmir.
+                        </p>
+                        <div class="static-blog-footer">
+                            <a href="blog/blog-high-blood-pressure-jk-guide.html">Read article →</a>
+                            <span class="dept-tag">
+                                <a href="department-pages/cardiology.html">Cardiology</a> ·
+                                <a href="department-pages/general-medicine.html">General Medicine</a>
+                            </span>
+                        </div>
+                    </article>
+
+                    <!-- 6. Emergency vs OPD -->
+                    <article class="static-blog-card">
+                        <div class="static-blog-meta">
+                            <span class="static-blog-category">Emergency Care</span>
+                        </div>
+                        <h3 class="static-blog-title">
+                            <a href="blog/blog-emergency-vs-opd.html">
+                                Emergency vs OPD: When to Visit Which
+                            </a>
+                        </h3>
+                        <p class="static-blog-excerpt">
+                            A practical guide to help you decide when to visit the emergency department and when a regular OPD consultation is more appropriate.
+                        </p>
+                        <div class="static-blog-footer">
+                            <a href="blog/blog-emergency-vs-opd.html">Read article →</a>
+                            <span class="dept-tag">
+                                <a href="department-pages/general-medicine.html">General Medicine</a>
+                            </span>
+                        </div>
+                    </article>
+
+                    <!-- 7. Emergency Symptoms -->
+                    <article class="static-blog-card">
+                        <div class="static-blog-meta">
+                            <span class="static-blog-category">Emergency Care</span>
+                        </div>
+                        <h3 class="static-blog-title">
+                            <a href="blog/blog-emergency-symptoms-hospital-jammu-kashmir.html">
+                                Emergency Symptoms: When to Rush to Hospital
+                            </a>
+                        </h3>
+                        <p class="static-blog-excerpt">
+                            Key warning signs that mean you should go to the hospital emergency department right away.
+                        </p>
+                        <div class="static-blog-footer">
+                            <a href="blog/blog-emergency-symptoms-hospital-jammu-kashmir.html">Read article →</a>
+                            <span class="dept-tag">
+                                <a href="department-pages/general-medicine.html">General Medicine</a>
+                            </span>
+                        </div>
+                    </article>
+
+                    <!-- 8. Diabetes Symptoms -->
+                    <article class="static-blog-card">
+                        <div class="static-blog-meta">
+                            <span class="static-blog-category">Diabetes</span>
+                        </div>
+                        <h3 class="static-blog-title">
+                            <a href="blog/blog-diabetes-symptoms-in-kashmir-what-every-kashmiri-family-should-know.html">
+                                Diabetes Symptoms Every Kashmiri Family Should Know
+                            </a>
+                        </h3>
+                        <p class="static-blog-excerpt">
+                            Common symptoms of diabetes that every family in Kashmir should be aware of, with guidance on when to consult a doctor.
+                        </p>
+                        <div class="static-blog-footer">
+                            <a href="blog/blog-diabetes-symptoms-in-kashmir-what-every-kashmiri-family-should-know.html">Read article →</a>
+                            <span class="dept-tag">
+                                <a href="department-pages/general-medicine.html">General Medicine</a>
+                            </span>
+                        </div>
+                    </article>
+
+                    <!-- 9. Lifestyle Diseases -->
+                    <article class="static-blog-card">
+                        <div class="static-blog-meta">
+                            <span class="static-blog-category">Lifestyle Health</span>
+                        </div>
+                        <h3 class="static-blog-title">
+                            <a href="blog/blog-lifestyle-diseases-diabetes-hypertension-jammu-kashmir.html">
+                                Lifestyle Diseases in Jammu &amp; Kashmir
+                            </a>
+                        </h3>
+                        <p class="static-blog-excerpt">
+                            Understanding diabetes, hypertension, and other lifestyle diseases in the context of Jammu &amp; Kashmir.
+                        </p>
+                        <div class="static-blog-footer">
+                            <a href="blog/blog-lifestyle-diseases-diabetes-hypertension-jammu-kashmir.html">Read article →</a>
+                            <span class="dept-tag">
+                                <a href="department-pages/general-medicine.html">General Medicine</a>
+                            </span>
+                        </div>
+                    </article>
+
+                    <!-- 10. Kashmir Winter Health Tips -->
+                    <article class="static-blog-card">
+                        <div class="static-blog-meta">
+                            <span class="static-blog-category">Seasonal Health</span>
+                        </div>
+                        <h3 class="static-blog-title">
+                            <a href="blog/blog-kashmir-winter-health-tips.html">
+                                Kashmir Winter Health Tips
+                            </a>
+                        </h3>
+                        <p class="static-blog-excerpt">
+                            Health and wellness guidance for the winter months in Kashmir, including practical tips to stay healthy during the cold season.
+                        </p>
+                        <div class="static-blog-footer">
+                            <a href="blog/blog-kashmir-winter-health-tips.html">Read article →</a>
+                            <span class="dept-tag">
+                                <a href="department-pages/general-medicine.html">General Medicine</a> ·
+                                <a href="department-pages/pulmonology.html">Pulmonology</a>
+                            </span>
+                        </div>
+                    </article>
+
+                    <!-- 11. Addiction Support -->
+                    <article class="static-blog-card">
+                        <div class="static-blog-meta">
+                            <span class="static-blog-category">Mental Health</span>
+                        </div>
+                        <h3 class="static-blog-title">
+                            <a href="blog/blog-addiction-support-jk-families.html">
+                                Addiction Support for J&amp;K Families
+                            </a>
+                        </h3>
+                        <p class="static-blog-excerpt">
+                            Guidance for families in Jammu &amp; Kashmir supporting a loved one through addiction and recovery.
+                        </p>
+                        <div class="static-blog-footer">
+                            <a href="blog/blog-addiction-support-jk-families.html">Read article →</a>
+                            <span class="dept-tag">
+                                <a href="department-pages/general-medicine.html">General Medicine</a>
+                            </span>
+                        </div>
+                    </article>
+
+                    <!-- 12. Water Bodies & Public Health -->
+                    <article class="static-blog-card">
+                        <div class="static-blog-meta">
+                            <span class="static-blog-category">Public Health</span>
+                        </div>
+                        <h3 class="static-blog-title">
+                            <a href="blog/blog-kashmir-disappearing-water-bodies-water-pollution-public-health.html">
+                                Water Pollution &amp; Public Health in Kashmir
+                            </a>
+                        </h3>
+                        <p class="static-blog-excerpt">
+                            How changes to Kashmir's water bodies and water pollution affect public health.
+                        </p>
+                        <div class="static-blog-footer">
+                            <a href="blog/blog-kashmir-disappearing-water-bodies-water-pollution-public-health.html">Read article →</a>
+                            <span class="dept-tag">
+                                <a href="department-pages/general-medicine.html">General Medicine</a>
+                            </span>
+                        </div>
+                    </article>
+
+                    <!-- 13. Why Families Choose Ibn Sina -->
+                    <article class="static-blog-card">
+                        <div class="static-blog-meta">
+                            <span class="static-blog-category">Hospital</span>
+                        </div>
+                        <h3 class="static-blog-title">
+                            <a href="blog/blog-why-families-across-jk-choose-ibn-sina.html">
+                                Why Families Across J&amp;K Choose Ibn Sina Hospital
+                            </a>
+                        </h3>
+                        <p class="static-blog-excerpt">
+                            Learn why families across Jammu &amp; Kashmir choose Ibn Sina Hospital for their healthcare needs.
+                        </p>
+                        <div class="static-blog-footer">
+                            <a href="blog/blog-why-families-across-jk-choose-ibn-sina.html">Read article →</a>
+                            <span class="dept-tag">
+                                <a href="about.html">About</a> ·
+                                <a href="doctors.html">Doctors</a>
+                            </span>
+                        </div>
+                    </article>
 
                 </div>
 
@@ -621,6 +1127,99 @@
 
             </div>
 
+        </section>
+
+
+
+        <!-- =====================================================
+             BROWSE BY TOPIC
+        ====================================================== -->
+
+        <section class="section" style="padding-top: 0; padding-bottom: 0;">
+            <div class="container">
+                <div class="browse-topics">
+                    <h3>🔎 Browse Articles by Topic</h3>
+                    <p>
+                        Explore health information across our specialty areas. Each department page has more information about conditions treated, consultants, and appointments.
+                    </p>
+                    <div class="topic-tags">
+                        <a href="department-pages/nephrology.html">Nephrology &amp; Dialysis</a>
+                        <a href="department-pages/cardiology.html">Cardiology</a>
+                        <a href="department-pages/general-medicine.html">General Medicine</a>
+                        <a href="department-pages/pulmonology.html">Pulmonology</a>
+                        <a href="department-pages/orthopaedics.html">Orthopaedics</a>
+                        <a href="department-pages/gastroenterology.html">Gastroenterology</a>
+                        <a href="department-pages/gynaecology.html">Gynaecology</a>
+                        <a href="department-pages/urology.html">Urology</a>
+                        <a href="department-pages/ent.html">ENT</a>
+                        <a href="department-pages/dermatology.html">Dermatology</a>
+                        <a href="department-pages/ophthalmology.html">Ophthalmology</a>
+                        <a href="department-pages/physiotherapy.html">Physiotherapy</a>
+                        <a href="department-pages/dentistry.html">Dentistry</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- =====================================================
+             RELATED DEPARTMENTS
+        ====================================================== -->
+
+        <section class="section" style="padding-top: 0; padding-bottom: 0;">
+            <div class="container">
+                <div class="related-departments">
+                    <h3>🏥 Explore Our Departments</h3>
+                    <p>
+                        Learn more about the specialties and services at Ibn Sina Hospital, Budgam.
+                    </p>
+                    <div class="dept-grid">
+                        <a href="department-pages/general-medicine.html">General Medicine</a>
+                        <a href="department-pages/general-surgery.html">General Surgery</a>
+                        <a href="department-pages/orthopaedics.html">Orthopaedics</a>
+                        <a href="department-pages/cardiology.html">Cardiology</a>
+                        <a href="department-pages/nephrology.html">Nephrology</a>
+                        <a href="department-pages/gastroenterology.html">Gastroenterology</a>
+                        <a href="department-pages/gynaecology.html">Gynaecology</a>
+                        <a href="department-pages/urology.html">Urology</a>
+                        <a href="department-pages/ent.html">ENT</a>
+                        <a href="department-pages/ophthalmology.html">Ophthalmology</a>
+                        <a href="department-pages/dermatology.html">Dermatology</a>
+                        <a href="department-pages/physiotherapy.html">Physiotherapy</a>
+                        <a href="department-pages/dentistry.html">Dentistry</a>
+                        <a href="department-pages/pulmonology.html">Pulmonology</a>
+                        <a href="department-pages/rheumatology.html">Rheumatology</a>
+                        <a href="department-pages/plastic-surgery.html">Plastic Surgery</a>
+                        <a href="department-pages/pediatric-surgery.html">Pediatric Surgery</a>
+                        <a href="department-pages/radiology.html">Radiology</a>
+                        <a href="department-pages/neonatal-intensive-care-unit.html">NICU</a>
+                        <a href="department-pages/specialties-directory.html">All Specialties</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- =====================================================
+             MEET OUR DOCTORS
+        ====================================================== -->
+
+        <section class="section" style="padding-top: 0; padding-bottom: 0;">
+            <div class="container">
+                <div class="blog-doctors-link">
+                    <h3>👨‍⚕️ Meet Our Doctors &amp; Specialists</h3>
+                    <p>
+                        Consult with our consultant-led team across multiple specialties. Browse profiles or book an appointment directly.
+                    </p>
+                    <div class="btn-group">
+                        <a href="doctors.html" class="btn-solid">View All Doctors</a>
+                        <a href="appointment.html" class="btn-outline-olive">Book Appointment</a>
+                        <a href="health-checkup-packages.html" class="btn-outline-olive">Health Checkups</a>
+                    </div>
+                </div>
+            </div>
         </section>
 
 
@@ -741,6 +1340,11 @@
                     </a>
                 </p>
 
+                <p style="margin-top:0.5rem; font-size:0.85rem; color:#71806d;">
+                    <strong>Service Areas:</strong> Budgam, Srinagar, Ompora, Ganderbal, Pulwama, Shopian, Kulgam –
+                    across <strong>Jammu &amp; Kashmir</strong> &amp; <strong>India</strong>
+                </p>
+
             </div>
 
 
@@ -794,6 +1398,12 @@
                     </li>
 
                     <li>
+                        <a href="health-checkup-packages.html">
+                            Health Checkup Packages
+                        </a>
+                    </li>
+
+                    <li>
                         <a href="doctors.html">
                             Doctors
                         </a>
@@ -802,6 +1412,12 @@
                     <li>
                         <a href="gallery.html">
                             Gallery
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="insurance-pmjay.html">
+                            PM-JAY / Insurance
                         </a>
                     </li>
 
@@ -878,7 +1494,8 @@
                     </a>
 
                 </div>
-</div>
+
+            </div>
 
         </div>
 
@@ -888,7 +1505,7 @@
         <div class="footer-bottom container">
 
             <p>
-                &copy; 2026 Ibn Sina Hospital.
+                &copy; 2025 Ibn Sina Hospital.
                 All rights reserved.
                 | Operating since 2018
             </p>
