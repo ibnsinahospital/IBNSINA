@@ -291,6 +291,33 @@
             box-shadow: 0 8px 20px rgba(45, 74, 43, 0.15);
         }
 
+        /* ----- New district CTA buttons ----- */
+        .service-areas-page .area-cta {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .service-areas-page .area-cta-btn {
+            display: inline-block;
+            background: var(--sa-accent);
+            color: #ffffff;
+            padding: 10px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(45, 74, 43, 0.15);
+        }
+
+        .service-areas-page .area-cta-btn:hover {
+            background: #1d321c;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(45, 74, 43, 0.2);
+        }
+
         /* ----- Directions / CTA section ----- */
         .service-areas-page .directions-block {
             background: linear-gradient(145deg, #f5f8f2, #ecf2e8);
@@ -448,6 +475,10 @@
                 flex-direction: column;
                 align-items: center;
             }
+            .service-areas-page .area-cta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
 
         @media (max-width: 480px) {
@@ -546,6 +577,12 @@
                         <li><span class="pill">Charar-i-Sharief</span></li>
                         <li><span class="pill">Nearby Budgam areas</span></li>
                     </ul>
+                    <!-- District page button for Chadoora / Beerwah / Charar-i-Sharief -->
+                    <div class="area-cta">
+                        <a href="service-areas/hospital-near-chadoora-beerwah-charar.html" class="area-cta-btn">
+                            🏥 View Hospital Page for Chadoora, Beerwah &amp; Charar-i-Sharief →
+                        </a>
+                    </div>
                 </div>
 
                 <!-- ================= TIER 2 ================= -->
@@ -567,6 +604,15 @@
                         <li><span class="pill">Ganderbal</span></li>
                         <li><span class="pill">Baramulla</span></li>
                     </ul>
+                    <!-- District page buttons for Srinagar and Ganderbal -->
+                    <div class="area-cta">
+                        <a href="service-areas/hospital-in-srinagar.html" class="area-cta-btn">
+                            🏙️ Hospital for Srinagar Patients →
+                        </a>
+                        <a href="service-areas/hospital-in-ganderbal.html" class="area-cta-btn">
+                            🏔️ Hospital for Ganderbal Patients →
+                        </a>
+                    </div>
                 </div>
 
                 <!-- ================= TIER 3 ================= -->
@@ -751,4 +797,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <script src="js/animations.js" defer></script>
 </body>
-</html>
+    </html>
