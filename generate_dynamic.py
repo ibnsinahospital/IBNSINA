@@ -1021,6 +1021,22 @@ def generate_blog_pages(posts):
         image_e = html_mod.escape(image, quote=True)
         body = post.get('body', '')
 
+        # Google Analytics (GA4) — pulled from the 'ga_measurement_id' column in
+        # the blog Google Sheet. Leave that column blank to skip analytics for a
+        # given post; fill it in (e.g. G-XXXXXXXXXX) to enable tracking on it.
+        ga_id = (post.get('ga_measurement_id') or '').strip()
+        ga_snippet = ''
+        if ga_id:
+            ga_id_e = html_mod.escape(ga_id, quote=True)
+            ga_snippet = f"""
+    <script async src="https://www.googletagmanager.com/gtag/js?id={ga_id_e}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){{dataLayer.push(arguments);}}
+      gtag('js', new Date());
+      gtag('config', '{ga_id_e}');
+    </script>"""
+
         json_ld = {
             "@context": "https://schema.org",
             "@type": "Article",
@@ -1054,7 +1070,7 @@ def generate_blog_pages(posts):
     <meta property="og:url" content="{page_url}">
     <meta property="og:image" content="{image_e}">
     <link rel="stylesheet" href="../css/style.css">
-    <script type="application/ld+json">{json.dumps(json_ld, ensure_ascii=False)}</script>
+    <script type="application/ld+json">{json.dumps(json_ld, ensure_ascii=False)}</script>{ga_snippet}
 </head>
 <body>
     <header class="site-header">
