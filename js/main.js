@@ -770,13 +770,15 @@ document.addEventListener(
     // SCROLL REVEAL
     // ========================================================
 
+    let fadeObserver = null;
+
     if (
       !window.matchMedia(
         '(prefers-reduced-motion: reduce)'
       ).matches
     ) {
 
-      const observer =
+      fadeObserver =
         new IntersectionObserver(
           entries => {
 
@@ -790,7 +792,7 @@ document.addEventListener(
                   'visible'
                 );
 
-                observer.unobserve(
+                fadeObserver.unobserve(
                   entry.target
                 );
               }
@@ -802,13 +804,42 @@ document.addEventListener(
             threshold: 0.15
           }
         );
-
-      document
-        .querySelectorAll('.fade-in')
-        .forEach(el =>
-          observer.observe(el)
-        );
     }
+
+    // Any .fade-in element created AFTER this point (e.g. cards
+    // injected later by async/dynamic rendering below) is never
+    // seen by querySelectorAll('.fade-in') above, so it never gets
+    // observed and stays permanently invisible (opacity:0 from the
+    // .fade-in CSS rule). This helper re-scans for new .fade-in
+    // elements and hooks them up; call it right after any innerHTML
+    // update that adds .fade-in cards.
+    function revealFadeIns(root) {
+
+      (root || document)
+        .querySelectorAll(
+          '.fade-in:not(.fade-in-bound)'
+        )
+        .forEach(el => {
+
+          el.classList.add(
+            'fade-in-bound'
+          );
+
+          if (fadeObserver) {
+
+            fadeObserver.observe(el);
+
+          } else {
+
+            el.classList.add(
+              'visible'
+            );
+          }
+
+        });
+    }
+
+    revealFadeIns();
 
 
     // ========================================================
@@ -1048,6 +1079,8 @@ document.addEventListener(
 
             `)
             .join('');
+
+        revealFadeIns(doctorGrid);
       }
 
 
@@ -1183,6 +1216,8 @@ document.addEventListener(
 
             `)
             .join('');
+
+        revealFadeIns(featContainer);
 
       })();
     }
@@ -1361,6 +1396,8 @@ document.addEventListener(
 
           })
           .join('');
+
+      revealFadeIns(servicesGrid);
     }
 
 
@@ -2104,6 +2141,8 @@ document.addEventListener(
             `)
             .join('');
 
+        revealFadeIns(blogPreviewGrid);
+
       })();
     }
 
@@ -2249,6 +2288,8 @@ document.addEventListener(
               `;
             })
             .join('');
+
+        revealFadeIns(blogGrid);
 
       })();
     }
