@@ -1,7 +1,5 @@
-/* ============================================================
-   IBN SINA HOSPITAL — STYLESHEET
-   Fonts loaded via <link> in HTML <head> — do NOT re-add @import here.
-   ============================================================ */
+/* ===== Google Fonts ===== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap');
 
 /* ===== CUSTOM PROPERTIES ===== */
 :root {
@@ -136,9 +134,10 @@ p { margin-bottom: var(--spacing-sm); overflow-wrap: break-word; }
 .hero-wave { position: absolute; bottom: -2px; left: 0; width: 100%; }
 
 /* ===== HERO CTA BUTTONS =====
-   Kept small per request. js/animations.js intentionally does NOT run any
-   gsap.from(opacity:0) tween on these buttons — they must always render
-   via plain CSS. */
+   Kept small per request. Also note: js/animations.js intentionally
+   does NOT run any gsap.from(opacity:0) tween on these buttons (see
+   comments in that file) — they must always render via plain CSS only,
+   since a GSAP/CDN hiccup previously left them stuck invisible. */
 .hero-ctas .btn {
     padding: 0.55rem 1.3rem;
     font-size: 0.9rem;
@@ -354,7 +353,9 @@ p { margin-bottom: var(--spacing-sm); overflow-wrap: break-word; }
 /* ===================================================================
    SINGLE BLOG POST PAGE (blog-post.html)
    Rendered by js/main.js into #blog-post-content using the classes
-   below.
+   below. None of these had any CSS at all before, so the page was
+   falling back to unstyled browser defaults — this is the actual fix
+   for "the blog posts look bad".
    =================================================================== */
 
 .premium-blog-post {
@@ -628,7 +629,8 @@ p { margin-bottom: var(--spacing-sm); overflow-wrap: break-word; }
 .cta-banner-buttons { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
 /* Fix: .btn-primary is solid forest-green, identical to this section's
    background, which made the "Book an Appointment" button here
-   invisible. Scoped to .cta-banner only. */
+   invisible (no visible shape, only text). Scoped to .cta-banner only
+   so no other "Book Appointment" button elsewhere is affected. */
 .cta-banner .btn-primary {
     background: var(--ivory);
     color: var(--forest);
@@ -697,6 +699,26 @@ p { margin-bottom: var(--spacing-sm); overflow-wrap: break-word; }
     .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 }
+
+/* ===== GLOBAL VISIBILITY FIX ===== */
+.services-grid, .specialities-grid, .blog-preview-grid, .gallery-grid, .doctor-cards-grid,
+.why-grid, .testimonials-grid, #positions-list, .departments-grid {
+    display: grid !important; opacity: 1 !important; visibility: visible !important;
+}
+.service-card, .speciality-tag, .blog-preview-card, .gallery-item, .doctor-card, .why-card,
+.testimonial-card, .position-card, .department-card {
+    opacity: 1 !important; visibility: visible !important; background: #ffffff !important; color: #1a1a1a !important;
+    border: 1px solid #e0e0d0 !important; min-height: 120px; padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-sm); margin: 0;
+}
+.service-card h3, .blog-preview-card h3, .position-card h3, .department-card h3 { color: #2d4a2b !important; font-size: 1.2rem !important; margin-bottom: 0.5rem; }
+.service-card p, .blog-preview-card p, .position-card p, .department-card p { color: #555 !important; }
+.speciality-tag { display: inline-block !important; background: var(--olive) !important; color: var(--forest) !important; font-weight: 500; padding: 0.4rem 1.2rem; border-radius: 2rem; }
+.gallery-item img { display: block !important; width: 100%; height: auto; border-radius: var(--radius); }
+#positions-list { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+.position-card { display: block !important; background: #fff; padding: 1.5rem; }
+
+/* ===== SERVICE ICONS ===== */
+.service-icon svg { width: 48px; height: 48px; margin-bottom: 1rem; stroke: var(--forest); }
 
 /* ===== DEPARTMENT CARDS ===== */
 .departments-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--spacing-md); margin-top: 1.5rem; }
@@ -770,7 +792,7 @@ p { margin-bottom: var(--spacing-sm); overflow-wrap: break-word; }
     .footer-main { grid-template-columns: 1fr; }
     .cta-banner-content { flex-direction: column; text-align: center; }
     .cta-banner-buttons { justify-content: center; }
-    .form-row { flex-direction: column; }
+.form-row { flex-direction: column; }
     .form-row .form-group { min-width: 100%; }
     .filter-bar { flex-direction: column; align-items: stretch; }
     .filter-bar input, .filter-bar select { width: 100%; }
@@ -825,11 +847,4 @@ p { margin-bottom: var(--spacing-sm); overflow-wrap: break-word; }
     .main-nav.open { max-height: 80vh; overflow-y: auto; }
     .nav-list { flex-direction: column; padding: 1rem 2rem; gap: 0.5rem; }
     .nav-list a { display: block; padding: 0.8rem 0; font-size: 1.1rem; color: #fff; }
-}
-
-/* ===== POSITIONS LIST (careers.html) ===== */
-#positions-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-.position-card { background: #fff; padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid #e0e0d0; }
-.position-card h3 { color: var(--forest); font-size: 1.2rem; margin-bottom: 0.5rem; }
-.position-card p { color: #555; margin-bottom: 0.5rem; }
-.position-card small { color: var(--sage-text); }
+    }
