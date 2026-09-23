@@ -1024,26 +1024,33 @@ def format_blog_body_html(raw):
         is_numbered = all(re.match(r'^\d+[.)]\s+', l) for l in lines)
 
         if is_bulleted:
-            items = ''.join(f'<li>{html_mod.escape(re.sub(r"^[-•*]\s+", "", l))}</li>' for l in lines)
-            out.append(f'<ul>{items}</ul>')
+            items = []
+            for l in lines:
+                cleaned = re.sub(r'^[-•*]\s+', '', l)
+                items.append('<li>' + html_mod.escape(cleaned) + '</li>')
+            out.append('<ul>' + ''.join(items) + '</ul>')
         elif is_numbered:
-            items = ''.join(f'<li>{html_mod.escape(re.sub(r"^\d+[.)]\s+", "", l))}</li>' for l in lines)
-            out.append(f'<ol>{items}</ol>')
+            items = []
+            for l in lines:
+                cleaned = re.sub(r'^\d+[.)]\s+', '', l)
+                items.append('<li>' + html_mod.escape(cleaned) + '</li>')
+            out.append('<ol>' + ''.join(items) + '</ol>')
         elif len(lines) == 1:
             line = lines[0]
             word_count = len(line.split())
             if line.endswith('?') and word_count <= 20:
-                out.append(f'<p class="blog-pull-quote">{html_mod.escape(line)}</p>')
+                out.append('<p class="blog-pull-quote">' + html_mod.escape(line) + '</p>')
             elif word_count <= 8 and not re.search(r'[.!?:;,]$', line) and re.match(r'^[A-Z]', line):
-                out.append(f'<h3 class="blog-subheading">{html_mod.escape(line)}</h3>')
+                out.append('<h3 class="blog-subheading">' + html_mod.escape(line) + '</h3>')
             else:
                 cls = ' class="blog-lead-paragraph"' if not lead_assigned else ''
                 lead_assigned = True
-                out.append(f'<p{cls}>{html_mod.escape(line)}</p>')
+                out.append('<p' + cls + '>' + html_mod.escape(line) + '</p>')
         else:
             cls = ' class="blog-lead-paragraph"' if not lead_assigned else ''
             lead_assigned = True
-            out.append(f'<p{cls}>' + '<br>'.join(html_mod.escape(l) for l in lines) + '</p>')
+            joined = '<br>'.join(html_mod.escape(l) for l in lines)
+            out.append('<p' + cls + '>' + joined + '</p>')
 
     return ''.join(out)
 
