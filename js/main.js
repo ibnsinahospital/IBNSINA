@@ -3225,6 +3225,11 @@ document.addEventListener(
 
     if (appointmentForm) {
 
+      const formWrapper =
+        document.getElementById(
+          'appointment-form-section'
+        );
+
       const deptSelect =
         document.getElementById(
           'department'
@@ -3235,148 +3240,431 @@ document.addEventListener(
           'preferred-doctor'
         );
 
+      const doctorHint =
+        document.getElementById(
+          'doctor-hint'
+        );
+
       const successDiv =
         document.getElementById(
           'appointment-success'
         );
 
+      const successSummary =
+        document.getElementById(
+          'success-summary'
+        );
 
-      const departments = [
+      const successLead =
+        document.getElementById(
+          'success-lead'
+        );
 
-        'Cardiology',
-        'CTVS',
-        'Dental',
-        'Dermatology',
-        'Endocrinology',
-        'ENT',
-        'Gastroenterology',
-        'General Surgery',
-        'Gynaecology',
-        'Neurosurgery',
-        'Neurology',
-        'Ophthalmology',
-        'Orthopaedics',
-        'Pediatrics',
-        'Physiotherapy',
-        'Plastic Surgery',
-        'Psychiatry',
-        'Pulmonology',
-        'Rheumatology',
-        'Urology'
+      const submitBtn =
+        document.getElementById(
+          'submit-btn'
+        );
 
-      ];
+      let allDoctors = [];
 
 
-      if (deptSelect) {
+      // -------- Load departments from JSON --------
+      async function populateDepartments() {
 
-        deptSelect.innerHTML =
-          '<option value="">-- Select --</option>' +
+        if (!deptSelect) return;
 
-          departments
-            .map(
-              d =>
-                `<option value="${escapeHTML(d)}">${escapeHTML(d)}</option>`
-            )
-            .join('');
-      }
+        const departments =
+          await fetchJSON(
+            DATA_URLS.departments
+          );
 
-
-      async function populateDoctorsDropdown() {
-
-        if (!docSelect) {
-          return;
-        }
-
-        try {
-
-          const doctors =
-            await fetchJSON(
-              DATA_URLS.doctors
-            );
-
-
-          docSelect.innerHTML =
-            '<option value="">-- Any Doctor --</option>' +
-
-            doctors
+        if (departments.length) {
+          const options =
+            departments
               .map(
                 d =>
-                  `<option value="${escapeHTML(d.name || '')}">
-                    ${escapeHTML(d.name || '')}
-                    ${
-                      d.specialty
-                        ? ` (${escapeHTML(d.specialty)})`
-                        : ''
-                    }
-                  </option>`
+                  `<option value="${escapeHTML(d.name || '')}">${escapeHTML(d.name || '')}</option>`
               )
               .join('');
 
-
-          const urlParams =
-            new URLSearchParams(
-              window.location.search
-            );
-
-          const preselected =
-            urlParams.get(
-              'doctor'
-            );
-
-
-          if (preselected) {
-
-            const match =
-              Array.from(
-                docSelect.options
-              ).find(
-                opt =>
-                  opt.value ===
-                  preselected
-              );
-
-            if (match) {
-
-              docSelect.value =
-                preselected;
-            }
-          }
-
-        } catch (err) {
-
-          docSelect.innerHTML =
-            '<option value="">-- Any Doctor --</option>';
+          deptSelect.innerHTML =
+            '<option value="">-- Select a department --</option>' +
+            options;
         }
       }
 
 
-      populateDoctorsDropdown();
+      // -------- Load doctors, cache them --------
+      async function loadDoctors() {
+
+        allDoctors =
+          await fetchJSON(
+            DATA_URLS.doctors
+          );
+      }
 
 
+      // -------- Filter doctors by selected department --------
+      function filterDoctorsByDept(deptName) {
+
+        if (!docSelect) return;
+
+        const dept =
+          (deptName || '')
+            .trim()
+            .toLowerCase();
+
+        let filtered = allDoctors;
+
+        if (dept) {
+          filtered =
+            allDoctors.filter(
+              d =>
+                (d.department || '')
+                  .trim()
+                  .toLowerCase() === dept
+            );
+        }
+
+        if (filtered.length === 0) {
+
+          docSelect.innerHTML =
+            '<option value="">-- No doctors available --</option>';
+
+          docSelect.disabled = true;
+
+          if (doctorHint) {
+            doctorHint.textContent =
+              dept
+                ? 'No doctors listed for this department yet. We\'ll assign one when we call you.'
+                : 'Select a department above to see its doctors.';
+            doctorHint.classList.add('accent');
+          }
+
+          return;
+        }
+
+        docSelect.disabled = false;
+
+        const options =
+          filtered
+            .map(
+              d =>
+                `<option value="${escapeHTML(d.name || '')}">
+                  ${escapeHTML(d.name || '')}
+                  ${
+                    d.specialty
+                      ? ` (${escapeHTML(d.specialty)})`
+                      : ''
+                  }
+                </option>`
+            )
+            .join('');
+
+        docSelect.innerHTML =
+          '<option value="">-- Any doctor in this department --</option>' +
+          options;
+
+        if (doctorHint) {
+          if (dept) {
+            doctorHint.textContent =
+              `Showing ${filtered.length} doctor${filtered.length !== 1 ? 's' : ''} in ${deptName}.`;
+          } else {
+            doctorHint.textContent =
+              'Select a department above to see its doctors.';
+          }
+          doctorHint.classList.add('accent');
+        }
+      }
+
+
+      // -------- Preselect doctor from URL ?doctor=Name --------
+      function preselectDoctorFromURL() {
+
+        const urlParams =
+          new URLSearchParams(
+            window.location.search
+          );
+
+        const preselected =
+          urlParams.get('doctor');
+
+        if (!preselected || !docSelect) return;
+
+        // Find the doctor in the full list
+        const doc =
+          allDoctors.find(
+            d =>
+              (d.name || '') === preselected
+          );
+
+        // If we found the doctor and know their department,
+        // set the department dropdown first, then filter doctors,
+        // then select the doctor.
+        if (doc && doc.department && deptSelect) {
+
+          deptSelect.value =
+            doc.department;
+
+          filterDoctorsByDept(
+            doc.department
+          );
+
+          // Try to select the doctor by matching the option value
+          const match =
+            Array.from(docSelect.options)
+              .find(
+                opt =>
+                  opt.value === preselected
+              );
+
+          if (match) {
+            docSelect.value = preselected;
+          }
+
+        } else if (preselected) {
+
+          // Fallback: doctor wasn't found or has no department
+          const match =
+            Array.from(docSelect.options)
+              .find(
+                opt =>
+                  opt.value === preselected
+              );
+
+          if (match) {
+            docSelect.value = preselected;
+          }
+        }
+      }
+
+
+      // -------- Wire up department change --------
+      if (deptSelect) {
+        deptSelect.addEventListener(
+          'change',
+          () =>
+            filterDoctorsByDept(
+              deptSelect.value
+            )
+        );
+      }
+
+
+      // -------- Live validation: green ticks --------
+      const nameInput =
+        document.getElementById(
+          'patient-name'
+        );
+
+      const phoneInput =
+        document.getElementById(
+          'patient-phone'
+        );
+
+      function validateName() {
+        if (!nameInput) return;
+        const ok =
+          nameInput.value.trim().length >= 3;
+        nameInput.classList.toggle('valid', ok);
+      }
+
+      function validatePhone() {
+        if (!phoneInput) return;
+        const digits =
+          phoneInput.value
+            .replace(/\D/g, '');
+        const ok =
+          digits.length >= 10 &&
+          digits.length <= 12;
+        phoneInput.classList.toggle('valid', ok);
+      }
+
+      if (nameInput) {
+        nameInput.addEventListener(
+          'input',
+          validateName
+        );
+      }
+
+      if (phoneInput) {
+        phoneInput.addEventListener(
+          'input',
+          () => {
+            // Light auto-format: strip non-digits, cap at 10
+            let v =
+              phoneInput.value.replace(
+                /\D/g,
+                ''
+              );
+            if (v.length > 10) {
+              v = v.slice(0, 10);
+            }
+            if (v.length > 5) {
+              phoneInput.value =
+                v.slice(0, 5) +
+                ' ' +
+                v.slice(5);
+            } else {
+              phoneInput.value = v;
+            }
+            validatePhone();
+          }
+        );
+      }
+
+
+      // -------- Submit: show loading state --------
+      appointmentForm.addEventListener(
+        'submit',
+        () => {
+          if (submitBtn) {
+            submitBtn.classList.add(
+              'loading'
+            );
+            submitBtn.disabled = true;
+            const label =
+              submitBtn.querySelector(
+                '.btn-label'
+              );
+            if (label) {
+              label.textContent =
+                'Sending...';
+            }
+          }
+        }
+      );
+
+
+      // -------- Success: build summary + reveal card --------
+      function showSuccess() {
+
+        // Grab values BEFORE hiding the form
+        const data = {
+          name:
+            nameInput
+              ? nameInput.value.trim()
+              : '',
+          phone:
+            phoneInput
+              ? phoneInput.value.trim()
+              : '',
+          dept:
+            deptSelect
+              ? deptSelect.value
+              : '',
+          doctor:
+            docSelect && !docSelect.disabled
+              ? docSelect.value
+              : '',
+          date:
+            document.getElementById(
+              'preferred-date'
+            )
+              ? document.getElementById(
+                  'preferred-date'
+                ).value
+              : ''
+        };
+
+        if (formWrapper) {
+          formWrapper.style.display =
+            'none';
+        }
+
+        if (successDiv) {
+          successDiv.style.display =
+            'block';
+        }
+
+        // Personalize the lead line
+        if (successLead && data.name) {
+          successLead.textContent =
+            `Thank you, ${data.name}. Our team will call you shortly on ${data.phone} to confirm your visit.`;
+        }
+
+        // Build the summary
+        if (successSummary) {
+
+          const rows = [];
+
+          if (data.name) {
+            rows.push(
+              `<div class="row"><span class="label">Name</span><span class="value">${escapeHTML(data.name)}</span></div>`
+            );
+          }
+          if (data.phone) {
+            rows.push(
+              `<div class="row"><span class="label">Phone</span><span class="value">${escapeHTML(data.phone)}</span></div>`
+            );
+          }
+          if (data.dept) {
+            rows.push(
+              `<div class="row"><span class="label">Department</span><span class="value">${escapeHTML(data.dept)}</span></div>`
+            );
+          }
+          if (data.doctor) {
+            rows.push(
+              `<div class="row"><span class="label">Preferred Doctor</span><span class="value">${escapeHTML(data.doctor)}</span></div>`
+            );
+          } else {
+            rows.push(
+              `<div class="row"><span class="label">Preferred Doctor</span><span class="value">Any available doctor</span></div>`
+            );
+          }
+          if (data.date) {
+            rows.push(
+              `<div class="row"><span class="label">Preferred Date</span><span class="value">${escapeHTML(data.date)}</span></div>`
+            );
+          } else {
+            rows.push(
+              `<div class="row"><span class="label">Preferred Date</span><span class="value">Flexible</span></div>`
+            );
+          }
+
+          if (rows.length) {
+            successSummary.innerHTML =
+              rows.join('');
+            successSummary.style.display =
+              'grid';
+          }
+        }
+
+        // Scroll success card into view
+        if (successDiv) {
+          setTimeout(
+            () =>
+              successDiv.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+              }),
+            100
+          );
+        }
+      }
+
+
+      // -------- Hidden iframe load = success --------
       const hiddenFrame =
         document.querySelector(
           'iframe[name="hidden-iframe"]'
         );
 
-
       if (hiddenFrame) {
-
         hiddenFrame.addEventListener(
           'load',
-          () => {
-
-            appointmentForm.style.display =
-              'none';
-
-            if (successDiv) {
-
-              successDiv.style.display =
-                'block';
-            }
-
-          }
+          showSuccess
         );
       }
+
+
+      // -------- Kick off: load departments, then doctors, then URL preselect --------
+      (async () => {
+        await populateDepartments();
+        await loadDoctors();
+        filterDoctorsByDept('');
+        preselectDoctorFromURL();
+      })();
 
     }
 
