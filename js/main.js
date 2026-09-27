@@ -3225,9 +3225,9 @@ document.addEventListener(
 
     if (appointmentForm) {
 
-      const formWrapper =
+      const formBody =
         document.getElementById(
-          'appointment-form-section'
+          'form-body'
         );
 
       const deptSelect =
@@ -3266,6 +3266,7 @@ document.addEventListener(
         );
 
       let allDoctors = [];
+      let successShown = false;
 
 
       // -------- Load departments from JSON --------
@@ -3391,16 +3392,12 @@ document.addEventListener(
 
         if (!preselected || !docSelect) return;
 
-        // Find the doctor in the full list
         const doc =
           allDoctors.find(
             d =>
               (d.name || '') === preselected
           );
 
-        // If we found the doctor and know their department,
-        // set the department dropdown first, then filter doctors,
-        // then select the doctor.
         if (doc && doc.department && deptSelect) {
 
           deptSelect.value =
@@ -3410,7 +3407,6 @@ document.addEventListener(
             doc.department
           );
 
-          // Try to select the doctor by matching the option value
           const match =
             Array.from(docSelect.options)
               .find(
@@ -3424,7 +3420,6 @@ document.addEventListener(
 
         } else if (preselected) {
 
-          // Fallback: doctor wasn't found or has no department
           const match =
             Array.from(docSelect.options)
               .find(
@@ -3514,32 +3509,12 @@ document.addEventListener(
       }
 
 
-      // -------- Submit: show loading state --------
-      appointmentForm.addEventListener(
-        'submit',
-        () => {
-          if (submitBtn) {
-            submitBtn.classList.add(
-              'loading'
-            );
-            submitBtn.disabled = true;
-            const label =
-              submitBtn.querySelector(
-                '.btn-label'
-              );
-            if (label) {
-              label.textContent =
-                'Sending...';
-            }
-          }
-        }
-      );
-
-
       // -------- Success: build summary + reveal card --------
       function showSuccess() {
 
-        // Grab values BEFORE hiding the form
+        if (successShown) return;
+        successShown = true;
+
         const data = {
           name:
             nameInput
@@ -3567,9 +3542,10 @@ document.addEventListener(
               : ''
         };
 
-        if (formWrapper) {
-          formWrapper.style.display =
-            'none';
+        // Hide ONLY the form body — the success card is a sibling
+        // of #form-body, so hiding #form-body keeps the card visible.
+        if (formBody) {
+          formBody.style.display = 'none';
         }
 
         if (successDiv) {
@@ -3644,18 +3620,33 @@ document.addEventListener(
       }
 
 
-      // -------- Hidden iframe load = success --------
-      const hiddenFrame =
-        document.querySelector(
-          'iframe[name="hidden-iframe"]'
-        );
+      // -------- On submit: show spinner, then reveal success after ~1s --------
+      appointmentForm.addEventListener(
+        'submit',
+        () => {
+          if (submitBtn) {
+            submitBtn.classList.add(
+              'loading'
+            );
+            submitBtn.disabled = true;
+            const label =
+              submitBtn.querySelector(
+                '.btn-label'
+              );
+            if (label) {
+              label.textContent =
+                'Sending...';
+            }
+          }
 
-      if (hiddenFrame) {
-        hiddenFrame.addEventListener(
-          'load',
-          showSuccess
-        );
-      }
+          // Show success card ~1 second after tap. The form itself
+          // still posts to Google Script via the hidden iframe.
+          setTimeout(
+            showSuccess,
+            1000
+          );
+        }
+      );
 
 
       // -------- Kick off: load departments, then doctors, then URL preselect --------
