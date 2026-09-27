@@ -288,7 +288,7 @@
             margin: 0 0 28px;
         }
 
-        /* Form section headings */
+        /* Form sections */
         .appointment-page .form-section {
             margin-bottom: 26px;
             padding-bottom: 22px;
@@ -486,7 +486,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Privacy note under button */
+        /* Privacy note */
         .appointment-page .form-privacy {
             display: flex;
             align-items: center;
@@ -956,6 +956,7 @@
         <section class="section" style="padding-bottom: 0;">
             <div class="container app-shell">
 
+                <!-- Breadcrumb -->
                 <nav class="breadcrumb-premium" aria-label="Breadcrumb">
                     <a href="index.html">Home</a> <span>›</span> Book Appointment
                 </nav>
@@ -987,102 +988,109 @@
                     <a href="tel:+917006272634">+91 7006272634</a>
                 </div>
 
-                <!-- ===== FORM ===== -->
+                <!-- ===== FORM CARD ===== -->
                 <div id="appointment-form-section" class="form-wrapper">
-                    <h2>Request an Appointment</h2>
-                    <p class="form-subtitle">
-                        Fill in your details below and our team will call you to confirm your appointment.
-                        Fields marked <strong>*</strong> are required.
-                    </p>
 
-                    <div id="appointment-error" style="color: #954c2a; margin-bottom: 1rem;"></div>
+                    <!-- FORM BODY (this whole block hides after submit) -->
+                    <div id="form-body">
 
-                    <form id="appointment-form" action="https://script.google.com/macros/s/AKfycbwOmEFb0cu0rQ3IzRKrzP9wLNgjXZLUuvpZJWp2xEcZSvuknyppjiavPWST31QNEWoS/exec" method="POST" target="hidden-iframe">
+                        <h2>Request an Appointment</h2>
+                        <p class="form-subtitle">
+                            Fill in your details below and our team will call you to confirm your appointment.
+                            Fields marked <strong>*</strong> are required.
+                        </p>
 
-                        <!-- SECTION 1: YOUR DETAILS -->
-                        <div class="form-section">
-                            <div class="form-section-heading">
-                                <span class="section-num">1</span>
-                                <h3>Your Details</h3>
-                            </div>
+                        <div id="appointment-error" style="color: #954c2a; margin-bottom: 1rem;"></div>
 
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="patient-name">Full Name *</label>
-                                    <input type="text" id="patient-name" name="patient_name" required placeholder="e.g. Mohammad Yousuf" autocomplete="name">
-                                    <span class="field-tick" aria-hidden="true">✓</span>
+                        <form id="appointment-form" action="https://script.google.com/macros/s/AKfycbwOmEFb0cu0rQ3IzRKrzP9wLNgjXZLUuvpZJWp2xEcZSvuknyppjiavPWST31QNEWoS/exec" method="POST" target="hidden-iframe">
+
+                            <!-- SECTION 1: YOUR DETAILS -->
+                            <div class="form-section">
+                                <div class="form-section-heading">
+                                    <span class="section-num">1</span>
+                                    <h3>Your Details</h3>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="patient-phone">Phone Number *</label>
-                                    <input type="tel" id="patient-phone" name="phone" required placeholder="10-digit mobile number" autocomplete="tel" inputmode="numeric" maxlength="11">
-                                    <span class="field-tick" aria-hidden="true">✓</span>
-                                    <small class="form-hint">We'll call you back on this number to confirm.</small>
-                                </div>
-                            </div>
-                        </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="patient-name">Full Name *</label>
+                                        <input type="text" id="patient-name" name="patient_name" required placeholder="e.g. Mohammad Yousuf" autocomplete="name">
+                                        <span class="field-tick" aria-hidden="true">✓</span>
+                                    </div>
 
-                        <!-- SECTION 2: WHAT YOU NEED -->
-                        <div class="form-section">
-                            <div class="form-section-heading">
-                                <span class="section-num">2</span>
-                                <h3>What You Need</h3>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="department">Department <span class="optional">(optional)</span></label>
-                                    <select id="department" name="department">
-                                        <option value="">-- Select a department --</option>
-                                    </select>
-                                    <small class="form-hint">Not sure? Leave empty and we'll guide you.</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="preferred-doctor">Preferred Doctor <span class="optional">(optional)</span></label>
-                                    <select id="preferred-doctor" name="preferred_doctor">
-                                        <option value="">-- Any Doctor --</option>
-                                    </select>
-                                    <small class="form-hint accent" id="doctor-hint">Select a department above to see its doctors.</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- SECTION 3: WHEN -->
-                        <div class="form-section">
-                            <div class="form-section-heading">
-                                <span class="section-num">3</span>
-                                <h3>When Would You Like to Visit</h3>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="preferred-date">Preferred Date <span class="optional">(optional)</span></label>
-                                    <input type="date" id="preferred-date" name="preferred_date">
+                                    <div class="form-group">
+                                        <label for="patient-phone">Phone Number *</label>
+                                        <input type="tel" id="patient-phone" name="phone" required placeholder="10-digit mobile number" autocomplete="tel" inputmode="numeric" maxlength="11">
+                                        <span class="field-tick" aria-hidden="true">✓</span>
+                                        <small class="form-hint">We'll call you back on this number to confirm.</small>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="reason">Short Note <span class="optional">(optional)</span></label>
-                                <textarea id="reason" name="reason" rows="3" placeholder="Briefly describe your concern — symptoms, duration, or any specific request."></textarea>
+                            <!-- SECTION 2: WHAT YOU NEED -->
+                            <div class="form-section">
+                                <div class="form-section-heading">
+                                    <span class="section-num">2</span>
+                                    <h3>What You Need</h3>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="department">Department <span class="optional">(optional)</span></label>
+                                        <select id="department" name="department">
+                                            <option value="">-- Select a department --</option>
+                                        </select>
+                                        <small class="form-hint">Not sure? Leave empty and we'll guide you.</small>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="preferred-doctor">Preferred Doctor <span class="optional">(optional)</span></label>
+                                        <select id="preferred-doctor" name="preferred_doctor">
+                                            <option value="">-- Any Doctor --</option>
+                                        </select>
+                                        <small class="form-hint accent" id="doctor-hint">Select a department above to see its doctors.</small>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
 
-                        <button type="submit" class="btn-submit" id="submit-btn">
-                            <span class="spinner" aria-hidden="true"></span>
-                            <span class="btn-label">Request Appointment</span>
-                            <span class="btn-arrow" aria-hidden="true">→</span>
-                        </button>
+                            <!-- SECTION 3: WHEN -->
+                            <div class="form-section">
+                                <div class="form-section-heading">
+                                    <span class="section-num">3</span>
+                                    <h3>When Would You Like to Visit</h3>
+                                </div>
 
-                        <div class="form-privacy">
-                            <span aria-hidden="true">🔒</span>
-                            <span>Your information is private and only used to schedule your visit.</span>
-                        </div>
-                    </form>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="preferred-date">Preferred Date <span class="optional">(optional)</span></label>
+                                        <input type="date" id="preferred-date" name="preferred_date">
+                                    </div>
+                                </div>
 
-                    <iframe name="hidden-iframe" style="display:none;" title="Appointment form submission"></iframe>
+                                <div class="form-group">
+                                    <label for="reason">Short Note <span class="optional">(optional)</span></label>
+                                    <textarea id="reason" name="reason" rows="3" placeholder="Briefly describe your concern — symptoms, duration, or any specific request."></textarea>
+                                </div>
+                            </div>
 
-                    <!-- ===== SUCCESS ===== -->
+                            <button type="submit" class="btn-submit" id="submit-btn">
+                                <span class="spinner" aria-hidden="true"></span>
+                                <span class="btn-label">Request Appointment</span>
+                                <span class="btn-arrow" aria-hidden="true">→</span>
+                            </button>
+
+                            <div class="form-privacy">
+                                <span aria-hidden="true">🔒</span>
+                                <span>Your information is private and only used to schedule your visit.</span>
+                            </div>
+                        </form>
+
+                        <iframe name="hidden-iframe" style="display:none;" title="Appointment form submission"></iframe>
+
+                    </div>
+                    <!-- /FORM BODY -->
+
+                    <!-- SUCCESS CARD (sibling of #form-body — stays visible after submit) -->
                     <div id="appointment-success" class="success-message" role="status" aria-live="polite">
                         <div class="success-icon" aria-hidden="true">✓</div>
                         <h2>Appointment Request Received!</h2>
@@ -1090,9 +1098,7 @@
                             Thank you. Our team will call you shortly to confirm your visit.
                         </p>
 
-                        <div class="success-summary" id="success-summary" style="display:none;">
-                            <!-- Populated by JS -->
-                        </div>
+                        <div class="success-summary" id="success-summary" style="display:none;"></div>
 
                         <div class="success-next">
                             <strong>What happens next?</strong>
@@ -1108,6 +1114,7 @@
                             <a href="index.html" class="btn-solid">Back to Home</a>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- ===== QUICK LINKS ===== -->
@@ -1274,4 +1281,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <script src="js/animations.js" defer></script>
 </body>
-                            </html>
+    </html>
