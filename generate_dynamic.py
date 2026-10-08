@@ -25,8 +25,12 @@ SITE_URL = "https://ibnsinahospital.in"
 LASTMOD_CACHE_FILE = Path("lastmod_cache.json")
 GALLERY_TEMPLATE_PATH = Path('gallery_template.html')
 
+# ---- Hospital rating (only fill if you have REAL Google reviews) ----
+# Leave both empty for now. Fill in after you have real, verified Google reviews.
+HOSPITAL_RATING_VALUE = ""      # e.g. "4.8"
+HOSPITAL_REVIEW_COUNT = ""      # e.g. "127"
+
 # Department name (from Google Sheet) -> actual department-pages/*.html slug
-# Fixes common data-source typos so doctor pages don't link to 404 pages.
 DEPT_SLUG_OVERRIDES = {
     'optholmology': 'ophthalmology',
     'ophthalmology': 'ophthalmology',
@@ -68,7 +72,6 @@ def slugify(text):
     return text
 
 def resolve_dept_slug(dept_name):
-    """Map data-source department spellings to actual department page slug."""
     key = (dept_name or '').strip().lower()
     if key in DEPT_SLUG_OVERRIDES:
         return DEPT_SLUG_OVERRIDES[key]
@@ -88,13 +91,11 @@ def build_about(doc, full_name):
     about = (doc.get('about') or '').strip()
     if about:
         return about
-
     first_name = first_name_of(full_name)
     specialty = (doc.get('specialty') or '').strip().lower()
     department = (doc.get('department') or '').strip().title()
     qualifications = (doc.get('qualifications') or '').strip()
     qual_line = f" ({qualifications})" if qualifications else ""
-
     return (
         f"{full_name}{qual_line} is a {specialty} at Ibn Sina Hospital, Budgam, "
         f"heading the {department} department. {first_name} combines clinical "
@@ -102,7 +103,7 @@ def build_about(doc, full_name):
         f"{specialty} care to patients across the Kashmir Valley."
     )
 
-# ========== LASTMOD CACHE (content-based) ==========
+# ========== LASTMOD CACHE ==========
 def load_lastmod_cache():
     if LASTMOD_CACHE_FILE.exists():
         return json.loads(LASTMOD_CACHE_FILE.read_text(encoding='utf-8'))
@@ -131,7 +132,7 @@ def save_json_data(doctors, departments, posts, gallery_items, updates):
     print(f"Wrote JSON data files: {len(doctors)} doctors, {len(departments)} departments, "
           f"{len(posts)} blog posts, {len(gallery_items)} gallery items, {len(updates)} updates.")
 
-# ========== GENERATE DOCTOR PAGES (PREMIUM, SEO-COMPLETE) ==========
+# ========== GENERATE DOCTOR PAGES ==========
 def generate_doctor_pages(doctors, departments_by_name):
     output_dir = Path('doctors')
     output_dir.mkdir(exist_ok=True)
@@ -150,7 +151,6 @@ def generate_doctor_pages(doctors, departments_by_name):
         photo_url = (doc.get('photo_url') or 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp').strip()
         about_text = build_about(doc, full_name)
 
-        # ---- HTML-escape every value inserted into visible HTML ----
         full_name_e = html_mod.escape(full_name)
         specialty_e = html_mod.escape(specialty)
         specialty_title_e = html_mod.escape(specialty.title())
@@ -167,7 +167,6 @@ def generate_doctor_pages(doctors, departments_by_name):
         page_url = f'{SITE_URL}/doctors/{filename}'
         appointment_link = f"../appointment.html?doctor={quote(full_name)}"
 
-        # ---- Photo block (precomputed to avoid nested f-strings) ----
         has_photo = bool(photo_url) and photo_url != 'https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp'
         if has_photo:
             photo_block = (
@@ -178,7 +177,6 @@ def generate_doctor_pages(doctors, departments_by_name):
         else:
             photo_block = '<div class="no-img">👨‍⚕️</div>'
 
-        # ---- Department link (only render if the page actually exists) ----
         dept_link_html = ""
         dept_page_file = dept_dir / f'{dept_slug}.html'
         if dept_name and dept_page_file.exists():
@@ -188,10 +186,8 @@ def generate_doctor_pages(doctors, departments_by_name):
                 f'</div>'
             )
         elif dept_name:
-            # Fallback — no link if the page doesn't exist yet
             dept_link_html = f'<div class="hero-dept">Department: {dept_name_title_e}</div>'
 
-        # ---- Related doctors in same department ----
         same_dept_doctors = [
             d for d in doctors
             if (d.get('department') or '').strip().lower() == dept_name.lower()
@@ -221,7 +217,6 @@ def generate_doctor_pages(doctors, departments_by_name):
             </div>
             '''
 
-        # ---- JSON-LD: Physician ----
         json_ld_physician = {
             "@context": "https://schema.org",
             "@type": "Physician",
@@ -259,7 +254,13 @@ def generate_doctor_pages(doctors, departments_by_name):
         if qualifications:
             json_ld_physician["hasCredential"] = qualifications
 
-        # ---- JSON-LD: BreadcrumbList ----
+        # ---- sameAs: external profiles ----
+        same_as_raw = (doc.get('same_as_urls') or '').strip()
+        if same_as_raw:
+            same_as_list = [u.strip() for u in same_as_raw.split(',') if u.strip()]
+            if same_as_list:
+                json_ld_physician["sameAs"] = same_as_list
+
         json_ld_breadcrumb = {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
@@ -270,7 +271,52 @@ def generate_doctor_pages(doctors, departments_by_name):
             ]
         }
 
-        # ======================= PREMIUM HTML TEMPLATE =======================
+        json_ld_hospital = {
+            "@context": "https://schema.org",
+            "@type": "Hospital",
+            "@id": f"{SITE_URL}/#hospital",
+            "name": "Ibn Sina Hospital",
+            "url": SITE_URL,
+            "logo": "https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp",
+            "image": "https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp",
+            "telephone": "+919622552553",
+            "email": "weibnsina@gmail.com",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Near Railway Station, Ompora Railway Station Road, Ompora",
+                "addressLocality": "Budgam",
+                "addressRegion": "Jammu and Kashmir",
+                "postalCode": "191111",
+                "addressCountry": "IN"
+            },
+            "openingHoursSpecification": [
+                {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+                    "opens": "00:00",
+                    "closes": "23:59"
+                }
+            ],
+            "areaServed": [
+                {"@type": "Country", "name": "India"},
+                {"@type": "AdministrativeArea", "name": "Jammu and Kashmir"},
+                {"@type": "City", "name": "Budgam"},
+                {"@type": "City", "name": "Srinagar"},
+                {"@type": "City", "name": "Ganderbal"},
+                {"@type": "City", "name": "Pulwama"},
+                {"@type": "City", "name": "Shopian"},
+                {"@type": "City", "name": "Kulgam"}
+            ]
+        }
+        if HOSPITAL_RATING_VALUE and HOSPITAL_REVIEW_COUNT:
+            json_ld_hospital["aggregateRating"] = {
+                "@type": "AggregateRating",
+                "ratingValue": HOSPITAL_RATING_VALUE,
+                "reviewCount": HOSPITAL_REVIEW_COUNT,
+                "bestRating": "5",
+                "worstRating": "1"
+            }
+
         html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -298,229 +344,133 @@ def generate_doctor_pages(doctors, departments_by_name):
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script type="application/ld+json">{json.dumps(json_ld_physician, ensure_ascii=False)}</script>
+    <script type="application/ld+json">{json.dumps(json_ld_hospital, ensure_ascii=False)}</script>
     <script type="application/ld+json">{json.dumps(json_ld_breadcrumb, ensure_ascii=False)}</script>
 
-    <!-- ========== PREMIUM DOCTOR PROFILE STYLES ========== -->
     <style>
         .doctor-profile-page {{
             --doc-green: #2d4a2b;
             --doc-gold: #c9b99a;
             --doc-bg: #f8faf6;
         }}
-
         .doctor-profile-page .breadcrumb-premium {{
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #71806d;
-            padding: 1rem 0;
+            font-size: 0.85rem; font-weight: 500; color: #71806d; padding: 1rem 0;
         }}
         .doctor-profile-page .breadcrumb-premium a {{
-            color: var(--doc-green);
-            text-decoration: none;
+            color: var(--doc-green); text-decoration: none;
         }}
-        .doctor-profile-page .breadcrumb-premium a:hover {{
-            text-decoration: underline;
-        }}
-        .doctor-profile-page .breadcrumb-premium span {{
-            margin: 0 6px;
-            color: #a4ac86;
-        }}
-
+        .doctor-profile-page .breadcrumb-premium a:hover {{ text-decoration: underline; }}
+        .doctor-profile-page .breadcrumb-premium span {{ margin: 0 6px; color: #a4ac86; }}
         .doctor-profile-page .profile-hero {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 40px;
+            display: flex; flex-wrap: wrap; gap: 40px;
             background: linear-gradient(145deg, #f5f8f2, #eaf1e6);
-            border-radius: 28px;
-            padding: 40px 40px 30px;
-            margin: 0 0 30px 0;
+            border-radius: 28px; padding: 40px 40px 30px; margin: 0 0 30px 0;
             border: 1px solid rgba(164, 172, 134, 0.2);
             box-shadow: 0 10px 40px rgba(45, 74, 43, 0.04);
             align-items: center;
         }}
-        .doctor-profile-page .profile-hero .hero-image {{
-            flex: 0 0 180px;
-            text-align: center;
-        }}
+        .doctor-profile-page .profile-hero .hero-image {{ flex: 0 0 180px; text-align: center; }}
         .doctor-profile-page .profile-hero .hero-image img {{
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #ffffff;
-            box-shadow: 0 12px 30px rgba(45, 74, 43, 0.12);
+            width: 180px; height: 180px; border-radius: 50%; object-fit: cover;
+            border: 4px solid #ffffff; box-shadow: 0 12px 30px rgba(45, 74, 43, 0.12);
         }}
         .doctor-profile-page .profile-hero .hero-image .no-img {{
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
+            width: 180px; height: 180px; border-radius: 50%;
             background: linear-gradient(135deg, #eaf1e6, #d4dfcd);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            border: 4px solid #ffffff;
-            box-shadow: 0 12px 30px rgba(45, 74, 43, 0.12);
-            margin: 0 auto;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 4rem; border: 4px solid #ffffff;
+            box-shadow: 0 12px 30px rgba(45, 74, 43, 0.12); margin: 0 auto;
         }}
-        .doctor-profile-page .profile-hero .hero-text {{
-            flex: 1;
-        }}
+        .doctor-profile-page .profile-hero .hero-text {{ flex: 1; }}
         .doctor-profile-page .profile-hero .hero-text h1 {{
             font-family: 'Poppins', sans-serif;
             font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-            color: var(--doc-green);
-            margin-bottom: 0.2rem;
-            letter-spacing: -0.02em;
+            color: var(--doc-green); margin-bottom: 0.2rem; letter-spacing: -0.02em;
         }}
         .doctor-profile-page .profile-hero .hero-text .hero-specialty {{
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #82907d;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.3rem;
+            font-size: 1.1rem; font-weight: 700; color: #82907d;
+            text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem;
         }}
         .doctor-profile-page .profile-hero .hero-text .hero-qual {{
-            font-size: 0.95rem;
-            color: #5a6b4a;
-            margin-bottom: 0.5rem;
+            font-size: 0.95rem; color: #5a6b4a; margin-bottom: 0.5rem;
         }}
         .doctor-profile-page .profile-hero .hero-text .hero-dept {{
-            font-size: 0.9rem;
-            color: #4e5c4a;
-            margin-bottom: 1rem;
+            font-size: 0.9rem; color: #4e5c4a; margin-bottom: 1rem;
         }}
         .doctor-profile-page .profile-hero .hero-text .hero-dept a {{
-            color: var(--doc-green);
-            font-weight: 700;
-            text-decoration: none;
-            border-bottom: 2px solid var(--doc-gold);
-            padding-bottom: 2px;
+            color: var(--doc-green); font-weight: 700; text-decoration: none;
+            border-bottom: 2px solid var(--doc-gold); padding-bottom: 2px;
         }}
         .doctor-profile-page .profile-hero .hero-text .hero-dept a:hover {{
             border-bottom-color: var(--doc-green);
         }}
         .doctor-profile-page .profile-hero .hero-text .hero-actions {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 0.5rem;
+            display: flex; flex-wrap: wrap; gap: 12px; margin-top: 0.5rem;
         }}
         .doctor-profile-page .profile-hero .hero-text .btn-appointment-hero {{
-            display: inline-block;
-            padding: 12px 32px;
-            border-radius: 60px;
-            background: var(--doc-green);
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
+            display: inline-block; padding: 12px 32px; border-radius: 60px;
+            background: var(--doc-green); color: #ffffff; text-decoration: none;
+            font-weight: 700; transition: all 0.3s ease; border: none; cursor: pointer;
         }}
         .doctor-profile-page .profile-hero .hero-text .btn-appointment-hero:hover {{
-            background: #1d321c;
-            transform: scale(1.02);
+            background: #1d321c; transform: scale(1.02);
             box-shadow: 0 8px 20px rgba(45, 74, 43, 0.2);
         }}
         .doctor-profile-page .profile-hero .hero-text .btn-secondary-hero {{
-            display: inline-block;
-            padding: 12px 32px;
-            border-radius: 60px;
-            background: transparent;
-            color: var(--doc-green);
-            border: 2px solid var(--doc-green);
-            text-decoration: none;
-            font-weight: 700;
-            transition: all 0.3s ease;
+            display: inline-block; padding: 12px 32px; border-radius: 60px;
+            background: transparent; color: var(--doc-green);
+            border: 2px solid var(--doc-green); text-decoration: none;
+            font-weight: 700; transition: all 0.3s ease;
         }}
         .doctor-profile-page .profile-hero .hero-text .btn-secondary-hero:hover {{
-            background: var(--doc-green);
-            color: #ffffff;
+            background: var(--doc-green); color: #ffffff;
         }}
-
         .doctor-profile-page .profile-layout {{
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) 300px;
-            gap: 40px;
-            margin: 30px 0;
-            align-items: start;
+            display: grid; grid-template-columns: minmax(0, 1fr) 300px;
+            gap: 40px; margin: 30px 0; align-items: start;
         }}
-        .doctor-profile-page .profile-content {{
-            min-width: 0;
-        }}
-        .doctor-profile-page .profile-sidebar {{
-            position: sticky;
-            top: 100px;
-        }}
-
+        .doctor-profile-page .profile-content {{ min-width: 0; }}
+        .doctor-profile-page .profile-sidebar {{ position: sticky; top: 100px; }}
         .doctor-profile-page .bio-card {{
             background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 30px rgba(45, 74, 43, 0.04);
-            margin-bottom: 30px;
+            border-radius: 20px; padding: 30px;
+            box-shadow: 0 8px 30px rgba(45, 74, 43, 0.04); margin-bottom: 30px;
         }}
         .doctor-profile-page .bio-card h2 {{
-            font-family: 'Poppins', sans-serif;
-            color: var(--doc-green);
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
-            position: relative;
+            font-family: 'Poppins', sans-serif; color: var(--doc-green);
+            font-size: 1.4rem; margin-bottom: 0.5rem; position: relative;
         }}
         .doctor-profile-page .bio-card h2::after {{
-            content: '';
-            display: block;
-            width: 40px;
-            height: 4px;
-            background: var(--doc-gold);
-            border-radius: 4px;
-            margin-top: 6px;
+            content: ''; display: block; width: 40px; height: 4px;
+            background: var(--doc-gold); border-radius: 4px; margin-top: 6px;
         }}
         .doctor-profile-page .bio-card p {{
-            color: #4e5c4a;
-            line-height: 1.8;
-            font-size: 1.02rem;
+            color: #4e5c4a; line-height: 1.8; font-size: 1.02rem;
         }}
         .doctor-profile-page .bio-card .dept-link {{
-            color: var(--doc-green);
-            font-weight: 700;
-            text-decoration: none;
-            border-bottom: 2px solid var(--doc-gold);
-            padding-bottom: 2px;
+            color: var(--doc-green); font-weight: 700; text-decoration: none;
+            border-bottom: 2px solid var(--doc-gold); padding-bottom: 2px;
         }}
         .doctor-profile-page .bio-card .dept-link:hover {{
             border-bottom-color: var(--doc-green);
         }}
-
         .doctor-profile-page .related-doctors-section {{
             background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(4px);
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid #edf3e9;
+            backdrop-filter: blur(4px); border-radius: 16px;
+            padding: 24px; border: 1px solid #edf3e9;
         }}
         .doctor-profile-page .related-doctors-section h3 {{
-            font-family: 'Poppins', sans-serif;
-            color: var(--doc-green);
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif; color: var(--doc-green);
+            font-size: 1.1rem; margin-bottom: 1rem;
         }}
         .doctor-profile-page .related-doctors-grid {{
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
         }}
         .doctor-profile-page .related-doctor-card {{
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 12px;
-            border: 1px solid #edf3e9;
-            transition: all 0.25s ease;
+            background: #ffffff; border-radius: 12px; padding: 12px;
+            border: 1px solid #edf3e9; transition: all 0.25s ease;
         }}
         .doctor-profile-page .related-doctor-card:hover {{
             transform: translateY(-3px);
@@ -528,128 +478,80 @@ def generate_doctor_pages(doctors, departments_by_name):
             border-color: var(--doc-green);
         }}
         .doctor-profile-page .related-doctor-card a {{
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: #2d4a2b;
+            display: flex; align-items: center; gap: 12px;
+            text-decoration: none; color: #2d4a2b;
         }}
         .doctor-profile-page .related-doctor-card .related-avatar {{
-            font-size: 2rem;
-            flex-shrink: 0;
+            font-size: 2rem; flex-shrink: 0;
         }}
         .doctor-profile-page .related-doctor-card strong {{
-            display: block;
-            font-size: 0.85rem;
-            line-height: 1.2;
+            display: block; font-size: 0.85rem; line-height: 1.2;
         }}
         .doctor-profile-page .related-doctor-card .related-specialty {{
-            display: block;
-            font-size: 0.7rem;
-            color: #82907d;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
+            display: block; font-size: 0.7rem; color: #82907d;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;
         }}
-
         .doctor-profile-page .sidebar-card {{
             background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 20px;
+            border-radius: 20px; padding: 24px; margin-bottom: 20px;
             box-shadow: 0 8px 30px rgba(45, 74, 43, 0.04);
         }}
         .doctor-profile-page .sidebar-card h3 {{
-            font-family: 'Poppins', sans-serif;
-            color: var(--doc-green);
-            font-size: 1.05rem;
-            margin-bottom: 0.8rem;
+            font-family: 'Poppins', sans-serif; color: var(--doc-green);
+            font-size: 1.05rem; margin-bottom: 0.8rem;
         }}
         .doctor-profile-page .sidebar-card .cta-btn {{
-            display: block;
-            width: 100%;
-            padding: 14px;
-            border-radius: 60px;
-            background: var(--doc-green);
-            color: #ffffff;
-            text-align: center;
-            text-decoration: none;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
+            display: block; width: 100%; padding: 14px; border-radius: 60px;
+            background: var(--doc-green); color: #ffffff; text-align: center;
+            text-decoration: none; font-weight: 700; transition: all 0.3s ease;
+            border: none; cursor: pointer;
         }}
         .doctor-profile-page .sidebar-card .cta-btn:hover {{
-            background: #1d321c;
-            transform: scale(1.02);
+            background: #1d321c; transform: scale(1.02);
             box-shadow: 0 8px 20px rgba(45, 74, 43, 0.2);
         }}
         .doctor-profile-page .sidebar-card .emergency-phone {{
-            display: block;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--doc-green);
-            text-decoration: none;
-            margin-top: 0.5rem;
+            display: block; text-align: center; font-size: 1.2rem;
+            font-weight: 700; color: var(--doc-green);
+            text-decoration: none; margin-top: 0.5rem;
         }}
         .doctor-profile-page .sidebar-card .emergency-phone:hover {{
             text-decoration: underline;
         }}
         .doctor-profile-page .sidebar-card .quick-links {{
-            list-style: none;
-            padding: 0;
-            margin: 0;
+            list-style: none; padding: 0; margin: 0;
         }}
         .doctor-profile-page .sidebar-card .quick-links li {{
-            padding: 8px 0;
-            border-bottom: 1px solid #edf3e9;
+            padding: 8px 0; border-bottom: 1px solid #edf3e9;
         }}
         .doctor-profile-page .sidebar-card .quick-links li:last-child {{
             border-bottom: none;
         }}
         .doctor-profile-page .sidebar-card .quick-links a {{
-            color: #4e5c4a;
-            text-decoration: none;
-            transition: color 0.2s ease;
+            color: #4e5c4a; text-decoration: none; transition: color 0.2s ease;
         }}
         .doctor-profile-page .sidebar-card .quick-links a:hover {{
-            color: var(--doc-green);
-            text-decoration: underline;
+            color: var(--doc-green); text-decoration: underline;
         }}
-
-        /* --- Explore Section --- */
-        .doctor-profile-page .explore-section {{
-            padding: 30px 0 10px;
-        }}
+        .doctor-profile-page .explore-section {{ padding: 30px 0 10px; }}
         .doctor-profile-page .explore-section h2 {{
-            font-family: 'Poppins', sans-serif;
-            color: var(--doc-green);
-            text-align: center;
-            margin-bottom: 0.5rem;
+            font-family: 'Poppins', sans-serif; color: var(--doc-green);
+            text-align: center; margin-bottom: 0.5rem;
         }}
         .doctor-profile-page .explore-section .section-subtitle {{
-            text-align: center;
-            color: #4e5c4a;
-            max-width: 700px;
+            text-align: center; color: #4e5c4a; max-width: 700px;
             margin: 0 auto 1.5rem;
         }}
         .doctor-profile-page .explore-grid {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 16px;
         }}
         .doctor-profile-page .explore-card {{
-            background: #fff;
-            border: 1px solid #e2e8df;
-            border-radius: 14px;
-            padding: 18px 20px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: block;
+            background: #fff; border: 1px solid #e2e8df; border-radius: 14px;
+            padding: 18px 20px; transition: all 0.3s ease;
+            text-decoration: none; display: block;
             box-shadow: 0 4px 12px rgba(45, 74, 43, 0.03);
         }}
         .doctor-profile-page .explore-card:hover {{
@@ -658,97 +560,56 @@ def generate_doctor_pages(doctors, departments_by_name):
             border-color: #a4ac86;
         }}
         .doctor-profile-page .explore-card h3 {{
-            color: #2d4a2b;
-            font-size: 1rem;
-            margin-bottom: 0.3rem;
+            color: #2d4a2b; font-size: 1rem; margin-bottom: 0.3rem;
             font-family: 'Poppins', sans-serif;
         }}
         .doctor-profile-page .explore-card p {{
-            color: #5a6b4a;
-            font-size: 0.85rem;
-            line-height: 1.5;
-            margin-bottom: 0;
+            color: #5a6b4a; font-size: 0.85rem; line-height: 1.5; margin-bottom: 0;
         }}
         .doctor-profile-page .explore-card .explore-icon {{
-            font-size: 1.4rem;
-            margin-bottom: 0.4rem;
-            display: block;
+            font-size: 1.4rem; margin-bottom: 0.4rem; display: block;
         }}
-
-        /* --- Areas We Serve --- */
         .doctor-profile-page .areas-serve-premium {{
             background: linear-gradient(145deg, #f5f8f2, #ecf2e8);
-            border-radius: 24px;
-            padding: 30px 24px;
-            border: 1px solid #e2e8df;
-            margin: 30px 0;
-            text-align: center;
+            border-radius: 24px; padding: 30px 24px; border: 1px solid #e2e8df;
+            margin: 30px 0; text-align: center;
         }}
         .doctor-profile-page .areas-serve-premium .badge-list {{
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
         }}
         .doctor-profile-page .areas-serve-premium .badge-list span {{
-            background: #ffffff;
-            padding: 8px 22px;
-            border-radius: 60px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #2d4a2b;
-            border: 1px solid #dce4d6;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            background: #ffffff; padding: 8px 22px; border-radius: 60px;
+            font-size: 0.85rem; font-weight: 600; color: #2d4a2b;
+            border: 1px solid #dce4d6; box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }}
         .doctor-profile-page .areas-serve-premium .badge-list span.strong-badge {{
-            background: #2d4a2b;
-            color: #ffffff;
-            border-color: #2d4a2b;
+            background: #2d4a2b; color: #ffffff; border-color: #2d4a2b;
         }}
-
         @media (max-width: 900px) {{
-            .doctor-profile-page .profile-layout {{
-                grid-template-columns: 1fr;
-            }}
+            .doctor-profile-page .profile-layout {{ grid-template-columns: 1fr; }}
             .doctor-profile-page .profile-sidebar {{
-                position: static;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 16px;
+                position: static; display: grid;
+                grid-template-columns: 1fr 1fr; gap: 16px;
             }}
             .doctor-profile-page .profile-hero {{
-                flex-direction: column;
-                text-align: center;
-                padding: 30px 20px;
+                flex-direction: column; text-align: center; padding: 30px 20px;
             }}
-            .doctor-profile-page .profile-hero .hero-image {{
-                flex: 0 0 auto;
-            }}
+            .doctor-profile-page .profile-hero .hero-image {{ flex: 0 0 auto; }}
             .doctor-profile-page .profile-hero .hero-text .hero-actions {{
                 justify-content: center;
             }}
-            .doctor-profile-page .related-doctors-grid {{
-                grid-template-columns: 1fr;
-            }}
+            .doctor-profile-page .related-doctors-grid {{ grid-template-columns: 1fr; }}
         }}
         @media (max-width: 650px) {{
-            .doctor-profile-page .profile-sidebar {{
-                grid-template-columns: 1fr;
-            }}
+            .doctor-profile-page .profile-sidebar {{ grid-template-columns: 1fr; }}
             .doctor-profile-page .profile-hero .hero-image img {{
-                width: 140px;
-                height: 140px;
+                width: 140px; height: 140px;
             }}
-            .doctor-profile-page .bio-card {{
-                padding: 20px;
-            }}
+            .doctor-profile-page .bio-card {{ padding: 20px; }}
         }}
     </style>
-
 </head>
 <body class="doctor-profile-page">
-
-    <!-- ===== HEADER ===== -->
     <header class="site-header" id="site-header">
         <div class="header-inner container">
             <a href="../index.html" class="logo" aria-label="Ibn Sina Hospital Home">
@@ -784,11 +645,7 @@ def generate_doctor_pages(doctors, departments_by_name):
             </div>
         </div>
     </header>
-
-    <!-- ===== MAIN CONTENT ===== -->
     <main id="main-content" class="container" style="padding: 0 20px;">
-
-        <!-- Breadcrumb -->
         <nav class="breadcrumb-premium" aria-label="Breadcrumb">
             <a href="../index.html">Home</a>
             <span>›</span>
@@ -796,12 +653,8 @@ def generate_doctor_pages(doctors, departments_by_name):
             <span>›</span>
             <span>{full_name_e}</span>
         </nav>
-
-        <!-- ===== PROFILE HERO ===== -->
         <section class="profile-hero">
-            <div class="hero-image">
-                {photo_block}
-            </div>
+            <div class="hero-image">{photo_block}</div>
             <div class="hero-text">
                 <h1>{full_name_e}</h1>
                 <div class="hero-specialty">{specialty_title_e}</div>
@@ -813,43 +666,29 @@ def generate_doctor_pages(doctors, departments_by_name):
                 </div>
             </div>
         </section>
-
-        <!-- ===== PROFILE LAYOUT ===== -->
         <div class="profile-layout">
-
-            <!-- CONTENT COLUMN -->
             <div class="profile-content">
-
                 <div class="bio-card">
                     <h2>About {full_name_e}</h2>
                     <p>{about_text_e}</p>
                     {f'<p style="margin-top: 1rem;"><a href="../department-pages/{dept_slug}.html" class="dept-link">View {dept_name_title_e} Department →</a></p>' if (dept_name and dept_page_file.exists()) else ''}
                 </div>
-
                 {related_doctors_html}
-
             </div>
-
-            <!-- SIDEBAR -->
             <aside class="profile-sidebar">
-
                 <div class="sidebar-card" style="background: linear-gradient(145deg, #2d4a2b, #1d321c); color: #ffffff; border: none;">
                     <h3 style="color: #ffffff;">📋 Book an Appointment</h3>
                     <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
                         Consult with {full_name_e} at Ibn Sina Hospital, Budgam.
                     </p>
-                    <a href="{appointment_link}" class="cta-btn" style="background: #ffffff; color: #2d4a2b; display: block; text-align: center; padding: 14px; border-radius: 60px; font-weight: 700; text-decoration: none;">Book Now</a>
+                    <a href="{appointment_link}" class="cta-btn" style="background: #ffffff; color: #2d4a2b;">Book Now</a>
                 </div>
-
                 <div class="sidebar-card">
                     <h3>🚑 Emergency</h3>
-                    <p style="color: #4e5c4a; font-size: 0.9rem; margin-bottom: 0.5rem;">
-                        For urgent medical help, call:
-                    </p>
+                    <p style="color: #4e5c4a; font-size: 0.9rem; margin-bottom: 0.5rem;">For urgent medical help, call:</p>
                     <a href="tel:9622552553" class="emergency-phone">📞 9622552553</a>
                     <p style="font-size: 0.75rem; color: #82907d; margin-top: 0.5rem; text-align: center;">Available 24/7, 365 days</p>
                 </div>
-
                 <div class="sidebar-card">
                     <h3>Quick Links</h3>
                     <ul class="quick-links">
@@ -863,17 +702,11 @@ def generate_doctor_pages(doctors, departments_by_name):
                         <li><a href="../faq.html">FAQs</a></li>
                     </ul>
                 </div>
-
             </aside>
-
         </div>
-
-        <!-- ===== EXPLORE IBN SINA HOSPITAL (Internal Linking) ===== -->
         <section class="explore-section">
             <h2>Explore Ibn Sina Hospital</h2>
-            <p class="section-subtitle">
-                Learn more about our doctors, departments, and patient resources.
-            </p>
+            <p class="section-subtitle">Learn more about our doctors, departments, and patient resources.</p>
             <div class="explore-grid">
                 <a href="../doctors.html" class="explore-card">
                     <span class="explore-icon">👨‍⚕️</span>
@@ -907,20 +740,11 @@ def generate_doctor_pages(doctors, departments_by_name):
                 </a>
             </div>
         </section>
-
-        <!-- ===== AREAS WE SERVE ===== -->
         <section class="areas-serve-premium">
-            <p style="font-weight: 700; color: #2d4a2b; margin: 0 0 12px; font-size: 1.1rem;">
-                🌍 Serving Families Across J&amp;K &amp; India
-            </p>
+            <p style="font-weight: 700; color: #2d4a2b; margin: 0 0 12px; font-size: 1.1rem;">🌍 Serving Families Across J&amp;K &amp; India</p>
             <div class="badge-list">
-                <span>Budgam</span>
-                <span>Srinagar</span>
-                <span>Ompora</span>
-                <span>Ganderbal</span>
-                <span>Pulwama</span>
-                <span>Shopian</span>
-                <span>Kulgam</span>
+                <span>Budgam</span><span>Srinagar</span><span>Ompora</span><span>Ganderbal</span>
+                <span>Pulwama</span><span>Shopian</span><span>Kulgam</span>
                 <span class="strong-badge">Jammu &amp; Kashmir</span>
                 <span class="strong-badge">India</span>
             </div>
@@ -930,10 +754,7 @@ def generate_doctor_pages(doctors, departments_by_name):
                 <a href="../contact.html" style="color: #2d4a2b; text-decoration: underline;">Get directions</a>
             </div>
         </section>
-
     </main>
-
-    <!-- ===== FOOTER ===== -->
     <footer class="site-footer">
         <div class="footer-wave" aria-hidden="true">
             <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 25 C360 50 720 0 1080 25 C1260 38 1380 20 1440 25 L1440 0 L0 0 Z" fill="#2d4a2b"/></svg>
@@ -983,13 +804,11 @@ def generate_doctor_pages(doctors, departments_by_name):
             <p class="google-review-note">See our latest reviews on <a href="https://maps.google.com/?q=IBN+SINA+HOSPITAL+Ompora+Budgam" target="_blank" rel="noopener">Google Maps</a></p>
         </div>
     </footer>
-
     <script src="../js/main.js" defer></script>
     <script src="../js/chatbot.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <script src="../js/animations.js" defer></script>
-
 </body>
 </html>"""
         output_path = output_dir / filename
@@ -1000,16 +819,13 @@ def generate_doctor_pages(doctors, departments_by_name):
 
     return urls, pages
 
-# ========== GENERATE BLOG PAGES ==========
 # ========== BLOG BODY FORMATTING ==========
 def format_blog_body_html(raw):
-    """Mirrors formatBlogBody() in js/main.js exactly, so the static page
-    reads identically to the JS-rendered blog-post.html version."""
     text = (raw or '').replace('\u200b', '').replace('\u200c', '') \
         .replace('\u200d', '').replace('\u2060', '').replace('\ufeff', '')
 
     if re.search(r'<(p|div|ul|ol|h2|h3|br)\b', text, re.I):
-        return text  # already HTML — trust it as-is
+        return text
 
     blocks = re.split(r'\n\s*\n', text)
     out = []
@@ -1056,14 +872,12 @@ def format_blog_body_html(raw):
 
 
 def estimate_reading_time(body):
-    """Mirrors calculateReadingTime() in js/main.js."""
     text = re.sub(r'<[^>]*>', ' ', body or '')
     words = len(text.split())
     return max(1, math.ceil(words / 200))
 
 
 def format_blog_date(value):
-    """Mirrors formatBlogDate() in js/main.js — en-IN locale, e.g. '1 August 2026'."""
     if not value:
         return ''
     for fmt in ('%Y-%m-%d', '%Y/%m/%d', '%d-%m-%Y', '%d/%m/%Y'):
@@ -1105,9 +919,12 @@ def generate_blog_pages(posts):
         image_e = html_mod.escape(image, quote=True)
         category_e = html_mod.escape(category)
 
-        # Google Analytics (GA4) — pulled from the 'ga_measurement_id' column in
-        # the blog Google Sheet. Leave that column blank to skip analytics for a
-        # given post; fill it in (e.g. G-XXXXXXXXXX) to enable tracking on it.
+        # ---- Author (E-E-A-T for medical content) ----
+        author_raw = (post.get('author') or '').strip()
+        author_name = author_raw or 'Ibn Sina Hospital'
+        author_e = html_mod.escape(author_name)
+        is_person_author = bool(author_raw)
+
         ga_id = (post.get('ga_measurement_id') or '').strip()
         ga_snippet = ''
         if ga_id:
@@ -1155,14 +972,30 @@ def generate_blog_pages(posts):
                     "mainEntityOfPage": {"@id": f"{page_url}#webpage"},
                     "image": image,
                     "datePublished": published_at,
+                    "author": (
+                        {
+                            "@type": "Person",
+                            "name": author_raw,
+                            "affiliation": {
+                                "@type": "Hospital",
+                                "name": "Ibn Sina Hospital",
+                                "url": SITE_URL
+                            }
+                        }
+                        if is_person_author
+                        else {
+                            "@type": "Organization",
+                            "name": "Ibn Sina Hospital",
+                            "url": SITE_URL
+                        }
+                    ),
                     "publisher": {
-                        "@type": "Hospital",
+                        "@type": "Organization",
                         "name": "Ibn Sina Hospital",
-                        "address": {
-                            "@type": "PostalAddress",
-                            "addressLocality": "Budgam",
-                            "addressRegion": "Jammu and Kashmir",
-                            "addressCountry": "IN"
+                        "url": SITE_URL,
+                        "logo": {
+                            "@type": "ImageObject",
+                            "url": "https://i.ibb.co/NgNyCQgf/8e1694fa3791.webp"
                         }
                     }
                 },
@@ -1241,7 +1074,6 @@ def generate_blog_pages(posts):
         <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
         <div class="container">
           <article class="premium-blog-post">
-
             <nav class="blog-breadcrumb" aria-label="Breadcrumb">
               <a href="../index.html">Home</a>
               <span aria-hidden="true">/</span>
@@ -1249,7 +1081,6 @@ def generate_blog_pages(posts):
               <span aria-hidden="true">/</span>
               <span aria-current="page">{title_e}</span>
             </nav>
-
             <header class="blog-article-hero">
               <div class="blog-article-category">{category_e}</div>
               <h1 class="blog-article-title">{title_e}</h1>
@@ -1260,35 +1091,28 @@ def generate_blog_pages(posts):
                   {reading_time} min read
                 </span>
                 <span class="blog-meta-divider" aria-hidden="true">•</span>
-                <span class="blog-meta-item">Ibn Sina Hospital</span>
+                <span class="blog-meta-item">✍ {author_e}</span>
               </div>
             </header>
-
             <figure class="blog-hero-media">
               <img src="{image_e}" alt="{title_e}" loading="eager" fetchpriority="high" decoding="async">
             </figure>
-
             <div class="blog-article-layout">
-
               <aside class="blog-share-rail" aria-label="Share article">
                 <span>Share</span>
                 <button type="button" class="blog-share-button" data-share="whatsapp" aria-label="Share on WhatsApp">WA</button>
                 <button type="button" class="blog-share-button" data-share="facebook" aria-label="Share on Facebook">FB</button>
                 <button type="button" class="blog-share-button" data-share="copy" aria-label="Copy article link">🔗</button>
               </aside>
-
               <div class="blog-article-content blog-body">
                   {body_html}
                   {related_html}
-
                   <aside class="blog-medical-disclaimer">
                     <strong>Medical Disclaimer</strong>
                     <p>The information provided in this article is intended for general educational purposes only. It should not replace professional medical advice, diagnosis, or treatment. If you have concerns about your health, please consult a qualified healthcare professional.</p>
                   </aside>
               </div>
-
             </div>
-
             <section class="blog-article-cta">
               <div class="blog-cta-content">
                 <span class="blog-cta-eyebrow">Need Medical Advice?</span>
@@ -1300,11 +1124,9 @@ def generate_blog_pages(posts):
                 </div>
               </div>
             </section>
-
             <div class="blog-back-link">
               <a href="../blog.html" class="read-more">← Back to Health Insights</a>
             </div>
-
           </article>
         </div>
     </main>
@@ -1360,8 +1182,6 @@ def generate_department_pages(departments, doctors):
         dept_name = (dept.get('name') or '').strip()
         slug = resolve_dept_slug(dept.get('slug') or dept_name)
 
-        # Skip the thin auto-generated page entirely when a hand-built,
-        # fuller page already exists in department-pages/ for this slug.
         if (manual_dir / f'{slug}.html').exists():
             continue
 
@@ -1486,7 +1306,7 @@ def collect_manual_department_pages():
         pages.append((url, content))
     return pages
 
-# ========== UPDATE SITEMAP (content-aware lastmod) ==========
+# ========== UPDATE SITEMAP ==========
 def update_sitemap(all_pages_with_content):
     cache = load_lastmod_cache()
     today = datetime.date.today().isoformat()
